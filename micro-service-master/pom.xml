@@ -8,7 +8,6 @@
   <modules>
     <module>ribbon</module>
     <module>eureka-sever</module>
-    <module>config-server</module>
     <module>cloud-zuul</module>
     <module>feign</module>
       <module>service-public</module>
