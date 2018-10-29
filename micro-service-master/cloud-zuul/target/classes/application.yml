@@ -1,0 +1,30 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: cloud-zuul
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7070/eureka/
+  instance:
+    prefer-ip-address:true
+
+
+
+zuul:
+  routes:
+    user-service-ext:
+      path: /service-user/**
+      serviceId: service-user
+    user-service:
+      path: /service-public/**
+      serviceId: service-public
+
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
