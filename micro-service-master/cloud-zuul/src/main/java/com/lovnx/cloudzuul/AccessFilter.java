@@ -28,7 +28,7 @@ public class AccessFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         String url = request.getRequestURI();
-        if(url.equals("/service-user/user/findPage")||url.equals("/service-public/rocketMq/producer")) {
+        if(url.contains("/service-user/")||url.contains("/service-public/")) {
             return false;
         }else {
             return true;

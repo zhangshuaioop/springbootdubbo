@@ -6,12 +6,13 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>ribbon</module>
     <module>eureka-sever</module>
     <module>cloud-zuul</module>
+      <module>cloud-zipkin</module>
     <module>feign</module>
       <module>service-public</module>
       <module>service-user</module>
+      <module>common-componets</module>
   </modules>
   
   	<parent>

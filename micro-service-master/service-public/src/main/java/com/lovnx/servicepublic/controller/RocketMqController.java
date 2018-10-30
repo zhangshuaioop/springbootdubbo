@@ -1,6 +1,7 @@
 package com.lovnx.servicepublic.controller;
 
 import com.feign.client.UserMicroService;
+import com.lovnx.commoncomponets.entity.user.User;
 import com.lovnx.commoncomponets.utils.Result;
 import com.lovnx.commoncomponets.utils.ResultUtil;
 import com.lovnx.servicepublic.service.ProducerService;
@@ -10,12 +11,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 /**
  * @description: alibaba RocketMq服务
  * @author: zhangshuai
  * @create: 2018-10-24 16:51
  */
-@Api(value = "RocketMqController", tags = "alibaba RocketMq服务")
+@Api(value = "RocketMqController", tags = "alibaba RocketMq")
 @RestController
 @RequestMapping(value = "/rocketMq")
 public class RocketMqController {
@@ -51,10 +53,10 @@ public class RocketMqController {
             responseReference = "com.lovnx.publicdservice.config.Result"
     )
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "/findUser" ,method = RequestMethod.GET)
-    public Result findUser(@RequestParam Integer id) {
+    @RequestMapping(value = "/findPage",method=RequestMethod.POST)
+    public Result findPage(@RequestBody User user) {
 
-        return userMicroService.findById(id);
+        return userMicroService.findPage(user);
     }
 
     //远程调用

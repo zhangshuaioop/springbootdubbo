@@ -42,7 +42,8 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
-    
+
+
         <!-- 整合hystrix -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>

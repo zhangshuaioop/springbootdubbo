@@ -17,7 +17,7 @@ import java.util.Properties;
  * @author: zhangshuai
  * @create: 2018-10-24 16:51
  */
-@Component
+//@Component
 public class Consumption {
 
     //Consumer ID

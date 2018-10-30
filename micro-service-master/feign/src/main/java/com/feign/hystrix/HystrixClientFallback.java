@@ -2,6 +2,7 @@ package com.feign.hystrix;
 
 import com.feign.client.RocketMqMicroService;
 import com.feign.client.UserMicroService;
+import com.lovnx.commoncomponets.entity.user.User;
 import com.lovnx.commoncomponets.enums.ResultEnum;
 import com.lovnx.commoncomponets.utils.Result;
 import com.lovnx.commoncomponets.utils.ResultUtil;
@@ -22,8 +23,7 @@ public class HystrixClientFallback implements RocketMqMicroService,UserMicroServ
     }
 
     @Override
-    public Result findById(Integer id) {
-
+    public Result findPage(User user) {
         return ResultUtil.error(ResultEnum.MICRO_SERVICE_ERROR.getCode(),"User"+ResultEnum.MICRO_SERVICE_ERROR.getMsg());
     }
 }
