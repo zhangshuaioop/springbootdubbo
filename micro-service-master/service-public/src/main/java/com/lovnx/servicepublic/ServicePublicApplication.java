@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan(basePackages = {"com.feign.hystrix","com.lovnx.servicepublic","com.lovnx.commoncomponets.config"})
+@ComponentScan(basePackages = {"com.feign.hystrix","com.lovnx.servicepublic"})
 @EnableFeignClients(basePackages = {"com.feign.client"})
 @EnableAutoConfiguration
 public class ServicePublicApplication {

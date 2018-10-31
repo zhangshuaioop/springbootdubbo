@@ -1,10 +1,10 @@
-package com.lovnx.cloudzipkin.service;
+package com.lovnx.serviceuser.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.lovnx.commoncomponets.base.BaseService;
 import com.lovnx.commoncomponets.entity.user.User;
-import com.lovnx.cloudzipkin.mapper.UserMapper;
+import com.lovnx.serviceuser.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

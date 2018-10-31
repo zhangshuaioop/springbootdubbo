@@ -1,4 +1,4 @@
-package com.lovnx.cloudzipkin.controller;
+package com.lovnx.serviceuser.controller;
 
 import com.feign.client.RocketMqMicroService;
 import com.github.pagehelper.Page;
@@ -6,7 +6,7 @@ import com.lovnx.commoncomponets.entity.user.User;
 import com.lovnx.commoncomponets.utils.PageInfo;
 import com.lovnx.commoncomponets.utils.Result;
 import com.lovnx.commoncomponets.utils.ResultUtil;
-import com.lovnx.cloudzipkin.service.UserService;
+import com.lovnx.serviceuser.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;

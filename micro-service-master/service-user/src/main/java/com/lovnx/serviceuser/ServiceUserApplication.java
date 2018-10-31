@@ -1,4 +1,4 @@
-package com.lovnx.cloudzipkin;
+package com.lovnx.serviceuser;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan(basePackages = {"com.feign.hystrix", "com.lovnx.cloudzipkin","com.lovnx.commoncomponets.config"})
+@ComponentScan(basePackages = {"com.feign.hystrix", "com.lovnx.serviceuser"})
 @EnableFeignClients(basePackages = {"com.feign.client"})
 @EnableAutoConfiguration
 public class ServiceUserApplication {

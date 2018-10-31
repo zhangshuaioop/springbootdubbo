@@ -1,4 +1,4 @@
-package com.lovnx.cloudzipkin.mapper;
+package com.lovnx.serviceuser.mapper;
 
 
 import com.lovnx.commoncomponets.base.BaseMapper;
