@@ -21,7 +21,7 @@ public class RedisUtil {
         @Autowired
         private RedisTemplate<Object,Object> redisTemplate;
 
-        public  RedisTemplate<Object,Object> getInstance() {
+        public RedisTemplate<Object,Object> getInstance() {
             return redisTemplate;
         }
         /** 

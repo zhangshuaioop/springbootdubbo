@@ -6,10 +6,13 @@ import com.lxg.springboot.service.sysuser.SysCompanyRolePermissionService;
 import com.lxg.springboot.service.sysuser.SysCompanyUserRoleRelationService;
 import com.lxg.springboot.service.sysuser.SysUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,6 +23,12 @@ import java.util.List;
  * on 2017/2/20.
  */
 public class MyUserDetailsService implements UserDetailsService {
+
+//
+//    @Autowired(required = false)
+//    private TokenStore inMemoryTokenStore;
+
+
 
     @Autowired
     private SysUsersService sysUsersService;
@@ -45,17 +54,18 @@ public class MyUserDetailsService implements UserDetailsService {
         SysUsers sysUsers = sysUsersService.findUserName(username);
 
         if(sysUsers == null){
-             throw new UsernameNotFoundException("用户名："+ username + "不存在！");
+            throw new UsernameNotFoundException("用户名："+ username + "不存在！");
         }
         Collection<SimpleGrantedAuthority> collection = new HashSet<SimpleGrantedAuthority>();
         SysCompanyUserRoleRelation sysCompanyUserRoleRelation = new SysCompanyUserRoleRelation();
         sysCompanyUserRoleRelation.setCompanyId(sysUsers.getCompanyId());
         sysCompanyUserRoleRelation.setUserId(sysUsers.getId());
-        List<SysCompanyUserRoleRelation> roleList = sysCompanyUserRoleRelationService.findAll(sysCompanyUserRoleRelation);
+        List<SysCompanyUserRoleRelation> roleList = sysCompanyUserRoleRelationService.findRole(sysCompanyUserRoleRelation);
 
         for (SysCompanyUserRoleRelation role: roleList) {
             collection.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
+
 
         UserDetails us = new org.springframework.security.core.userdetails.User(username,sysUsers.getPassword(),collection);
         return us;

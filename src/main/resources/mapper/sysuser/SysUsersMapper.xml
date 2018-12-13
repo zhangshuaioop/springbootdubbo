@@ -258,5 +258,11 @@
     </if>
   </select>
 
+  <!--分页查询-->
+  <select id="findPage" resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List" />
+  from sys_users
+  </select>
 
 </mapper>

@@ -70,8 +70,8 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public TokenStore tokenStore() {
 
-		return new InMemoryTokenStore();
-//		return new RedisTokenStore(redisConnection);
+//		return new InMemoryTokenStore();
+		return new RedisTokenStore(redisConnection);
 	}
 
 	@Bean
