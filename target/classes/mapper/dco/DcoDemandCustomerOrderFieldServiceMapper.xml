@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.springboot.mapper.dco.DcoDemandCustomerOrderFieldServiceMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.dco.DcoDemandCustomerOrderFieldService" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="operation_id" property="operationId" jdbcType="INTEGER" />
+    <result column="service_staff_name" property="serviceStaffName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="scheduled_time" property="scheduledTime" jdbcType="TIMESTAMP" />
+    <result column="scheduled_fee" property="scheduledFee" jdbcType="DECIMAL" />
+    <result column="service_content" property="serviceContent" jdbcType="VARCHAR" />
+    <result column="with_equipment" property="withEquipment" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_id, operation_id, service_staff_name, mobile, wechat, qq, scheduled_time,
+    scheduled_fee, service_content, with_equipment, memo, create_time, create_person
+  </sql>
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.dco.DcoDemandCustomerOrderFieldService" >
+    insert into dco_demand_customer_order_field_service
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="operationId != null" >
+        operation_id,
+      </if>
+      <if test="serviceStaffName != null" >
+        service_staff_name,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="wechat != null" >
+        wechat,
+      </if>
+      <if test="qq != null" >
+        qq,
+      </if>
+      <if test="scheduledTime != null" >
+        scheduled_time,
+      </if>
+      <if test="scheduledFee != null" >
+        scheduled_fee,
+      </if>
+      <if test="serviceContent != null" >
+        service_content,
+      </if>
+      <if test="withEquipment != null" >
+        with_equipment,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="operationId != null" >
+        #{operationId,jdbcType=INTEGER},
+      </if>
+      <if test="serviceStaffName != null" >
+        #{serviceStaffName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduledTime != null" >
+        #{scheduledTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scheduledFee != null" >
+        #{scheduledFee,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceContent != null" >
+        #{serviceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="withEquipment != null" >
+        #{withEquipment,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="getByOperationId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from dco_demand_customer_order_field_service
+    where operation_id = #{operationId,jdbcType=INTEGER}
+  </select>
+</mapper>

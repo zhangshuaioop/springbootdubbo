@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgFaultTypeModelMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.cfg.CfgFaultTypeModel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="fault_define_type" property="faultDefineType" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="model_user_type" property="modelUserType" jdbcType="VARCHAR" />
+    <result column="model_user_obj_id" property="modelUserObjId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, fault_define_type, version, model_user_type, model_user_obj_id, create_time,create_person
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cfg_fault_type_model
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cfg_fault_type_model
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel" >
+    insert into cfg_fault_type_model (id, fault_define_type, version, 
+      model_user_type, model_user_obj_id, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{faultDefineType,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{modelUserType,jdbcType=VARCHAR}, #{modelUserObjId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+      SELECT
+      LAST_INSERT_ID()
+    </selectKey>
+    insert into cfg_fault_type_model
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="faultDefineType != null" >
+        fault_define_type,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="modelUserType != null" >
+        model_user_type,
+      </if>
+      <if test="modelUserObjId != null" >
+        model_user_obj_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="faultDefineType != null" >
+        #{faultDefineType,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="modelUserType != null" >
+        #{modelUserType,jdbcType=VARCHAR},
+      </if>
+      <if test="modelUserObjId != null" >
+        #{modelUserObjId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel" >
+    update cfg_fault_type_model
+    <set >
+      <if test="faultDefineType != null" >
+        fault_define_type = #{faultDefineType,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="modelUserType != null" >
+        model_user_type = #{modelUserType,jdbcType=VARCHAR},
+      </if>
+      <if test="modelUserObjId != null" >
+        model_user_obj_id = #{modelUserObjId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel" >
+    update cfg_fault_type_model
+    set fault_define_type = #{faultDefineType,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
+      model_user_type = #{modelUserType,jdbcType=VARCHAR},
+      model_user_obj_id = #{modelUserObjId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByType" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel" resultType="com.platform.springboot.entity.cfg.CfgFaultTypeModel">
+    SELECT
+    model.id,
+    model.fault_define_type faultDefineType,
+    model.version,
+    model.model_user_type modelUserType,
+    model.model_user_obj_id modelUserObjId,
+    model.create_time createTime,
+    sys.username createPersonName
+    FROM(
+    select
+      *
+    from cfg_fault_type_model
+    where id=(
+    select
+    max(id)
+    from cfg_fault_type_model
+    where
+    1=1
+    <if test="faultDefineType != null">
+    AND fault_define_type = #{faultDefineType,jdbcType=VARCHAR}
+    </if>
+
+    AND model_user_type = #{modelUserType,jdbcType=VARCHAR}
+    AND model_user_obj_id = #{modelUserObjId,jdbcType=INTEGER}
+    )
+    ) model
+    left join sys_company_users sys on sys.id =model.create_person
+  </select>
+
+  <select id="selectVersion" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel" resultType="java.lang.Integer">
+
+    SELECT max(VERSION)
+    FROM cfg_fault_type_model
+    WHERE  fault_define_type = #{faultDefineType,jdbcType=VARCHAR}
+    AND model_user_type = #{modelUserType,jdbcType=VARCHAR}
+    AND model_user_obj_id = #{modelUserObjId,jdbcType=INTEGER}
+
+  </select>
+
+<select id="selectListHistory" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel" resultMap="BaseResultMap">
+    SELECT
+    model.id,
+    model.fault_define_type faultDefineType,
+    model.version,
+    model.model_user_type modelUserType,
+    model.model_user_obj_id modelUserObjId,
+    model.create_time createTime,
+    users.username createPersonName
+   from
+
+    (
+    select *
+    from cfg_fault_type_model
+    where 1=1
+    AND fault_define_type = #{faultDefineType,jdbcType=VARCHAR}
+    AND model_user_type = #{modelUserType,jdbcType=VARCHAR}
+    AND model_user_obj_id = #{modelUserObjId,jdbcType=INTEGER}
+    ) model
+  	left join sys_company_users users on model.create_person = users.id
+	order BY version desc
+
+</select>
+</mapper>

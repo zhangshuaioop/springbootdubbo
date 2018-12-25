@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.springboot.mapper.dmi.DmiEmployeeMapper">
+    <resultMap id="BaseResultMap" type="com.platform.springboot.entity.dmi.DmiEmployee">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="employee_name" property="employeeName" jdbcType="VARCHAR"/>
+        <result column="employee_name_en" property="employeeNameEn" jdbcType="VARCHAR"/>
+        <result column="employee_code" property="employeeCode" jdbcType="VARCHAR"/>
+        <result column="belong_company_id" property="belongCompanyId" jdbcType="INTEGER"/>
+        <result column="catalog_id" property="catalogId" jdbcType="INTEGER"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="position" property="position" jdbcType="VARCHAR"/>
+        <result column="education_certification" property="educationCertification" jdbcType="VARCHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="native_place" property="nativePlace" jdbcType="VARCHAR"/>
+        <result column="nation" property="nation" jdbcType="VARCHAR"/>
+        <result column="id_type" property="idType" jdbcType="VARCHAR"/>
+        <result column="id_code" property="idCode" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="batch_insert_code" property="batchInsertCode" jdbcType="VARCHAR"/>
+        <result column="flag_manual" property="flagManual" jdbcType="BIT"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_available" property="flagAvailable" jdbcType="BIT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_person" property="createPerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="catalog_source_list" property="catalogSourceList" jdbcType="VARCHAR"/>
+        <result column="catalog_source_list_id" property="catalogSourceListId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.platform.springboot.entity.dmi.DmiEmployee" extends="BaseResultMap">
+        <result column="memo" property="memo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, employee_name, employee_name_en, employee_code, belong_company_id, catalog_id, 
+    sex, position, education_certification, telephone, mobile, native_place, nation, 
+    id_type, id_code, address, batch_insert_code, flag_manual, flag_deleted, flag_available, 
+    create_time, create_person, update_time, update_person, email, catalog_source_list, catalog_source_list_id
+  </sql>
+    <sql id="Blob_Column_List">
+    memo
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_employee
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insertSelective" parameterType="com.platform.springboot.entity.dmi.DmiEmployee">
+        insert into dmi_employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="employeeName != null">
+                employee_name,
+            </if>
+            <if test="employeeNameEn != null">
+                employee_name_en,
+            </if>
+            <if test="employeeCode != null">
+                employee_code,
+            </if>
+            <if test="belongCompanyId != null">
+                belong_company_id,
+            </if>
+            <if test="catalogId != null">
+                catalog_id,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="position != null">
+                position,
+            </if>
+            <if test="educationCertification != null">
+                education_certification,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="nativePlace != null">
+                native_place,
+            </if>
+            <if test="nation != null">
+                nation,
+            </if>
+            <if test="idType != null">
+                id_type,
+            </if>
+            <if test="idCode != null">
+                id_code,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="batchInsertCode != null">
+                batch_insert_code,
+            </if>
+            <if test="flagManual != null">
+                flag_manual,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="catalogSourceList != null">
+                catalog_source_list,
+            </if>
+            <if test="catalogSourceListId != null">
+                catalog_source_list_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="employeeName != null">
+                #{employeeName,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeNameEn != null">
+                #{employeeNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeCode != null">
+                #{employeeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="belongCompanyId != null">
+                #{belongCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="catalogId != null">
+                #{catalogId,jdbcType=INTEGER},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="position != null">
+                #{position,jdbcType=VARCHAR},
+            </if>
+            <if test="educationCertification != null">
+                #{educationCertification,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlace != null">
+                #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="nation != null">
+                #{nation,jdbcType=VARCHAR},
+            </if>
+            <if test="idType != null">
+                #{idType,jdbcType=VARCHAR},
+            </if>
+            <if test="idCode != null">
+                #{idCode,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="batchInsertCode != null">
+                #{batchInsertCode,jdbcType=VARCHAR},
+            </if>
+            <if test="flagManual != null">
+                #{flagManual,jdbcType=BIT},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="catalogSourceList != null">
+                #{catalogSourceList,jdbcType=VARCHAR},
+            </if>
+            <if test="catalogSourceListId != null">
+                #{catalogSourceListId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.dmi.DmiEmployee">
+        update dmi_employee
+        <set>
+            <if test="employeeName != null">
+                employee_name = #{employeeName,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeNameEn != null">
+                employee_name_en = #{employeeNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeCode != null">
+                employee_code = #{employeeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="belongCompanyId != null">
+                belong_company_id = #{belongCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="catalogId != null">
+                catalog_id = #{catalogId,jdbcType=INTEGER},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="position != null">
+                position = #{position,jdbcType=VARCHAR},
+            </if>
+            <if test="educationCertification != null">
+                education_certification = #{educationCertification,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlace != null">
+                native_place = #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="nation != null">
+                nation = #{nation,jdbcType=VARCHAR},
+            </if>
+            <if test="idType != null">
+                id_type = #{idType,jdbcType=VARCHAR},
+            </if>
+            <if test="idCode != null">
+                id_code = #{idCode,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="batchInsertCode != null">
+                batch_insert_code = #{batchInsertCode,jdbcType=VARCHAR},
+            </if>
+            <if test="flagManual != null">
+                flag_manual = #{flagManual,jdbcType=BIT},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="catalogSourceList != null">
+                catalog_source_list = #{catalogSourceList,jdbcType=VARCHAR},
+            </if>
+            <if test="catalogSourceListId != null">
+                catalog_source_list_id = #{catalogSourceListId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByCompanyAndObject" resultMap="ResultMapWithBLOBs" parameterType="com.platform.springboot.entity.dmi.DmiEmployee">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_employee
+        where belong_company_id = #{belongCompanyId,jdbcType=INTEGER} AND flag_deleted = 0 AND flag_available = 1
+        <if test="employeeName != null">
+            AND employee_name = #{employeeName,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null">
+            AND mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="employeeCode != null">
+            AND employee_code = #{employeeCode,jdbcType=VARCHAR}
+        </if>
+        <if test="idCode != null">
+            AND id_code = #{idCode,jdbcType=VARCHAR}
+        </if>
+        <if test="email != null">
+            AND email = #{email,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="list" resultMap="ResultMapWithBLOBs" parameterType="com.platform.springboot.entity.dmi.DmiEmployee">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_employee
+        where belong_company_id = #{belongCompanyId,jdbcType=INTEGER} AND flag_deleted = 0
+        <if test="catalogId != null">
+            AND (catalog_source_list_id LIKE '%${catalogSourceList}%' OR catalog_source_list_id LIKE '%${catalogSourceListId}%')
+        </if>
+        <if test="employeeName != null">
+            AND employee_name LIKE '%${employeeName}%'
+        </if>
+        <if test="employeeCode != null">
+            AND employee_code LIKE '%${employeeCode}%'
+        </if>
+        <if test="sex != null">
+            AND sex = #{sex,jdbcType=VARCHAR}
+        </if>
+        <if test="idCode != null">
+            AND id_code LIKE '%${idCode}%'
+        </if>
+        <if test="mobile != null">
+            AND mobile LIKE '%${mobile}%'
+        </if>
+        <if test="email != null">
+            AND email LIKE '%${email}%'
+        </if>
+    </select>
+
+    <insert id="insertDmiEmployeeList" parameterType="java.util.List">
+        INSERT into dmi_employee
+        (employee_name, employee_name_en, employee_code, belong_company_id, catalog_id,
+        sex, position, education_certification, telephone, mobile, native_place, nation, id_type, id_code, address,
+        email, memo, batch_insert_code, flag_manual, flag_deleted, flag_available, create_time, create_person, update_time, update_person)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.employeeName,jdbcType=VARCHAR},
+            #{item.employeeNameEn,jdbcType=VARCHAR},
+            #{item.employeeCode,jdbcType=VARCHAR},
+            #{item.belongCompanyId,jdbcType=INTEGER},
+            #{item.catalogId,jdbcType=INTEGER},
+            #{item.sex,jdbcType=VARCHAR},
+            #{item.position,jdbcType=VARCHAR},
+            #{item.educationCertification,jdbcType=VARCHAR},
+            #{item.telephone,jdbcType=VARCHAR},
+            #{item.mobile,jdbcType=VARCHAR},
+            #{item.nativePlace,jdbcType=VARCHAR},
+            #{item.nation,jdbcType=VARCHAR},
+            #{item.idType,jdbcType=VARCHAR},
+            #{item.idCode,jdbcType=VARCHAR},
+            #{item.address,jdbcType=VARCHAR},
+            #{item.email,jdbcType=VARCHAR},
+            #{item.memo,jdbcType=LONGVARCHAR},
+            #{item.batchInsertCode,jdbcType=VARCHAR},
+            #{item.flagManual,jdbcType=BIT},
+            #{item.flagDeleted,jdbcType=BIT},
+            #{item.flagAvailable,jdbcType=BIT},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.createPerson,jdbcType=INTEGER},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updatePerson,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <select id="listForExport" resultType="com.platform.springboot.entity.dmi.DmiEmployeeExport" parameterType="com.platform.springboot.entity.dmi.DmiEmployee">
+        select
+        employee.employee_name AS employeeName,
+        employee.employee_name_en AS employeeNameEn,
+        employee.employee_code AS employeeCode,
+        companyInfo.company_name AS companyName,
+        organization.organization_name AS organizationName,
+        organization.organization_code AS organizationCode,
+        CASE employee.sex WHEN 'Male' THEN '男' WHEN 'Female' THEN '女' ELSE '' END AS sex,
+        employee.position AS position,
+        employee.education_certification AS educationCertification,
+        employee.telephone AS telephone,
+        employee.mobile AS mobile,
+        employee.native_place AS nativePlace,
+        employee.nation AS nation,
+        employee.id_type AS idType,
+        employee.id_code AS idCode,
+        employee.address AS address,
+        employee.batch_insert_code AS batchInsertCode,
+        CASE employee.flag_manual WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagManualString,
+        employee.email AS email
+        from (SELECT * FROM dmi_employee
+        where belong_company_id = #{belongCompanyId,jdbcType=INTEGER} AND flag_deleted = 0
+        AND flag_available = 1
+        <if test="catalogId != null">
+            AND catalog_id = #{catalogId,jdbcType=INTEGER}
+        </if>
+        <if test="employeeName != null">
+            AND employee_name = #{employeeName,jdbcType=VARCHAR}
+        </if>
+        <if test="employeeCode != null">
+            AND employee_code = #{employeeCode,jdbcType=VARCHAR}
+        </if>
+        <if test="sex != null">
+            AND sex = #{sex,jdbcType=VARCHAR}
+        </if>
+        <if test="idCode != null">
+            AND id_code = #{idCode,jdbcType=VARCHAR}
+        </if>) employee
+        INNER JOIN dmi_company_info companyInfo ON companyInfo.id = employee.belong_company_id
+        INNER JOIN dmi_organization organization ON organization.id = employee.catalog_id
+    </select>
+
+    <select id="selectByObject" resultMap="ResultMapWithBLOBs" parameterType="com.platform.springboot.entity.dmi.DmiEmployee">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_employee
+        where belong_company_id = #{belongCompanyId,jdbcType=INTEGER}
+        AND flag_deleted = 0
+        <if test="employeeName != null">
+            AND employee_name LIKE '%${employeeName}%'
+        </if>
+        <if test="employeeCode != null">
+            AND employee_code LIKE '%${employeeCode}%'
+        </if>
+        <if test="mobile != null">
+            AND mobile LIKE '%${mobile}%'
+        </if>
+        <if test="email != null">
+            AND email LIKE '%${email}%'
+        </if>
+    </select>
+</mapper>

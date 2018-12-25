@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.springboot.mapper.atm.AtmCommChargeInvoiceMapper">
+    <resultMap id="BaseResultMap" type="com.platform.springboot.entity.atm.AtmCommChargeInvoice">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"/>
+        <result column="bill_id" property="billId" jdbcType="INTEGER"/>
+        <result column="invoice_number" property="invoiceNumber" jdbcType="VARCHAR"/>
+        <result column="invoice_date" property="invoiceDate" jdbcType="TIMESTAMP"/>
+        <result column="invoice_fee" property="invoiceFee" jdbcType="DECIMAL"/>
+        <result column="invoice_rate" property="invoiceRate" jdbcType="DECIMAL"/>
+        <result column="invoice_model_id" property="invoiceModelId" jdbcType="INTEGER"/>
+        <result column="memo" property="memo" jdbcType="VARCHAR"/>
+        <result column="flag_start_charge" property="flagStartCharge" jdbcType="BIT"/>
+        <result column="flag_finish_charge" property="flagFinishCharge" jdbcType="BIT"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="create_invoice_time" property="createInvoiceTime" jdbcType="TIMESTAMP"/>
+        <result column="create_invoice_person" property="createInvoicePerson" jdbcType="INTEGER"/>
+        <result column="update_invoice_time" property="updateInvoiceTime" jdbcType="TIMESTAMP"/>
+        <result column="update_invoice_person" property="updateInvoicePerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, company_id, bill_id, invoice_number, invoice_date, invoice_fee, invoice_rate, 
+    invoice_model_id, memo, flag_start_charge, flag_finish_charge, flag_deleted, create_invoice_time, 
+    create_invoice_person, update_invoice_time, update_invoice_person, update_time, update_person
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from atm_comm_charge_invoice
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insertSelective" parameterType="com.platform.springboot.entity.atm.AtmCommChargeInvoice">
+        insert into atm_comm_charge_invoice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="billId != null">
+                bill_id,
+            </if>
+            <if test="invoiceNumber != null">
+                invoice_number,
+            </if>
+            <if test="invoiceDate != null">
+                invoice_date,
+            </if>
+            <if test="invoiceFee != null">
+                invoice_fee,
+            </if>
+            <if test="invoiceRate != null">
+                invoice_rate,
+            </if>
+            <if test="invoiceModelId != null">
+                invoice_model_id,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="flagStartCharge != null">
+                flag_start_charge,
+            </if>
+            <if test="flagFinishCharge != null">
+                flag_finish_charge,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="createInvoiceTime != null">
+                create_invoice_time,
+            </if>
+            <if test="createInvoicePerson != null">
+                create_invoice_person,
+            </if>
+            <if test="updateInvoiceTime != null">
+                update_invoice_time,
+            </if>
+            <if test="updateInvoicePerson != null">
+                update_invoice_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="billId != null">
+                #{billId,jdbcType=INTEGER},
+            </if>
+            <if test="invoiceNumber != null">
+                #{invoiceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceDate != null">
+                #{invoiceDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="invoiceFee != null">
+                #{invoiceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="invoiceRate != null">
+                #{invoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="invoiceModelId != null">
+                #{invoiceModelId,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagStartCharge != null">
+                #{flagStartCharge,jdbcType=BIT},
+            </if>
+            <if test="flagFinishCharge != null">
+                #{flagFinishCharge,jdbcType=BIT},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="createInvoiceTime != null">
+                #{createInvoiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createInvoicePerson != null">
+                #{createInvoicePerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateInvoiceTime != null">
+                #{updateInvoiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateInvoicePerson != null">
+                #{updateInvoicePerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.atm.AtmCommChargeInvoice">
+        update atm_comm_charge_invoice
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="billId != null">
+                bill_id = #{billId,jdbcType=INTEGER},
+            </if>
+            <if test="invoiceNumber != null">
+                invoice_number = #{invoiceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceDate != null">
+                invoice_date = #{invoiceDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="invoiceFee != null">
+                invoice_fee = #{invoiceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="invoiceRate != null">
+                invoice_rate = #{invoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="invoiceModelId != null">
+                invoice_model_id = #{invoiceModelId,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagStartCharge != null">
+                flag_start_charge = #{flagStartCharge,jdbcType=BIT},
+            </if>
+            <if test="flagFinishCharge != null">
+                flag_finish_charge = #{flagFinishCharge,jdbcType=BIT},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="createInvoiceTime != null">
+                create_invoice_time = #{createInvoiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createInvoicePerson != null">
+                create_invoice_person = #{createInvoicePerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateInvoiceTime != null">
+                update_invoice_time = #{updateInvoiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateInvoicePerson != null">
+                update_invoice_person = #{updateInvoicePerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="drawList" resultType="com.platform.springboot.entity.ret.atm.atmCommChargeInvoice.DrawListRet" parameterType="java.lang.Integer">
+        select
+        chargeInvoice.id AS id,
+        chargeInvoice.invoice_number AS invoiceNumber,
+        invoiceModel.invoice_title AS invoiceTitle,
+        chargeInvoice.invoice_fee AS invoiceFee,
+        invoiceModel.invoice_type AS invoiceType,
+        chargeInvoice.update_time AS updateTime,
+        chargeInvoice.create_invoice_time AS createInvoiceTime
+        from atm_comm_charge_invoice chargeInvoice
+        INNER JOIN dmi_invoice_model invoiceModel ON invoiceModel.id = chargeInvoice.invoice_model_id
+        where chargeInvoice.bill_id = #{id,jdbcType=INTEGER}
+        AND chargeInvoice.flag_deleted = 0
+    </select>
+
+    <select id="noChargeList" resultType="com.platform.springboot.entity.ret.atm.atmCommChargeInvoice.NoChargeListRet"
+            parameterType="com.platform.springboot.entity.dto.atm.atmCommChargeInvoice.NoChargeListDTO">
+        select
+        chargeInvoice.update_time AS updateTime,
+        chargeInvoice.id AS id,
+        companyInfo.company_name AS company,
+        bill.bill_number AS billNumber,
+        bill.create_bill_time AS createBillTime,
+        invoiceModel.invoice_title AS invoiceTitle,
+        invoiceModel.taxpayer_number AS taxpayerNumber,
+        bill.actual_fee AS actualFee,
+        chargeInvoice.invoice_fee AS invoiceFee,
+        chargeInvoice.invoice_date AS invoiceDate
+        from atm_comm_charge_invoice chargeInvoice
+        INNER JOIN dmi_invoice_model invoiceModel ON invoiceModel.id = chargeInvoice.invoice_model_id
+        <if test="invoiceType != null">
+            AND invoiceModel.invoice_type = #{invoiceType,jdbcType=VARCHAR}
+        </if>
+        <if test="invoiceAccount != null">
+            AND invoiceModel.invoice_account = #{invoiceAccount,jdbcType=VARCHAR}
+        </if>
+        <if test="taxpayerNumber != null">
+            AND invoiceModel.taxpayer_number like '%${taxpayerNumber}%'
+        </if>
+        <if test="invoiceTitle != null">
+            AND invoiceModel.invoice_title like '%${invoiceTitle}%'
+        </if>
+        INNER JOIN dmi_company_info companyInfo ON chargeInvoice.company_id = companyInfo.id
+        <if test="companyId != 0">
+            AND companyInfo.id = #{companyId,jdbcType=INTEGER}
+        </if>
+        INNER JOIN atm_comm_charge_bill bill ON bill.id = chargeInvoice.bill_id
+        <if test="billNumber != null">
+            AND bill.bill_number like '%${billNumber}%'
+        </if>
+        where chargeInvoice.flag_finish_charge = 0
+        AND chargeInvoice.flag_deleted = 0
+        <if test="invoiceNumber != null">
+            AND chargeInvoice.invoice_number like '%${invoiceNumber}%'
+        </if>
+        <if test="invoiceDateStart != null">
+            AND chargeInvoice.invoice_date &gt;= #{invoiceDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="invoiceDateEnd != null">
+            AND chargeInvoice.invoice_date &lt;= #{invoiceDateEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="invoiceFeeStart != null">
+            AND chargeInvoice.invoice_fee &gt;= #{invoiceFeeStart,jdbcType=DECIMAL}
+        </if>
+        <if test="invoiceFeeEnd != null">
+            AND chargeInvoice.invoice_fee &lt;= #{invoiceFeeEnd,jdbcType=DECIMAL}
+        </if>
+    </select>
+</mapper>

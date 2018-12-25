@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgDispatchRequestModelImportConfigMapper">
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.cfg.CfgDispatchRequestModelImportConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="import_type" jdbcType="VARCHAR" property="importType" />
+    <result column="dispatch_type" jdbcType="VARCHAR" property="dispatchType" />
+    <result column="dispatch_version" jdbcType="INTEGER" property="dispatchVersion" />
+    <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.platform.springboot.entity.cfg.CfgDispatchRequestModelImportConfig">
+    <result column="request_model" jdbcType="LONGVARCHAR" property="requestModel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, import_type, dispatch_type, dispatch_version, flag_deleted
+  </sql>
+  <sql id="Blob_Column_List">
+    request_model
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cfg_dispatch_request_model_import_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cfg_dispatch_request_model_import_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platform.springboot.entity.cfg.CfgDispatchRequestModelImportConfig">
+    insert into cfg_dispatch_request_model_import_config (id, import_type, dispatch_type, 
+      dispatch_version, flag_deleted, request_model
+      )
+    values (#{id,jdbcType=INTEGER}, #{importType,jdbcType=VARCHAR}, #{dispatchType,jdbcType=VARCHAR}, 
+      #{dispatchVersion,jdbcType=INTEGER}, #{flagDeleted,jdbcType=BIT}, #{requestModel,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.cfg.CfgDispatchRequestModelImportConfig">
+    insert into cfg_dispatch_request_model_import_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="importType != null">
+        import_type,
+      </if>
+      <if test="dispatchType != null">
+        dispatch_type,
+      </if>
+      <if test="dispatchVersion != null">
+        dispatch_version,
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted,
+      </if>
+      <if test="requestModel != null">
+        request_model,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="importType != null">
+        #{importType,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchType != null">
+        #{dispatchType,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchVersion != null">
+        #{dispatchVersion,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="requestModel != null">
+        #{requestModel,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.cfg.CfgDispatchRequestModelImportConfig">
+    update cfg_dispatch_request_model_import_config
+    <set>
+      <if test="importType != null">
+        import_type = #{importType,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchType != null">
+        dispatch_type = #{dispatchType,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchVersion != null">
+        dispatch_version = #{dispatchVersion,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="requestModel != null">
+        request_model = #{requestModel,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.platform.springboot.entity.cfg.CfgDispatchRequestModelImportConfig">
+    update cfg_dispatch_request_model_import_config
+    set import_type = #{importType,jdbcType=VARCHAR},
+      dispatch_type = #{dispatchType,jdbcType=VARCHAR},
+      dispatch_version = #{dispatchVersion,jdbcType=INTEGER},
+      flag_deleted = #{flagDeleted,jdbcType=BIT},
+      request_model = #{requestModel,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.cfg.CfgDispatchRequestModelImportConfig">
+    update cfg_dispatch_request_model_import_config
+    set import_type = #{importType,jdbcType=VARCHAR},
+      dispatch_type = #{dispatchType,jdbcType=VARCHAR},
+      dispatch_version = #{dispatchVersion,jdbcType=INTEGER},
+      flag_deleted = #{flagDeleted,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectRequestModel" parameterType="java.lang.String" resultType="com.platform.springboot.entity.cfg.CfgDispatchRequestModelImportConfig">
+    select
+    request_model requestModel
+    from cfg_dispatch_request_model_import_config
+    where import_type = #{importType,jdbcType=VARCHAR}
+  </select>
+</mapper>

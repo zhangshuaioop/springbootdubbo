@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.springboot.mapper.dmi.DmiCommChargeMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.dmi.DmiCommCharge" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="object_id" property="objectId" jdbcType="INTEGER" />
+    <result column="object_type" property="objectType" jdbcType="VARCHAR" />
+    <result column="charge_type" property="chargeType" jdbcType="VARCHAR" />
+    <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR" />
+    <result column="pay_frequency" property="payFrequency" jdbcType="VARCHAR" />
+    <result column="tenement_frequency" property="tenementFrequency" jdbcType="VARCHAR" />
+    <result column="charge_start_date" property="chargeStartDate" jdbcType="TIMESTAMP" />
+    <result column="charge_end_date" property="chargeEndDate" jdbcType="TIMESTAMP" />
+    <result column="charge_exit_date" property="chargeExitDate" jdbcType="TIMESTAMP" />
+    <result column="charge_months" property="chargeMonths" jdbcType="INTEGER" />
+    <result column="total_fee" property="totalFee" jdbcType="DECIMAL" />
+    <result column="tenement_one_time_fee" property="tenementOneTimeFee" jdbcType="DECIMAL" />
+    <result column="fiber_fee" property="fiberFee" jdbcType="DECIMAL" />
+    <result column="comm_one_time_fee" property="commOneTimeFee" jdbcType="DECIMAL" />
+    <result column="comm_period_fee" property="commPeriodFee" jdbcType="DECIMAL" />
+    <result column="tenement_period_fee" property="tenementPeriodFee" jdbcType="DECIMAL" />
+    <result column="estimated_charge_fee" property="estimatedChargeFee" jdbcType="DECIMAL" />
+    <result column="estimated_charge_times" property="estimatedChargeTimes" jdbcType="INTEGER" />
+    <result column="actual_charge_fee" property="actualChargeFee" jdbcType="DECIMAL" />
+    <result column="renew_months" property="renewMonths" jdbcType="INTEGER" />
+    <result column="flag_auto_renew" property="flagAutoRenew" jdbcType="BIT" />
+    <result column="flag_auto_renew_contract" property="flagAutoRenewContract" jdbcType="BIT" />
+    <result column="actual_charge_times" property="actualChargeTimes" jdbcType="INTEGER" />
+    <result column="flag_avaliable" property="flagAvaliable" jdbcType="BIT" />
+    <result column="flag_start_charge" property="flagStartCharge" jdbcType="BIT" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="flag_deleted" property="flagDeleted" jdbcType="BIT" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_person" property="updatePerson" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="flag_lastest" property="flagLastest" jdbcType="BIT" />
+    <result column="flag_charge_agency" property="flagChargeAgency" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, store_id, company_id, object_id, object_type, charge_type, payment_method, pay_frequency, 
+    tenement_frequency, charge_start_date, charge_end_date, charge_exit_date, charge_months, 
+    total_fee, tenement_one_time_fee, fiber_fee, comm_one_time_fee, comm_period_fee, 
+    tenement_period_fee, estimated_charge_fee, estimated_charge_times, actual_charge_fee, 
+    renew_months, flag_auto_renew, flag_auto_renew_contract, actual_charge_times, flag_avaliable, 
+    flag_start_charge, memo, flag_deleted, create_person, create_time, update_person, 
+    update_time, flag_lastest, flag_charge_agency
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from dmi_comm_charge
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.dmi.DmiCommCharge" >
+    insert into dmi_comm_charge
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="objectId != null" >
+        object_id,
+      </if>
+      <if test="objectType != null" >
+        object_type,
+      </if>
+      <if test="chargeType != null" >
+        charge_type,
+      </if>
+      <if test="paymentMethod != null" >
+        payment_method,
+      </if>
+      <if test="payFrequency != null" >
+        pay_frequency,
+      </if>
+      <if test="tenementFrequency != null" >
+        tenement_frequency,
+      </if>
+      <if test="chargeStartDate != null" >
+        charge_start_date,
+      </if>
+      <if test="chargeEndDate != null" >
+        charge_end_date,
+      </if>
+      <if test="chargeExitDate != null" >
+        charge_exit_date,
+      </if>
+      <if test="chargeMonths != null" >
+        charge_months,
+      </if>
+      <if test="totalFee != null" >
+        total_fee,
+      </if>
+      <if test="tenementOneTimeFee != null" >
+        tenement_one_time_fee,
+      </if>
+      <if test="fiberFee != null" >
+        fiber_fee,
+      </if>
+      <if test="commOneTimeFee != null" >
+        comm_one_time_fee,
+      </if>
+      <if test="commPeriodFee != null" >
+        comm_period_fee,
+      </if>
+      <if test="tenementPeriodFee != null" >
+        tenement_period_fee,
+      </if>
+      <if test="estimatedChargeFee != null" >
+        estimated_charge_fee,
+      </if>
+      <if test="estimatedChargeTimes != null" >
+        estimated_charge_times,
+      </if>
+      <if test="actualChargeFee != null" >
+        actual_charge_fee,
+      </if>
+      <if test="renewMonths != null" >
+        renew_months,
+      </if>
+      <if test="flagAutoRenew != null" >
+        flag_auto_renew,
+      </if>
+      <if test="flagAutoRenewContract != null" >
+        flag_auto_renew_contract,
+      </if>
+      <if test="actualChargeTimes != null" >
+        actual_charge_times,
+      </if>
+      <if test="flagAvaliable != null" >
+        flag_avaliable,
+      </if>
+      <if test="flagStartCharge != null" >
+        flag_start_charge,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updatePerson != null" >
+        update_person,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="flagLastest != null" >
+        flag_lastest,
+      </if>
+      <if test="flagChargeAgency != null" >
+        flag_charge_agency,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=INTEGER},
+      </if>
+      <if test="objectType != null" >
+        #{objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentMethod != null" >
+        #{paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="payFrequency != null" >
+        #{payFrequency,jdbcType=VARCHAR},
+      </if>
+      <if test="tenementFrequency != null" >
+        #{tenementFrequency,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeStartDate != null" >
+        #{chargeStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chargeEndDate != null" >
+        #{chargeEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chargeExitDate != null" >
+        #{chargeExitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chargeMonths != null" >
+        #{chargeMonths,jdbcType=INTEGER},
+      </if>
+      <if test="totalFee != null" >
+        #{totalFee,jdbcType=DECIMAL},
+      </if>
+      <if test="tenementOneTimeFee != null" >
+        #{tenementOneTimeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="fiberFee != null" >
+        #{fiberFee,jdbcType=DECIMAL},
+      </if>
+      <if test="commOneTimeFee != null" >
+        #{commOneTimeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="commPeriodFee != null" >
+        #{commPeriodFee,jdbcType=DECIMAL},
+      </if>
+      <if test="tenementPeriodFee != null" >
+        #{tenementPeriodFee,jdbcType=DECIMAL},
+      </if>
+      <if test="estimatedChargeFee != null" >
+        #{estimatedChargeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="estimatedChargeTimes != null" >
+        #{estimatedChargeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="actualChargeFee != null" >
+        #{actualChargeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="renewMonths != null" >
+        #{renewMonths,jdbcType=INTEGER},
+      </if>
+      <if test="flagAutoRenew != null" >
+        #{flagAutoRenew,jdbcType=BIT},
+      </if>
+      <if test="flagAutoRenewContract != null" >
+        #{flagAutoRenewContract,jdbcType=BIT},
+      </if>
+      <if test="actualChargeTimes != null" >
+        #{actualChargeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="flagAvaliable != null" >
+        #{flagAvaliable,jdbcType=BIT},
+      </if>
+      <if test="flagStartCharge != null" >
+        #{flagStartCharge,jdbcType=BIT},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagLastest != null" >
+        #{flagLastest,jdbcType=BIT},
+      </if>
+      <if test="flagChargeAgency != null" >
+        #{flagChargeAgency,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.dmi.DmiCommCharge" >
+    update dmi_comm_charge
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="objectId != null" >
+        object_id = #{objectId,jdbcType=INTEGER},
+      </if>
+      <if test="objectType != null" >
+        object_type = #{objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        charge_type = #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentMethod != null" >
+        payment_method = #{paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="payFrequency != null" >
+        pay_frequency = #{payFrequency,jdbcType=VARCHAR},
+      </if>
+      <if test="tenementFrequency != null" >
+        tenement_frequency = #{tenementFrequency,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeStartDate != null" >
+        charge_start_date = #{chargeStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chargeEndDate != null" >
+        charge_end_date = #{chargeEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chargeExitDate != null" >
+        charge_exit_date = #{chargeExitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chargeMonths != null" >
+        charge_months = #{chargeMonths,jdbcType=INTEGER},
+      </if>
+      <if test="totalFee != null" >
+        total_fee = #{totalFee,jdbcType=DECIMAL},
+      </if>
+      <if test="tenementOneTimeFee != null" >
+        tenement_one_time_fee = #{tenementOneTimeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="fiberFee != null" >
+        fiber_fee = #{fiberFee,jdbcType=DECIMAL},
+      </if>
+      <if test="commOneTimeFee != null" >
+        comm_one_time_fee = #{commOneTimeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="commPeriodFee != null" >
+        comm_period_fee = #{commPeriodFee,jdbcType=DECIMAL},
+      </if>
+      <if test="tenementPeriodFee != null" >
+        tenement_period_fee = #{tenementPeriodFee,jdbcType=DECIMAL},
+      </if>
+      <if test="estimatedChargeFee != null" >
+        estimated_charge_fee = #{estimatedChargeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="estimatedChargeTimes != null" >
+        estimated_charge_times = #{estimatedChargeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="actualChargeFee != null" >
+        actual_charge_fee = #{actualChargeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="renewMonths != null" >
+        renew_months = #{renewMonths,jdbcType=INTEGER},
+      </if>
+      <if test="flagAutoRenew != null" >
+        flag_auto_renew = #{flagAutoRenew,jdbcType=BIT},
+      </if>
+      <if test="flagAutoRenewContract != null" >
+        flag_auto_renew_contract = #{flagAutoRenewContract,jdbcType=BIT},
+      </if>
+      <if test="actualChargeTimes != null" >
+        actual_charge_times = #{actualChargeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="flagAvaliable != null" >
+        flag_avaliable = #{flagAvaliable,jdbcType=BIT},
+      </if>
+      <if test="flagStartCharge != null" >
+        flag_start_charge = #{flagStartCharge,jdbcType=BIT},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagLastest != null" >
+        flag_lastest = #{flagLastest,jdbcType=BIT},
+      </if>
+      <if test="flagChargeAgency != null" >
+        flag_charge_agency = #{flagChargeAgency,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="showByObjectId" parameterType="com.platform.springboot.entity.dmi.DmiCommCharge" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dmi_comm_charge
+    where object_id = #{objectId,jdbcType=INTEGER}
+    and object_type = #{objectType,jdbcType=VARCHAR}
+    and flag_deleted = 0
+    and flag_lastest = 1
+  </select>
+  <select id="list" parameterType="com.platform.springboot.entity.dmi.DmiCommCharge" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dmi_comm_charge
+    where object_id = #{objectId,jdbcType=INTEGER}
+    and object_type = #{objectType,jdbcType=VARCHAR}
+    and flag_deleted = 0
+  </select>
+  <select id="selectByTimeDimension" parameterType="com.platform.springboot.entity.dmi.DmiCommCharge" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dmi_comm_charge
+    where charge_start_date &gt;= #{chargeStartDate,jdbcType=TIMESTAMP}
+    AND charge_start_date &lt;= #{chargeEndDate,jdbcType=TIMESTAMP}
+    AND flag_deleted = 0
+    AND object_id = #{objectId,jdbcType=INTEGER}
+    AND object_type = #{objectType,jdbcType=VARCHAR}
+    UNION
+    select
+    <include refid="Base_Column_List" />
+    from dmi_comm_charge
+    where charge_start_date &lt;= #{chargeStartDate,jdbcType=TIMESTAMP}
+    and charge_end_date &gt;= #{chargeStartDate,jdbcType=TIMESTAMP}
+    AND flag_deleted = 0
+    AND object_id = #{objectId,jdbcType=INTEGER}
+    AND object_type = #{objectType,jdbcType=VARCHAR}
+  </select>
+  <select id="selectLast" parameterType="com.platform.springboot.entity.dmi.DmiCommCharge" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dmi_comm_charge
+    where flag_lastest = 1
+    AND flag_deleted = 0
+    AND object_id = #{objectId,jdbcType=INTEGER}
+    AND object_type = #{objectType,jdbcType=VARCHAR}
+  </select>
+</mapper>

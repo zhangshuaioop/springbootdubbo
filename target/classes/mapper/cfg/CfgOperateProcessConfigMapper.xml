@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgOperateProcessConfigMapper" >
+
+
+
+  <resultMap id="BaseResultNewMap" type="com.platform.springboot.entity.cfg.CfgOperateProcessConfig" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="status_sort_id" property="statusSortId" jdbcType="INTEGER" />
+    <result column="operate_name" property="operateName" jdbcType="VARCHAR" />
+    <result column="operate_display_name" property="operateDisplayName" jdbcType="VARCHAR" />
+    <result column="operate_sort_id" property="operateSortId" jdbcType="INTEGER" />
+    <result column="flag_display" property="flagDisplay" jdbcType="BOOLEAN" />
+
+
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, status, status_sort_id,operate_name,operate_display_name,operate_sort_id,flag_display
+  </sql>
+
+  <select id="getDictionaryByNew" resultMap="BaseResultNewMap" parameterType="java.lang.String">
+
+    select
+    <include refid="Base_Column_List" />
+    from cfg_operate_process_config
+
+    where type =  #{type,jdbcType=VARCHAR}
+    and flag_display =1
+
+    order by status_sort_id,operate_sort_id
+
+
+  </select>
+</mapper>
