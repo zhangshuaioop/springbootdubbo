@@ -1,11 +1,10 @@
 package com.platform.springboot.service;
 
-import com.platform.springboot.entity.sys.JwtUser;
-import com.platform.springboot.entity.sys.SysCompanyPermission;
-import com.platform.springboot.entity.sys.SysCompanyUsers;
-import com.platform.springboot.entity.sys.response.SysCompanyPermissionRes;
-import com.platform.springboot.service.sys.SysCompanyPermissionService;
-import com.platform.springboot.service.sys.SysCompanyUsersService;
+import com.platform.springboot.entity.syscompany.JwtUser;
+import com.platform.springboot.entity.sysconsole.SysConsolePermission;
+import com.platform.springboot.entity.sysconsole.SysConsoleUsers;
+import com.platform.springboot.service.sysconsole.SysConsolePermissionService;
+import com.platform.springboot.service.sysconsole.SysConsoleUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,37 +22,30 @@ import java.util.List;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    @Autowired
+    private SysConsoleUsersService sysConsoleUsersService;
 
     @Autowired
-    private SysCompanyUsersService sysCompanyUsersService;
-
-    @Autowired
-    private SysCompanyPermissionService sysCompanyPermissionService;
+    private SysConsolePermissionService sysConsolePermissionService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        SysCompanyUsers sysCompanyUsers = sysCompanyUsersService.findUserName(username);
+        SysConsoleUsers sysConsoleUsers = sysConsoleUsersService.findUserName(username);
 
-        if(sysCompanyUsers == null){
+        if(sysConsoleUsers == null){
             throw new UsernameNotFoundException("用户名："+ username + "不存在！");
         }
         Collection<SimpleGrantedAuthority> collection = new HashSet<SimpleGrantedAuthority>();
-        SysCompanyPermission sysCompanyPermission = new SysCompanyPermission();
-        sysCompanyPermission.setCompanyId(sysCompanyUsers.getCompanyId());
-        sysCompanyPermission.setUserId(sysCompanyUsers.getId());
-        List<SysCompanyPermissionRes> permissions = sysCompanyPermissionService.findPermission(sysCompanyPermission);
 
-//        SysCompanyUserRoleRelation sysCompanyUserRoleRelation = new SysCompanyUserRoleRelation();
-//        sysCompanyUserRoleRelation.setCompanyId(sysCompanyUsers.getCompanyId());
-//        sysCompanyUserRoleRelation.setUserId(sysCompanyUsers.getId());
-//        List<SysCompanyUserRoleRelation> roleList = sysCompanyUserRoleRelationService.findRole(sysCompanyUserRoleRelation);
+        //查询平台个人权限
+        List<SysConsolePermission> sysConsolePermissions = sysConsolePermissionService.findPermission(sysConsoleUsers.getId());
 
-        for (SysCompanyPermissionRes permission: permissions) {
-            collection.add(new SimpleGrantedAuthority(permission.getName()));
+        for (SysConsolePermission sysConsolePermission: sysConsolePermissions) {
+            collection.add(new SimpleGrantedAuthority(sysConsolePermission.getName()));
         }
-        sysCompanyUsers.setAuthorities(collection);
-        return new JwtUser(sysCompanyUsers);
+        sysConsoleUsers.setAuthorities(collection);
+        return new JwtUser(sysConsoleUsers);
     }
 
 }

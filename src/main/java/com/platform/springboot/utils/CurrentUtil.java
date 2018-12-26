@@ -1,6 +1,6 @@
 package com.platform.springboot.utils;
 
-import com.platform.springboot.entity.sys.SysCompanyUsers;
+import com.platform.springboot.entity.sysconsole.SysConsoleUsers;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,13 +20,13 @@ import java.util.HashSet;
 public class CurrentUtil {
 
 
-    public static SysCompanyUsers getCurrent() {
-        SysCompanyUsers sysCompanyUsers = null;
+    public static SysConsoleUsers getCurrent() {
+        SysConsoleUsers sysConsoleUsers = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            sysCompanyUsers = (SysCompanyUsers) authentication.getCredentials();
+            sysConsoleUsers = (SysConsoleUsers) authentication.getCredentials();
         }
-        return sysCompanyUsers;
+        return sysConsoleUsers;
 }
 
 

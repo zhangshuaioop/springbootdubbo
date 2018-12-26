@@ -1,20 +1,15 @@
 package com.platform.springboot.filter;
 
-import com.platform.springboot.entity.sys.SysCompanyUsers;
-import com.platform.springboot.entity.sys.response.SysCompanyPermissionRes;
-import com.platform.springboot.utils.CurrentUtil;
-import com.platform.springboot.utils.JsonUtils;
+import com.platform.springboot.entity.syscompany.SysCompanyUsers;
+import com.platform.springboot.entity.sysconsole.SysConsoleUsers;
 import com.platform.springboot.utils.JwtTokenUtils;
-import com.platform.springboot.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -121,7 +116,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String token = tokenHeader.replace(JwtTokenUtils.TOKEN_PREFIX, "");
         String username = JwtTokenUtils.getUsername(token);
         String role = JwtTokenUtils.getUserRole(token);
-        SysCompanyUsers user = JwtTokenUtils.getUser(token);
+        SysConsoleUsers user = JwtTokenUtils.getUser(token);
         if(username.equals("")){
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();

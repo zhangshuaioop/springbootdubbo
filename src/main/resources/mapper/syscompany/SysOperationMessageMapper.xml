@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.springboot.mapper.syscompany.SysOperationMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.syscompany.SysOperationMessage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="message_operation" property="messageOperation" jdbcType="VARCHAR" />
+    <result column="message_obj_code" property="messageObjCode" jdbcType="VARCHAR" />
+    <result column="message_obj_id" property="messageObjId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="read_time" property="readTime" jdbcType="TIMESTAMP" />
+    <result column="flag_read" property="flagRead" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, message_operation, message_obj_code, message_obj_id, content, create_time, 
+    read_time, flag_read
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_operation_message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_operation_message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platform.springboot.entity.syscompany.SysOperationMessage" >
+    insert into sys_operation_message (id, user_id, message_operation, 
+      message_obj_code, message_obj_id, content, 
+      create_time, read_time, flag_read
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{messageOperation,jdbcType=VARCHAR}, 
+      #{messageObjCode,jdbcType=VARCHAR}, #{messageObjId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{readTime,jdbcType=TIMESTAMP}, #{flagRead,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.syscompany.SysOperationMessage" >
+    insert into sys_operation_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="messageOperation != null" >
+        message_operation,
+      </if>
+      <if test="messageObjCode != null" >
+        message_obj_code,
+      </if>
+      <if test="messageObjId != null" >
+        message_obj_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="readTime != null" >
+        read_time,
+      </if>
+      <if test="flagRead != null" >
+        flag_read,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="messageOperation != null" >
+        #{messageOperation,jdbcType=VARCHAR},
+      </if>
+      <if test="messageObjCode != null" >
+        #{messageObjCode,jdbcType=VARCHAR},
+      </if>
+      <if test="messageObjId != null" >
+        #{messageObjId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="readTime != null" >
+        #{readTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagRead != null" >
+        #{flagRead,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.syscompany.SysOperationMessage" >
+    update sys_operation_message
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="messageOperation != null" >
+        message_operation = #{messageOperation,jdbcType=VARCHAR},
+      </if>
+      <if test="messageObjCode != null" >
+        message_obj_code = #{messageObjCode,jdbcType=VARCHAR},
+      </if>
+      <if test="messageObjId != null" >
+        message_obj_id = #{messageObjId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="readTime != null" >
+        read_time = #{readTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagRead != null" >
+        flag_read = #{flagRead,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.syscompany.SysOperationMessage" >
+    update sys_operation_message
+    set user_id = #{userId,jdbcType=INTEGER},
+      message_operation = #{messageOperation,jdbcType=VARCHAR},
+      message_obj_code = #{messageObjCode,jdbcType=VARCHAR},
+      message_obj_id = #{messageObjId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      read_time = #{readTime,jdbcType=TIMESTAMP},
+      flag_read = #{flagRead,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectMessageByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+    select
+    <include refid="Base_Column_List" />
+    from sys_operation_message
+    where user_id = #{userId,jdbcType=INTEGER}
+    and flag_read = 0
+    ORDER  by create_time desc
+
+
+  </select>
+
+  <select id="selectCompanyName" parameterType="java.lang.Integer" resultType="java.lang.String">
+
+    select company_name
+    from dmi_company_info
+    where id =#{companyId,jdbcType=INTEGER}
+
+
+  </select>
+
+  <update id="updateSetRead" parameterType="com.platform.springboot.entity.syscompany.SysOperationMessage">
+ update sys_operation_message
+    set
+      flag_read = #{flagRead,jdbcType=BIT},
+      read_time = #{readTime,jdbcType=TIMESTAMP}
+    where 1=1
+    and  id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateSetReadByUserIAndDispatchNumber" parameterType="com.platform.springboot.entity.syscompany.SysOperationMessage">
+ update sys_operation_message
+    set
+      flag_read = #{flagRead,jdbcType=BIT},
+      read_time = #{readTime,jdbcType=TIMESTAMP}
+    where 1=1
+    and  user_id = #{userId,jdbcType=INTEGER}
+    and Message_Obj_code = #{messageObjCode,jdbcType=VARCHAR}
+
+  </update>
+</mapper>

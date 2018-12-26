@@ -1,7 +1,8 @@
 package com.platform.springboot.utils;
 
-import com.platform.springboot.entity.sys.JwtUser;
-import com.platform.springboot.entity.sys.SysCompanyUsers;
+import com.platform.springboot.entity.syscompany.JwtUser;
+import com.platform.springboot.entity.syscompany.SysCompanyUsers;
+import com.platform.springboot.entity.sysconsole.SysConsoleUsers;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -35,9 +36,7 @@ public class JwtTokenUtils {
         HashMap<String, Object> map = new HashMap<>();
         map.put(ROLE_CLAIMS, role);
         map.put("id", jwtUser.getId());
-        map.put("companyId", jwtUser.getCompanyId());
         map.put("username", jwtUser.getUsername());
-        map.put("actObjectId", jwtUser.getActObjectId());
         map.put("actType", jwtUser.getActType());
         map.put("createTime", jwtUser.getCreateTime());
         map.put("email", jwtUser.getEmail());
@@ -45,10 +44,7 @@ public class JwtTokenUtils {
         map.put("flagDeleted", jwtUser.getFlagDeleted());
         map.put("flagOpenStatus", jwtUser.getFlagOpenStatus());
         map.put("headPortraitUrl", jwtUser.getHeadPortraitUrl());
-        map.put("nickname", jwtUser.getNickname());
         map.put("updateTime", jwtUser.getUpdateTime());
-        map.put("relationCompanyIds", jwtUser.getRelationCompanyIds());
-        map.put("versionId", jwtUser.getVersionId());
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .setClaims(map)
@@ -83,29 +79,24 @@ public class JwtTokenUtils {
 
 
     // 获取用户信息
-    public static SysCompanyUsers getUser(String token){
+    public static SysConsoleUsers getUser(String token){
 
-        SysCompanyUsers sysCompanyUsers = null;
+        SysConsoleUsers sysConsoleUsers = null;
         Claims claims = getTokenBody(token);
         if(claims != null){
-            sysCompanyUsers = new SysCompanyUsers();
-            sysCompanyUsers.setId((Integer) claims.get("id"));
-            sysCompanyUsers.setCompanyId((Integer) claims.get("companyId"));
-            sysCompanyUsers.setActObjectId((Integer) claims.get("actObjectId"));
-            sysCompanyUsers.setActType((String) claims.get("actType"));
-            sysCompanyUsers.setCreateTime((Date) claims.get("createTime"));
-            sysCompanyUsers.setEmail((String) claims.get("email"));
-            sysCompanyUsers.setFlagAvailable((Boolean) claims.get("flagAvailable"));
-            sysCompanyUsers.setFlagDeleted((Boolean) claims.get("flagDeleted"));
-            sysCompanyUsers.setFlagOpenStatus((Boolean) claims.get("flagOpenStatus"));
-            sysCompanyUsers.setHeadPortraitUrl((String) claims.get("headPortraitUrl"));
-            sysCompanyUsers.setNickname((String) claims.get("nickname"));
-            sysCompanyUsers.setUpdateTime((Date) claims.get("updateTime"));
-            sysCompanyUsers.setUsername((String) claims.get("username"));
-            sysCompanyUsers.setRelationCompanyIds((String) claims.get("relationCompanyIds"));
-            sysCompanyUsers.setVersionId((Integer) claims.get("versionId"));
+            sysConsoleUsers = new SysConsoleUsers();
+            sysConsoleUsers.setId((Integer) claims.get("id"));
+            sysConsoleUsers.setActType((String) claims.get("actType"));
+            sysConsoleUsers.setCreateTime((Date) claims.get("createTime"));
+            sysConsoleUsers.setEmail((String) claims.get("email"));
+            sysConsoleUsers.setFlagAvailable((Boolean) claims.get("flagAvailable"));
+            sysConsoleUsers.setFlagDeleted((Boolean) claims.get("flagDeleted"));
+            sysConsoleUsers.setFlagOpenStatus((Boolean) claims.get("flagOpenStatus"));
+            sysConsoleUsers.setHeadPortraitUrl((String) claims.get("headPortraitUrl"));
+            sysConsoleUsers.setUpdateTime((Date) claims.get("updateTime"));
+            sysConsoleUsers.setUsername((String) claims.get("username"));
         }
-        return sysCompanyUsers;
+        return sysConsoleUsers;
     }
 
     // 是否已过期

@@ -2,10 +2,7 @@ package com.platform.springboot.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.platform.springboot.entity.LoginUser;
-import com.platform.springboot.entity.sys.JwtUser;
-import com.platform.springboot.utils.JwtTokenUtils;
-import com.platform.springboot.entity.LoginUser;
-import com.platform.springboot.entity.sys.JwtUser;
+import com.platform.springboot.entity.syscompany.JwtUser;
 import com.platform.springboot.utils.JwtTokenUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
