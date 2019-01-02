@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.springboot.mapper.sysconsole.SysConsolePermissionMapper">
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.sysconsole.SysConsolePermission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, url, level, parent_id, order_id, create_time, update_time, flag_deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_console_permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_console_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platform.springboot.entity.sysconsole.SysConsolePermission">
+    insert into sys_console_permission (id, name, url, 
+      level, parent_id, order_id, 
+      create_time, update_time, flag_deleted
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{level,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{flagDeleted,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.sysconsole.SysConsolePermission">
+    insert into sys_console_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+        create_time,
+        update_time,
+      <if test="flagDeleted != null">
+        flag_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+        NOW(),
+        NOW(),
+      <if test="flagDeleted != null">
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.sysconsole.SysConsolePermission">
+    update sys_console_permission
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+        update_time = NOW(),
+      <if test="flagDeleted != null">
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.sysconsole.SysConsolePermission">
+    update sys_console_permission
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      flag_deleted = #{flagDeleted,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <!--查询平台个人权限-->
+  <select id="selectPermission" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.sysconsole.SysConsolePermission">
+    SELECT permission.id,permission.name,permission.url,permission.level,
+    permission.parent_id parentId,permission.order_id orderId,
+    permission.create_time createTime,permission.update_time updatetime
+    FROM sys_console_permission permission
+    LEFT JOIN sys_console_role_permission rpermission ON permission.id=rpermission.permission_id
+    LEFT JOIN sys_console_user_role_relation relation ON relation.role_id=rpermission.role_id
+    WHERE relation.user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+
+
+  <select id="findPage" parameterType="com.platform.springboot.entity.sysconsole.SysConsolePermission" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_console_permission
+    where flag_deleted = 0
+    <if test="id != null">
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="name != null">
+      and LOCATE(#{name,jdbcType=VARCHAR}, name)>0
+    </if>
+    <if test="url != null">
+      and url = #{url,jdbcType=VARCHAR}
+    </if>
+    <if test="level != null">
+      and level = #{level,jdbcType=INTEGER}
+    </if>
+    <if test="parentId != null">
+      and parent_id = #{parentId,jdbcType=INTEGER}
+    </if>
+    <if test="orderId != null">
+      and order_id = #{orderId,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null">
+      and (TO_DAYS(create_time)=TO_DAYS(#{createTime,jdbcType=TIMESTAMP}))=1
+    </if>
+    <if test="updateTime != null">
+      and (TO_DAYS(update_time)=TO_DAYS(#{updateTime,jdbcType=TIMESTAMP}))=1
+    </if>
+  </select>
+
+</mapper>
