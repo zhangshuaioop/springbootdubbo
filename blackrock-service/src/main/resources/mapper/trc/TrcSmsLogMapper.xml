@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.blackrockservice.mapper.trc.TrcSmsLogMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.blackrockservice.entity.trc.TrcSmsLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="send_module" property="sendModule" jdbcType="VARCHAR" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+    <result column="flag_send_successful" property="flagSendSuccessful" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
+    <result column="flag_valid" property="flagValid" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, send_module, keyword, content, user_id, mobile, serial_number, flag_send_successful, 
+    create_time, valid_time,flag_valid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from trc_sms_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from trc_sms_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.teekee.blackrockservice.entity.trc.TrcSmsLog" >
+    insert into trc_sms_log (id, send_module, keyword, 
+      content, user_id, mobile, 
+      serial_number, flag_send_successful, create_time, 
+      valid_time)
+    values (#{id,jdbcType=INTEGER}, #{sendModule,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, 
+      #{serialNumber,jdbcType=VARCHAR}, #{flagSendSuccessful,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP},
+      #{validTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.teekee.blackrockservice.entity.trc.TrcSmsLog" >
+    insert into trc_sms_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sendModule != null" >
+        send_module,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="serialNumber != null" >
+        serial_number,
+      </if>
+      <if test="flagSendSuccessful != null" >
+        flag_send_successful,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="validTime != null" >
+        valid_time,
+      </if>
+      <if test="flagValid != null" >
+        flag_valid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sendModule != null" >
+        #{sendModule,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null" >
+        #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="flagSendSuccessful != null" >
+        #{flagSendSuccessful,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validTime != null" >
+        #{validTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagValid != null" >
+        #{flagValid,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.blackrockservice.entity.trc.TrcSmsLog" >
+    update trc_sms_log
+    <set >
+      <if test="sendModule != null" >
+        send_module = #{sendModule,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null" >
+        serial_number = #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="flagSendSuccessful != null" >
+        flag_send_successful = #{flagSendSuccessful,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validTime != null" >
+        valid_time = #{validTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagValid != null" >
+        flag_valid = #{flagValid,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.teekee.blackrockservice.entity.trc.TrcSmsLog" >
+    update trc_sms_log
+    set send_module = #{sendModule,jdbcType=VARCHAR},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      serial_number = #{serialNumber,jdbcType=VARCHAR},
+      flag_send_successful = #{flagSendSuccessful,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      valid_time = #{validTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--根据手机号和验证码查询-->
+  <select id="selectByMobileAndKey" parameterType="com.teekee.blackrockservice.entity.bif.HumanResourceLoginParam" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from trc_sms_log
+    where 1=1
+    <if test="keyword != null">
+      AND keyword = #{keyword,jdbcType=VARCHAR}
+    </if>
+    <if test="account != null">
+      AND mobile = #{account,jdbcType=VARCHAR}
+    </if>
+    AND flag_send_successful = 1
+    AND flag_valid = 0
+  </select>
+</mapper>

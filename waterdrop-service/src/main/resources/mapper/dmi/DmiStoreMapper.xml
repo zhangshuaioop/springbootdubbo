@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.dmi.DmiStoreMapper">
+    <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.dmi.DmiStore">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="store_name" property="storeName" jdbcType="VARCHAR"/>
+        <result column="store_code" property="storeCode" jdbcType="VARCHAR"/>
+        <result column="manager" property="manager" jdbcType="VARCHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="brand_id" property="brandId" jdbcType="INTEGER"/>
+        <result column="area_id" property="areaId" jdbcType="INTEGER"/>
+        <result column="address_id" property="addressId" jdbcType="INTEGER"/>
+        <result column="floor" property="floor" jdbcType="VARCHAR"/>
+        <result column="room_code" property="roomCode" jdbcType="VARCHAR"/>
+        <result column="building_id" property="buildingId" jdbcType="INTEGER"/>
+        <result column="building_code" property="buildingCode" jdbcType="VARCHAR"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_available" property="flagAvailable" jdbcType="BIT"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"/>
+        <result column="business_license_id" property="businessLicenseId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_person" property="createPerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+        <result column="store_token" property="storeToken" jdbcType="VARCHAR"/>
+        <result column="store_token_image_url" property="storeTokenImageUrl" jdbcType="VARCHAR"/>
+        <result column="create_source" property="createSource" jdbcType="VARCHAR"/>
+        <result column="source_type" property="sourceType" jdbcType="VARCHAR"/>
+        <result column="import_address" property="importAddress" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.teekee.waterdropservice.entity.dmi.DmiStore" extends="BaseResultMap">
+        <result column="memo" property="memo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, store_name, store_code, manager, telephone, brand_id, area_id, address_id, floor, 
+    room_code, building_id, building_code, flag_deleted, flag_available, company_id, 
+    business_license_id, create_time, create_person, update_time, update_person,store_token,create_source,source_type,import_address,store_token_image_url
+  </sql>
+    <sql id="Blob_Column_List">
+    memo
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_store
+        where id = #{id,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+    <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.dmi.DmiStore">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into dmi_store
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="storeName != null">
+                store_name,
+            </if>
+            <if test="storeCode != null">
+                store_code,
+            </if>
+            <if test="manager != null">
+                manager,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="addressId != null">
+                address_id,
+            </if>
+            <if test="floor != null">
+                floor,
+            </if>
+            <if test="roomCode != null">
+                room_code,
+            </if>
+            <if test="buildingId != null">
+                building_id,
+            </if>
+            <if test="buildingCode != null">
+                building_code,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="businessLicenseId != null">
+                business_license_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="storeToken != null">
+                store_token,
+            </if>
+            <if test="storeTokenImageUrl != null">
+                store_token_image_url,
+            </if>
+            <if test="createSource != null">
+                create_source,
+            </if>
+            <if test="sourceType != null">
+                source_type,
+            </if>
+            <if test="importAddress != null">
+                import_address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="storeName != null">
+                #{storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="storeCode != null">
+                #{storeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="manager != null">
+                #{manager,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=INTEGER},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="addressId != null">
+                #{addressId,jdbcType=INTEGER},
+            </if>
+            <if test="floor != null">
+                #{floor,jdbcType=VARCHAR},
+            </if>
+            <if test="roomCode != null">
+                #{roomCode,jdbcType=VARCHAR},
+            </if>
+            <if test="buildingId != null">
+                #{buildingId,jdbcType=INTEGER},
+            </if>
+            <if test="buildingCode != null">
+                #{buildingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="businessLicenseId != null">
+                #{businessLicenseId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="storeToken != null">
+                #{storeToken,jdbcType=VARCHAR},
+            </if>
+            <if test="storeTokenImageUrl != null">
+                #{storeTokenImageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createSource != null">
+                #{createSource,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                #{sourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="importAddress != null">
+                #{importAddress,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.dmi.DmiStore">
+        update dmi_store
+        <set>
+            <if test="storeName != null">
+                store_name = #{storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="storeCode != null">
+                store_code = #{storeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="manager != null">
+                manager = #{manager,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=INTEGER},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="addressId != null">
+                address_id = #{addressId,jdbcType=INTEGER},
+            </if>
+            <if test="floor != null">
+                floor = #{floor,jdbcType=VARCHAR},
+            </if>
+            <if test="roomCode != null">
+                room_code = #{roomCode,jdbcType=VARCHAR},
+            </if>
+            <if test="buildingId != null">
+                building_id = #{buildingId,jdbcType=INTEGER},
+            </if>
+            <if test="buildingCode != null">
+                building_code = #{buildingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="businessLicenseId != null">
+                business_license_id = #{businessLicenseId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="storeToken != null">
+                store_type = #{storeToken,jdbcType=VARCHAR},
+            </if>
+            <if test="storeTokenImageUrl != null">
+                store_token_image_url = #{storeTokenImageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createSource != null">
+                create_source = #{createSource,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                source_type = #{sourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="importAddress != null">
+                import_address = #{importAddress,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="getCountByBrandId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select
+    count(1) bcount
+    from dmi_store
+    where brand_id = #{id,jdbcType=INTEGER}
+    and flag_deleted = 0
+  </select>
+
+
+    <select id="queryStoreByCompanyId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_store
+        where company_id = #{companyId,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+
+
+    <select id="selectWithBizLicByPrimaryKey" resultType="com.teekee.waterdropservice.entity.dmi.DmiStoreWithBusinessLicense" parameterType="java.lang.Integer">
+    select
+    st.id as id,
+    st.store_name as storeName,
+    st.store_code as storeCode,
+    st.manager as manager,
+    st.telephone as telephone,
+    st.brand_id as brandId,
+    st.area_id as areaId,
+    st.floor as floor,
+    st.building_code as buildingCode,
+    st.address_id as addrListId,
+    st.import_address as importAddress,
+    address.road as address,
+    building.longitude as longitude,
+    building.latitude as latitude,
+    building.building_name as buildingName,
+    building.id as buildingId,
+    st.room_code as roomCode,
+    st.memo as memo,
+    st.company_id as compnayId,
+    st.business_license_id as businessLicenseId,
+    dbl.flag_integrated as flagIntegrated,
+    dbl.issuing_date as issuingDate,
+    dbl.legal_person as legalPerson,
+    dbl.license_code as licenseCode,
+    dbl.license_code_type as licenseCodeType,
+    dbl.license_image_url as licenseImageUrl,
+    dbl.license_type as licenseType,
+    dbl.register_address as registerAddress,
+    dbl.register_capital as registerCapital,
+    dbl.register_date as registerDate,
+    dbl.register_office as registerOffice,
+    dbl.register_place as registerPlace,
+    dbl.valid_date_start as validDateStart,
+    dbl.valid_date_end as validDateEnd,
+    dbl.company_name as licenseCompanyName,
+    building.province as province,
+    building.city AS city,
+    building.district AS district
+    from dmi_store st
+    LEFT join dmi_business_license dbl on st.business_license_id = dbl.id and dbl.flag_deleted = 0
+    LEFT JOIN bif_building building ON building.id = st.building_id AND building.flag_deleted = 0
+    LEFT JOIN bif_building_address address ON address.id = st.address_id AND address.flag_deleted = 0
+    where st.flag_deleted = 0
+    and st.id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectByBusinessLicenseId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select
+    count(1) scount
+    from dmi_store
+    where business_license_id = #{id,jdbcType=INTEGER}
+    and flag_deleted = 0
+  </select>
+    <select id="selectStoreByTripleId" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_store
+        where company_id = #{companyId,jdbcType=INTEGER}
+        <if test="brandId != null">
+            and brand_id = #{brandId,jdbcType=INTEGER}
+        </if>
+        <if test="areaIdList != null">
+            and area_id in
+            <foreach item="item" index="index" collection="areaIdList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        and flag_deleted = 0
+        order by id desc
+    </select>
+    <select id="getListByAddressId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_store
+        where address_id = #{addressId,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+    <select id="listByBuildingId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_store
+        where building_id = #{buildingId,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+    <select id="queryListByObject" resultType="com.teekee.waterdropservice.entity.dmi.ret.dmiStore.ListRet" parameterType="com.teekee.waterdropservice.entity.dmi.DmiStore">
+        select
+        store.id AS id,
+        store.address_id AS addressId,
+        store.import_address AS importAddress,
+        store.update_time AS updateTime,
+        store.store_token_image_url AS storeTokenImageUrl,
+        store.create_time AS createTime,
+        store.store_name AS storeName,
+        companyBrand.brand_name AS companyBrand,
+        contact.contact_name AS contactName,
+        contact.mobile AS mobile,
+        store.flag_available AS flagAvailable,
+        building.province AS province,
+        building.city AS city,
+        building.district AS district,
+        (SELECT count(0) FROM dmi_store_comm_product WHERE store_id = store.id AND flag_deleted = 0) AS productCount,
+        CONCAT(building.province,building.city,building.district,buildingAddr.road,building.building_name,store.building_code,store.floor,store.room_code)
+        AS address
+        from dmi_store store
+        LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        LEFT JOIN (dmi_contact_store_relation contactStoreRelation INNER JOIN dmi_contact contact ON contact.id = contactStoreRelation.contact_id and flag_major =1)
+        ON store.id = contactStoreRelation.store_id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (bif_building_address buildingAddr INNER JOIN (SELECT * FROM bif_building WHERE flag_deleted = 0
+        <if test="province != null">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON building.id = buildingAddr.building_id AND buildingAddr.flag_deleted = 0) ON buildingAddr.id = store.address_id
+        where store.flag_deleted = 0
+        <if test="companyId != 0">
+            AND store.company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="areaId != 0">
+            AND store.area_id =#{areaId,jdbcType=INTEGER}
+
+        </if>
+        <if test="brandId != 0">
+            AND store.brand_id = #{brandId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectByAreaIdSort" resultType="com.teekee.waterdropservice.entity.dmi.DmiStoreBySelectByAreaSort" parameterType="java.lang.Integer">
+        select
+        store.id as id,
+        store.store_name as storeName,
+        store.store_code as storeCode,
+        store.memo AS memo,
+        CONCAT(building.province,building.city,building.district,buildingAddr.road,building.building_name,store.building_code,store.floor,store.room_code)
+        AS address,
+        org.flag_deleted as flagDeleted,
+        store.area_id AS areaId
+        from dmi_store store
+        inner join dmi_organization org on org.id = store.area_id
+        INNER JOIN bif_building_address buildingAddr ON buildingAddr.id = store.address_id
+        LEFT JOIN bif_building building ON building.id = store.building_id
+        where store.company_id = #{companyId,jdbcType=INTEGER} and store.flag_deleted = 0 ORDER BY store.area_id
+    </select>
+
+    <select id="selectByAreaId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_store
+        where area_id = #{areaId,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+
+    <!--
+    查询门店ID 根据excel 门店名
+    -->
+    <select id="selectByStoreName" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select
+        id
+        from dmi_store
+        where store_name = #{value,jdbcType=VARCHAR}
+
+    </select>
+
+
+    <!--
+    查询雇主ID 根据excel 雇主名
+    -->
+    <select id="selectByStoreId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select
+        company_id as companyId
+        from dmi_store
+        where id = #{storeId,jdbcType=INTEGER}
+
+    </select>
+
+
+
+    <select id="selectChildrenId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+
+    select id from dmi_organization
+
+    where parent_id = #{areaId,jdbcType=INTEGER}
+
+
+    </select>
+
+    <select id="queryStoreList" parameterType="java.util.HashMap" resultType="com.teekee.waterdropservice.entity.dmi.ret.dmiStore.ListRet">
+
+        select
+        users.username as createPerson,
+        sysCompanyUsers.username as  updatePerson,
+        store.id AS id,
+        store.update_time AS updateTime,
+        store.create_time AS createTime,
+        store.store_name AS storeName,
+        companyBrand.brand_name AS companyBrand,
+        contact.contact_name AS contactName,
+        contact.mobile AS mobile,
+        store.flag_available AS flagAvailable,
+        store.import_address AS importAddress,
+        building.province AS province,
+        building.city AS city,
+        building.district AS district,
+        (SELECT count(0) FROM dmi_store_comm_product WHERE store_id = store.id AND flag_deleted = 0) AS productCount,
+        CONCAT(building.province,building.city,building.district,buildingAddr.road,building.building_name,store.building_code,store.floor,store.room_code)
+        AS address
+        from dmi_store store
+        LEFT JOIN sys_company_users users ON users.id = store.create_person
+        LEFT JOIN sys_company_users sysCompanyUsers ON sysCompanyUsers.id = store.update_person
+        LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        LEFT JOIN (dmi_contact_store_relation contactStoreRelation INNER JOIN dmi_contact contact ON contact.id = contactStoreRelation.contact_id)
+        ON store.id = contactStoreRelation.store_id and contactStoreRelation.flag_major = 1
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (bif_building_address buildingAddr INNER JOIN (SELECT * FROM bif_building WHERE flag_deleted = 0
+        <if test="province != null and province !=''">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null and city !=''">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null and district !='' ">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON building.id = buildingAddr.building_id AND buildingAddr.flag_deleted = 0) ON buildingAddr.id = store.address_id
+        where store.flag_deleted = 0
+        <if test="companyId !=null and companyId != 0">
+            AND store.company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="areaList!=null and areaId != null and areaId != 0">
+            AND store.area_id in
+            <foreach collection="areaList" index="index" item="item" open="(" separator="," close=")">
+                #{item,jdbcType=INTEGER}
+            </foreach>
+        </if>
+        <if test=" brandId !=null and brandId != 0">
+            AND store.brand_id = #{brandId,jdbcType=INTEGER}
+        </if>
+        order by store.update_time desc
+    </select>
+
+
+    <select id="selectByStoreNameByCompanyId" parameterType="java.lang.Integer" resultType="java.lang.String">
+
+    select store_name
+    from dmi_store
+    where company_id =#{companyId,jdbcType=INTEGER}
+
+    </select>
+
+    <select id="setStoreId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select id
+        from dmi_store
+        where store_name =#{storeName,jdbcType=VARCHAR}
+
+    </select>
+    <select id="updateStoreUrl" parameterType="com.teekee.waterdropservice.entity.dmi.DmiStore">
+        update  dmi_store
+        <set>
+            <if test="storeTokenImageUrl != null">
+                store_token_image_url = #{storeTokenImageUrl,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+
+    </select>
+    <update id="updateStoreToken" parameterType="com.teekee.waterdropservice.entity.bif.BifMd5CodePool">
+
+        update  dmi_store
+        <set>
+            <if test="md5Code != null">
+                store_token = #{md5Code,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{objectId,jdbcType=INTEGER}
+
+
+    </update>
+
+
+    <select id="selectAll" resultMap="ResultMapWithBLOBs" >
+
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_store
+        where  1=1
+        and flag_deleted = 0
+
+    </select>
+    <select id="selectStoreList" parameterType="com.teekee.waterdropservice.entity.dmi.DmiStore" resultType="com.teekee.waterdropservice.entity.dmi.ret.dmiStore.ListRet">
+        SELECT
+            store.id AS id,
+            store.address_id AS addressId,
+			store.import_address AS importAddress,
+            store.update_time AS updateTime,
+            store.create_time AS createTime,
+            store.store_name AS storeName,
+            companyBrand.brand_name AS companyBrand,
+            store.flag_available AS flagAvailable,
+            building.province AS province,
+            building.city AS city,
+            building.district AS district,
+            CONCAT(
+            building.province,
+            building.city,
+            building.district,
+            buildingAddr.road,
+            building.building_name,
+            store.building_code,
+            store.floor,
+            store.room_code
+            ) AS address
+        FROM
+            dmi_store store
+            LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+            LEFT JOIN (
+            bif_building_address buildingAddr
+            INNER JOIN ( SELECT * FROM bif_building WHERE flag_deleted = 0 ) building ON building.id = buildingAddr.building_id
+            AND buildingAddr.flag_deleted = 0
+            ) ON buildingAddr.id = store.address_id
+        WHERE
+            store.flag_deleted = 0
+            AND store.company_id IN ( SELECT id FROM dmi_company_info WHERE vendor_id = ( SELECT vendor_id FROM dmi_company_info WHERE id = #{companyId,jdbcType=INTEGER} ) )
+    </select>
+
+    <select id="selectNoQrCodeStore" resultMap="ResultMapWithBLOBs">
+
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_store
+        where  1=1
+        and flag_deleted = 0
+        and (store_token is null
+        or store_token_image_url is null)
+    </select>
+</mapper>

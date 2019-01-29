@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.blackrockservice.mapper.sys.SysUserWechatRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.blackrockservice.entity.sys.SysUserWechatRelation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="wechat_open_id" property="wechatOpenId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="flag_deleted" property="flagDeleted" jdbcType="BIT" />
+    <result column="session_key" property="sessionKey" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, user_type, wechat_open_id, create_time, last_login_time, flag_deleted,session_key
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user_wechat_relation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_user_wechat_relation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.teekee.blackrockservice.entity.sys.SysUserWechatRelation" >
+    insert into sys_user_wechat_relation (id, user_id, user_type, 
+      wechat_open_id, create_time, last_login_time, 
+      flag_deleted)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userType,jdbcType=VARCHAR}, 
+      #{wechatOpenId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
+      #{flagDeleted,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.teekee.blackrockservice.entity.sys.SysUserWechatRelation" >
+    insert into sys_user_wechat_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="wechatOpenId != null" >
+        wechat_open_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted,
+      </if>
+      <if test="sessionKey != null" >
+        session_key,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatOpenId != null" >
+        #{wechatOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagDeleted != null" >
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="sessionKey != null" >
+        #{sessionKey,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.blackrockservice.entity.sys.SysUserWechatRelation" >
+    update sys_user_wechat_relation
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatOpenId != null" >
+        wechat_open_id = #{wechatOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="sessionKey != null" >
+        session_key = #{sessionKey,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.teekee.blackrockservice.entity.sys.SysUserWechatRelation" >
+    update sys_user_wechat_relation
+    set user_id = #{userId,jdbcType=INTEGER},
+      user_type = #{userType,jdbcType=VARCHAR},
+      wechat_open_id = #{wechatOpenId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      flag_deleted = #{flagDeleted,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--通过wechatopenid查询-->
+  <select id="queryByWechatOpenId" parameterType="com.teekee.blackrockservice.entity.sys.SysUserWechatRelation" resultType="java.lang.Boolean">
+      SELECT
+          COUNT(id)
+      FROM
+          sys_user_wechat_relation
+      WHERE
+          wechat_open_id = #{wechatOpenId,jdbcType=VARCHAR}
+          AND user_type = #{userType,jdbcType=VARCHAR}
+          AND flag_deleted =0
+  </select>
+  <select id="queryContact" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+      <include refid="Base_Column_List" />
+    FROM
+    sys_user_wechat_relation
+    WHERE
+    wechat_open_id = #{wechatOpenId,jdbcType=VARCHAR}
+    AND user_type = "DISPATCH_HR"
+    AND flag_deleted =0
+  </select>
+  <!--自动登录更新最后登录时间-->
+  <update id="updateByWechatOpenId" parameterType="com.teekee.blackrockservice.entity.sys.SysUserWechatRelation">
+      UPDATE
+      sys_user_wechat_relation
+      SET
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER}
+      WHERE
+      wechat_open_id = #{wechatOpenId,jdbcType=VARCHAR}
+  </update>
+  <!--根据userId查询-->
+  <select id="selectOpenIdByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    sys_user_wechat_relation
+    WHERE
+    user_id = #{userId,jdbcType=VARCHAR}
+    AND user_type = "DISPATCH_HR"
+    AND flag_deleted =0
+  </select>
+</mapper>

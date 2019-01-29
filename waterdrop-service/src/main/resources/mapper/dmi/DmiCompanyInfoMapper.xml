@@ -1,0 +1,1618 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.dmi.DmiCompanyInfoMapper">
+    <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="company_full_name" property="companyFullName" jdbcType="VARCHAR"/>
+        <result column="website" property="website" jdbcType="VARCHAR"/>
+        <result column="contact_address" property="contactAddress" jdbcType="VARCHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="fax" property="fax" jdbcType="VARCHAR"/>
+        <result column="business_license_id" property="businessLicenseId" jdbcType="INTEGER"/>
+        <result column="logo_url" property="logoUrl" jdbcType="VARCHAR"/>
+        <result column="vendor_id" property="vendorId" jdbcType="INTEGER"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_available" property="flagAvailable" jdbcType="BIT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_person" property="createPerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+        <result column="company_token" property="companyToken" jdbcType="VARCHAR"/>
+        <result column="company_token_image" property="companyTokenImage" jdbcType="VARCHAR"/>
+        <result column="flag_independence" jdbcType="BIT" property="flagIndependence" />
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo" extends="BaseResultMap">
+        <result column="memo" property="memo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, company_name, company_full_name, website, contact_address, telephone, fax, business_license_id, 
+    logo_url,vendor_id, flag_deleted, flag_available, create_time, create_person, update_time, update_person,company_token,
+    company_token_image,flag_independence
+  </sql>
+    <sql id="Blob_Column_List">
+    memo
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_company_info
+        where id = #{id,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+
+    <select id="queryByVendor" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_company_info
+        where vendor_id = #{vendorId,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+
+    <select id="selectByBusinessLicenseId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select
+    count(id) ccount
+    from dmi_company_info
+    where business_license_id = #{id,jdbcType=INTEGER}
+    and flag_deleted = 0
+  </select>
+
+    <select id="selectBasicInfoByPrimaryKey" resultType="java.util.HashMap" parameterType="java.lang.Integer">
+    select dci.*,
+    dbl.id businessLicenseId,
+    dbl.legal_person,
+    dbl.description license_type,
+    dbl.register_address,
+    dbl.license_code,
+    dbl.register_capital,
+    dbl.valid_date_start,
+    dbl.valid_date_end,
+    dbl.register_date,
+    dbl.license_image_url
+    from dmi_company_info dci
+    left join (select dbl1.*,sdd1.description from dmi_business_license dbl1
+               inner join cfg_data_dictionary sdd1 on sdd1.`value` = dbl1.license_type and sdd1.type ='BIZ-LIC-TYPE'
+               and dbl1.flag_deleted = 0) dbl on dci.business_license_id = dbl.id
+    where dci.id = #{id,jdbcType=INTEGER}
+    and dci.flag_deleted = 0
+  </select>
+
+    <select id="selectAllDmiCompanyBasicInfo" resultType="java.util.HashMap">
+    select dci.id,
+    dci.company_token_image,
+      dci.company_name,
+      dci.contact_address,
+      dci.fax,
+      dci.logo_url,
+      dci.telephone,
+      dci.website,
+      dci.business_license_id,
+      dci.company_full_name,
+      dci.contact_address,
+      dci.flag_available,
+      dci.flag_deleted,
+      dci.memo,
+      dci.update_time,
+      t1.mainContact,
+      t1.contact_mobile,
+      t1.contact_tel
+    from dmi_company_info dci
+    left join (
+      select dc.contact_name mainContact,dccr.company_id,dc.telephone contact_tel,dc.mobile contact_mobile
+      from dmi_contact dc
+      inner join dmi_contact_company_relation dccr on dc.id = dccr.contact_id
+      where dccr.flag_major = 1
+      and dc.flag_available = 1
+      and dc.flag_deleted = 0
+    ) t1
+    on dci.id = t1.company_id
+    where dci.flag_deleted = 0
+    order by dci.id desc
+  </select>
+    <select id="selectAllDmiCompanyBasicInfoByVendor" resultType="java.util.HashMap" parameterType="java.lang.Integer">
+    select dci.id,
+    dci.company_token_image,
+    dci.company_name,
+    dci.contact_address,
+    dci.fax,
+    dci.logo_url,
+    dci.telephone,
+    dci.website,
+    dci.business_license_id,
+    dci.company_full_name,
+    dci.contact_address,
+    dci.flag_available,
+    dci.flag_deleted,
+    dci.memo,
+    dci.update_time,
+    t1.mainContact,
+    t1.contact_mobile,
+    t1.contact_tel
+    from dmi_company_info dci
+    left join (
+    select dc.contact_name mainContact,dccr.company_id,dc.telephone contact_tel,dc.mobile contact_mobile
+    from dmi_contact dc
+    inner join dmi_contact_company_relation dccr on dc.id = dccr.contact_id
+    where dccr.flag_major = 1
+    and dc.flag_available = 1
+    and dc.flag_deleted = 0
+    and dccr.flag_deleted = 0
+    ) t1
+    on dci.id = t1.company_id
+    where dci.flag_deleted = 0 AND dci.vendor_id = #{id,jdbcType=INTEGER}
+    order by dci.id desc
+  </select>
+    <select id="selectAllDmiCompanyBasicInfoByDemand" resultType="java.util.HashMap" parameterType="java.lang.Integer">
+    select dci.id,
+    dci.company_token_image,
+    dci.company_name,
+    dci.contact_address,
+    dci.fax,
+    dci.logo_url,
+    dci.telephone,
+    dci.website,
+    dci.business_license_id,
+    dci.company_full_name,
+    dci.contact_address,
+    dci.flag_available,
+    dci.flag_deleted,
+    dci.memo,
+    dci.update_time,
+    t1.mainContact,
+    t1.contact_mobile,
+    t1.contact_tel
+    from dmi_company_info dci
+    left join (
+    select dc.contact_name mainContact,dccr.company_id,dc.telephone contact_tel,dc.mobile contact_mobile
+    from dmi_contact dc
+    inner join dmi_contact_company_relation dccr on dc.id = dccr.contact_id
+    where dccr.flag_major = 1
+    and dc.flag_available = 1
+    and dc.flag_deleted = 0
+    ) t1
+    on dci.id = t1.company_id
+    where dci.flag_deleted = 0 AND dci.id = #{id,jdbcType=INTEGER}
+    order by dci.id desc
+  </select>
+
+    <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into dmi_company_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="vendorId != null">
+                vendor_id,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="companyFullName != null">
+                company_full_name,
+            </if>
+            <if test="website != null">
+                website,
+            </if>
+            <if test="contactAddress != null">
+                contact_address,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="fax != null">
+                fax,
+            </if>
+            <if test="businessLicenseId != null">
+                business_license_id,
+            </if>
+            <if test="logoUrl != null">
+                logo_url,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="flagIndependence != null">
+                flag_independence,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="vendorId != null">
+                #{vendorId,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyFullName != null">
+                #{companyFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="website != null">
+                #{website,jdbcType=VARCHAR},
+            </if>
+            <if test="contactAddress != null">
+                #{contactAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="fax != null">
+                #{fax,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicenseId != null">
+                #{businessLicenseId,jdbcType=INTEGER},
+            </if>
+            <if test="logoUrl != null">
+                #{logoUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="flagIndependence != null">
+                #{flagIndependence,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo">
+        update dmi_company_info
+        <set>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyFullName != null">
+                company_full_name = #{companyFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="website != null">
+                website = #{website,jdbcType=VARCHAR},
+            </if>
+            <if test="contactAddress != null">
+                contact_address = #{contactAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="fax != null">
+                fax = #{fax,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicenseId != null">
+                business_license_id = #{businessLicenseId,jdbcType=INTEGER},
+            </if>
+            <if test="logoUrl != null">
+                logo_url = #{logoUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="flagIndependence != null">
+                flag_independence = #{flagIndependence,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="commList" resultType="com.teekee.waterdropservice.entity.ret.dmi.DmiCompanyInfo.CommListRet"
+            parameterType="com.teekee.waterdropservice.entity.dto.dmi.DmiCompanyInfo.CommListDTO">
+        SELECT
+        product.update_time AS updateTime,
+        product.create_time AS createTime,
+        product.id AS id,
+        companyBrand.brand_name AS companyBrandName,
+        store.store_name AS storeName,
+        store.id AS storeId,
+        product.product_description AS commName,
+        product.product_code AS productCode,
+        commBrand.brand_name AS commBrandName,
+        catalogInfo.catalog_name AS catalogName,
+        building.province AS province,
+        0 AS flagCampaign,
+        service.service_name AS service,
+        product.memo AS memo,
+        CASE product.flag_vendor WHEN 1 THEN '是' ELSE '否' END AS memo,
+        product.register AS register,
+        broadband.login_password AS loginPassword,
+        broadband.login_account AS loginAccount,
+        broadband.device_number AS deviceNumber,
+        CONCAT (broadband.band_width_down,broadband.unit_band_width_down) AS bandWidthDown,
+        CONCAT (broadband.band_width_up,broadband.unit_band_width_up) AS bandWidthUp,
+        "" AS campaignName,
+        "" AS description,
+        charge.charge_start_date AS chargeStartDate
+        FROM dmi_store_comm_product product
+        INNER JOIN (
+        (SELECT * FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeFlagAvailable != null">
+            AND flag_available = #{storeFlagAvailable,jdbcType=BIT}
+        </if>) store
+        LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        ) ON product.store_id = store.id
+        LEFT JOIN cfg_communication_brand commBrand ON commBrand.id = product.brand_id
+        LEFT JOIN cfg_communication_type_catalog catalogInfo ON catalogInfo.id = product.catalog_id
+        <if test="chargeBeginDate != null or chargeEndDate != null">
+            INNER JOIN dmi_comm_charge charge ON charge.object_id = product.id AND charge.object_type = 'PRODUCT'
+            <if test="chargeBeginDate != null">
+                AND charge.charge_start_date &gt;= #{chargeBeginDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="chargeEndDate != null">
+                AND charge.charge_start_date &lt;= #{chargeEndDate,jdbcType=TIMESTAMP}
+            </if>
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+        <if test="chargeBeginDate == null and chargeEndDate == null">
+            LEFT JOIN dmi_comm_charge charge ON charge.object_id = product.id AND charge.object_type = 'PRODUCT'
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+        LEFT JOIN bif_communication_service service ON service.id = product.service_id
+        LEFT JOIN dmi_comm_product_broadband broadband ON broadband.product_id = product.id
+        WHERE product.flag_deleted = 0
+        AND product.flag_independent = 1
+        AND product.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="commBrandId != 0">
+            AND product.brand_id = #{commBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND product.catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+        <if test="storeId != 0">
+            AND product.store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test="productCode != null">
+            AND product.product_code like '%${productCode}%'
+        </if>
+        UNION
+        SELECT
+        campaign.update_time AS updateTime,
+        campaign.create_time AS createTime,
+        campaign.id AS id,
+        companyBrand.brand_name AS companyBrandName,
+        store.store_name AS storeName,
+        store.id AS storeId,
+        campaign.campaign_name AS commName,
+        campaign.product_code AS productCode,
+        commBrand.brand_name AS commBrandName,
+        '' AS catalogName,
+        building.province AS province,
+        1 AS flagCampaign,
+        service.service_name AS service,
+        "" AS memo,
+        CASE campaign.flag_vendor WHEN 1 THEN '是' ELSE '否' END AS memo,
+        "" AS register,
+        "" AS loginPassword,
+        "" AS loginAccount,
+        "" AS deviceNumber,
+        "" AS bandWidthDown,
+        "" AS bandWidthUp,
+        campaign.campaign_name AS campaignName,
+        campaign.description AS description,
+        charge.charge_start_date AS chargeStartDate
+        FROM dmi_comm_product_marketing_campaign campaign
+        INNER JOIN (
+        (SELECT * FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeFlagAvailable != null">
+            AND flag_available = #{storeFlagAvailable,jdbcType=BIT}
+        </if>) store
+        LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        <if test="companyBrandId != 0">
+            AND store.brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeFlagAvailable != null">
+            AND store.flag_available = #{storeFlagAvailable,jdbcType=BIT}
+        </if>
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        ) ON campaign.store_id = store.id
+        LEFT JOIN cfg_communication_brand commBrand ON commBrand.id = campaign.brand_id
+        <if test="chargeBeginDate != null or chargeEndDate != null">
+            INNER JOIN dmi_comm_charge charge ON charge.object_id = campaign.id AND charge.object_type = 'CAMPAIGN'
+            <if test="chargeBeginDate != null">
+                AND charge.charge_start_date &gt;= #{chargeBeginDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="chargeEndDate != null">
+                AND charge.charge_start_date &lt;= #{chargeEndDate,jdbcType=TIMESTAMP}
+            </if>
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+        <if test="chargeBeginDate == null and chargeEndDate == null">
+            LEFT JOIN dmi_comm_charge charge ON charge.object_id = campaign.id AND charge.object_type = 'CAMPAIGN'
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+        LEFT JOIN bif_communication_service service ON service.id = campaign.service_id
+        WHERE campaign.flag_deleted = 0
+        AND campaign.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="commBrandId != 0">
+            AND campaign.brand_id = #{commBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND campaign.id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+        <if test="storeId != 0">
+            AND campaign.store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test="productCode != null">
+            AND campaign.product_code like '%${productCode}%'
+        </if>
+    </select>
+    <select id="productList" resultType="com.teekee.waterdropservice.entity.ret.dmi.DmiCompanyInfo.CommListRet"
+            parameterType="com.teekee.waterdropservice.entity.dto.dmi.DmiCompanyInfo.CommListDTO">
+        SELECT
+        product.update_time AS updateTime,
+        product.id AS id,
+        companyBrand.brand_name AS companyBrandName,
+        store.store_name AS storeName,
+        product.create_time AS createTime,
+        store.id AS storeId,
+        product.product_description AS commName,
+        product.product_code AS productCode,
+        commBrand.brand_name AS commBrandName,
+        catalogInfo.catalog_name AS catalogName,
+        building.province AS province,
+        0 AS flagCampaign,
+        service.service_name AS service,
+        product.memo AS memo,
+        CASE product.flag_vendor WHEN 1 THEN '是' ELSE '否' END AS memo,
+        product.register AS register,
+        broadband.login_password AS loginPassword,
+        broadband.login_account AS loginAccount,
+        broadband.device_number AS deviceNumber,
+        CONCAT (broadband.band_width_down,broadband.unit_band_width_down) AS bandWidthDown,
+        CONCAT (broadband.band_width_up,broadband.unit_band_width_up) AS bandWidthUp,
+        "" AS campaignName,
+        "" AS description,
+        charge.charge_start_date AS chargeStartDate
+        FROM dmi_store_comm_product product
+        INNER JOIN (
+        (SELECT * FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeFlagAvailable != null">
+            AND flag_available = #{storeFlagAvailable,jdbcType=BIT}
+        </if>) store LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        ) ON product.store_id = store.id
+        LEFT JOIN cfg_communication_brand commBrand ON commBrand.id = product.brand_id
+        LEFT JOIN cfg_communication_type_catalog catalogInfo ON catalogInfo.id = product.catalog_id
+        <if test="chargeBeginDate != null or chargeEndDate != null">
+            INNER JOIN dmi_comm_charge charge ON charge.object_id = product.id AND charge.object_type = 'PRODUCT'
+            <if test="chargeBeginDate != null">
+                AND charge.charge_start_date &gt;= #{chargeBeginDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="chargeEndDate != null">
+                AND charge.charge_start_date &lt;= #{chargeEndDate,jdbcType=TIMESTAMP}
+            </if>
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+        <if test="chargeBeginDate == null and chargeEndDate == null">
+            LEFT JOIN dmi_comm_charge charge ON charge.object_id = product.id AND charge.object_type = 'PRODUCT'
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+        LEFT JOIN bif_communication_service service ON service.id = product.service_id
+        LEFT JOIN dmi_comm_product_broadband broadband ON broadband.product_id = product.id
+        WHERE product.flag_deleted = 0
+        AND product.flag_independent = 1
+        AND product.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="commBrandId != 0">
+            AND product.brand_id = #{commBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND product.catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+        <if test="storeId != 0">
+            AND product.store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test="productCode != null">
+            AND product.product_code like '%${productCode}%'
+        </if>
+    </select>
+    <select id="campaignList" resultType="com.teekee.waterdropservice.entity.ret.dmi.DmiCompanyInfo.CommListRet"
+            parameterType="com.teekee.waterdropservice.entity.dto.dmi.DmiCompanyInfo.CommListDTO">
+        SELECT
+        campaign.update_time AS updateTime,
+        campaign.id AS id,
+        companyBrand.brand_name AS companyBrandName,
+        store.store_name AS storeName,
+        store.id AS storeId,
+        campaign.create_time AS createTime,
+        campaign.campaign_name AS commName,
+        campaign.product_code AS productCode,
+        commBrand.brand_name AS commBrandName,
+        '' AS catalogName,
+        building.province AS province,
+        1 AS flagCampaign,
+        service.service_name AS service,
+        "" AS memo,
+        CASE campaign.flag_vendor WHEN 1 THEN '是' ELSE '否' END AS memo,
+        "" AS register,
+        "" AS loginPassword,
+        "" AS loginAccount,
+        "" AS deviceNumber,
+        "" AS bandWidthDown,
+        "" AS bandWidthUp,
+        campaign.campaign_name AS campaignName,
+        campaign.description AS description,
+        charge.charge_start_date AS chargeStartDate
+        FROM dmi_comm_product_marketing_campaign campaign
+        INNER JOIN (
+        (SELECT * FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeFlagAvailable != null">
+            AND flag_available = #{storeFlagAvailable,jdbcType=BIT}
+        </if>) store LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        ) ON campaign.store_id = store.id
+        LEFT JOIN cfg_communication_brand commBrand ON commBrand.id = campaign.brand_id
+        <if test="chargeBeginDate != null or chargeEndDate != null">
+            INNER JOIN dmi_comm_charge charge ON charge.object_id = campaign.id AND charge.object_type = 'CAMPAIGN'
+            <if test="chargeBeginDate != null">
+                AND charge.charge_start_date &gt;= #{chargeBeginDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="chargeEndDate != null">
+                AND charge.charge_start_date &lt;= #{chargeEndDate,jdbcType=TIMESTAMP}
+            </if>
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+        <if test="chargeBeginDate == null and chargeEndDate == null">
+            LEFT JOIN dmi_comm_charge charge ON charge.object_id = campaign.id AND charge.object_type = 'CAMPAIGN'
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+        LEFT JOIN bif_communication_service service ON service.id = campaign.service_id
+        WHERE campaign.flag_deleted = 0
+        AND campaign.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="commBrandId != 0">
+            AND campaign.brand_id = #{commBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND campaign.id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+        <if test="storeId != 0">
+            AND campaign.store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test="productCode != null">
+            AND campaign.product_code like '%${productCode}%'
+        </if>
+    </select>
+
+    <select id="productListByDownload" resultType="com.teekee.waterdropservice.entity.ret.dmi.DmiCompanyInfo.CommListByDownloadRet"
+            parameterType="com.teekee.waterdropservice.entity.dto.dmi.DmiCompanyInfo.CommListDTO">
+        SELECT
+        IFNULL(companyBrand.brand_name,'') AS dmiBrandName,
+        IFNULL(store.store_name,'') AS storeName,
+        IFNULL(building.province,'') AS province,
+        CONCAT(building.province,building.city,building.district,buildingAddr.road,building.building_name,store.building_code,store.floor,store.room_code)
+        AS address,
+        IFNULL(store.telephone,'') AS telephone,
+        IFNULL(store.memo,'') AS storeMemo,
+        (SELECT count(0) FROM dmi_store_comm_product WHERE store_id = store.id AND flag_deleted = 0) AS productCount,
+        IFNULL(product.product_description,'') AS commName,
+        IFNULL(product.product_code,'') AS productCode,
+        IFNULL(service.service_name,'') AS serviceName,
+        IFNULL(commBrand.brand_name,'') AS commBrandName,
+        IFNULL(catalogInfo.catalog_name,'') AS catalogName,
+        IFNULL(product.device_number,'') AS deviceNumber,
+        IFNULL(product.register,'') AS register,
+        CASE product.flag_vendor WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS flagVendor,
+        CASE product.flag_charge_agency WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS flagChargeAgency,
+        IFNULL(product.memo,'') AS memo,
+        CONCAT(IFNULL(broadband.band_width_down,''),IFNULL(broadband.unit_band_width_down,'')) AS bandWidthDown,
+        CONCAT(IFNULL(broadband.band_width_up,''),IFNULL(broadband.unit_band_width_up,'')) AS bandWidthUp,
+        IFNULL(broadband.login_account,'') AS loginAccount,
+        IFNULL(broadband.login_password,'') AS loginPassword,
+        IFNULL(straightLine.zip_code,'') AS straightLineZipCode,
+        CASE straightLine.flag_cid WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS straightLineFlagCid,
+        CASE straightLine.flag_ip_phone WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS straightLineFlagIpPhone,
+        CASE straightLine.flag_ddd WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS straightLineFlagDdd,
+        CASE straightLine.flag_idd WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS straightLineFlagIdd,
+        IFNULL(trunking.zip_code,'') AS trunkingZipCode,
+        CASE trunking.flag_cid WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS trunkingFlagCid,
+        CONCAT(IFNULL(trunking.contain_lines,'')) AS trunkingContainLines,
+        CONCAT(IFNULL(trunking.number_begin,''),'~',IFNULL(trunking.number_end,'')) AS trunkingNumber,
+        IFNULL(trunking.display_number,'') AS trunkingDisplayNumber,
+        CONCAT(IFNULL(specialLine.band_width,''),IFNULL(specialLine.band_width_type,'')) AS bandWidth,
+        IFNULL((SELECT store_name FROM dmi_store WHERE id = specialLine.a_store_id),'') AS storeNameWithA,
+        IFNULL(specialLine.a_port_type,'') AS aPortType,
+        CONCAT(IFNULL(specialLine.a_band_width,''),IFNULL(specialLine.a_band_width_type,'')) AS aBandWidth,
+        IFNULL(specialLine.a_local_code,'') AS aLocalCode,
+        IFNULL((SELECT store_name FROM dmi_store WHERE id = specialLine.z_store_id),'') AS storeNameWithZ,
+        IFNULL(specialLine.z_port_type,'') AS zPortType,
+        CONCAT(IFNULL(specialLine.z_band_width,''),IFNULL(specialLine.z_band_width_type,'')) AS zBandWidth,
+        IFNULL(specialLine.z_local_code,'') AS zLocalCode,
+        IFNULL(mobile.puk,'') AS puk,
+        IFNULL(mobile.network_type,'') AS networkType,
+        CASE mobile.use_type WHEN 'flow' THEN '流量' WHEN 'voice' THEN '语音' ELSE '' END AS useType,
+        CONCAT(IFNULL(mobile.capacity,''),IFNULL(mobile.unit_band_width,'')) AS capacity,
+        CASE mobile.off_limits_operator WHEN 'continue' THEN '继续使用' WHEN 'shutdown' THEN '停机' ELSE '' END AS offLimitsOperator,
+        CASE mobile.use_rate WHEN 'onetime' THEN '一次性' WHEN 'monthly' THEN '按月' ELSE '' END AS useRate,
+        CASE mobile.flag_ddd WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS mobileFlagDdd,
+        CASE mobile.flag_idd WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS mobileFlagIdd,
+        IFNULL(date_format(payment.payment_start_date,'%Y-%c-%d'),'') AS paymentStartDate,
+        CONCAT(IFNULL(payment.payment_months,0),'个月') AS paymentMonths,
+        IFNULL(date_format(payment.payment_end_date,'%Y-%c-%d'),'') AS paymentEndDate,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAY_FREQUENCY' AND value = payment.pay_frequency),'') AS payFrequency,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'SETTLEMENT_TYPE' AND value = payment.payment_type),'') AS paymentType,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAYMENT_METHOD' AND value = payment.payment_method),'') AS paymentMethod,
+        CONCAT(IFNULL(payment.comm_period_fee,0),'') AS paymentCommPeriodFee,
+        CONCAT(IFNULL(payment.first_install_fee,0),'') AS paymentFirstInstallFee,
+        CONCAT(IFNULL(payment.fiber_device_fee,0),'') AS paymentFiberDeviceFee,
+        CONCAT(IFNULL(payment.fiber_fee,0),'') AS paymentFiberFee,
+        CONCAT(IFNULL(payment.tenement_one_time_fee,0),'') AS paymentTenementOneTimeFee,
+        CONCAT(IFNULL(payment.tenement_period_fee,0),'') AS paymentTenementPeriodFee,
+        IFNULL(date_format(charge.charge_start_date,'%Y-%c-%d'),'') AS chargeStartDate,
+        CONCAT(IFNULL(charge.charge_months,0),'个月') AS chargeMonths,
+        IFNULL(date_format(charge.charge_end_date,'%Y-%c-%d'),'') AS chargeEndDate,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAY_FREQUENCY' AND value = charge.pay_frequency),'') AS chargePayFrequency,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'SETTLEMENT_TYPE' AND value = charge.charge_type),'') AS chargeType,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAYMENT_METHOD' AND value = charge.payment_method),'') AS chargePaymentMethod,
+        CONCAT(IFNULL(charge.comm_period_fee,0),'') AS chargeCommPeriodFee,
+        CONCAT(IFNULL(charge.comm_one_time_fee,0),'') AS chargecommOneTimeFee,
+        CASE charge.flag_charge_agency WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS chargeFlagChargeAgency,
+        CONCAT(IFNULL(charge.fiber_fee,0),'') AS chargeFiberFee,
+        CONCAT(IFNULL(charge.tenement_one_time_fee,0),'') AS chargeTenementOneTimeFee,
+        CONCAT(IFNULL(charge.tenement_period_fee,0),'') AS chargeTenementPeriodFee,
+        '否' AS flagCampaign,
+        '' AS campaignName,
+        '' AS campaignDesc
+        FROM (SELECT
+        id,store_id,company_id,product_description,product_code,service_id,brand_id,catalog_id,device_number,register,flag_vendor,flag_charge_agency,
+        memo
+        FROM dmi_store_comm_product WHERE flag_deleted = 0
+        AND flag_independent = 1
+        AND company_id = #{companyId,jdbcType=INTEGER}
+        <if test="commBrandId != 0">
+            AND brand_id = #{commBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+        <if test="storeId != 0">
+            AND store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test="productCode != null">
+            AND product_code like '%${productCode}%'
+        </if>) product
+        INNER JOIN (
+        (SELECT id,brand_id,building_id,store_name,building_code,floor,room_code,telephone,memo,address_id FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeFlagAvailable != null">
+            AND flag_available = #{storeFlagAvailable,jdbcType=BIT}
+        </if>) store LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (bif_building_address buildingAddr INNER JOIN (SELECT * FROM bif_building WHERE flag_deleted = 0
+        <if test="province != null">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON building.id = buildingAddr.building_id AND buildingAddr.flag_deleted = 0) ON buildingAddr.id = store.address_id
+        ) ON product.store_id = store.id
+        LEFT JOIN bif_communication_service service ON service.id = product.service_id
+        LEFT JOIN cfg_communication_brand commBrand ON commBrand.id = product.brand_id
+        LEFT JOIN cfg_communication_type_catalog catalogInfo ON catalogInfo.id = product.catalog_id
+        LEFT JOIN dmi_comm_product_broadband broadband ON broadband.product_id = product.id
+        LEFT JOIN dmi_comm_product_straight_line straightLine ON straightLine.product_id = product.id
+        LEFT JOIN dmi_comm_product_trunking trunking ON trunking.product_id = product.id
+        LEFT JOIN dmi_comm_product_special_line specialLine ON specialLine.product_id = product.id
+        LEFT JOIN dmi_comm_product_mobile mobile ON mobile.product_id = product.id
+        LEFT JOIN dmi_comm_payment payment ON payment.object_id = product.id AND payment.object_type = 'PRODUCT' AND payment.flag_lastest = 1 AND
+        payment.flag_deleted = 0
+        LEFT JOIN dmi_comm_charge charge ON charge.object_id = product.id AND charge.object_type = 'PRODUCT' AND charge.flag_lastest = 1 AND charge.flag_deleted
+        = 0
+        <if test="chargeBeginDate != null or chargeEndDate != null">
+            <if test="chargeBeginDate != null">
+                AND charge.charge_start_date &gt;= #{chargeBeginDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="chargeEndDate != null">
+                AND charge.charge_start_date &lt;= #{chargeEndDate,jdbcType=TIMESTAMP}
+            </if>
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+    </select>
+
+    <select id="campaignListByDownload" resultType="com.teekee.waterdropservice.entity.ret.dmi.DmiCompanyInfo.CommListByDownloadRet"
+            parameterType="com.teekee.waterdropservice.entity.dto.dmi.DmiCompanyInfo.CommListDTO">
+        SELECT
+        IFNULL(companyBrand.brand_name,'') AS dmiBrandName,
+        IFNULL(store.store_name,'') AS storeName,
+        IFNULL(building.province,'') AS province,
+        CONCAT(building.province,building.city,building.district,buildingAddr.road,building.building_name,store.building_code,store.floor,store.room_code)
+        AS address,
+        IFNULL(store.telephone,'') AS telephone,
+        IFNULL(store.memo,'') AS storeMemo,
+        (SELECT count(0) FROM dmi_comm_product_marketing_campaign WHERE store_id = store.id AND flag_deleted = 0) AS productCount,
+        IFNULL(campaign.campaign_name,'') AS commName,
+        IFNULL(campaign.product_code,'') AS productCode,
+        IFNULL(service.service_name,'') AS serviceName,
+        IFNULL(commBrand.brand_name,'') AS commBrandName,
+        '' AS catalogName,
+        '' AS deviceNumber,
+        IFNULL(campaign.register,'') AS register,
+        CASE campaign.flag_vendor WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS flagVendor,
+        CASE campaign.flag_charge_agency WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS flagChargeAgency,
+        IFNULL(campaign.description,'') AS memo,
+        '' AS bandWidthDown,
+        '' AS bandWidthUp,
+        '' AS loginAccount,
+        '' AS loginPassword,
+        '' AS straightLineZipCode,
+        '' AS straightLineFlagCid,
+        '' AS straightLineFlagIpPhone,
+        '' AS straightLineFlagDdd,
+        '' AS straightLineFlagIdd,
+        '' AS trunkingZipCode,
+        '' AS trunkingFlagCid,
+        '' AS trunkingContainLines,
+        '' AS trunkingNumber,
+        '' AS trunkingDisplayNumber,
+        '' AS bandWidth,
+        '' AS storeNameWithA,
+        '' AS aPortType,
+        '' AS aBandWidth,
+        '' AS aLocalCode,
+        '' AS storeNameWithZ,
+        '' AS zPortType,
+        '' AS zBandWidth,
+        '' AS zLocalCode,
+        '' AS puk,
+        '' AS networkType,
+        '' AS useType,
+        '' AS capacity,
+        '' AS offLimitsOperator,
+        '' AS useRate,
+        '' AS mobileFlagDdd,
+        '' AS mobileFlagIdd,
+        IFNULL(date_format(payment.payment_start_date,'%Y-%c-%d'),'') AS paymentStartDate,
+        CONCAT(IFNULL(payment.payment_months,0),'个月') AS paymentMonths,
+        IFNULL(date_format(payment.payment_end_date,'%Y-%c-%d'),'') AS paymentEndDate,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAY_FREQUENCY' AND value = payment.pay_frequency),'') AS payFrequency,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'SETTLEMENT_TYPE' AND value = payment.payment_type),'') AS paymentType,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAYMENT_METHOD' AND value = payment.payment_method),'') AS paymentMethod,
+        CONCAT(IFNULL(payment.comm_period_fee,0),'') AS paymentCommPeriodFee,
+        CONCAT(IFNULL(payment.first_install_fee,0),'') AS paymentFirstInstallFee,
+        CONCAT(IFNULL(payment.fiber_device_fee,0),'') AS paymentFiberDeviceFee,
+        CONCAT(IFNULL(payment.fiber_fee,0),'') AS paymentFiberFee,
+        CONCAT(IFNULL(payment.tenement_one_time_fee,0),'') AS paymentTenementOneTimeFee,
+        CONCAT(IFNULL(payment.tenement_period_fee,0),'') AS paymentTenementPeriodFee,
+        IFNULL(date_format(charge.charge_start_date,'%Y-%c-%d'),'') AS chargeStartDate,
+        CONCAT(IFNULL(charge.charge_months,0),'个月') AS chargeMonths,
+        IFNULL(date_format(charge.charge_end_date,'%Y-%c-%d'),'') AS chargeEndDate,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAY_FREQUENCY' AND value = charge.pay_frequency),'') AS chargePayFrequency,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'SETTLEMENT_TYPE' AND value = charge.charge_type),'') AS chargeType,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAYMENT_METHOD' AND value = charge.payment_method),'') AS chargePaymentMethod,
+        CONCAT(IFNULL(charge.comm_period_fee,0),'') AS chargeCommPeriodFee,
+        CONCAT(IFNULL(charge.comm_one_time_fee,0),'') AS chargecommOneTimeFee,
+        CASE charge.flag_charge_agency WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS chargeFlagChargeAgency,
+        CONCAT(IFNULL(charge.fiber_fee,0),'') AS chargeFiberFee,
+        CONCAT(IFNULL(charge.tenement_one_time_fee,0),'') AS chargeTenementOneTimeFee,
+        CONCAT(IFNULL(charge.tenement_period_fee,0),'') AS chargeTenementPeriodFee,
+        '是' AS flagCampaign,
+        IFNULL(campaign.campaign_name,'') AS campaignName,
+        IFNULL(campaign.description,'') AS campaignDesc
+        FROM (SELECT
+        id,store_id,company_id,campaign_name,product_code,service_id,brand_id,register,flag_vendor,flag_charge_agency,description
+        FROM dmi_comm_product_marketing_campaign WHERE flag_deleted = 0 AND company_id = #{companyId,jdbcType=INTEGER}
+        <if test="commBrandId != 0">
+            AND brand_id = #{commBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+        <if test="storeId != 0">
+            AND store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test="productCode != null">
+            AND product_code like '%${productCode}%'
+        </if>) campaign
+        INNER JOIN (
+        (SELECT id,brand_id,building_id,store_name,building_code,floor,room_code,telephone,memo,address_id FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeFlagAvailable != null">
+            AND flag_available = #{storeFlagAvailable,jdbcType=BIT}
+        </if>) store LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (bif_building_address buildingAddr INNER JOIN (SELECT * FROM bif_building WHERE flag_deleted = 0
+        <if test="province != null">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON building.id = buildingAddr.building_id AND buildingAddr.flag_deleted = 0) ON buildingAddr.id = store.address_id
+        ) ON campaign.store_id = store.id
+        LEFT JOIN bif_communication_service service ON service.id = campaign.service_id
+        LEFT JOIN cfg_communication_brand commBrand ON commBrand.id = campaign.brand_id
+        LEFT JOIN dmi_comm_payment payment ON payment.object_id = campaign.id AND payment.object_type = 'CAMPAIGN' AND payment.flag_lastest = 1 AND
+        payment.flag_deleted = 0
+        LEFT JOIN dmi_comm_charge charge ON charge.object_id = campaign.id AND charge.object_type = 'CAMPAIGN' AND charge.flag_lastest = 1 AND charge.flag_deleted
+        = 0
+        <if test="chargeBeginDate != null or chargeEndDate != null">
+            <if test="chargeBeginDate != null">
+                AND charge.charge_start_date &gt;= #{chargeBeginDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="chargeEndDate != null">
+                AND charge.charge_start_date &lt;= #{chargeEndDate,jdbcType=TIMESTAMP}
+            </if>
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+    </select>
+
+    <select id="commListByDownload" resultType="com.teekee.waterdropservice.entity.ret.dmi.DmiCompanyInfo.CommListByDownloadRet"
+            parameterType="com.teekee.waterdropservice.entity.dto.dmi.DmiCompanyInfo.CommListDTO">
+        SELECT
+        IFNULL(companyBrand.brand_name,'') AS dmiBrandName,
+        IFNULL(store.store_name,'') AS storeName,
+        IFNULL(building.province,'') AS province,
+        CONCAT(building.province,building.city,building.district,buildingAddr.road,building.building_name,store.building_code,store.floor,store.room_code)
+        AS address,
+        IFNULL(store.telephone,'') AS telephone,
+        IFNULL(store.memo,'') AS storeMemo,
+        (SELECT count(0) FROM dmi_store_comm_product WHERE store_id = store.id AND flag_deleted = 0) AS productCount,
+        IFNULL(product.product_description,'') AS commName,
+        IFNULL(product.product_code,'') AS productCode,
+        IFNULL(service.service_name,'') AS serviceName,
+        IFNULL(commBrand.brand_name,'') AS commBrandName,
+        IFNULL(catalogInfo.catalog_name,'') AS catalogName,
+        IFNULL(product.device_number,'') AS deviceNumber,
+        IFNULL(product.register,'') AS register,
+        CASE product.flag_vendor WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS flagVendor,
+        CASE product.flag_charge_agency WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS flagChargeAgency,
+        IFNULL(product.memo,'') AS memo,
+        CONCAT(IFNULL(broadband.band_width_down,''),IFNULL(broadband.unit_band_width_down,'')) AS bandWidthDown,
+        CONCAT(IFNULL(broadband.band_width_up,''),IFNULL(broadband.unit_band_width_up,'')) AS bandWidthUp,
+        IFNULL(broadband.login_account,'') AS loginAccount,
+        IFNULL(broadband.login_password,'') AS loginPassword,
+        IFNULL(straightLine.zip_code,'') AS straightLineZipCode,
+        CASE straightLine.flag_cid WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS straightLineFlagCid,
+        CASE straightLine.flag_ip_phone WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS straightLineFlagIpPhone,
+        CASE straightLine.flag_ddd WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS straightLineFlagDdd,
+        CASE straightLine.flag_idd WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS straightLineFlagIdd,
+        IFNULL(trunking.zip_code,'') AS trunkingZipCode,
+        CASE trunking.flag_cid WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS trunkingFlagCid,
+        CONCAT(IFNULL(trunking.contain_lines,'')) AS trunkingContainLines,
+        CONCAT(IFNULL(trunking.number_begin,''),'~',IFNULL(trunking.number_end,'')) AS trunkingNumber,
+        IFNULL(trunking.display_number,'') AS trunkingDisplayNumber,
+        CONCAT(IFNULL(specialLine.band_width,''),IFNULL(specialLine.band_width_type,'')) AS bandWidth,
+        IFNULL((SELECT store_name FROM dmi_store WHERE id = specialLine.a_store_id),'') AS storeNameWithA,
+        IFNULL(specialLine.a_port_type,'') AS aPortType,
+        CONCAT(IFNULL(specialLine.a_band_width,''),IFNULL(specialLine.a_band_width_type,'')) AS aBandWidth,
+        IFNULL(specialLine.a_local_code,'') AS aLocalCode,
+        IFNULL((SELECT store_name FROM dmi_store WHERE id = specialLine.z_store_id),'') AS storeNameWithZ,
+        IFNULL(specialLine.z_port_type,'') AS zPortType,
+        CONCAT(IFNULL(specialLine.z_band_width,''),IFNULL(specialLine.z_band_width_type,'')) AS zBandWidth,
+        IFNULL(specialLine.z_local_code,'') AS zLocalCode,
+        IFNULL(mobile.puk,'') AS puk,
+        IFNULL(mobile.network_type,'') AS networkType,
+        CASE mobile.use_type WHEN 'flow' THEN '流量' WHEN 'voice' THEN '语音' ELSE '' END AS useType,
+        CONCAT(IFNULL(mobile.capacity,''),IFNULL(mobile.unit_band_width,'')) AS capacity,
+        CASE mobile.off_limits_operator WHEN 'continue' THEN '继续使用' WHEN 'shutdown' THEN '停机' ELSE '' END AS offLimitsOperator,
+        CASE mobile.use_rate WHEN 'onetime' THEN '一次性' WHEN 'monthly' THEN '按月' ELSE '' END AS useRate,
+        CASE mobile.flag_ddd WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS mobileFlagDdd,
+        CASE mobile.flag_idd WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS mobileFlagIdd,
+        IFNULL(date_format(payment.payment_start_date,'%Y-%c-%d'),'') AS paymentStartDate,
+        CONCAT(IFNULL(payment.payment_months,0),'个月') AS paymentMonths,
+        IFNULL(date_format(payment.payment_end_date,'%Y-%c-%d'),'') AS paymentEndDate,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAY_FREQUENCY' AND value = payment.pay_frequency),'') AS payFrequency,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'SETTLEMENT_TYPE' AND value = payment.payment_type),'') AS paymentType,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAYMENT_METHOD' AND value = payment.payment_method),'') AS paymentMethod,
+        CONCAT(IFNULL(payment.comm_period_fee,0),'') AS paymentCommPeriodFee,
+        CONCAT(IFNULL(payment.first_install_fee,0),'') AS paymentFirstInstallFee,
+        CONCAT(IFNULL(payment.fiber_device_fee,0),'') AS paymentFiberDeviceFee,
+        CONCAT(IFNULL(payment.fiber_fee,0),'') AS paymentFiberFee,
+        CONCAT(IFNULL(payment.tenement_one_time_fee,0),'') AS paymentTenementOneTimeFee,
+        CONCAT(IFNULL(payment.tenement_period_fee,0),'') AS paymentTenementPeriodFee,
+        IFNULL(date_format(charge.charge_start_date,'%Y-%c-%d'),'') AS chargeStartDate,
+        CONCAT(IFNULL(charge.charge_months,0),'个月') AS chargeMonths,
+        IFNULL(date_format(charge.charge_end_date,'%Y-%c-%d'),'') AS chargeEndDate,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAY_FREQUENCY' AND value = charge.pay_frequency),'') AS chargePayFrequency,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'SETTLEMENT_TYPE' AND value = charge.charge_type),'') AS chargeType,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAYMENT_METHOD' AND value = charge.payment_method),'') AS chargePaymentMethod,
+        CONCAT(IFNULL(charge.comm_period_fee,0),'') AS chargeCommPeriodFee,
+        CONCAT(IFNULL(charge.comm_one_time_fee,0),'') AS chargecommOneTimeFee,
+        CASE charge.flag_charge_agency WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS chargeFlagChargeAgency,
+        CONCAT(IFNULL(charge.fiber_fee,0),'') AS chargeFiberFee,
+        CONCAT(IFNULL(charge.tenement_one_time_fee,0),'') AS chargeTenementOneTimeFee,
+        CONCAT(IFNULL(charge.tenement_period_fee,0),'') AS chargeTenementPeriodFee,
+        '否' AS flagCampaign,
+        '' AS campaignName,
+        '' AS campaignDesc
+        FROM (SELECT
+        id,store_id,company_id,product_description,product_code,service_id,brand_id,catalog_id,device_number,register,flag_vendor,flag_charge_agency,
+        memo
+        FROM dmi_store_comm_product WHERE flag_deleted = 0
+        AND flag_independent = 1
+        AND company_id = #{companyId,jdbcType=INTEGER}
+        <if test="commBrandId != 0">
+            AND brand_id = #{commBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+        <if test="storeId != 0">
+            AND store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test="productCode != null">
+            AND product_code like '%${productCode}%'
+        </if>) product
+        INNER JOIN (
+        (SELECT id,brand_id,building_id,store_name,building_code,floor,room_code,telephone,memo,address_id FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeFlagAvailable != null">
+            AND flag_available = #{storeFlagAvailable,jdbcType=BIT}
+        </if>) store LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (bif_building_address buildingAddr INNER JOIN (SELECT * FROM bif_building WHERE flag_deleted = 0
+        <if test="province != null">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON building.id = buildingAddr.building_id AND buildingAddr.flag_deleted = 0) ON buildingAddr.id = store.address_id
+        ) ON product.store_id = store.id
+        LEFT JOIN bif_communication_service service ON service.id = product.service_id
+        LEFT JOIN cfg_communication_brand commBrand ON commBrand.id = product.brand_id
+        LEFT JOIN cfg_communication_type_catalog catalogInfo ON catalogInfo.id = product.catalog_id
+        LEFT JOIN dmi_comm_product_broadband broadband ON broadband.product_id = product.id
+        LEFT JOIN dmi_comm_product_straight_line straightLine ON straightLine.product_id = product.id
+        LEFT JOIN dmi_comm_product_trunking trunking ON trunking.product_id = product.id
+        LEFT JOIN dmi_comm_product_special_line specialLine ON specialLine.product_id = product.id
+        LEFT JOIN dmi_comm_product_mobile mobile ON mobile.product_id = product.id
+        LEFT JOIN dmi_comm_payment payment ON payment.object_id = product.id AND payment.object_type = 'PRODUCT' AND payment.flag_lastest = 1 AND
+        payment.flag_deleted = 0
+        LEFT JOIN dmi_comm_charge charge ON charge.object_id = product.id AND charge.object_type = 'PRODUCT' AND charge.flag_lastest = 1 AND charge.flag_deleted
+        = 0
+        <if test="chargeBeginDate != null or chargeEndDate != null">
+            <if test="chargeBeginDate != null">
+                AND charge.charge_start_date &gt;= #{chargeBeginDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="chargeEndDate != null">
+                AND charge.charge_start_date &lt;= #{chargeEndDate,jdbcType=TIMESTAMP}
+            </if>
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+        UNION
+        SELECT
+        IFNULL(companyBrand.brand_name,'') AS dmiBrandName,
+        IFNULL(store.store_name,'') AS storeName,
+        IFNULL(building.province,'') AS province,
+        CONCAT(building.province,building.city,building.district,buildingAddr.road,building.building_name,store.building_code,store.floor,store.room_code)
+        AS address,
+        IFNULL(store.telephone,'') AS telephone,
+        IFNULL(store.memo,'') AS storeMemo,
+        (SELECT count(0) FROM dmi_comm_product_marketing_campaign WHERE store_id = store.id AND flag_deleted = 0) AS productCount,
+        IFNULL(campaign.campaign_name,'') AS commName,
+        IFNULL(campaign.product_code,'') AS productCode,
+        IFNULL(service.service_name,'') AS serviceName,
+        IFNULL(commBrand.brand_name,'') AS commBrandName,
+        '' AS catalogName,
+        '' AS deviceNumber,
+        IFNULL(campaign.register,'') AS register,
+        CASE campaign.flag_vendor WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS flagVendor,
+        CASE campaign.flag_charge_agency WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE ''END AS flagChargeAgency,
+        IFNULL(campaign.description,'') AS memo,
+        '' AS bandWidthDown,
+        '' AS bandWidthUp,
+        '' AS loginAccount,
+        '' AS loginPassword,
+        '' AS straightLineZipCode,
+        '' AS straightLineFlagCid,
+        '' AS straightLineFlagIpPhone,
+        '' AS straightLineFlagDdd,
+        '' AS straightLineFlagIdd,
+        '' AS trunkingZipCode,
+        '' AS trunkingFlagCid,
+        '' AS trunkingContainLines,
+        '' AS trunkingNumber,
+        '' AS trunkingDisplayNumber,
+        '' AS bandWidth,
+        '' AS storeNameWithA,
+        '' AS aPortType,
+        '' AS aBandWidth,
+        '' AS aLocalCode,
+        '' AS storeNameWithZ,
+        '' AS zPortType,
+        '' AS zBandWidth,
+        '' AS zLocalCode,
+        '' AS puk,
+        '' AS networkType,
+        '' AS useType,
+        '' AS capacity,
+        '' AS offLimitsOperator,
+        '' AS useRate,
+        '' AS mobileFlagDdd,
+        '' AS mobileFlagIdd,
+        IFNULL(date_format(payment.payment_start_date,'%Y-%c-%d'),'') AS paymentStartDate,
+        CONCAT(IFNULL(payment.payment_months,0),'个月') AS paymentMonths,
+        IFNULL(date_format(payment.payment_end_date,'%Y-%c-%d'),'') AS paymentEndDate,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAY_FREQUENCY' AND value = payment.pay_frequency),'') AS payFrequency,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'SETTLEMENT_TYPE' AND value = payment.payment_type),'') AS paymentType,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAYMENT_METHOD' AND value = payment.payment_method),'') AS paymentMethod,
+        CONCAT(IFNULL(payment.comm_period_fee,0),'') AS paymentCommPeriodFee,
+        CONCAT(IFNULL(payment.first_install_fee,0),'') AS paymentFirstInstallFee,
+        CONCAT(IFNULL(payment.fiber_device_fee,0),'') AS paymentFiberDeviceFee,
+        CONCAT(IFNULL(payment.fiber_fee,0),'') AS paymentFiberFee,
+        CONCAT(IFNULL(payment.tenement_one_time_fee,0),'') AS paymentTenementOneTimeFee,
+        CONCAT(IFNULL(payment.tenement_period_fee,0),'') AS paymentTenementPeriodFee,
+        IFNULL(date_format(charge.charge_start_date,'%Y-%c-%d'),'') AS chargeStartDate,
+        CONCAT(IFNULL(charge.charge_months,0),'个月') AS chargeMonths,
+        IFNULL(date_format(charge.charge_end_date,'%Y-%c-%d'),'') AS chargeEndDate,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAY_FREQUENCY' AND value = charge.pay_frequency),'') AS chargePayFrequency,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'SETTLEMENT_TYPE' AND value = charge.charge_type),'') AS chargeType,
+        IFNULL((SELECT description FROM cfg_data_dictionary WHERE type = 'PAYMENT_METHOD' AND value = charge.payment_method),'') AS chargePaymentMethod,
+        CONCAT(IFNULL(charge.comm_period_fee,0),'') AS chargeCommPeriodFee,
+        CONCAT(IFNULL(charge.comm_one_time_fee,0),'') AS chargecommOneTimeFee,
+        CASE charge.flag_charge_agency WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS chargeFlagChargeAgency,
+        CONCAT(IFNULL(charge.fiber_fee,0),'') AS chargeFiberFee,
+        CONCAT(IFNULL(charge.tenement_one_time_fee,0),'') AS chargeTenementOneTimeFee,
+        CONCAT(IFNULL(charge.tenement_period_fee,0),'') AS chargeTenementPeriodFee,
+        '是' AS flagCampaign,
+        IFNULL(campaign.campaign_name,'') AS campaignName,
+        IFNULL(campaign.description,'') AS campaignDesc
+        FROM (SELECT
+        id,store_id,company_id,campaign_name,product_code,service_id,brand_id,register,flag_vendor,flag_charge_agency,description
+        FROM dmi_comm_product_marketing_campaign WHERE flag_deleted = 0 AND company_id = #{companyId,jdbcType=INTEGER}
+        <if test="commBrandId != 0">
+            AND brand_id = #{commBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+        <if test="storeId != 0">
+            AND store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test="productCode != null">
+            AND product_code like '%${productCode}%'
+        </if>) campaign
+        INNER JOIN (
+        (SELECT id,brand_id,building_id,store_name,building_code,floor,room_code,telephone,memo,address_id FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeFlagAvailable != null">
+            AND flag_available = #{storeFlagAvailable,jdbcType=BIT}
+        </if>) store LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (bif_building_address buildingAddr INNER JOIN (SELECT * FROM bif_building WHERE flag_deleted = 0
+        <if test="province != null">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON building.id = buildingAddr.building_id AND buildingAddr.flag_deleted = 0) ON buildingAddr.id = store.address_id
+        ) ON campaign.store_id = store.id
+        LEFT JOIN bif_communication_service service ON service.id = campaign.service_id
+        LEFT JOIN cfg_communication_brand commBrand ON commBrand.id = campaign.brand_id
+        LEFT JOIN dmi_comm_payment payment ON payment.object_id = campaign.id AND payment.object_type = 'CAMPAIGN' AND payment.flag_lastest = 1 AND
+        payment.flag_deleted = 0
+        LEFT JOIN dmi_comm_charge charge ON charge.object_id = campaign.id AND charge.object_type = 'CAMPAIGN' AND charge.flag_lastest = 1 AND charge.flag_deleted
+        = 0
+        <if test="chargeBeginDate != null or chargeEndDate != null">
+            <if test="chargeBeginDate != null">
+                AND charge.charge_start_date &gt;= #{chargeBeginDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="chargeEndDate != null">
+                AND charge.charge_start_date &lt;= #{chargeEndDate,jdbcType=TIMESTAMP}
+            </if>
+            AND charge.flag_lastest = 1 AND charge.flag_deleted = 0
+        </if>
+    </select>
+
+    <select id="selectVendorId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+
+        select vendor_id
+        from dmi_company_info
+        where id = #{id,jdbcType=INTEGER}
+
+    </select>
+
+    <select id="selectCompanyName" parameterType="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo" resultType="java.lang.String">
+
+        select company_name
+        from dmi_company_info
+        where  1=1
+        <if test="actObjectId != null">
+            AND id= #{actObjectId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectCompanyNameList" parameterType="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo" resultType="java.lang.String">
+
+        select company_name
+        from dmi_company_info
+        where  1=1
+        <if test="actObjectId != null">
+            AND vendor_id =#{actObjectId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectCompanyId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select id
+        from dmi_company_info
+        where company_name =#{companyName,jdbcType=VARCHAR}
+
+    </select>
+
+    <update id="updateCompanyToken" parameterType="com.teekee.waterdropservice.entity.bif.BifMd5CodePool">
+        update  dmi_company_info
+        <set>
+            <if test="md5Code != null">
+                company_token = #{md5Code,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{objectId,jdbcType=INTEGER}
+
+
+    </update>
+
+    <update id="updateCompanyUrl" parameterType="com.teekee.waterdropservice.entity.bif.BifMd5CodePool">
+
+        update  dmi_company_info
+        <set>
+            <if test="companyTokenImage != null">
+                company_token_image = #{companyTokenImage,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+
+    </update>
+
+    <select id="selectAll" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_company_info
+        where 1=1
+        and flag_deleted = 0
+    </select>
+
+    <select id="selectNoQrCodeCompany" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_company_info
+        where 1=1
+        and flag_deleted = 0
+        and (company_token is null or company_token_image is null)
+    </select>
+
+    <select id="companyList" resultMap="ResultMapWithBLOBs" >
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_company_info where flag_deleted = 0
+    </select>
+
+<!--获取当前关联公司-->
+    <select id="companyByUserList" parameterType="java.lang.String" resultType="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo" >
+        select
+        company.id, company.company_name companyName,
+        company.company_full_name companyFullName, company.website, company.contact_address contactAddress,
+        company.telephone, company.fax, company.business_license_id businessLicenseId,
+        company.logo_url logoUrl,company.vendor_id vendorId, company.flag_deleted flagDeleted,
+        company.flag_available flagAvailable,company.create_time createTime, company.create_person createPerson,
+        company.update_time updateTime, company.update_person updatePerson,company.company_token companyToken,
+        company.company_token_image companyTokenImage,company.flag_independence flagIndependence,users.id userId,users.username
+        from dmi_company_info company
+        LEFT JOIN sys_company_users users on users.company_id=company.id
+        where company.flag_deleted = 0 AND users.flag_admin=1
+        and find_in_set(company.id,#{relationCompanyIds,jdbcType=VARCHAR})
+        GROUP BY company.id
+    </select>
+
+
+    <!--根据公司名称查询-->
+    <select id="selectByCompanyName" parameterType="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo" resultMap="ResultMapWithBLOBs">
+
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from dmi_company_info
+        where flag_deleted = 0
+        and  company_name = #{companyName,jdbcType=VARCHAR}
+    </select>
+
+
+    <!--新增并获取自增主键-->
+    <insert id="insertGetId" parameterType="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo" keyProperty="id" useGeneratedKeys="true">
+        insert into dmi_company_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="companyFullName != null">
+                company_full_name,
+            </if>
+            <if test="website != null">
+                website,
+            </if>
+            <if test="contactAddress != null">
+                contact_address,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="fax != null">
+                fax,
+            </if>
+            <if test="businessLicenseId != null">
+                business_license_id,
+            </if>
+            <if test="logoUrl != null">
+                logo_url,
+            </if>
+            <if test="vendorId != null">
+                vendor_id,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+            <if test="createSource != null">
+                create_source,
+            </if>
+            <if test="sourceType != null">
+                source_type,
+            </if>
+            <if test="companyToken != null">
+                company_token,
+            </if>
+            <if test="companyTokenImage != null">
+                company_token_image,
+            </if>
+            create_time,
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            update_time,
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="flagIndependence != null">
+                flag_independence,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyFullName != null">
+                #{companyFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="website != null">
+                #{website,jdbcType=VARCHAR},
+            </if>
+            <if test="contactAddress != null">
+                #{contactAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="fax != null">
+                #{fax,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicenseId != null">
+                #{businessLicenseId,jdbcType=INTEGER},
+            </if>
+            <if test="logoUrl != null">
+                #{logoUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="vendorId != null">
+                #{vendorId,jdbcType=INTEGER},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="createSource != null">
+                #{createSource,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                #{sourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="companyToken != null">
+                #{companyToken,jdbcType=VARCHAR},
+            </if>
+            <if test="companyTokenImage != null">
+                #{companyTokenImage,jdbcType=VARCHAR},
+            </if>
+            NOW(),
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            NOW(),
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="flagIndependence != null">
+                #{flagIndependence,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+
+
+
+    <select id="findAll" parameterType="com.teekee.waterdropservice.entity.dmi.DmiCompanyInfo" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from dmi_company_info
+        where flag_deleted = 0
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="companyName != null">
+            and LOCATE(#{companyName,jdbcType=VARCHAR}, company_name)>0
+        </if>
+        <if test="companyFullName != null">
+            and LOCATE(#{companyFullName,jdbcType=VARCHAR}, company_full_name)>0
+        </if>
+        <if test="website != null">
+            and website = #{website,jdbcType=VARCHAR}
+        </if>
+        <if test="contactAddress != null">
+            and LOCATE(#{contactAddress,jdbcType=VARCHAR}, contact_address)>0
+        </if>
+        <if test="telephone != null">
+            and LOCATE(#{telephone,jdbcType=VARCHAR}, telephone)>0
+        </if>
+        <if test="fax != null">
+            and LOCATE(#{fax,jdbcType=VARCHAR}, fax)>0
+        </if>
+        <if test="businessLicenseId != null">
+            and business_license_id = #{businessLicenseId,jdbcType=INTEGER}
+        </if>
+        <if test="logoUrl != null">
+            and logo_url = #{logoUrl,jdbcType=VARCHAR}
+        </if>
+        <if test="vendorId != null">
+            and vendor_id = #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="flagAvailable != null">
+            and flag_available = #{flagAvailable,jdbcType=BIT}
+        </if>
+        <if test="createSource != null">
+            and create_source = #{createSource,jdbcType=VARCHAR}
+        </if>
+        <if test="sourceType != null">
+            and LOCATE(#{sourceType,jdbcType=VARCHAR}, source_type)>0
+        </if>
+        <if test="companyToken != null">
+            and company_token = #{companyToken,jdbcType=VARCHAR}
+        </if>
+        <if test="companyTokenImage != null">
+            and company_token_image = #{companyTokenImage,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null">
+            and (TO_DAYS(create_time)=TO_DAYS(#{createTime,jdbcType=TIMESTAMP}))=1
+        </if>
+        <if test="createPerson != null">
+            and create_person = #{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="updateTime != null">
+            and (TO_DAYS(update_time)=TO_DAYS(#{updateTime,jdbcType=TIMESTAMP}))=1
+        </if>
+        <if test="updatePerson != null">
+            and update_person = #{updatePerson,jdbcType=INTEGER}
+        </if>
+        <if test="memo != null">
+            and LOCATE(#{memo,jdbcType=VARCHAR}, memo)>0
+        </if>
+        <if test="flagIndependence != null">
+            and flag_independence = #{flagIndependence,jdbcType=BIT}
+        </if>
+    </select>
+
+</mapper>

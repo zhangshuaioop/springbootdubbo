@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teekee.waterdropservice.mapper.wp.WpProcessMapper">
+  <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.wp.WpProcess">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="frame_process_id" jdbcType="INTEGER" property="frameProcessId" />
+    <result column="process_cfg_id" jdbcType="INTEGER" property="processCfgId" />
+    <result column="version_id" jdbcType="INTEGER" property="versionId" />
+    <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
+    <result column="create_person" jdbcType="INTEGER" property="createPerson" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, frame_process_id, process_cfg_id, version_id, flag_deleted, create_person, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from wp_process
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from wp_process
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.teekee.waterdropservice.entity.wp.WpProcess">
+    insert into wp_process (id, frame_process_id, process_cfg_id, 
+      version_id, flag_deleted, create_person, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{frameProcessId,jdbcType=INTEGER}, #{processCfgId,jdbcType=INTEGER}, 
+      #{versionId,jdbcType=INTEGER}, #{flagDeleted,jdbcType=BIT}, #{createPerson,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.wp.WpProcess">
+    insert into wp_process
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="frameProcessId != null">
+        frame_process_id,
+      </if>
+      <if test="processCfgId != null">
+        process_cfg_id,
+      </if>
+      <if test="versionId != null">
+        version_id,
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted,
+      </if>
+      <if test="createPerson != null">
+        create_person,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="frameProcessId != null">
+        #{frameProcessId,jdbcType=INTEGER},
+      </if>
+      <if test="processCfgId != null">
+        #{processCfgId,jdbcType=INTEGER},
+      </if>
+      <if test="versionId != null">
+        #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createPerson != null">
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.wp.WpProcess">
+    update wp_process
+    <set>
+      <if test="frameProcessId != null">
+        frame_process_id = #{frameProcessId,jdbcType=INTEGER},
+      </if>
+      <if test="processCfgId != null">
+        process_cfg_id = #{processCfgId,jdbcType=INTEGER},
+      </if>
+      <if test="versionId != null">
+        version_id = #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.teekee.waterdropservice.entity.wp.WpProcess">
+    update wp_process
+    set frame_process_id = #{frameProcessId,jdbcType=INTEGER},
+      process_cfg_id = #{processCfgId,jdbcType=INTEGER},
+      version_id = #{versionId,jdbcType=INTEGER},
+      flag_deleted = #{flagDeleted,jdbcType=BIT},
+      create_person = #{createPerson,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

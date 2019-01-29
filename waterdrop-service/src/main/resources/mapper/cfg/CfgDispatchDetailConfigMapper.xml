@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.cfg.CfgDispatchDetailConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.cfg.CfgDispatchDetailConfig" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="model_id" property="modelId" jdbcType="INTEGER" />
+    <result column="catalog_name" property="catalogName" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, catalog_name, level, parent_id, order_id, description,model_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cfg_dispatch_detail_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.cfg.CfgDispatchDetailConfig" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+      SELECT
+      LAST_INSERT_ID()
+    </selectKey>
+    insert into cfg_dispatch_detail_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="modelId != null" >
+        model_id,
+      </if>
+      <if test="catalogName != null" >
+        catalog_name,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        #{modelId,jdbcType=INTEGER},
+      </if>
+      <if test="catalogName != null" >
+        #{catalogName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.cfg.CfgDispatchDetailConfig" >
+    update cfg_dispatch_detail_config
+    <set >
+      <if test="dispatchType != null" >
+        dispatch_type = #{dispatchType,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="catalogName != null" >
+        catalog_name = #{catalogName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 根据ModelId查询详细的派工配置 -->
+  <select id="selectDispatchConfigByModelId" resultType="com.teekee.waterdropservice.entity.cfg.CfgDispatchDetailConfig" parameterType="java.lang.Integer">
+    SELECT
+    config.id,
+    config.title,
+    config.catalog_name catalogName,
+    config.level,
+    config.parent_id parentId,
+    config.order_id orderId,
+    config.description,
+    config.model_id modelId,
+    model.dispatch_type dispatchType
+    FROM cfg_dispatch_detail_config config
+    LEFT JOIN cfg_dispatch_detail_model AS model ON model.id = config.model_id
+    WHERE
+    config.model_id = #{modelId,jdbcType=INTEGER}
+    ORDER BY
+    config.level,
+    config.parent_id,
+    config.order_id
+    ASC
+  </select>
+  <!--通过useriId，派工类型查询父级-->
+  <select id="basicList" resultType="com.teekee.waterdropservice.entity.cfg.CfgDispatchDetailConfig" parameterType="com.teekee.waterdropservice.entity.cfg.CfgDispatchDetailModel">
+     SELECT
+    cfg.id,
+    cfg.title,
+    cfg.model_id modelId,
+    cfg.catalog_name catalogName,
+    cfg.level,
+    cfg.parent_id parentId,
+    cfg.order_id orderId,
+    cfg.description
+    FROM
+    cfg_dispatch_detail_config AS cfg
+    LEFT JOIN cfg_dispatch_detail_model AS model ON model.id = cfg.model_id
+    WHERE
+    model.id = ( SELECT MAX( id ) FROM cfg_dispatch_detail_model
+    where 1=1
+    <if test="dispatchType != null" >
+     and dispatch_type = #{dispatchType,jdbcType=VARCHAR}
+    </if>
+    <if test="modelUserType != null" >
+      and model_user_type = #{modelUserType,jdbcType=VARCHAR}
+    </if>
+    <if test="companyId != null and companyId !=0" >
+     and company_id = #{companyId,jdbcType=INTEGER}
+    </if>
+	)
+    AND cfg.level = 1
+  </select>
+  <!--通过parentId查询相对应子集-->
+  <select id="childList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cfg_dispatch_detail_config
+    where  parent_id = #{id,jdbcType=INTEGER}
+  </select>
+<!--通过id查询config-->
+  <select id="selectListById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+        *
+    FROM
+        cfg_dispatch_detail_config
+    WHERE
+        id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>

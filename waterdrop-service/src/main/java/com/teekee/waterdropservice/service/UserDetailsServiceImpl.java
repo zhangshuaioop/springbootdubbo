@@ -1,0 +1,59 @@
+package com.teekee.waterdropservice.service;
+
+import com.teekee.waterdropservice.entity.sys.JwtUser;
+import com.teekee.waterdropservice.entity.sys.SysCompanyPermission;
+import com.teekee.waterdropservice.entity.sys.SysCompanyUsers;
+import com.teekee.waterdropservice.entity.sys.response.SysCompanyPermissionRes;
+import com.teekee.waterdropservice.service.sys.SysCompanyPermissionService;
+import com.teekee.waterdropservice.service.sys.SysCompanyUsersService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
+/**
+ * Created by echisan on 2018/6/23
+ */
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+
+    @Autowired
+    private SysCompanyUsersService sysCompanyUsersService;
+
+    @Autowired
+    private SysCompanyPermissionService sysCompanyPermissionService;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        SysCompanyUsers sysCompanyUsers = sysCompanyUsersService.findUserName(username);
+
+        if(sysCompanyUsers == null){
+            throw new UsernameNotFoundException("用户名："+ username + "不存在！");
+        }
+        Collection<SimpleGrantedAuthority> collection = new HashSet<SimpleGrantedAuthority>();
+        SysCompanyPermission sysCompanyPermission = new SysCompanyPermission();
+        sysCompanyPermission.setCompanyId(sysCompanyUsers.getCompanyId());
+        sysCompanyPermission.setUserId(sysCompanyUsers.getId());
+        List<SysCompanyPermissionRes> permissions = sysCompanyPermissionService.findPermission(sysCompanyPermission);
+
+//        SysCompanyUserRoleRelation sysCompanyUserRoleRelation = new SysCompanyUserRoleRelation();
+//        sysCompanyUserRoleRelation.setCompanyId(sysCompanyUsers.getCompanyId());
+//        sysCompanyUserRoleRelation.setUserId(sysCompanyUsers.getId());
+//        List<SysCompanyUserRoleRelation> roleList = sysCompanyUserRoleRelationService.findRole(sysCompanyUserRoleRelation);
+
+        for (SysCompanyPermissionRes permission: permissions) {
+            collection.add(new SimpleGrantedAuthority(permission.getMeta().getTitle()));
+        }
+        sysCompanyUsers.setAuthorities(collection);
+        return new JwtUser(sysCompanyUsers);
+    }
+
+}

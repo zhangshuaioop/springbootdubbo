@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.bif.BifDeviceMapper">
+    <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.bif.BifDevice">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="device_sn" property="deviceSn" jdbcType="VARCHAR"/>
+        <result column="brand" property="brand" jdbcType="VARCHAR"/>
+        <result column="model" property="model" jdbcType="VARCHAR"/>
+        <result column="model_id" property="modelId" jdbcType="INTEGER"/>
+        <result column="catalog_id" property="catalogId" jdbcType="INTEGER"/>
+        <result column="tech_param" property="techParam" jdbcType="VARCHAR"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_usable" property="flagUsable" jdbcType="BIT"/>
+        <result column="flag_warranty" property="flagWarranty" jdbcType="BIT"/>
+        <result column="warranty_expire_date" property="warrantyExpireDate" jdbcType="TIMESTAMP"/>
+        <result column="use_expire_date" property="useExpireDate" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_person" property="createPerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.teekee.waterdropservice.entity.bif.BifDevice" extends="BaseResultMap">
+        <result column="memo" property="memo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, device_name, device_sn, brand, model, model_id, catalog_id, tech_param, flag_deleted, 
+    flag_usable, flag_warranty, warranty_expire_date, use_expire_date, create_time, create_person, 
+    update_time, update_person
+  </sql>
+    <sql id="Blob_Column_List">
+    memo
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from bif_device
+        where id = #{id,jdbcType=INTEGER} AND flag_deleted = 0
+    </select>
+    <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.bif.BifDevice">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into bif_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deviceName != null">
+                device_name,
+            </if>
+            <if test="deviceSn != null">
+                device_sn,
+            </if>
+            <if test="brand != null">
+                brand,
+            </if>
+            <if test="model != null">
+                model,
+            </if>
+            <if test="modelId != null">
+                model_id,
+            </if>
+            <if test="catalogId != null">
+                catalog_id,
+            </if>
+            <if test="techParam != null">
+                tech_param,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagUsable != null">
+                flag_usable,
+            </if>
+            <if test="flagWarranty != null">
+                flag_warranty,
+            </if>
+            <if test="warrantyExpireDate != null">
+                warranty_expire_date,
+            </if>
+            <if test="useExpireDate != null">
+                use_expire_date,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="deviceName != null">
+                #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceSn != null">
+                #{deviceSn,jdbcType=VARCHAR},
+            </if>
+            <if test="brand != null">
+                #{brand,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null">
+                #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="modelId != null">
+                #{modelId,jdbcType=INTEGER},
+            </if>
+            <if test="catalogId != null">
+                #{catalogId,jdbcType=INTEGER},
+            </if>
+            <if test="techParam != null">
+                #{techParam,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagUsable != null">
+                #{flagUsable,jdbcType=BIT},
+            </if>
+            <if test="flagWarranty != null">
+                #{flagWarranty,jdbcType=BIT},
+            </if>
+            <if test="warrantyExpireDate != null">
+                #{warrantyExpireDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="useExpireDate != null">
+                #{useExpireDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.bif.BifDevice">
+        update bif_device
+        <set>
+            <if test="deviceName != null">
+                device_name = #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceSn != null">
+                device_sn = #{deviceSn,jdbcType=VARCHAR},
+            </if>
+            <if test="brand != null">
+                brand = #{brand,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null">
+                model = #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="modelId != null">
+                model_id = #{modelId,jdbcType=INTEGER},
+            </if>
+            <if test="catalogId != null">
+                catalog_id = #{catalogId,jdbcType=INTEGER},
+            </if>
+            <if test="techParam != null">
+                tech_param = #{techParam,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagUsable != null">
+                flag_usable = #{flagUsable,jdbcType=BIT},
+            </if>
+            <if test="flagWarranty != null">
+                flag_warranty = #{flagWarranty,jdbcType=BIT},
+            </if>
+            <if test="warrantyExpireDate != null">
+                warranty_expire_date = #{warrantyExpireDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="useExpireDate != null">
+                use_expire_date = #{useExpireDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="queryListByObject" resultType="com.teekee.waterdropservice.entity.bif.BifDeviceRet"
+            parameterType="com.teekee.waterdropservice.entity.bif.BifDeviceInputParam">
+        select
+        device.id AS id,
+        device.device_name AS deviceName,
+        device.brand AS brand,
+        device.model AS model,
+        device.update_time AS updateTime,
+        device.create_time AS createTime,
+        deviceTypeCatalog.catalog_name AS catalogName,
+        device.device_sn AS deviceSn,
+        CASE device.flag_usable WHEN 1 THEN '使用中' ELSE '已停用' END AS status
+        from (SELECT * FROM bif_device WHERE flag_deleted = 0
+        <if test=" brandId!=null and brandId != 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id IN (
+            SELECT id FROM bif_device_series WHERE brand_id = #{brandId,jdbcType=INTEGER}))
+        </if>
+        <if test="seriesId !=null and seriesId != 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id = #{seriesId,jdbcType=INTEGER})
+        </if>
+        <if test="modelId !=null and modelId != 0 ">
+            and model_id = #{modelId,jdbcType=INTEGER}
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device_sn like '%${deviceSn}%'
+        </if>
+        <if test="createTimeMin != null">
+            and create_time &gt;= #{createTimeMin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createTimeMax != null">
+            and create_time &lt;= #{createTimeMax,jdbcType=TIMESTAMP}
+        </if>
+        <if test="flagUsable != null">
+            and flag_usable =#{flagUsable,jdbcType=BIT}
+        </if>
+        <if test="catalogId !=null and catalogId != 0">
+            and catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        ) device
+        INNER JOIN cfg_device_type_catalog deviceTypeCatalog ON deviceTypeCatalog.id = device.catalog_id
+        order by device.update_time desc
+    </select>
+
+
+    <select id="queryListByCompanyIdAndObjectForStore" resultType="com.teekee.waterdropservice.entity.bif.BifDeviceListDownloadRet"
+            parameterType="com.teekee.waterdropservice.entity.bif.BifDeviceInputParam">
+        select
+        IFNULL(device.device_name,'') AS deviceName,
+        IFNULL(device.device_sn,'') AS deviceSn,
+        IFNULL(device.brand,'') AS brand,
+        IFNULL((SELECT s.series_name FROM bif_device_series s, bif_device_model m WHERE m.id = device.model_id AND m.series_id = s.id),'') AS series,
+        IFNULL(device.model,'') AS model,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN ''
+        WHEN 3 then deviceTypeCatalog.catalog_name
+        else '' end as threeLevelCatalog,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 3 then (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        else '' end as twoLevelCatalog,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN (SELECT parent_id from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 3 then (SELECT parent_id from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        else '' end as 'fir_id',
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 2 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        WHEN 3 then (select catalog_name from cfg_device_type_catalog where id = fir_id)
+        else '' end as oneLevelCatalog,
+        IFNULL(device.tech_param,'') AS techParam,
+        CASE device.flag_usable WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagUsable,
+        IFNULL(date_format(device.use_expire_date,'%Y-%c-%d'),'') AS useExpireDate,
+        IFNULL(device.memo,'') AS deviceBaseInfoMemo,
+        IFNULL(deviceCompanyRelation.asset_sn,'') AS assetSn,
+        IFNULL((SELECT company_name FROM bif_supply_company WHERE id = deviceCompanyRelation.supply_company_id),'')AS supplyCompany,
+        IFNULL(date_format(deviceCompanyRelation.purchase_date,'%Y-%c-%d'),'') AS purchaseDate,
+        CONCAT(IFNULL(deviceCompanyRelation.purchase_price,0),'') AS purchasePrice,
+        CASE device.flag_warranty WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagWarranty,
+        IFNULL(date_format(device.warranty_expire_date,'%Y-%c-%d'),'') AS warrantyExpireDate,
+        IFNULL(deviceCompanyRelation.memo,'') AS deviceAssetMemo,
+        CASE deviceCompanyRelation.flag_assign WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagAssign,
+        IFNULL(date_format(deviceAssign.assign_date,'%Y-%c-%d'),'') AS assignDate,
+        CASE deviceAssign.assign_type WHEN 'PERSON' THEN '员工' WHEN 'STORE' THEN '门店' WHEN 'ORG' THEN '部门' ELSE '' END AS assignType,
+        CASE deviceAssign.assign_type
+        WHEN 'PERSON' THEN (SELECT employee_name FROM dmi_employee WHERE id = deviceAssign.assigned_employee_id)
+        WHEN 'STORE' THEN (SELECT store_name FROM dmi_store WHERE id = deviceAssign.assigned_section_id)
+        WHEN 'ORG' THEN (SELECT organization_name FROM dmi_organization WHERE id = deviceAssign.assigned_section_id)
+        ELSE '' END AS assignUserName
+        from (SELECT * FROM bif_device WHERE flag_deleted = 0
+        <if test="brandId != 0 and seriesId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id IN (
+            SELECT id FROM bif_device_series WHERE brand_id = #{brandId,jdbcType=INTEGER}))
+        </if>
+        <if test="seriesId != 0 and modelId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id = #{seriesId,jdbcType=INTEGER})
+        </if>
+        <if test="modelId != 0">
+            and model_id = #{modelId,jdbcType=INTEGER}
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device_sn like '%${deviceSn}%'
+        </if>
+        <if test="catalogId != 0">
+            and catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        <if test="flagWarranty != null">
+            AND flag_warranty =#{flagWarranty,jdbcType=BIT}
+        </if>
+        <if test="flagUsable != null">
+            AND flag_usable =#{flagUsable,jdbcType=BIT}
+        </if>) device
+        INNER JOIN cfg_device_type_catalog deviceTypeCatalog ON deviceTypeCatalog.id = device.catalog_id
+        INNER JOIN dmi_device_company_relation deviceCompanyRelation ON deviceCompanyRelation.device_id = device.id AND deviceCompanyRelation.flag_deleted = 0
+        AND deviceCompanyRelation.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="assetSn != null">
+            AND deviceCompanyRelation.asset_sn like '%${assetSn}%'
+        </if>
+        <if test="flagAssign != null">
+            AND deviceCompanyRelation.flag_assign =#{flagAssign,jdbcType=BIT}
+        </if>
+        <if test="purchaseDateMin != null">
+            and deviceCompanyRelation.purchase_date &gt;= #{purchaseDateMin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="purchaseDateMax != null">
+            and deviceCompanyRelation.purchase_date &lt;= #{purchaseDateMax,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_device_assign deviceAssign
+        INNER JOIN dmi_store store ON store.id = deviceAssign.assigned_section_id) ON device.id = deviceAssign.device_id
+        AND deviceAssign.assign_type = 'STORE'
+        AND deviceAssign.device_company_id = #{companyId,jdbcType=INTEGER}
+        AND deviceAssign.assigned_section_id = #{typeId,jdbcType=INTEGER}
+        AND deviceAssign.flag_deleted = 0
+    </select>
+
+    <select id="queryListByCompanyIdAndObjectForOrg" resultType="com.teekee.waterdropservice.entity.bif.BifDeviceListDownloadRet"
+            parameterType="com.teekee.waterdropservice.entity.bif.BifDeviceInputParam">
+        select
+        IFNULL(device.device_name,'') AS deviceName,
+        IFNULL(device.device_sn,'') AS deviceSn,
+        IFNULL(device.brand,'') AS brand,
+        IFNULL((SELECT s.series_name FROM bif_device_series s, bif_device_model m WHERE m.id = device.model_id AND m.series_id = s.id),'') AS series,
+        IFNULL(device.model,'') AS model,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN ''
+        WHEN 3 then deviceTypeCatalog.catalog_name
+        else '' end as threeLevelCatalog,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 3 then (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        else '' end as twoLevelCatalog,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN (SELECT parent_id from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 3 then (SELECT parent_id from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        else '' end as 'fir_id',
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 2 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        WHEN 3 then (select catalog_name from cfg_device_type_catalog where id = fir_id)
+        else '' end as oneLevelCatalog,
+        IFNULL(device.tech_param,'') AS techParam,
+        CASE device.flag_usable WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagUsable,
+        IFNULL(date_format(device.use_expire_date,'%Y-%c-%d'),'') AS useExpireDate,
+        IFNULL(device.memo,'') AS deviceBaseInfoMemo,
+        IFNULL(deviceCompanyRelation.asset_sn,'') AS assetSn,
+        IFNULL((SELECT company_name FROM bif_supply_company WHERE id = deviceCompanyRelation.supply_company_id),'')AS supplyCompany,
+        IFNULL(date_format(deviceCompanyRelation.purchase_date,'%Y-%c-%d'),'') AS purchaseDate,
+        CONCAT(IFNULL(deviceCompanyRelation.purchase_price,0),'') AS purchasePrice,
+        CASE device.flag_warranty WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagWarranty,
+        IFNULL(date_format(device.warranty_expire_date,'%Y-%c-%d'),'') AS warrantyExpireDate,
+        IFNULL(deviceCompanyRelation.memo,'') AS deviceAssetMemo,
+        CASE deviceCompanyRelation.flag_assign WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagAssign,
+        IFNULL(date_format(deviceAssign.assign_date,'%Y-%c-%d'),'') AS assignDate,
+        CASE deviceAssign.assign_type WHEN 'PERSON' THEN '员工' WHEN 'STORE' THEN '门店' WHEN 'ORG' THEN '部门' ELSE '' END AS assignType,
+        CASE deviceAssign.assign_type
+        WHEN 'PERSON' THEN (SELECT employee_name FROM dmi_employee WHERE id = deviceAssign.assigned_employee_id)
+        WHEN 'STORE' THEN (SELECT store_name FROM dmi_store WHERE id = deviceAssign.assigned_section_id)
+        WHEN 'ORG' THEN (SELECT organization_name FROM dmi_organization WHERE id = deviceAssign.assigned_section_id)
+        ELSE '' END AS assignUserName
+        from (SELECT * FROM bif_device WHERE flag_deleted = 0
+        <if test="brandId != 0 and seriesId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id IN (
+            SELECT id FROM bif_device_series WHERE brand_id = #{brandId,jdbcType=INTEGER}))
+        </if>
+        <if test="seriesId != 0 and modelId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id = #{seriesId,jdbcType=INTEGER})
+        </if>
+        <if test="modelId != 0">
+            and model_id = #{modelId,jdbcType=INTEGER}
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device_sn like '%${deviceSn}%'
+        </if>
+        <if test="catalogId != 0">
+            and catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        <if test="flagWarranty != null">
+            AND flag_warranty =#{flagWarranty,jdbcType=BIT}
+        </if>
+        <if test="flagUsable != null">
+            AND flag_usable =#{flagUsable,jdbcType=BIT}
+        </if>) device
+        INNER JOIN cfg_device_type_catalog deviceTypeCatalog ON deviceTypeCatalog.id = device.catalog_id
+        INNER JOIN dmi_device_company_relation deviceCompanyRelation ON deviceCompanyRelation.device_id = device.id AND deviceCompanyRelation.flag_deleted = 0
+        AND deviceCompanyRelation.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="assetSn != null">
+            AND deviceCompanyRelation.asset_sn like '%${assetSn}%'
+        </if>
+        <if test="flagAssign != null">
+            AND deviceCompanyRelation.flag_assign =#{flagAssign,jdbcType=BIT}
+        </if>
+        <if test="purchaseDateMin != null">
+            and deviceCompanyRelation.purchase_date &gt;= #{purchaseDateMin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="purchaseDateMax != null">
+            and deviceCompanyRelation.purchase_date &lt;= #{purchaseDateMax,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_device_assign deviceAssign
+        INNER JOIN dmi_organization organization ON organization.id = deviceAssign.assigned_section_id) ON device.id = deviceAssign.device_id
+        AND deviceAssign.assign_type = 'ORG'
+        AND deviceAssign.device_company_id = #{companyId,jdbcType=INTEGER}
+        AND deviceAssign.assigned_section_id = #{typeId,jdbcType=INTEGER}
+        AND deviceAssign.flag_deleted = 0
+    </select>
+
+    <select id="queryListByCompanyIdAndObjectForPerson" resultType="com.teekee.waterdropservice.entity.bif.BifDeviceListDownloadRet"
+            parameterType="com.teekee.waterdropservice.entity.bif.BifDeviceInputParam">
+        select
+        IFNULL(device.device_name,'') AS deviceName,
+        IFNULL(device.device_sn,'') AS deviceSn,
+        IFNULL(device.brand,'') AS brand,
+        IFNULL((SELECT s.series_name FROM bif_device_series s, bif_device_model m WHERE m.id = device.model_id AND m.series_id = s.id),'') AS series,
+        IFNULL(device.model,'') AS model,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN ''
+        WHEN 3 then deviceTypeCatalog.catalog_name
+        else '' end as threeLevelCatalog,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 3 then (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        else '' end as twoLevelCatalog,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN (SELECT parent_id from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 3 then (SELECT parent_id from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        else '' end as 'fir_id',
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 2 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        WHEN 3 then (select catalog_name from cfg_device_type_catalog where id = fir_id)
+        else '' end as oneLevelCatalog,
+        IFNULL(device.tech_param,'') AS techParam,
+        CASE device.flag_usable WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagUsable,
+        IFNULL(date_format(device.use_expire_date,'%Y-%c-%d'),'') AS useExpireDate,
+        IFNULL(device.memo,'') AS deviceBaseInfoMemo,
+        IFNULL(deviceCompanyRelation.asset_sn,'') AS assetSn,
+        IFNULL((SELECT company_name FROM bif_supply_company WHERE id = deviceCompanyRelation.supply_company_id),'')AS supplyCompany,
+        IFNULL(date_format(deviceCompanyRelation.purchase_date,'%Y-%c-%d'),'') AS purchaseDate,
+        CONCAT(IFNULL(deviceCompanyRelation.purchase_price,0),'') AS purchasePrice,
+        CASE device.flag_warranty WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagWarranty,
+        IFNULL(date_format(device.warranty_expire_date,'%Y-%c-%d'),'') AS warrantyExpireDate,
+        IFNULL(deviceCompanyRelation.memo,'') AS deviceAssetMemo,
+        CASE deviceCompanyRelation.flag_assign WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagAssign,
+        IFNULL(date_format(deviceAssign.assign_date,'%Y-%c-%d'),'') AS assignDate,
+        CASE deviceAssign.assign_type WHEN 'PERSON' THEN '员工' WHEN 'STORE' THEN '门店' WHEN 'ORG' THEN '部门' ELSE '' END AS assignType,
+        CASE deviceAssign.assign_type
+        WHEN 'PERSON' THEN (SELECT employee_name FROM dmi_employee WHERE id = deviceAssign.assigned_employee_id)
+        WHEN 'STORE' THEN (SELECT store_name FROM dmi_store WHERE id = deviceAssign.assigned_section_id)
+        WHEN 'ORG' THEN (SELECT organization_name FROM dmi_organization WHERE id = deviceAssign.assigned_section_id)
+        ELSE '' END AS assignUserName
+        from (SELECT * FROM bif_device WHERE flag_deleted = 0
+        <if test="brandId != 0 and seriesId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id IN (
+            SELECT id FROM bif_device_series WHERE brand_id = #{brandId,jdbcType=INTEGER}))
+        </if>
+        <if test="seriesId != 0 and modelId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id = #{seriesId,jdbcType=INTEGER})
+        </if>
+        <if test="modelId != 0">
+            and model_id = #{modelId,jdbcType=INTEGER}
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device_sn like '%${deviceSn}%'
+        </if>
+        <if test="catalogId != 0">
+            and catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        <if test="flagWarranty != null">
+            AND flag_warranty =#{flagWarranty,jdbcType=BIT}
+        </if>
+        <if test="flagUsable != null">
+            AND flag_usable =#{flagUsable,jdbcType=BIT}
+        </if>) device
+        INNER JOIN cfg_device_type_catalog deviceTypeCatalog ON deviceTypeCatalog.id = device.catalog_id
+        INNER JOIN dmi_device_company_relation deviceCompanyRelation ON deviceCompanyRelation.device_id = device.id AND deviceCompanyRelation.flag_deleted = 0
+        AND deviceCompanyRelation.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="assetSn != null">
+            AND deviceCompanyRelation.asset_sn like '%${assetSn}%'
+        </if>
+        <if test="flagAssign != null">
+            AND deviceCompanyRelation.flag_assign =#{flagAssign,jdbcType=BIT}
+        </if>
+        <if test="purchaseDateMin != null">
+            and deviceCompanyRelation.purchase_date &gt;= #{purchaseDateMin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="purchaseDateMax != null">
+            and deviceCompanyRelation.purchase_date &lt;= #{purchaseDateMax,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_device_assign deviceAssign INNER JOIN dmi_employee employee ON employee.id = deviceAssign.assigned_employee_id)
+        ON device.id = deviceAssign.device_id
+        AND deviceAssign.assign_type = 'PERSON'
+        AND deviceAssign.device_company_id = #{companyId,jdbcType=INTEGER}
+        AND deviceAssign.flag_deleted = 0
+        <if test="personIdList != null">
+            AND deviceAssign.assigned_employee_id IN
+            <foreach item="personId" index="index" collection="personIdList" open="(" separator="," close=")">
+                #{personId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="queryListByCompanyIdAndObject" resultType="com.teekee.waterdropservice.entity.bif.BifDeviceListDownloadRet"
+            parameterType="com.teekee.waterdropservice.entity.bif.BifDeviceInputParam">
+        select
+        IFNULL(device.device_name,'') AS deviceName,
+        IFNULL(device.device_sn,'') AS deviceSn,
+        IFNULL(device.brand,'') AS brand,
+        IFNULL((SELECT s.series_name FROM bif_device_series s, bif_device_model m WHERE m.id = device.model_id AND m.series_id = s.id),'') AS series,
+        IFNULL(device.model,'') AS model,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN ''
+        WHEN 3 then deviceTypeCatalog.catalog_name
+        else '' end as threeLevelCatalog,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 3 then (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        else '' end as twoLevelCatalog,
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN ''
+        WHEN 2 THEN (SELECT parent_id from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 3 then (SELECT parent_id from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        else '' end as 'fir_id',
+        CASE deviceTypeCatalog.level
+        WHEN 1 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.id)
+        WHEN 2 THEN (SELECT catalog_name from cfg_device_type_catalog where id = deviceTypeCatalog.parent_id)
+        WHEN 3 then (select catalog_name from cfg_device_type_catalog where id = fir_id)
+        else '' end as oneLevelCatalog,
+        IFNULL(device.tech_param,'') AS techParam,
+        CASE device.flag_usable WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagUsable,
+        IFNULL(date_format(device.use_expire_date,'%Y-%c-%d'),'') AS useExpireDate,
+        IFNULL(device.memo,'') AS deviceBaseInfoMemo,
+        IFNULL(deviceCompanyRelation.asset_sn,'') AS assetSn,
+        IFNULL((SELECT company_name FROM bif_supply_company WHERE id = deviceCompanyRelation.supply_company_id),'')AS supplyCompany,
+        IFNULL(date_format(deviceCompanyRelation.purchase_date,'%Y-%c-%d'),'') AS purchaseDate,
+        CONCAT(IFNULL(deviceCompanyRelation.purchase_price,0),'') AS purchasePrice,
+        CASE device.flag_warranty WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagWarranty,
+        IFNULL(date_format(device.warranty_expire_date,'%Y-%c-%d'),'') AS warrantyExpireDate,
+        IFNULL(deviceCompanyRelation.memo,'') AS deviceAssetMemo,
+        CASE deviceCompanyRelation.flag_assign WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagAssign,
+        IFNULL(date_format(deviceAssign.assign_date,'%Y-%c-%d'),'') AS assignDate,
+        CASE deviceAssign.assign_type WHEN 'PERSON' THEN '员工' WHEN 'STORE' THEN '门店' WHEN 'ORG' THEN '部门' ELSE '' END AS assignType,
+        CASE deviceAssign.assign_type
+        WHEN 'PERSON' THEN (SELECT employee_name FROM dmi_employee WHERE id = deviceAssign.assigned_employee_id)
+        WHEN 'STORE' THEN (SELECT store_name FROM dmi_store WHERE id = deviceAssign.assigned_section_id)
+        WHEN 'ORG' THEN (SELECT organization_name FROM dmi_organization WHERE id = deviceAssign.assigned_section_id)
+        ELSE '' END AS assignUserName
+        from (SELECT * FROM bif_device WHERE flag_deleted = 0
+        <if test="brandId != 0 and seriesId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id IN (
+            SELECT id FROM bif_device_series WHERE brand_id = #{brandId,jdbcType=INTEGER}))
+        </if>
+        <if test="seriesId != 0 and modelId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id = #{seriesId,jdbcType=INTEGER})
+        </if>
+        <if test="modelId != 0">
+            and model_id = #{modelId,jdbcType=INTEGER}
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device_sn like '%${deviceSn}%'
+        </if>
+        <if test="catalogId != 0">
+            and catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        <if test="flagWarranty != null">
+            AND flag_warranty =#{flagWarranty,jdbcType=BIT}
+        </if>
+        <if test="flagUsable != null">
+            AND flag_usable =#{flagUsable,jdbcType=BIT}
+        </if>) device
+        INNER JOIN cfg_device_type_catalog deviceTypeCatalog ON deviceTypeCatalog.id = device.catalog_id
+        INNER JOIN dmi_device_company_relation deviceCompanyRelation ON deviceCompanyRelation.device_id = device.id AND deviceCompanyRelation.flag_deleted = 0
+        AND deviceCompanyRelation.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="assetSn != null">
+            AND deviceCompanyRelation.asset_sn like '%${assetSn}%'
+        </if>
+        <if test="flagAssign != null">
+            AND deviceCompanyRelation.flag_assign =#{flagAssign,jdbcType=BIT}
+        </if>
+        <if test="purchaseDateMin != null">
+            and deviceCompanyRelation.purchase_date &gt;= #{purchaseDateMin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="purchaseDateMax != null">
+            and deviceCompanyRelation.purchase_date &lt;= #{purchaseDateMax,jdbcType=TIMESTAMP}
+        </if>
+        <if test="flagAssign == true">
+            RIGHT JOIN dmi_device_assign deviceAssign ON device.id = deviceAssign.device_id
+        </if>
+        <if test="flagAssign == null">
+            LEFT JOIN dmi_device_assign deviceAssign ON device.id = deviceAssign.device_id AND deviceAssign.flag_deleted = 0
+        </if>
+    </select>
+
+    <!--分页查询-->
+    <select id="findPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from bif_device where flag_deleted = 0
+    </select>
+
+    <!--分页查询-->
+    <select id="findListPage" resultType="com.teekee.waterdropservice.entity.bif.BifDeviceDetail" parameterType="com.teekee.waterdropservice.entity.bif.BifDevice">
+        select
+        device.id id,
+        device.device_name deviceName,
+        device.device_sn deviceSn,
+        device.model_id modelId,
+        device.catalog_id catalogId,
+        device.flag_deleted flagDeleted,
+        device.create_time createTime,
+        device.brand brand,
+        device.model,
+        device.tech_param techParam,
+        device.flag_usable flagUsable,
+        device.flag_warranty flagWarranty,
+        device.warranty_expire_date warrantyExpireDate,
+        device.use_expire_date useExpireDate,
+        device.create_person createperson,
+        device.update_time updateTime,
+        device.update_person updatePerson,
+        device.memo memo,
+        relation.asset_sn assetSn
+        from bif_device device
+        LEFT JOIN dmi_device_company_relation relation ON device.id = relation.device_id AND relation.flag_deleted = 0
+        where 1=1
+        <if test=" companyId !=null and companyId !=0 ">
+           and relation.company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        and device.flag_deleted = 0
+        order by device.update_time desc
+    </select>
+
+    <select id="selectDeviceDetailById" parameterType="java.lang.Integer" resultType="com.teekee.waterdropservice.entity.bif.BifDeviceDetail">
+        select
+        device.id id,
+        device.device_name deviceName,
+        device.device_sn deviceSn,
+        device.model_id modelId,
+        device.catalog_id catalogId,
+        device.flag_deleted flagDeleted,
+        device.create_time createTime,
+        device.brand brand,
+        device.model,
+        device.tech_param techParam,
+        device.flag_usable flagUsable,
+        device.flag_warranty flagWarranty,
+        device.warranty_expire_date warrantyExpireDate,
+        device.use_expire_date useExpireDate,
+        device.create_person createperson,
+        device.update_time updateTime,
+        device.update_person updatePerson,
+        device.memo memo,
+        model.series_id seriesId,
+        brand.id brandId,
+        (select series.series_name from bif_device_series series where series.id=model.series_id) series
+        from bif_device device
+        LEFT JOIN bif_device_model model on model.id=device.model_id
+        LEFT JOIN bif_device_brand brand on brand.brand_name=device.brand
+        where device.id=#{id,jdbcType=INTEGER}
+    </select>
+</mapper>

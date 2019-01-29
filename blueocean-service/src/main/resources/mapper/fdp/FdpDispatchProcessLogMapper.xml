@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.blueoceanservice.mapper.fdp.FdpDispatchProcessLogMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.blueoceanservice.entity.fdp.FdpDispatchProcessLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER" />
+    <result column="deal_person_id" property="dealPersonId" jdbcType="INTEGER" />
+    <result column="deal_person_type" property="dealPersonType" jdbcType="VARCHAR" />
+    <result column="before_status" property="beforeStatus" jdbcType="VARCHAR" />
+    <result column="after_status" property="afterStatus" jdbcType="VARCHAR" />
+    <result column="deal_content" property="dealContent" jdbcType="VARCHAR" />
+    <result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, dispatch_order_id, deal_person_id, deal_person_type, before_status, after_status, 
+    deal_content, deal_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fdp_dispatch_process_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fdp_dispatch_process_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.teekee.blueoceanservice.entity.fdp.FdpDispatchProcessLog" >
+    insert into fdp_dispatch_process_log (id, dispatch_order_id, deal_person_id, 
+      deal_person_type, before_status, after_status, 
+      deal_content, deal_time)
+    values (#{id,jdbcType=INTEGER}, #{dispatchOrderId,jdbcType=INTEGER}, #{dealPersonId,jdbcType=INTEGER}, 
+      #{dealPersonType,jdbcType=VARCHAR}, #{beforeStatus,jdbcType=VARCHAR}, #{afterStatus,jdbcType=VARCHAR}, 
+      #{dealContent,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.teekee.blueoceanservice.entity.fdp.FdpDispatchProcessLog" >
+    insert into fdp_dispatch_process_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dispatchOrderId != null" >
+        dispatch_order_id,
+      </if>
+      <if test="dealPersonId != null" >
+        deal_person_id,
+      </if>
+      <if test="dealPersonType != null" >
+        deal_person_type,
+      </if>
+      <if test="beforeStatus != null" >
+        before_status,
+      </if>
+      <if test="afterStatus != null" >
+        after_status,
+      </if>
+      <if test="dealContent != null" >
+        deal_content,
+      </if>
+      <if test="dealTime != null" >
+        deal_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dispatchOrderId != null" >
+        #{dispatchOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="dealPersonId != null" >
+        #{dealPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="dealPersonType != null" >
+        #{dealPersonType,jdbcType=VARCHAR},
+      </if>
+      <if test="beforeStatus != null" >
+        #{beforeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="afterStatus != null" >
+        #{afterStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealContent != null" >
+        #{dealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.blueoceanservice.entity.fdp.FdpDispatchProcessLog" >
+    update fdp_dispatch_process_log
+    <set >
+      <if test="dispatchOrderId != null" >
+        dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="dealPersonId != null" >
+        deal_person_id = #{dealPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="dealPersonType != null" >
+        deal_person_type = #{dealPersonType,jdbcType=VARCHAR},
+      </if>
+      <if test="beforeStatus != null" >
+        before_status = #{beforeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="afterStatus != null" >
+        after_status = #{afterStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealContent != null" >
+        deal_content = #{dealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.teekee.blueoceanservice.entity.fdp.FdpDispatchProcessLog" >
+    update fdp_dispatch_process_log
+    set dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
+      deal_person_id = #{dealPersonId,jdbcType=INTEGER},
+      deal_person_type = #{dealPersonType,jdbcType=VARCHAR},
+      before_status = #{beforeStatus,jdbcType=VARCHAR},
+      after_status = #{afterStatus,jdbcType=VARCHAR},
+      deal_content = #{dealContent,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+<!--查看派工流程-->
+  <select id="selectByOrderId" parameterType="java.lang.Integer" resultType="com.teekee.blueoceanservice.entity.fdp.FdpDispatchProcessLog">
+    SELECT
+      deal_person_id AS dealPersonId,
+	  deal_content AS dealContent,
+	  deal_time AS dealTime,
+	  after_status AS afterStatus
+    FROM
+        fdp_dispatch_process_log
+    WHERE
+        dispatch_order_id = #{orderId,jdbcType=INTEGER}
+    ORDER BY deal_time ASC
+  </select>
+</mapper>

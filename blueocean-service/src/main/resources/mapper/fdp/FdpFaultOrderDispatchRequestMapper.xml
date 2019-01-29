@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teekee.blueoceanservice.mapper.fdp.FdpFaultOrderDispatchRequestMapper">
+    <resultMap id="BaseResultMap" type="com.teekee.blueoceanservice.entity.fdp.FdpFaultOrderDispatchRequest">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="dispatch_request_id" jdbcType="INTEGER" property="requestId"/>
+        <result column="company_id" jdbcType="INTEGER" property="companyId"/>
+        <result column="store_name" jdbcType="INTEGER" property="storeName"/>
+        <result column="company_name" jdbcType="INTEGER" property="companyName"/>
+        <result column="other_brand" jdbcType="INTEGER" property="otherBrand"/>
+        <result column="brand_name" jdbcType="INTEGER" property="brandName"/>
+        <result column="store_id" jdbcType="INTEGER" property="storeId"/>
+        <result column="username" jdbcType="INTEGER" property="dealPerson"/>
+        <result column="dispatch_status" jdbcType="INTEGER" property="dispatchStatus"/>
+        <result column="fault_order_id" jdbcType="INTEGER" property="faultOrderId"/>
+        <result column="root_fault_order_id" jdbcType="INTEGER" property="rootFaultOrderId"/>
+        <result column="fault_order_number" jdbcType="VARCHAR" property="faultOrderNumber"/>
+        <result column="hr_count" jdbcType="INTEGER" property="hrCount"/>
+        <result column="service_address" jdbcType="VARCHAR" property="serviceAddress"/>
+        <result column="service_province" jdbcType="VARCHAR" property="serviceProvince"/>
+        <result column="service_city" jdbcType="VARCHAR" property="serviceCity"/>
+        <result column="service_district" jdbcType="VARCHAR" property="serviceDistrict"/>
+        <result column="other_request" jdbcType="VARCHAR" property="otherRequest"/>
+        <result column="dispatch_description" jdbcType="VARCHAR" property="dispatchDescription"/>
+        <result column="memo" jdbcType="VARCHAR" property="memo"/>
+        <result column="urgency_request" jdbcType="VARCHAR" property="urgencyRequest"/>
+        <result column="service_date" jdbcType="TIMESTAMP" property="serviceDate"/>
+        <result column="service_time_start" jdbcType="INTEGER" property="serviceTimeStart"/>
+        <result column="service_time_end" jdbcType="INTEGER" property="serviceTimeEnd"/>
+        <result column="flag_deleted" jdbcType="BIT" property="flagDeleted"/>
+        <result column="flag_available" jdbcType="BIT" property="flagAvailable"/>
+        <result column="flag_has_dispatched" jdbcType="BIT" property="flagHasDispatched"/>
+        <result column="create_person" jdbcType="INTEGER" property="createPerson"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_person" jdbcType="INTEGER" property="updatePerson"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="equipment_request" jdbcType="VARCHAR" property="equipmentRequest"/>
+        <result column="dispatch_model_id" jdbcType="VARCHAR" property="dispatchModelId"/>
+        <result column="expect_reply_hours" jdbcType="INTEGER" property="expectReplyHours"/>
+        <result column="expect_reply_time" jdbcType="TIMESTAMP" property="expectReplyTime"/>
+        <result column="flag_fuzzy_address" jdbcType="BIT" property="flagFuzzyAddress"/>
+        <result column="project_id" jdbcType="INTEGER" property="projectId"/>
+        <result column="request_model_id" jdbcType="INTEGER" property="requestModelId"/>
+        <result column="estimated_price" jdbcType="DECIMAL" property="estimatedPrice"/>
+        <result column="estimated_price_unit" jdbcType="VARCHAR" property="estimatedPriceUnit"/>
+        <result column="flag_fixed_price" jdbcType="BIT" property="flagFixedPrice"/>
+        <result column="flag_request_modified" jdbcType="BIT" property="flagRequestModified"/>
+        <result column="flag_draft" jdbcType="BIT" property="flagDraft"/>
+        <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime"/>
+        <result column="expect_complete_time" jdbcType="TIMESTAMP" property="expectCompleteTime"/>
+        <result column="other_system_number" jdbcType="VARCHAR" property="otherSystemNumber"/>
+
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.teekee.blueoceanservice.entity.fdp.FdpFaultOrderDispatchRequest">
+        <result column="dispatch_model_request" jdbcType="LONGVARCHAR" property="dispatchModelRequest"/>
+        <result column="username" jdbcType="VARCHAR" property="userName"/>
+        <result column="last_deal_person_id" jdbcType="INTEGER" property="lastDealPersonId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, company_id, store_id, fault_order_id, root_fault_order_id, fault_order_number, 
+     service_address, service_province, service_city, service_district,
+    other_request, dispatch_description, memo, urgency_request, service_date, service_time_start, 
+    service_time_end, flag_deleted, flag_available,flag_has_dispatched, create_person, create_time, update_person,
+    update_time, equipment_request,dispatch_model_id,expect_reply_hours,expect_reply_time,flag_fuzzy_address,
+    project_id,request_model_id,estimated_price,estimated_price_unit,flag_fixed_price,flag_request_modified,flag_draft,
+    submit_time
+    project_id,request_model_id,estimated_price,estimated_price_unit,flag_fixed_price,expect_complete_time,other_system_number
+    </sql>
+
+    <sql id="Blob_Column_List">
+    dispatch_model_request
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from fdp_fault_order_dispatch_request
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.teekee.blueoceanservice.entity.fdp.FdpFaultOrderDispatchRequest">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        insert into fdp_fault_order_dispatch_request
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="faultOrderId != null">
+                fault_order_id,
+            </if>
+            <if test="rootFaultOrderId != null">
+                root_fault_order_id,
+            </if>
+            <if test="faultOrderNumber != null">
+                fault_order_number,
+            </if>
+            <if test="hrCount != null">
+                hr_count,
+            </if>
+            <if test="serviceAddress != null">
+                service_address,
+            </if>
+            <if test="serviceProvince != null">
+                service_province,
+            </if>
+            <if test="serviceCity != null">
+                service_city,
+            </if>
+            <if test="serviceDistrict != null">
+                service_district,
+            </if>
+            <if test="otherRequest != null">
+                other_request,
+            </if>
+            <if test="dispatchDescription != null">
+                dispatch_description,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="urgencyRequest != null">
+                urgency_request,
+            </if>
+            <if test="serviceDate != null">
+                service_date,
+            </if>
+            <if test="serviceTimeStart != null">
+                service_time_start,
+            </if>
+            <if test="serviceTimeEnd != null">
+                service_time_end,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+            <if test="flagHasDispatched != null">
+                flag_has_dispatched,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="dispatchModelRequest != null">
+                dispatch_model_request,
+            </if>
+            <if test="equipmentRequest != null">
+                equipment_request,
+            </if>
+            <if test="sourceType != null">
+                source_type,
+            </if>
+            <if test="otherBrand != null">
+                other_brand,
+            </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="otherStore != null">
+                other_store,
+            </if>
+            <if test="backupDeviceRequest != null">
+                backup_device_request,
+            </if>
+            <if test="uploadFileName != null">
+                upload_file_name,
+            </if>
+            <if test="uploadFileUrl != null">
+                upload_file_url,
+            </if>
+            <if test="dispatchModelId != null">
+                dispatch_model_id,
+            </if>
+            <if test="expectReplyHours != null">
+                expect_reply_hours,
+            </if>
+            <if test="expectReplyTime != null">
+                expect_reply_time,
+            </if>
+            <if test="flagFuzzyAddress != null">
+                flag_fuzzy_address,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="requestModelId != null">
+                request_model_id,
+            </if>
+            <if test="estimatedPrice != null">
+                estimated_price,
+            </if>
+            <if test="estimatedPriceUnit != null">
+                estimated_price_unit,
+            </if>
+            <if test="flagFixedPrice != null">
+                flag_fixed_price,
+            </if>
+            <if test="flagRequestModified != null">
+                flag_request_modified,
+            </if>
+            <if test="flagDraft != null">
+                flag_draft,
+            </if>
+            <if test="submitTime != null">
+                submit_time,
+            </if>
+            <if test="expectCompleteTime != null">
+                expect_complete_time,
+            </if>
+            <if test="otherSystemNumber != null">
+                other_system_number,
+            </if>
+            <if test="completeProfileTemplateName != null">
+                complete_profile_template_name,
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                complete_profile_template_url,
+            </if>
+            <if test="batchNumber != null  and batchNumber!= '' ">
+                batch_number,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderId != null">
+                #{faultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="rootFaultOrderId != null">
+                #{rootFaultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderNumber != null">
+                #{faultOrderNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="hrCount != null">
+                #{hrCount,jdbcType=INTEGER},
+            </if>
+            <if test="serviceAddress != null">
+                #{serviceAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceProvince != null">
+                #{serviceProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceCity != null">
+                #{serviceCity,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceDistrict != null">
+                #{serviceDistrict,jdbcType=VARCHAR},
+            </if>
+            <if test="otherRequest != null">
+                #{otherRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatchDescription != null">
+                #{dispatchDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="urgencyRequest != null">
+                #{urgencyRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceDate != null">
+                #{serviceDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceTimeStart != null">
+                #{serviceTimeStart,jdbcType=INTEGER},
+            </if>
+            <if test="serviceTimeEnd != null">
+                #{serviceTimeEnd,jdbcType=INTEGER},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="flagHasDispatched != null">
+                #{flagHasDispatched,jdbcType=BIT},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchModelRequest != null">
+                #{dispatchModelRequest,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="equipmentRequest != null">
+                #{equipmentRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                #{sourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="otherBrand != null">
+                #{otherBrand,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude != null">
+                #{longitude,jdbcType=DECIMAL},
+            </if>
+            <if test="latitude != null">
+                #{latitude,jdbcType=DECIMAL},
+            </if>
+            <if test="otherStore != null">
+                #{otherStore,jdbcType=DECIMAL},
+            </if>
+            <if test="backupDeviceRequest != null">
+                #{backupDeviceRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadFileName != null">
+                #{uploadFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadFileUrl != null">
+                #{uploadFileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatchModelId != null">
+                #{dispatchModelId,jdbcType=INTEGER},
+            </if>
+            <if test="expectReplyHours != null">
+                #{expectReplyHours,jdbcType=INTEGER},
+            </if>
+            <if test="expectReplyTime != null">
+                #{expectReplyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flagFuzzyAddress != null">
+                #{flagFuzzyAddress,jdbcType=BIT},
+            </if>
+            <if test="projectId != null">
+                #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="requestModelId != null">
+                #{requestModelId,jdbcType=INTEGER},
+            </if>
+            <if test="estimatedPrice != null">
+                #{estimatedPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedPriceUnit != null">
+                #{estimatedPriceUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="flagFixedPrice != null">
+                #{flagFixedPrice,jdbcType=BIT},
+            </if>
+            <if test="flagRequestModified != null">
+                #{flagRequestModified,jdbcType=BIT},
+            </if>
+            <if test="flagDraft != null">
+                #{flagDraft,jdbcType=BIT},
+            </if>
+            <if test="submitTime != null">
+                #{submitTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expectCompleteTime != null">
+                #{expectCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="otherSystemNumber != null">
+                #{otherSystemNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateName != null">
+                #{completeProfileTemplateName,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                #{completeProfileTemplateUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="batchNumber != null and batchNumber!= '' ">
+                #{batchNumber,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.teekee.blueoceanservice.entity.fdp.FdpFaultOrderDispatchRequest">
+        update fdp_fault_order_dispatch_request
+        <set>
+            <if test="companyId != null and companyId !=0 ">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderId != null">
+                fault_order_id = #{faultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="rootFaultOrderId != null">
+                root_fault_order_id = #{rootFaultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderNumber != null">
+                fault_order_number = #{faultOrderNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceAddress != null">
+                service_address = #{serviceAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceProvince != null">
+                service_province = #{serviceProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceCity != null">
+                service_city = #{serviceCity,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceDistrict != null">
+                service_district = #{serviceDistrict,jdbcType=VARCHAR},
+            </if>
+            <if test="otherRequest != null">
+                other_request = #{otherRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatchDescription != null">
+                dispatch_description = #{dispatchDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="urgencyRequest != null">
+                urgency_request = #{urgencyRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceDate != null">
+                service_date = #{serviceDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceTimeStart != null">
+                service_time_start = #{serviceTimeStart,jdbcType=INTEGER},
+            </if>
+            <if test="serviceTimeEnd != null">
+                service_time_end = #{serviceTimeEnd,jdbcType=INTEGER},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="flagHasDispatched != null">
+                flag_has_dispatched = #{flagHasDispatched,jdbcType=BIT},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchModelRequest != null">
+                dispatch_model_request = #{dispatchModelRequest,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="equipmentRequest != null">
+                equipment_request = #{equipmentRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatchModelId != null">
+                dispatch_model_id = #{dispatchModelId,jdbcType=INTEGER},
+            </if>
+            <if test="expectReplyHours != null">
+                expect_reply_hours = #{expectReplyHours,jdbcType=INTEGER},
+            </if>
+            <if test="expectReplyTime != null">
+                expect_reply_time = #{expectReplyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flagFuzzyAddress != null">
+                flag_fuzzy_address = #{flagFuzzyAddress,jdbcType=BIT},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="requestModelId != null">
+                request_model_id = #{requestModelId,jdbcType=INTEGER},
+            </if>
+            <if test="estimatedPrice != null">
+                estimated_price = #{estimatedPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedPriceUnit != null">
+                estimated_price_unit = #{estimatedPriceUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="flagFixedPrice != null">
+                flag_fixed_price = #{flagFixedPrice,jdbcType=BIT},
+            </if>
+            <if test="otherSystemNumber != null">
+                other_system_number = #{otherSystemNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="expectCompleteTime != null">
+                expect_complete_time = #{expectCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="backupDeviceRequest != null">
+                backup_device_request = #{backupDeviceRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDraft != null">
+                flag_draft = #{flagDraft,jdbcType=BIT},
+            </if>
+            <if test="flagRequestModified != null">
+                flag_request_modified = #{flagRequestModified,jdbcType=BIT},
+            </if>
+            <if test="submitTime != null">
+                submit_time = #{submitTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="uploadFileName != null">
+                upload_file_name = #{uploadFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadFileUrl != null">
+                upload_file_url = #{uploadFileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                complete_profile_template_url = #{completeProfileTemplateUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateName != null">
+                complete_profile_template_name = #{completeProfileTemplateName,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateUpdateTime != null">
+                complete_profile_template_update_time = #{completeProfileTemplateUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="completeProfileTemplateUpdatePerson != null">
+                complete_profile_template_update_person = #{completeProfileTemplateUpdatePerson,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--功能：查看派工信息 -->
+    <!--作者： 刘侃-->
+    <!--时间： 2018-04-26-->
+    <select id="selectByPrimaryKeyNew" resultType="com.teekee.blueoceanservice.entity.fdp.FdpFaultOrderDispatchRequest"
+            parameterType="java.lang.Integer">
+  SELECT
+	CONCAT( pro.project_name, '--', cdmc.model_name ) projectModelName,
+	dr.flag_fuzzy_address flagFuzzyAddress,
+	dod.dispatch_order_number dispatchOrderNumber,
+	dr.submit_time submitTime,
+	dr.flag_request_modified flagRequestModified,
+	dr.project_id projectId,
+	dr.request_model_id requestModelId,
+	dr.estimated_price estimatedPrice,
+	dr.estimated_price_unit estimatedPriceUnit,
+	dr.flag_fixed_price flagFixedPrice,
+	dr.expect_reply_hours expectReplyHours,
+	dr.expect_complete_time expectCompleteTime,
+	dr.other_system_number otherSystemNumber,
+	dod.memo,
+	dod.flag_auto_commit flagAutoCommit,
+	dr.urgency_request urgencyRequest,
+	dod.estimated_service_time estimatedServiceTime,
+	dr.upload_file_name uploadFileName,
+	dr.upload_file_url uploadFileUrl,
+	ds.store_name storeName,
+	dc.company_name companyName,
+	dr.id,
+	dr.company_id companyId,
+	dr.store_id storeId,
+	dr.dispatch_model_id AS dispatchModelId,
+	dr.fault_order_id faultOrderId,
+	dr.upload_file_name AS uploadFileName,
+	dr.upload_file_url AS uploadFileUrl,
+	dr.complete_profile_template_url AS completeProfileTemplateUrl,
+	dr.complete_profile_template_name AS completeProfileTemplateName,
+	fault_order_number faultOrderNumber,
+	dr.hr_count hrCount,
+	service_address serviceAddress,
+	service_province serviceProvince,
+	service_city serviceCity,
+	service_district serviceDistrict,
+	dr.dispatch_model_request dispatchModelRequest,
+	dr.other_request otherRequest,
+	service_date serviceDate,
+	service_time_start serviceTimeStart,
+	service_time_end serviceTimeEnd,
+	dr.equipment_request equipmentRequest,
+	dr.dispatch_description dispatchDescription,
+	sys.username createPersonName,
+	dr.create_time createTime,
+	su.username updatePersonName,
+	dr.update_time updateTime,
+	dr.longitude,
+	dr.latitude,
+	dr.source_type sourceType,
+	other_brand otherBrand,
+	other_store otherStore,
+	dr.backup_device_request backupDeviceRequest,
+	dod.material_reject_cause_context materialRejectCauseContext,
+    ffdhr.person_reject_cause_context personRejectCauseContext,
+	ffdhr.hr_dispatch_status hrDispatchStatus
+FROM
+	fdp_fault_order_dispatch_request dr
+	LEFT JOIN cfg_dispatch_model_config cdmc ON cdmc.id = dr.request_model_id
+	LEFT JOIN pjt_project pro ON pro.id = dr.project_id
+	LEFT JOIN dmi_store ds ON ds.id = dr.store_id
+	LEFT JOIN dmi_company_info dc ON dc.id = dr.company_id
+	LEFT JOIN fdp_fault_dispatch_order dod ON dod.fault_dispatch_request_id = dr.id
+	LEFT JOIN sys_company_users sys ON sys.id = dr.create_person
+	LEFT JOIN sys_company_users su ON su.id = dr.update_person
+	LEFT JOIN fdp_fault_dispatch_hr_relation ffdhr ON ffdhr.fault_dispatch_request_id = dr.id
+	AND ffdhr.flag_used = 1
+WHERE
+	dr.id =  #{requestId,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectCreatePerson" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select create_person createPerson
+        from
+        fdp_fault_order_dispatch_request
+        where
+        id = #{faultDispatchRequestId,jdbcType=INTEGER}
+
+
+    </select>
+
+
+    <select id="selectGzNumer" parameterType="java.lang.Integer" resultType="java.lang.String">
+
+        select fault_order_number
+        from
+        fdp_fault_order_dispatch_request
+        where
+        id = #{faultDispatchRequestId,jdbcType=INTEGER}
+
+    </select>
+
+
+</mapper>

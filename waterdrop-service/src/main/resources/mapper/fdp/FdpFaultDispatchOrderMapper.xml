@@ -1,0 +1,3074 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.fdp.FdpFaultDispatchOrderMapper">
+    <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"/>
+        <result column="store_id" property="storeId" jdbcType="INTEGER"/>
+        <result column="fault_order_id" property="faultOrderId" jdbcType="INTEGER"/>
+        <result column="root_fault_order_id" property="rootFaultOrderId" jdbcType="INTEGER"/>
+        <result column="fault_dispatch_request_id" property="faultDispatchRequestId" jdbcType="INTEGER"/>
+        <result column="hr_count" property="hrCount" jdbcType="INTEGER"/>
+        <result column="dispatch_order_number" property="dispatchOrderNumber" jdbcType="VARCHAR"/>
+        <result column="estimated_service_time" property="estimatedServiceTime" jdbcType="TIMESTAMP"/>
+        <result column="actual_cost" property="actualCost" jdbcType="DECIMAL"/>
+        <result column="actual_monetary_unit" property="actualMonetaryUnit" jdbcType="VARCHAR"/>
+        <result column="memo" property="memo" jdbcType="VARCHAR"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_available" property="flagAvailable" jdbcType="BIT"/>
+        <result column="flag_finish" property="flagFinish" jdbcType="BIT"/>
+        <result column="finish_type" property="finishType" jdbcType="VARCHAR"/>
+        <result column="flag_paid" property="flagPaid" jdbcType="BIT"/>
+        <result column="actual_invoice_type" property="actualInvoiceType" jdbcType="VARCHAR"/>
+        <result column="actual_invoice_title" property="actualInvoiceTitle" jdbcType="VARCHAR"/>
+        <result column="actual_invoice_tax_id_number" property="actualInvoiceTaxIdNumber" jdbcType="VARCHAR"/>
+        <result column="actual_invoice_number" property="actualInvoiceNumber" jdbcType="VARCHAR"/>
+        <result column="actual_invoice_fee" property="actualInvoiceFee" jdbcType="DECIMAL"/>
+        <result column="actual_invoice_rate" property="actualInvoiceRate" jdbcType="DECIMAL"/>
+        <result column="last_deal_person_id" property="lastDealPersonId" jdbcType="INTEGER"/>
+        <result column="last_deal_time" property="lastDealTime" jdbcType="TIMESTAMP"/>
+        <result column="dispatch_status" property="dispatchStatus" jdbcType="VARCHAR"/>
+        <result column="vendor_id" property="vendorId" jdbcType="INTEGER"/>
+        <result column="flag_customer_confirm" property="flagCustomerConfirm" jdbcType="BIT"/>
+        <result column="flag_dispatcher_confirm" property="flagDispatcherConfirm" jdbcType="BIT"/>
+        <result column="process_stage" property="processStage" jdbcType="VARCHAR"/>
+        <result column="actual_price" property="actualPrice" jdbcType="DECIMAL"/>
+        <result column="actual_price_unit" property="actualPriceUnit" jdbcType="VARCHAR"/>
+        <result column="cancel_reason" property="cancelReason" jdbcType="VARCHAR"/>
+        <result column="abandon_reason" property="abandonReason" jdbcType="VARCHAR"/>
+        <result column="actual_price_memo" property="actualPriceMemo" jdbcType="VARCHAR"/>
+        <result column="actual_cost_memo" property="actualCostMemo" jdbcType="VARCHAR"/>
+        <result column="flag_no_price" property="flagNoPrice" jdbcType="BIT"/>
+        <result column="private_note" property="privateNote" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, company_id, store_id, fault_order_id, root_fault_order_id, fault_dispatch_request_id,
+    hr_count, dispatch_order_number, estimated_service_time, actual_cost, actual_monetary_unit,
+    memo, flag_deleted, flag_available, flag_finish, finish_type, flag_paid, actual_invoice_type,
+    actual_invoice_title, actual_invoice_tax_id_number, actual_invoice_number, actual_invoice_fee,
+    actual_invoice_rate, last_deal_person_id, last_deal_time, dispatch_status,vendor_id,flag_customer_confirm,
+    flag_dispatcher_confirm,process_stage,actual_price,actual_price_unit,cancel_reason,abandon_reason,actual_price_memo,
+    actual_cost_memo,flag_no_price,private_note
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from fdp_fault_dispatch_order
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from fdp_fault_dispatch_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+    insert into fdp_fault_dispatch_order (id, company_id, store_id,
+      fault_order_id, root_fault_order_id, fault_dispatch_request_id,
+      hr_count, dispatch_order_number, estimated_service_time,
+      actual_cost, actual_monetary_unit, memo,
+      flag_deleted, flag_available, flag_finish,
+      finish_type, flag_paid, actual_invoice_type,
+      actual_invoice_title, actual_invoice_tax_id_number,
+      actual_invoice_number, actual_invoice_fee,
+      actual_invoice_rate, last_deal_person_id, last_deal_time,
+      dispatch_status)
+    values   #{id,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER},
+      #{faultOrderId,jdbcType=INTEGER}, #{rootFaultOrderId,jdbcType=INTEGER}, #{faultDispatchRequestId,jdbcType=INTEGER},
+      #{hrCount,jdbcType=INTEGER}, #{dispatchOrderNumber,jdbcType=VARCHAR}, #{estimatedServiceTime,jdbcType=TIMESTAMP},
+      #{actualCost,jdbcType=DECIMAL}, #{actualMonetaryUnit,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR},
+      #{flagDeleted,jdbcType=BIT}, #{flagAvailable,jdbcType=BIT}, #{flagFinish,jdbcType=BIT},
+      #{finishType,jdbcType=VARCHAR}, #{flagPaid,jdbcType=BIT}, #{actualInvoiceType,jdbcType=VARCHAR},
+      #{actualInvoiceTitle,jdbcType=VARCHAR}, #{actualInvoiceTaxIdNumber,jdbcType=VARCHAR},
+      #{actualInvoiceNumber,jdbcType=VARCHAR}, #{actualInvoiceFee,jdbcType=DECIMAL},
+      #{actualInvoiceRate,jdbcType=DECIMAL}, #{lastDealPersonId,jdbcType=INTEGER}, #{lastDealTime,jdbcType=TIMESTAMP},
+      #{dispatchStatus,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        insert into fdp_fault_dispatch_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="faultOrderId != null">
+                fault_order_id,
+            </if>
+            <if test="rootFaultOrderId != null">
+                root_fault_order_id,
+            </if>
+            <if test="faultDispatchRequestId != null">
+                fault_dispatch_request_id,
+            </if>
+            <if test="hrCount != null">
+                hr_count,
+            </if>
+            <if test="dispatchOrderNumber != null">
+                dispatch_order_number,
+            </if>
+            <if test="estimatedServiceTime != null">
+                estimated_service_time,
+            </if>
+            <if test="actualCost != null">
+                actual_cost,
+            </if>
+            <if test="actualMonetaryUnit != null">
+                actual_monetary_unit,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+            <if test="flagFinish != null">
+                flag_finish,
+            </if>
+            <if test="finishType != null">
+                finish_type,
+            </if>
+            <if test="flagPaid != null">
+                flag_paid,
+            </if>
+            <if test="actualInvoiceType != null">
+                actual_invoice_type,
+            </if>
+            <if test="actualInvoiceTitle != null">
+                actual_invoice_title,
+            </if>
+            <if test="actualInvoiceTaxIdNumber != null">
+                actual_invoice_tax_id_number,
+            </if>
+            <if test="actualInvoiceNumber != null">
+                actual_invoice_number,
+            </if>
+            <if test="actualInvoiceFee != null">
+                actual_invoice_fee,
+            </if>
+            <if test="actualInvoiceRate != null">
+                actual_invoice_rate,
+            </if>
+            <if test="lastDealPersonId != null">
+                last_deal_person_id,
+            </if>
+            <if test="lastDealTime != null">
+                last_deal_time,
+            </if>
+            <if test="dispatchStatus != null">
+                dispatch_status,
+            </if>
+            <if test="vendorId != null">
+                vendor_id,
+            </if>
+            <if test="flagAutoCommit != null">
+                flag_auto_commit,
+            </if>
+            <if test="flagCustomerConfirm != null">
+                flag_customer_confirm,
+            </if>
+            <if test="flagDispatcherConfirm != null">
+                flag_dispatcher_confirm,
+            </if>
+            <if test="actualPrice != null">
+                actual_price,
+            </if>
+            <if test="actualPriceUnit != null">
+                actual_price_unit,
+            </if>
+            <if test="processStage != null">
+                process_stage,
+            </if>
+            <if test="cancelReason != null ">
+                cancel_reason,
+            </if>
+            <if test="abandonReason != null">
+                abandon_reason,
+            </if>
+            <if test="actualCostMemo != null">
+                actual_cost_memo,
+            </if>
+            <if test="actualPriceMemo != null">
+                actual_price_memo,
+            </if>
+            <if test="flagNoPrice != null">
+                flag_no_price,
+            </if>
+            <if test="uploadFileName != null">
+                upload_file_name,
+            </if>
+            <if test="uploadFileUrl != null">
+                upload_file_url,
+            </if>
+            <if test="completeProfileTemplateName != null">
+                complete_profile_template_name,
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                complete_profile_template_url,
+            </if>
+            <if test="batchNumber != null and batchNumber!= '' ">
+                batch_number,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderId != null">
+                #{faultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="rootFaultOrderId != null">
+                #{rootFaultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null">
+                #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="hrCount != null">
+                #{hrCount,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchOrderNumber != null">
+                #{dispatchOrderNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedServiceTime != null">
+                #{estimatedServiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualCost != null">
+                #{actualCost,jdbcType=DECIMAL},
+            </if>
+            <if test="actualMonetaryUnit != null">
+                #{actualMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="flagFinish != null">
+                #{flagFinish,jdbcType=BIT},
+            </if>
+            <if test="finishType != null">
+                #{finishType,jdbcType=VARCHAR},
+            </if>
+            <if test="flagPaid != null">
+                #{flagPaid,jdbcType=BIT},
+            </if>
+            <if test="actualInvoiceType != null">
+                #{actualInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTitle != null">
+                #{actualInvoiceTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTaxIdNumber != null">
+                #{actualInvoiceTaxIdNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceNumber != null">
+                #{actualInvoiceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceFee != null">
+                #{actualInvoiceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="actualInvoiceRate != null">
+                #{actualInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="lastDealPersonId != null">
+                #{lastDealPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="lastDealTime != null">
+                #{lastDealTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchStatus != null">
+                #{dispatchStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="vendorId != null">
+                #{vendorId,jdbcType=INTEGER},
+            </if>
+            <if test="flagAutoCommit != null">
+                #{flagAutoCommit,jdbcType=BIT},
+            </if>
+            <if test="flagCustomerConfirm != null">
+                #{flagCustomerConfirm,jdbcType=BIT},
+            </if>
+            <if test="flagDispatcherConfirm != null">
+                #{flagDispatcherConfirm,jdbcType=BIT},
+            </if>
+            <if test="actualPrice != null">
+                #{actualPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="actualPriceUnit != null">
+                #{actualPriceUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="processStage != null">
+                #{processStage,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelReason !=null">
+                #{cancelReason,jdbcType=VARCHAR},
+            </if>
+            <if test="abandonReason != null">
+                #{abandonReason,jdbcType=VARCHAR},
+            </if>
+            <if test="actualCostMemo != null">
+                #{actualCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPriceMemo != null">
+                #{actualPriceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagNoPrice != null">
+                #{flagNoPrice,jdbcType=BIT},
+            </if>
+            <if test="uploadFileName != null">
+                #{uploadFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadFileUrl != null">
+                #{uploadFileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateName != null">
+                #{completeProfileTemplateName,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                #{completeProfileTemplateUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="batchNumber != null and batchNumber!= '' ">
+                #{batchNumber,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+        update fdp_fault_dispatch_order
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderId != null">
+                fault_order_id = #{faultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="rootFaultOrderId != null">
+                root_fault_order_id = #{rootFaultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null">
+                fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="hrCount != null">
+                hr_count = #{hrCount,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchOrderNumber != null">
+                dispatch_order_number = #{dispatchOrderNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedServiceTime != null">
+                estimated_service_time = #{estimatedServiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualCost != null">
+                actual_cost = #{actualCost,jdbcType=DECIMAL},
+            </if>
+            <if test="actualMonetaryUnit != null">
+                actual_monetary_unit = #{actualMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="flagFinish != null">
+                flag_finish = #{flagFinish,jdbcType=BIT},
+            </if>
+            <if test="finishType != null">
+                finish_type = #{finishType,jdbcType=VARCHAR},
+            </if>
+            <if test="flagPaid != null">
+                flag_paid = #{flagPaid,jdbcType=BIT},
+            </if>
+            <if test="actualInvoiceType != null">
+                actual_invoice_type = #{actualInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTitle != null">
+                actual_invoice_title = #{actualInvoiceTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTaxIdNumber != null">
+                actual_invoice_tax_id_number = #{actualInvoiceTaxIdNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceNumber != null">
+                actual_invoice_number = #{actualInvoiceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceFee != null">
+                actual_invoice_fee = #{actualInvoiceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="actualInvoiceRate != null">
+                actual_invoice_rate = #{actualInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="lastDealPersonId != null">
+                last_deal_person_id = #{lastDealPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="lastDealTime != null">
+                last_deal_time = #{lastDealTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchStatus != null">
+                dispatch_status = #{dispatchStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="flagCustomerConfirm != null">
+                flag_customer_confirm = #{flagCustomerConfirm,jdbcType=BIT},
+            </if>
+            <if test="flagDispatcherConfirm != null">
+                flag_dispatcher_confirm = #{flagDispatcherConfirm,jdbcType=BIT},
+            </if>
+            <if test="processStage != null">
+                process_stage = #{processStage,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelReason != null">
+                cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+            </if>
+            <if test="abandonReason != null">
+                abandon_reason = #{abandonReason,jdbcType=VARCHAR},
+            </if>
+            <if test="actualCostMemo != null">
+                actual_cost_memo = #{actualCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPriceMemo != null">
+                actual_price_memo = #{actualPriceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagNoPrice != null">
+                flag_no_price = #{flagNoPrice,jdbcType=BIT},
+            </if>
+            <if test="privateNote != null">
+                private_note = #{privateNote,jdbcType=VARCHAR}
+            </if>
+            <if test="uploadFileName != null">
+                upload_file_name = #{uploadFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadFileUrl != null">
+                upload_file_url = #{uploadFileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                complete_profile_template_url = #{completeProfileTemplateUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateName != null">
+                complete_profile_template_name = #{completeProfileTemplateName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+    update fdp_fault_dispatch_order
+    set company_id = #{companyId,jdbcType=INTEGER},
+      store_id = #{storeId,jdbcType=INTEGER},
+      fault_order_id = #{faultOrderId,jdbcType=INTEGER},
+      root_fault_order_id = #{rootFaultOrderId,jdbcType=INTEGER},
+      fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+      hr_count = #{hrCount,jdbcType=INTEGER},
+      dispatch_order_number = #{dispatchOrderNumber,jdbcType=VARCHAR},
+      estimated_service_time = #{estimatedServiceTime,jdbcType=TIMESTAMP},
+      actual_cost = #{actualCost,jdbcType=DECIMAL},
+      actual_monetary_unit = #{actualMonetaryUnit,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      flag_deleted = #{flagDeleted,jdbcType=BIT},
+      flag_available = #{flagAvailable,jdbcType=BIT},
+      flag_finish = #{flagFinish,jdbcType=BIT},
+      finish_type = #{finishType,jdbcType=VARCHAR},
+      flag_paid = #{flagPaid,jdbcType=BIT},
+      actual_invoice_type = #{actualInvoiceType,jdbcType=VARCHAR},
+      actual_invoice_title = #{actualInvoiceTitle,jdbcType=VARCHAR},
+      actual_invoice_tax_id_number = #{actualInvoiceTaxIdNumber,jdbcType=VARCHAR},
+      actual_invoice_number = #{actualInvoiceNumber,jdbcType=VARCHAR},
+      actual_invoice_fee = #{actualInvoiceFee,jdbcType=DECIMAL},
+      actual_invoice_rate = #{actualInvoiceRate,jdbcType=DECIMAL},
+      last_deal_person_id = #{lastDealPersonId,jdbcType=INTEGER},
+      last_deal_time = #{lastDealTime,jdbcType=TIMESTAMP},
+      dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+    <!--======================================================-->
+
+
+    <select id="selectNextDealPersonId" parameterType="java.util.List" resultType="java.util.HashMap">
+        SELECT
+        userTimes.user_id
+        FROM
+        (
+        SELECT
+        sus.id user_id,
+        count(1) order_count
+        FROM sys_company_users sus
+        LEFT JOIN fdp_fault_dispatch_order fdo ON fdo.last_deal_person_id = sus.id AND fdo.flag_finish = 0
+        WHERE 1 = 1
+        and sus.id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item.id,jdbcType=INTEGER}
+        </foreach>
+        GROUP BY sus.id
+        ) userTimes
+        ORDER BY userTimes.order_count ASC
+        LIMIT 1
+    </select>
+
+    <update id="updateDispatchOrderByRequestId" parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+        update fdp_fault_dispatch_order
+        <set>
+            <if test="companyId != null and companyId!=0">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="storeId != null and storeId != 0">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderId != null and faultOrderId != 0 ">
+                fault_order_id = #{faultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="rootFaultOrderId != null and rootFaultOrderId != 0">
+                root_fault_order_id = #{rootFaultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null and faultDispatchRequestId != 0">
+                fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="hrCount != null and  hrCount !=0">
+                hr_count = #{hrCount,jdbcType=INTEGER},
+            </if>
+            <if test="actualCost != null">
+                actual_cost = #{actualCost,jdbcType=DECIMAL},
+            </if>
+            <if test="actualMonetaryUnit != null">
+                actual_monetary_unit = #{actualMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedServiceTime != null">
+                estimated_service_time = #{estimatedServiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagFinish != null">
+                flag_finish = #{flagFinish,jdbcType=BIT},
+            </if>
+            <if test="finishType != null">
+                finish_type = #{finishType,jdbcType=VARCHAR},
+            </if>
+            <if test="flagPaid != null">
+                flag_paid = #{flagPaid,jdbcType=BIT},
+            </if>
+            <if test="actualInvoiceType != null">
+                actual_invoice_type = #{actualInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTitle != null">
+                actual_invoice_title = #{actualInvoiceTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTaxIdNumber != null">
+                actual_invoice_tax_id_number = #{actualInvoiceTaxIdNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceNumber != null">
+                actual_invoice_number = #{actualInvoiceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceFee != null">
+                actual_invoice_fee = #{actualInvoiceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="dispatchStatus != null">
+                dispatch_status = #{dispatchStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="lastDealPersonId != null and lastDealPersonId != 0 ">
+                last_deal_person_id = #{lastDealPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="lastDealTime != null">
+                last_deal_time = #{lastDealTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualInvoiceRate != null">
+                actual_invoice_rate = #{actualInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="flagCustomerConfirm != null">
+                flag_customer_confirm = #{flagCustomerConfirm,jdbcType=BIT},
+            </if>
+            <if test="flagDispatcherConfirm != null">
+                flag_dispatcher_confirm = #{flagDispatcherConfirm,jdbcType=BIT},
+            </if>
+            <if test="processStage != null">
+                process_stage = #{processStage,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelReason != null">
+                cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+            </if>
+            <if test="abandonReason != null">
+                abandon_reason = #{abandonReason,jdbcType=VARCHAR},
+            </if>
+            <if test="actualCostMemo != null">
+                actual_cost_memo = #{actualCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPriceMemo != null">
+                actual_price_memo = #{actualPriceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadFileName != null">
+                upload_file_name = #{uploadFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadFileUrl != null">
+                upload_file_url = #{uploadFileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                complete_profile_template_url = #{completeProfileTemplateUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateName != null">
+                complete_profile_template_name = #{completeProfileTemplateName,jdbcType=VARCHAR},
+            </if>
+            <if test="privateNote != null">
+                private_note = #{privateNote,jdbcType=VARCHAR},
+            </if>
+            <if test="materialRejectCauseContext">
+                material_reject_cause_context = #{materialRejectCauseContext,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
+    </update>
+    <!--功能：复杂查询派工单信息 -->
+    <!--作者： 刘侃-->
+    <!--时间： 2018-04-26-->
+    <select id="getOrderListByObject" parameterType="com.teekee.waterdropservice.entity.fdp.GetDispatchOrderListRequest"
+            resultType="com.teekee.waterdropservice.entity.fdp.GetDispatchOrderListResp">
+        select
+        dispatchOrder.actual_price actualPrice,
+        dispatchOrder.actual_price_unit actualPriceUnit,
+        ffdhr.flag_enable_modify_profile flagEnableModifyProfile,
+        dispatchOrder.flag_no_price flagNoPrice,
+        dispatchRequest.create_time AS createTime,
+        dispatchOrder.process_stage AS processStage,
+        dispatchOrder.flag_dispatcher_confirm flagDispatcherConfirm,
+        dispatchRequest.update_time updateTime,
+        dispatchRequest.urgency_request urgencyRequest,
+        dispatchOrder.vendor_id vendorId,
+        dispatchOrder.fault_order_id faultOrderId,
+        vendors.vendor_name vendorName,
+        dispatchOrder.last_deal_person_id as lastDealPersonId,
+        dispatchOrder.dispatch_status as dispatchStatus,
+        dispatchRequest.id as dispatchRequestId,
+        dispatchOrder.id as dispatchOrderId,
+        dispatchRequest.fault_order_number as reportNumber,
+        IFNULL(companyInfo.company_name,dispatchRequest.other_brand) as companyName,
+        IFNULL(storeInfo.store_name,dispatchRequest.other_store) as storeName,
+        dispatchRequest.dispatch_model_request as dispatchRequest,
+        dispatchRequest.service_province as serviceProvince,
+        dispatchRequest.service_city as serviceCity,
+        dispatchOrder.fault_order_id as processId,
+        dispatchOrder.actual_cost actualCost,
+        ffdhr.estimated_price AS estimatedPrice,
+        ffdhr.estimated_cost AS estimatedCost,
+        ffdhr.hr_dispatch_status AS hrDispatchStatus,
+        dispatchOrder.dispatch_order_number as dispatchOrderNumber,
+        dispatchOrder.last_deal_time as lastDealTime,
+        dispatchRequest.service_date as serviceDate,
+        dispatchRequest.upload_file_name as uploadFileName,
+        dispatchRequest.complete_profile_template_name as completeProfileTemplateName,
+        dispatchRequest.service_address as serviceAddress,
+        dispatchRequest.other_system_number as otherSystemNumber,
+        dispatchRequest.dispatch_model_request as dispatchModelRequest,
+        dispatchRequest.dispatch_description as dispatchDescription,
+        dispatchRequest.equipment_request as equipmentRequest,
+        dispatchRequest.backup_device_request as backupDeviceRequest,
+        dispatchRequest.other_request as otherRequest,
+        dispatchRequest.expect_reply_time as expectReplyTime,
+        dispatchRequest.expect_complete_time as expectCompleteTime,
+        dispatchRequest.submit_time as submitTime,
+        dispatchRequest.flag_emergency as flagEmergency,
+        dispatchRequest.batch_number batchNumber,
+        project.project_name as projectName,
+        userInfo.username as dealPersonName,
+        sys.username as createPerson
+        from (select * from fdp_fault_order_dispatch_request where flag_deleted = 0 AND flag_draft = 0
+        <if test="dispatchType!= null">
+            AND dispatch_model_request LIKE CONCAT('%', #{dispatchType,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test=" companyId!=null and  companyId != 0">
+            and company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test=" storeId!=null and storeId != 0">
+            and store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test="requestDateStart != null">
+            and update_time >= #{requestDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="requestDateEnd != null">
+            and update_time &lt;= #{requestDateEnd,jdbcType=TIMESTAMP}
+        </if>
+        ) dispatchRequest
+        inner join (select * from fdp_fault_dispatch_order where flag_deleted = 0
+        <if test=" companyId!=null and  companyId != 0">
+            and company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test=" storeId!=null and storeId != 0">
+            and store_id = #{storeId,jdbcType=INTEGER}
+        </if>
+        <if test=" dealPersonId!=null and dealPersonId != 0">
+            and last_deal_person_id = #{dealPersonId,jdbcType=INTEGER}
+        </if>
+        <if test="dispatchDateStart != null">
+            and estimated_service_time &gt;= #{dispatchDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="dispatchDateEnd != null">
+            and estimated_service_time &lt;= #{dispatchDateEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="dispatchOrderNumber != null">
+            and dispatch_order_number LIKE '%${dispatchOrderNumber}%'
+        </if>
+        <if test="dispatchStatus != null">
+            AND dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="vendorId != null">
+            AND vendor_id = #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test=" batchNumber != null and batchNumber !=''">
+            AND batch_number LIKE CONCAT('%', #{batchNumber,jdbcType=VARCHAR}, '%')
+        </if>
+
+        ) dispatchOrder
+        on dispatchOrder.fault_dispatch_request_id = dispatchRequest.id
+        left join dmi_company_info companyInfo on dispatchOrder.company_id = companyInfo.id
+        left join dmi_store storeInfo on dispatchOrder.store_id = storeInfo.id
+        left join sys_console_users userInfo on dispatchOrder.last_deal_person_id = userInfo.id
+        left join sys_company_users sys on dispatchRequest.create_person = sys.id
+        left join dmi_intergration_vendors vendors on dispatchOrder.vendor_id = vendors.id
+        left join pjt_project project on project.id = dispatchRequest.project_id
+        LEFT JOIN (SELECT * FROM fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0) ffdhr on
+        ffdhr.dispatch_order_id = dispatchOrder.id
+        where 1=1
+        <if test="status == 'pending'">
+            AND (dispatchOrder.dispatch_status = "NEW" OR dispatchOrder.dispatch_status = "DEALING" OR
+            dispatchOrder.dispatch_status = "USED" OR dispatchOrder.dispatch_status = "DISPATCHAGAIN" OR
+            dispatchOrder.dispatch_status = "REJECTFILE" OR ffdhr.flag_enable_modify_profile = 1)
+        </if>
+        <if test="status == 'dealing'">
+            AND (dispatchOrder.dispatch_status = "NEEDCONFIRM" OR dispatchOrder.dispatch_status = "FILENEEDCONFIRM") AND
+            ffdhr.flag_enable_modify_profile = 0
+        </if>
+        <if test="status == 'history'">
+            AND (dispatchOrder.dispatch_status = "CANCEL" OR dispatchOrder.dispatch_status = "ABANDON" OR
+            dispatchOrder.dispatch_status = "COMPLETE")
+        </if>
+        order by dispatchOrder.last_deal_time desc
+
+
+    </select>
+    <!--功能：修改派工单 -->
+    <!--作者： 刘侃-->
+    <!--时间： 2018-04-26-->
+    <update id="updateStatusByRequestId" parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+        update fdp_fault_dispatch_order
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderId != null">
+                fault_order_id = #{faultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="rootFaultOrderId != null">
+                root_fault_order_id = #{rootFaultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null">
+                fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="hrCount != null">
+                hr_count = #{hrCount,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchOrderNumber != null">
+                dispatch_order_number = #{dispatchOrderNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedServiceTime != null">
+                estimated_service_time = #{estimatedServiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualCost != null">
+                actual_cost = #{actualCost,jdbcType=DECIMAL},
+            </if>
+            <if test="actualMonetaryUnit != null">
+                actual_monetary_unit = #{actualMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="flagFinish != null">
+                flag_finish = #{flagFinish,jdbcType=BIT},
+            </if>
+            <if test="finishType != null">
+                finish_type = #{finishType,jdbcType=VARCHAR},
+            </if>
+            <if test="flagPaid != null">
+                flag_paid = #{flagPaid,jdbcType=BIT},
+            </if>
+            <if test="actualInvoiceType != null">
+                actual_invoice_type = #{actualInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTitle != null">
+                actual_invoice_title = #{actualInvoiceTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTaxIdNumber != null">
+                actual_invoice_tax_id_number = #{actualInvoiceTaxIdNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceNumber != null">
+                actual_invoice_number = #{actualInvoiceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceFee != null">
+                actual_invoice_fee = #{actualInvoiceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="actualInvoiceRate != null">
+                actual_invoice_rate = #{actualInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="lastDealPersonId != null">
+                last_deal_person_id = #{lastDealPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="lastDealTime != null">
+                last_deal_time = #{lastDealTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchStatus != null">
+                dispatch_status = #{dispatchStatus,jdbcType=VARCHAR},
+            </if>
+
+            <if test="actualPriceUnit != null">
+                actual_price_unit = #{actualPriceUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPrice != null">
+                actual_price = #{actualPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="flagCustomerConfirm != null">
+                flag_customer_confirm = #{flagCustomerConfirm,jdbcType=BIT},
+            </if>
+            <if test="flagDispatcherConfirm != null">
+                flag_dispatcher_confirm = #{flagDispatcherConfirm,jdbcType=BIT},
+            </if>
+            <if test="customerHrInfoConfirmTime != null">
+                customer_hr_info_confirm_time = #{customerHrInfoConfirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatcherFinalConfirmTime != null">
+                dispatcher_final_confirm_time = #{dispatcherFinalConfirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="customerFinalConfirmTime != null">
+                customer_final_confirm_time = #{customerFinalConfirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="processStage != null">
+                process_stage = #{processStage,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelReason !=null">
+                cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+            </if>
+            <if test="abandonReason != null">
+                abandon_reason = #{abandonReason,jdbcType=VARCHAR},
+            </if>
+            <if test="actualCostMemo != null">
+                actual_cost_memo = #{actualCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPriceMemo != null">
+                actual_price_memo = #{actualPriceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="privateNote != null">
+                private_note = #{privateNote,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where fault_dispatch_request_id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--功能：查询派工单处理人 -->
+    <!--作者： 刘侃-->
+    <!--时间： 2018-04-26-->
+    <select id="selectOldPersonId" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select id,last_deal_person_id AS lastDealPersonId
+        FROM fdp_fault_dispatch_order
+        where id IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--功能：修改派工单处理人 -->
+    <!--作者： 刘侃-->
+    <!--时间： 2018-04-26-->
+    <update id="dispatchTransmit" parameterType="java.util.HashMap">
+        update fdp_fault_dispatch_order
+        set last_deal_person_id = #{newDealPersonId,jdbcType=INTEGER}
+        where id IN
+        <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--功能：修改派工工单 -->
+    <!--作者： 刘侃-->
+    <!--时间： 2018-04-26-->
+    <update id="updateByProcessIdSelective" parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+        update fdp_fault_dispatch_order
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderId != null">
+                fault_order_id = #{faultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="rootFaultOrderId != null">
+                root_fault_order_id = #{rootFaultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null">
+                fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="hrCount != null">
+                hr_count = #{hrCount,jdbcType=INTEGER},
+            </if>
+            <if test="actualCost != null">
+                actual_cost = #{actualCost,jdbcType=DECIMAL},
+            </if>
+            <if test="actualMonetaryUnit != null">
+                actual_monetary_unit = #{actualMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedServiceTime != null">
+                estimated_service_time = #{estimatedServiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="flagFinish != null">
+                flag_finish = #{flagFinish,jdbcType=BIT},
+            </if>
+            <if test="finishType != null">
+                finish_type = #{finishType,jdbcType=VARCHAR},
+            </if>
+            <if test="flagPaid != null">
+                flag_paid = #{flagPaid,jdbcType=BIT},
+            </if>
+            <if test="actualInvoiceType != null">
+                actual_invoice_type = #{actualInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTitle != null">
+                actual_invoice_title = #{actualInvoiceTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTaxIdNumber != null">
+                actual_invoice_tax_id_number = #{actualInvoiceTaxIdNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatchStatus != null">
+                dispatch_status = #{dispatchStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceNumber != null">
+                actual_invoice_number = #{actualInvoiceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceFee != null">
+                actual_invoice_fee = #{actualInvoiceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="actualInvoiceRate != null">
+                actual_invoice_rate = #{actualInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="lastDealPersonId != null">
+                last_deal_person_id = #{lastDealPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="lastDealTime != null">
+                last_deal_time = #{lastDealTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flagCustomerConfirm != null">
+                flag_customer_confirm = #{flagCustomerConfirm,jdbcType=BIT},
+            </if>
+            <if test="flagDispatcherConfirm != null">
+                flag_dispatcher_confirm = #{flagDispatcherConfirm,jdbcType=BIT},
+            </if>
+            <if test="processStage != null">
+                process_stage = #{processStage,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelReason != null">
+                cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+            </if>
+            <if test="abandonReason != null">
+                abandon_reason = #{abandonReason,jdbcType=VARCHAR},
+            </if>
+            <if test="actualCostMemo != null">
+                actual_cost_memo = #{actualCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPriceMemo != null">
+                actual_price_memo = #{actualPriceMemo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where fault_order_id = #{faultOrderId,jdbcType=INTEGER}
+    </update>
+
+    <!--功能：查询人力资源信息 -->
+    <!--作者： 刘侃-->
+    <!--时间： 2018-04-26-->
+    <select id="dispatchMainHrIdList" parameterType="com.teekee.waterdropservice.entity.bif.DispatchHumanResourceList"
+            resultType="com.teekee.waterdropservice.entity.bif.BifDispatchHumanResource">
+        select distinct bdhr.*,bdhr.skill_label_ids skillLabel,
+        bdhr.custom_label customLabel
+        from fdp_fault_dispatch_order fdo
+        inner join fdp_fault_order_dispatch_request odr on fdo.fault_dispatch_request_id = odr.id
+        inner join fdp_fault_dispatch_hr_relation dhr on fdo.id = dhr.dispatch_order_id
+        inner join bif_dispatch_human_resource bdhr on bdhr.id = dhr.dispatch_main_hr_id
+        where fdo.last_deal_person_id = #{dealPersonId,jdbcType=INTEGER} and fdo.flag_deleted = 0
+        <if test="skillLabelIds != null">
+            and FIND_IN_SET(bdhr.skill_label_ids,#{skillLabelIds,jdbcType=VARCHAR})
+        </if>
+        <if test="customLabel != null">
+            and LOCATE(#{customLabel}, bdhr.custom_label)>0
+        </if>
+    </select>
+
+
+    <update id="updateServerTimeById" parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchHrRelation">
+        update fdp_fault_dispatch_order
+        <set>
+
+            <if test="estimatedServiceTime != null">
+                estimated_service_time = #{estimatedServiceTime,jdbcType=INTEGER},
+            </if>
+            <if test="processStage != null">
+                process_stage = #{processStage,jdbcType=VARCHAR},
+            </if>
+            <if test="privateNote != null">
+                private_note = #{privateNote,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id = #{dispatchOrderId,jdbcType=INTEGER}
+
+    </update>
+    <!--查询客户是否确认完工-->
+    <select id="selectCustomerConfirm" parameterType="java.lang.Integer"
+            resultType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+    SELECT flag_customer_confirm flagCustomerConfirm
+    FROM fdp_fault_dispatch_order
+    WHERE fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
+  </select>
+
+    <!--查询采购是否确认完工-->
+    <select id="selectDispatchConfirm" parameterType="java.lang.Integer"
+            resultType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+    SELECT flag_dispatcher_confirm flagDispatcherConfirm
+    FROM fdp_fault_dispatch_order
+    WHERE fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
+  </select>
+
+
+    <select id="selectByRequestId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from fdp_fault_dispatch_order
+        where fault_dispatch_request_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectNumber" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select dispatch_order_number
+    from fdp_fault_dispatch_order
+    where
+    fault_dispatch_request_id = #{id,jdbcType=INTEGER}
+
+  </select>
+
+    <select id="selectDispatchOrder" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    id
+    FROM
+    fdp_fault_dispatch_order
+    where
+    fault_dispatch_request_id = #{requestId,jdbcType=INTEGER}
+  </select>
+
+    <update id="updateStatusByDispatchRequestId"
+            parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+        update fdp_fault_dispatch_order
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="faultOrderId != null">
+                fault_order_id = #{faultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="rootFaultOrderId != null">
+                root_fault_order_id = #{rootFaultOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null">
+                fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="hrCount != null">
+                hr_count = #{hrCount,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchOrderNumber != null">
+                dispatch_order_number = #{dispatchOrderNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedServiceTime != null">
+                estimated_service_time = #{estimatedServiceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualCost != null">
+                actual_cost = #{actualCost,jdbcType=DECIMAL},
+            </if>
+            <if test="actualMonetaryUnit != null">
+                actual_monetary_unit = #{actualMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="flagFinish != null">
+                flag_finish = #{flagFinish,jdbcType=BIT},
+            </if>
+            <if test="finishType != null">
+                finish_type = #{finishType,jdbcType=VARCHAR},
+            </if>
+            <if test="flagPaid != null">
+                flag_paid = #{flagPaid,jdbcType=BIT},
+            </if>
+            <if test="actualInvoiceType != null">
+                actual_invoice_type = #{actualInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTitle != null">
+                actual_invoice_title = #{actualInvoiceTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceTaxIdNumber != null">
+                actual_invoice_tax_id_number = #{actualInvoiceTaxIdNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceNumber != null">
+                actual_invoice_number = #{actualInvoiceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="actualInvoiceFee != null">
+                actual_invoice_fee = #{actualInvoiceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="actualInvoiceRate != null">
+                actual_invoice_rate = #{actualInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="lastDealPersonId != null">
+                last_deal_person_id = #{lastDealPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="lastDealTime != null">
+                last_deal_time = #{lastDealTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchStatus != null">
+                dispatch_status = #{dispatchStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPriceUnit != null">
+                actual_price_unit = #{actualPriceUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPrice != null">
+                actual_price = #{actualPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="flagCustomerConfirm != null">
+                flag_customer_confirm = #{flagCustomerConfirm,jdbcType=BIT},
+            </if>
+            <if test="flagDispatcherConfirm != null">
+                flag_dispatcher_confirm = #{flagDispatcherConfirm,jdbcType=BIT},
+            </if>
+            <if test="sendHrInfoConfirmTime != null">
+                send_hr_info_confirm_time = #{sendHrInfoConfirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="customerFinalConfirmTime != null">
+                customer_final_confirm_time = #{customerFinalConfirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="processStage != null">
+                process_stage = #{processStage,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelReason != null">
+                cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+            </if>
+            <if test="abandonReason != null">
+                abandon_reason = #{abandonReason,jdbcType=VARCHAR},
+            </if>
+            <if test="actualCostMemo != null">
+                actual_cost_memo = #{actualCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPriceMemo != null">
+                actual_price_memo = #{actualPriceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="privateNote != null">
+                private_note = #{privateNote,jdbcType=VARCHAR}
+            </if>
+        </set>
+
+        where fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
+    </update>
+
+    <!--派工工单清单查询 -->
+    <select id="selectOrderList" parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FdpFaultdispatchRequestList">
+
+        select
+        ffdo.dispatch_order_number dispatchOrderNumber,
+        CASE WHEN st.store_name is not null THEN ci.company_name else odr.other_brand END AS companyName,
+        CASE WHEN st.store_name is not null THEN st.store_name else odr.other_store END AS storeName,
+        odr.dispatch_model_request dispatchModelRequest,
+        odr.service_province province,
+        CASE WHEN odr.fault_order_id is null THEN '派工' else '客服'END AS customerSource,
+        odr.service_city city,
+        ffdo.flag_finish flagFinish,
+        ffdo.finish_type finishType,
+        ffdo.last_deal_time lastDealTime,
+        db.brand_name_cn brandName,
+        ffdo.dispatch_status dispatchStatus,
+        odr.create_time createTime,
+        ffdo.hr_count hrCount,
+        su.username createPersonName,
+        ffdo.actual_price actualPrice,
+        (select description from cfg_data_dictionary where value = ffdo.actual_price_unit ) actualPriceUnit,
+        CASE WHEN dhr.estimated_price is null THEN '0' else dhr.estimated_price END AS estimatedPrice,
+        CASE WHEN (select description from cfg_data_dictionary where value = dhr.estimated_price_unit ) is null THEN
+        '人民币' else (select description from cfg_data_dictionary where value = dhr.estimated_price_unit ) END AS
+        estimatedPriceUnit,
+        odr.dispatch_description dispatchDescription,
+        odr.service_address serviceAddress,
+        odr.backup_device_request deviceRequest,
+        odr.other_request otherRequest,
+        odr.equipment_request equipmentRequest,
+        odr.other_request otherRequest,
+        odr.create_time createTime
+        from fdp_fault_dispatch_order ffdo
+        left join fdp_fault_order_dispatch_request odr on ffdo.fault_dispatch_request_id =odr.id
+        left join fdp_fault_order_process op on ffdo.fault_order_id =op.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0) dhr on
+        ffdo.id= dhr.dispatch_order_id
+        and dhr.flag_used =1
+        left join dmi_company_info ci on ci.id = ffdo.company_id
+        left join dmi_store st on st.id = ffdo.store_id
+        left join bif_building bb on bb.id = st.building_id
+        left join dmi_brand db on db.id = st.brand_id
+        left join sys_company_users su on su.id = odr.create_person
+        left join bif_dispatch_human_resource bdhr on bdhr.id = dhr.dispatch_main_hr_id
+        where 1=1
+        and (select company_id from sys_company_users where id = odr.create_person) = #{userCompanyId,jdbcType=INTEGER}
+
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+
+        <if test="type ==0 ">
+            and odr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and odr.fault_order_id is null
+        </if>
+
+        <if test="companyId !=0 and companyId != '-1'">
+            and odr.company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId == '-1' ">
+            and odr.company_id = 0
+        </if>
+        <if test="dispatchStatus =='COMPLETE' ">
+            and ffdo.dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND ffdo.dispatch_status != 'COMPLETE'
+            AND ffdo.dispatch_status != 'CANCEL'
+            AND ffdo.dispatch_status != 'ABANDON'
+        </if>
+        <if test="dispatchStatus== 'CANCEL'">
+            AND (ffdo.dispatch_status = 'CANCEL'
+
+            or ffdo.dispatch_status = 'ABANDON')
+        </if>
+        <if test="createPerson != null">
+            and odr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and odr.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}
+
+          ]]>
+        </if>
+
+        <if test="createTimeEnd != null">
+            <![CDATA[
+          and odr.create_time <=  DATE_ADD(#{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)
+
+           ]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[
+              and ffdo.dispatch_status='COMPLETE'  and ffdo.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}
+              ]]>
+        </if>
+
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[
+              and ffdo.dispatch_status='COMPLETE'  and ffdo.last_deal_time <=  DATE_ADD(#{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)
+               ]]>
+        </if>
+
+        <if test="estimatedPriceStart != null">
+            <![CDATA[
+                  and dhr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}
+             ]]>
+        </if>
+
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[
+                  and dhr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+             ]]>
+        </if>
+
+        <if test="actualPriceStart != null">
+            <![CDATA[
+                        and ffdo.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}
+                   ]]>
+        </if>
+
+        <if test="actualPriceEnd != null">
+            <![CDATA[
+                  and ffdo.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}
+             ]]>
+        </if>
+
+
+    </select>
+
+    <select id="selectOrderListDemand" parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FdpFaultdispatchRequestList">>
+
+        select
+        ffdo.dispatch_order_number dispatchOrderNumber,
+        ci.company_name companyName,
+        st.store_name storeName,
+        odr.dispatch_model_request dispatchModelRequest,
+        CASE WHEN odr.fault_order_id is null THEN '派工' else '客服'END AS customerSource,
+        odr.province,
+        bb.city,
+        ffdo.finish_type finishType,
+        db.brand_name_cn brandName,
+        ffdo.dispatch_status dispatchStatus,
+        ffdo.last_deal_time lastDealTime,
+        odr.create_time createTime,
+        ffdo.dispatch_status dispatchStatus,
+        ffdo.hr_count hrCount,
+        su.username,
+        ffdo.actual_price actualPrice,
+        (select description from cfg_data_dictionary where value = ffdo.actual_price_unit ) actualPriceUnit,
+        dhr.estimated_price estimatedPrice,
+        (select description from cfg_data_dictionary where value = dhr.estimated_price_unit ) estimatedPriceUnit,
+        odr.dispatch_description ,
+        odr.equipment_request equipmentRequest,
+        odr.other_request otherRequest,
+        odr.memo,
+        concat(bdhr.first_name,bdhr.last_name) contactName
+        from fdp_fault_dispatch_order ffdo
+        left join fdp_fault_order_dispatch_request odr on ffdo.fault_dispatch_request_id =odr.id
+        left join fdp_fault_order_process op on ffdo.fault_order_id =op.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0) dhr on
+        ffdo.id= dhr.dispatch_order_id
+        left join dmi_company_info ci on ci.id = ffdo.company_id
+        left join dmi_store st on st.id = ffdo.store_id
+        left join bif_building bb on bb.id = st.building_id
+        left join dmi_brand db on db.id = st.brand_id
+        left join sys_company_users su on su.id = odr.create_person
+        left join bif_dispatch_human_resource bdhr on bdhr.id = dhr.dispatch_main_hr_id
+        where 1=1
+
+        and odr.create_person in (select id from sys_company_users where act_type='DEMAND' and act_Object_id=
+        #{vendorId,jdbcType=INTEGER})
+
+
+        <if test="type ==0 ">
+            and odr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and odr.fault_order_id is null
+        </if>
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="companyId !=0 ">
+            and odr.company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="dispatchStatus !=null and dispatchStatus != 'UNCOMPLETE' ">
+            and ffdo.dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND ffdo.dispatch_status != 'COMPLETE'
+            AND ffdo.dispatch_status != 'CANCEL'
+            AND ffdo.dispatch_status != 'ABANDON'
+        </if>
+        <if test="dispatchStatus== 'CANCEL'">
+            AND (ffdo.dispatch_status = 'CANCEL'
+
+            or ffdo.dispatch_status = 'ABANDON')
+        </if>
+
+        <if test="createPerson != null">
+            and odr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and odr.create_time >=    #{createTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and odr.create_time <= DATE_ADD(     #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and ffdo.dispatch_status='COMPLETE'  and ffdo.last_deal_time >=    #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and ffdo.dispatch_status='COMPLETE'  and ffdo.last_deal_time <= DATE_ADD(    #{userCompleteTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+
+
+    </select>
+
+    <select id="selectDispatchOrderList" parameterType="com.teekee.waterdropservice.entity.fdp.GetFdpFaultdispatchOrderList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrderList">
+
+        select
+        ffdo.dispatch_order_number dispatchOrderNumber,
+        ci.company_name companyName,
+        CASE WHEN st.store_name is not null THEN st.store_name else odr.other_store END AS storeName,
+
+        CASE
+        WHEN ffdo.fault_order_id is null THEN '派工' else '客服'END AS customerSource,
+        odr.dispatch_model_request dispatchModelRequest,
+        odr.service_province province,
+        odr.service_city city,
+        odr.service_district serviceDistrict,
+        odr.service_address serviceAddress,
+        ffdo.dispatch_status dispatchStatus,
+        ffdo.last_deal_time lastDealTime,
+        CASE
+
+        WHEN ffdo.flag_finish is true THEN ffdo.last_deal_time else ''END AS finishTime,
+        odr.create_time createTime,
+        ffdo.hr_count hrCount,
+        su.username,
+        ffdo.actual_cost actualCost,
+        (select description from cfg_data_dictionary where value = ffdo.actual_monetary_unit) actualMonetaryUnit,
+        dhr.estimated_cost estimatedCost,
+        (select description from cfg_data_dictionary where value = dhr.estimated_monetary_unit) estimatedMonetaryUnit,
+        ffdo.actual_price actualPrice,
+        (select description from cfg_data_dictionary where value = ffdo.actual_price_unit ) actualPriceUnit,
+        dhr.estimated_price estimatedPrice,
+        (select description from cfg_data_dictionary where value = dhr.estimated_price_unit ) estimatedPriceUnit,
+        odr.dispatch_description,
+        odr.equipment_request equipmentRequest,
+        odr.other_request otherRequest,
+        odr.other_system_number otherSystemNumber,
+        odr.backup_device_request backupDeviceRequest,
+        odr.service_date serviceDate,
+        odr.service_time_start serviceTimeStart,
+        odr.service_time_end serviceTimeEnd,
+        odr.expect_reply_time expectReplyTime,
+        odr.expect_complete_time expectCompleteTime,
+        suu.username lastDealPerson,
+        concat(bdhr.first_name,bdhr.last_name) hrPerson,
+        dhr.flag_provide_invoice flagProvideInvoice,
+
+        from fdp_fault_dispatch_order ffdo
+        left join fdp_fault_order_dispatch_request odr on ffdo.fault_dispatch_request_id =odr.id
+        left join fdp_fault_order_process op on ffdo.fault_order_id =op.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) dhr on
+        ffdo.id= dhr.dispatch_order_id
+        left join dmi_company_info ci on ci.id = ffdo.company_id
+        left join dmi_store st on st.id = ffdo.store_id
+        left join bif_building bb on bb.id = st.building_id
+        left join dmi_brand db on db.id = st.brand_id
+        left join sys_company_users su on su.id = odr.create_person
+        left join sys_consolee_users suu on suu.id=ffdo.last_deal_person_id
+        left join bif_dispatch_human_resource bdhr on bdhr.id = dhr.dispatch_main_hr_id
+
+        where 1=1
+        <if test="type ==0 ">
+            and ffdo.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and ffdo.fault_order_id is null
+        </if>
+        <if test="companyId!=null and companyId !=0 ">
+            and ffdo.company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="dispatchStatus !=null and dispatchStatus != 'UNCOMPLETE'  ">
+            and ffdo.dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND ffdo.dispatch_status != 'COMPLETE'
+            AND ffdo.dispatch_status != 'CANCEL'
+            AND ffdo.dispatch_status != 'ABANDON'
+        </if>
+        <if test="lastDealPersonId != null">
+            and ffdo.last_deal_person_id =#{lastDealPersonId,jdbcType=INTEGER}
+        </if>
+        <if test="createPerson != null">
+            and odr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and odr.create_time >=    #{createTimeStart,jdbcType=TIMESTAMP}  ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[  and odr.create_time <= DATE_ADD(     #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)  ]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and ffdo.dispatch_status='COMPLETE'  and ffdo.last_deal_time >=    #{userCompleteTimeStart,jdbcType=TIMESTAMP}  ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and ffdo.dispatch_status='COMPLETE'  and ffdo.last_deal_time <= DATE_ADD(    #{userCompleteTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[    and ffdo.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[  and ffdo.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[    and dhr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and dhr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[   and ffdo.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[   and ffdo.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostStart != null">
+
+            <![CDATA[  and dhr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostEnd != null">
+            <![CDATA[   and dhr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+
+    </select>
+
+    <select id="selectRequestCount" parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="java.lang.Integer">
+
+
+        SELECT
+        count( rr.id )
+        FROM
+        fdp_fault_order_dispatch_request rr
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        WHERE
+        1 = 1
+        AND rr.flag_deleted = 0
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="dispatchStatus == 'COMPLETE'">
+            and dispatch_status= #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND o.dispatch_status != 'COMPLETE'
+            AND o.dispatch_status != 'CANCEL'
+            AND o.dispatch_status != 'ABANDON'
+
+        </if>
+        <if test="dispatchStatus== 'CANCEL'">
+            and( o.dispatch_status ='CANCEL'
+            OR o.dispatch_status ='ABANDON')
+        </if>
+
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >=  #{createTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[  and rr.create_time <= DATE_ADD(  #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD( #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[ and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[  and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[   and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[  and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+    </select>
+
+    <select id="selectRequestCompletePrice"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderRequestCount">
+        select sum(hr.estimated_price) estimatedPriceComplete,
+        (select description from cfg_data_dictionary where value = hr.estimated_price_unit ) estimatedPriceUnit,
+        sum(o.actual_price) actualPriceComplete ,
+        (select description from cfg_data_dictionary where value = o.actual_price_unit ) actualPriceUnit
+
+        from (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr
+        left join fdp_fault_order_dispatch_request rr on rr.id =hr.fault_dispatch_request_id
+        left join fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="dispatchStatus == 'COMPLETE'">
+            and dispatch_status= #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND o.dispatch_status != 'COMPLETE'
+            AND o.dispatch_status != 'CANCEL'
+            AND o.dispatch_status != 'ABANDON'
+
+        </if>
+        <if test="dispatchStatus== 'CANCEL'">
+            and( o.dispatch_status ='CANCEL'
+            OR o.dispatch_status ='ABANDON')
+        </if>
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
+
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}   ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[  and rr.create_time <= DATE_ADD( #{createTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}  ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD( #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[  and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[   and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+
+
+    </select>
+
+
+    <select id="selectRequestByCompanyAll" parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderRequestCount">
+
+        select count(rr.id) requestCountAll,c.company_name companyName
+        from dmi_company_info c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.company_id = c.id
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="companyId !=null and companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
+        <if test="createPerson !=null and createPerson != 0 ">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="province != null and province !='' ">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null and city!='' ">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >=#{createTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and rr.create_time <= DATE_ADD(#{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[    and o.dispatch_status='COMPLETE'  and o.last_deal_time >=#{userCompleteTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(#{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[    and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[   and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[   and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        GROUP BY c.company_name
+
+    </select>
+    <select id="selectRequestByCompanyComplete"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderRequestCount">
+
+
+        SELECT
+        count( rr.id ) requestCountComplete,c.company_name companyName
+        from dmi_company_info c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.company_id = c.id
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
+        AND rr.flag_deleted = 0
+        <if test="companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        and dispatch_status='COMPLETE'
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}  ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and rr.create_time <= DATE_ADD(#{createTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD( #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[  and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[  and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[  and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[  and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[ and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        GROUP BY c.company_name
+
+    </select>
+    <select id="selectRequestByCompanyUnComplete"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderRequestCount">
+
+        SELECT
+        count( rr.id ) reqeustCountUncomplete,c.company_name companyName
+        from dmi_company_info c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.company_id = c.id
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        AND rr.flag_deleted = 0
+        <if test="companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
+
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        AND o.dispatch_status != 'COMPLETE'
+        AND o.dispatch_status != 'CANCEL'
+        AND o.dispatch_status != 'ABANDON'
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[ and rr.create_time <= DATE_ADD(  #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[ and o.dispatch_status='COMPLETE'  and o.last_deal_time >=  #{userCompleteTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[ and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD( #{userCompleteTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[ and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[ and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[ and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL}  ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[ and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}  ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[  and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}  ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}  ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[  and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}  ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[  and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        GROUP BY c.company_name
+
+    </select>
+
+    <select id="selectRequestByCreatePersonyAll"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderRequestCount">
+
+
+        select count(rr.id) requestCountAll,c.username
+        from sys_company_users c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.create_person = c.id
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and rr.create_time <= DATE_ADD( #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(  #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[  and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[   and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[ and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[   and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        GROUP BY c.username
+
+    </select>
+
+    <select id="selectRequestByCreatePersonyComplete"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderRequestCount">
+
+
+        select count(rr.id) requestCountComplete,c.username
+        from sys_company_users c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.create_person = c.id
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        and dispatch_status='COMPLETE'
+        <if test="companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
+        <if test="dispatchStatus != null and dispatchStatus != 'UNCOMPLETE' ">
+            and dispatch_status= #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND o.dispatch_status != 'COMPLETE'
+            AND o.dispatch_status != 'CANCEL'
+            AND o.dispatch_status != 'ABANDON'
+        </if>
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[ and rr.create_time <= DATE_ADD(  #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD( #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[  and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[  and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[  and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[  and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[  and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[  and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[  and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[  and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        GROUP BY c.username
+
+    </select>
+
+
+    <select id="selectRequestByCreatePersonyUnComplete"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderRequestCount">
+
+
+        select count(rr.id) reqeustCountUncomplete,c.username
+        from sys_company_users c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.create_person = c.id
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        and dispatch_status !='COMPLETE'
+        and dispatch_status !='CANCEL'
+        <if test="companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
+        <if test="dispatchStatus != null and dispatchStatus != 'UNCOMPLETE' ">
+            and dispatch_status= #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND o.dispatch_status != 'COMPLETE'
+            AND o.dispatch_status != 'CANCEL'
+            AND o.dispatch_status != 'ABANDON'
+        </if>
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time > #{createTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and rr.create_time <= DATE_ADD( #{createTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD( #{userCompleteTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[  and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[ and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[ and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[  and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[  and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[  and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        GROUP BY c.username
+
+    </select>
+
+
+    <select id="selectOrderCount" parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="java.lang.Integer">
+
+
+        SELECT
+        count( o.id )
+        FROM
+        fdp_fault_dispatch_order o
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.id = o.fault_dispatch_request_id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.fault_dispatch_request_id = rr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        WHERE
+        1 = 1
+        AND o.flag_deleted = 0
+        <if test="vendorId != 0">
+            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and o.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and o.fault_order_id is null
+        </if>
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="dispatchStatus != null and dispatchStatus != 'UNCOMPLETE' ">
+            and dispatch_status= #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND o.dispatch_status != 'COMPLETE'
+            AND o.dispatch_status != 'CANCEL'
+            AND o.dispatch_status != 'ABANDON'
+        </if>
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="lastDealPersonId != 0">
+            and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
+        </if>
+
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >=    #{createTimeStart,jdbcType=TIMESTAMP}
+             ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[
+          and rr.create_time <= DATE_ADD( #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)
+             ]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[
+          and o.dispatch_status='COMPLETE'  and o.last_deal_time >=    #{userCompleteTimeStart,jdbcType=TIMESTAMP}
+             ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[
+          and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(    #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)
+             ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[
+          and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL}
+             ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[
+          and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL}
+             ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[
+          and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}
+             ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[
+          and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+             ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[
+          and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}
+             ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[
+          and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}
+             ]]>
+        </if>
+        <if test="estimatedCostStart != null">
+            <![CDATA[
+          and hr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL}
+             ]]>
+        </if>
+        <if test="estimatedCostEnd != null">
+            <![CDATA[
+          and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}
+         ]]>
+        </if>
+
+
+    </select>
+
+    <select id="selectOrderCompletePrice" parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderCount">
+        select
+        sum(hr.estimated_price) SumEstimatedPrice,
+        (select description from cfg_data_dictionary where value = hr.estimated_price_unit ) estimatedPriceUnit,
+        sum(o.actual_price) SumActualPrice,
+        (select description from cfg_data_dictionary where value = o.actual_price_unit ) actualPriceUnit,
+        sum(o.actual_cost) SumActualCost,
+        (select description from cfg_data_dictionary where value = o.actual_monetary_unit ) actualMonetaryUnit,
+        sum(hr.estimated_cost) SumEstimatedCost,
+        (select description from cfg_data_dictionary where value = hr.estimated_monetary_unit ) estimatedMonetaryUnit
+        from (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr
+        left join fdp_fault_order_dispatch_request rr on rr.id =hr.fault_dispatch_request_id
+        left join fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="vendorId != 0">
+            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and o.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and o.fault_order_id is null
+        </if>
+        <if test="lastDealPersonId != 0">
+            and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
+        </if>
+        <if test="dispatchStatus == 'COMPLETE'">
+            and dispatch_status= #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND o.dispatch_status != 'COMPLETE'
+            AND o.dispatch_status != 'CANCEL'
+            AND o.dispatch_status != 'ABANDON'
+
+        </if>
+        <if test="dispatchStatus== 'CANCEL'">
+            and( o.dispatch_status ='CANCEL'
+            OR o.dispatch_status ='ABANDON')
+        </if>
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >=  #{createTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[and rr.create_time <= DATE_ADD(   #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[ and o.dispatch_status='COMPLETE'  and o.last_deal_time >=  #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[ and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(  #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[ and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[  and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[ and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[ and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostStart != null">
+            <![CDATA[ and hr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedCostEnd != null">
+            <![CDATA[and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+
+    </select>
+
+
+    <select id="selectOrderByCompanyAll" parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderCount">
+
+        select count(o.id) orderCountAll,c.company_name companyName
+        from dmi_company_info c
+        LEFT JOIN fdp_fault_dispatch_order o ON o.company_id = c.id
+        left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.fault_dispatch_request_id = odr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        AND o.flag_deleted = 0
+        <if test="vendorId != 0">
+            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and o.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and o.fault_order_id is null
+        </if>
+        <if test="lastDealPersonId != 0">
+            and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
+        </if>
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and odr.create_time >=  #{createTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[  and odr.create_time <= DATE_ADD(   #{createTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >=  #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(  #{userCompleteTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[  and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[  and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[ and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[  and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostStart != null">
+            <![CDATA[ and hr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostEnd != null">
+            <![CDATA[and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        GROUP BY c.company_name
+
+    </select>
+
+    <select id="selectOrderByCompanyComplete"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderCount">
+
+
+        SELECT
+        count( o.id ) orderCountComplete,c.company_name companyName
+        from dmi_company_info c
+        LEFT JOIN fdp_fault_dispatch_order o ON o.company_id = c.id
+        left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.fault_dispatch_request_id = odr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        AND o.flag_deleted = 0
+        <if test="vendorId != 0">
+            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and o.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and o.fault_order_id is null
+        </if>
+        and dispatch_status='COMPLETE'
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="lastDealPersonId != 0">
+            and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
+        </if>
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and odr.create_time >=  #{createTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and odr.create_time <= DATE_ADD(   #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(  #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[  and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[  and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostStart != null">
+            <![CDATA[and hr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedCostEnd != null">
+            <![CDATA[and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+
+        GROUP BY c.company_name
+
+    </select>
+
+
+    <select id="selectOrderByCompanyUnComplete"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderCount">
+
+
+        SELECT
+        count( o.id ) orderCountUnComplete,c.company_name companyName
+        from dmi_company_info c
+        LEFT JOIN fdp_fault_dispatch_order o ON o.company_id = c.id
+        left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.fault_dispatch_request_id = odr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        AND o.flag_deleted = 0
+        <if test="vendorId != 0">
+            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and o.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and o.fault_order_id is null
+        </if>
+        and dispatch_status !='COMPLETE'
+        and dispatch_status !='CANCEL'
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="lastDealPersonId != 0">
+            and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
+        </if>
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and odr.create_time <= DATE_ADD(   #{createTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(  #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[  and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[  and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostStart != null">
+            <![CDATA[and hr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedCostEnd != null">
+            <![CDATA[and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+
+        GROUP BY c.company_name
+
+    </select>
+
+    <select id="selectOrderByDealPersonAll"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderCount">
+
+
+        select count(o.id) orderCountAll,c.username companyName
+        from sys_company_users c
+        LEFT JOIN fdp_fault_dispatch_order o on o.last_deal_person_id = c.id
+        left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.fault_dispatch_request_id = odr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="vendorId != 0">
+            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+
+        <if test="type ==0 ">
+            and o.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and o.fault_order_id is null
+        </if>
+        <if test="lastDealPersonId != 0">
+            and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
+        </if>
+
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[   and odr.create_time >=   #{createTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and odr.create_time <= DATE_ADD(   #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(  #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[  and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[  and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostStart != null">
+            <![CDATA[and hr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedCostEnd != null">
+            <![CDATA[and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        GROUP BY c.username
+
+    </select>
+
+
+    <select id="selectOrderByCreatePersonComplete"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderCount">
+
+
+        select count(o.id) orderCountComplete,c.username companyName
+        from sys_company_users c
+        LEFT JOIN fdp_fault_dispatch_order o on o.last_deal_person_id = c.id
+        left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.fault_dispatch_request_id = odr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        and dispatch_status='COMPLETE'
+        <if test="vendorId != 0">
+            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and o.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and o.fault_order_id is null
+        </if>
+        <if test="lastDealPersonId != 0">
+            and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
+        </if>
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and odr.create_time <= DATE_ADD(   #{createTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(  #{userCompleteTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[  and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[  and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostStart != null">
+            <![CDATA[and hr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedCostEnd != null">
+            <![CDATA[and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        GROUP BY c.username
+
+    </select>
+    <select id="selectOrderByCreatePersonUnComplete"
+            parameterType="com.teekee.waterdropservice.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.teekee.waterdropservice.entity.fdp.FaultOrderCount">
+
+
+        select count(o.id) orderCountUnComplete,c.username companyName
+        from sys_company_users c
+        LEFT JOIN fdp_fault_dispatch_order o on o.last_deal_person_id = c.id
+        left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.fault_dispatch_request_id = odr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="vendorId != 0">
+            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and o.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and o.fault_order_id is null
+        </if>
+        <if test="lastDealPersonId != 0">
+            and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
+        </if>
+        and dispatch_status !='COMPLETE'
+        and dispatch_status !='CANCEL'
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[   and odr.create_time <= DATE_ADD(   #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(  #{userCompleteTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[  and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[  and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="estimatedCostStart != null">
+            <![CDATA[and hr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedCostEnd != null">
+            <![CDATA[and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        GROUP BY c.username
+
+    </select>
+
+
+    <select id="selectStatusById" parameterType="java.lang.Integer" resultType="java.lang.String">
+
+    select dispatch_status
+    from fdp_fault_dispatch_order
+    where id = #{id,jdbcType=INTEGER}
+
+
+  </select>
+
+    <select id="selectFaultOrderId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select id
+    from fdp_fault_dispatch_order
+    where fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
+
+  </select>
+    <!--接单状态数量统计-->
+    <select id="selectStatusCollect" parameterType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder"
+            resultType="com.teekee.waterdropservice.entity.fdp.GetDispatchOrderServiceStatusList">
+   SELECT
+      COUNT(rel.id) `count`,
+      rel.hr_dispatch_status `status`
+  FROM
+      fdp_fault_dispatch_hr_relation rel
+      LEFT JOIN bif_dispatch_human_resource bdhr on bdhr.id = rel.dispatch_main_hr_id
+      WHERE
+      rel.dispatch_main_hr_id = #{id,jdbcType=INTEGER}
+      AND rel.flag_used = 1
+      AND rel.hr_dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
+      and bdhr.valid_status = 'APPROVED'
+  </select>
+    <!--服务商工单列表-->
+    <select id="selectServiceListByOrderId" parameterType="com.teekee.waterdropservice.entity.fdp.ParamServiceDispatchOrder"
+            resultType="com.teekee.waterdropservice.entity.fdp.GetServiceDispatchOrderList">
+        SELECT
+        ffdo.fault_dispatch_request_id AS faultDispatchRequestId,
+        ffdo.id orderId,
+        ffdo.dispatch_order_number AS dispatchOrderNumber,
+        CASE WHEN brand.brand_name is not null THEN brand.brand_name else req.other_brand END AS brandName,
+        CASE WHEN sto.store_name is not null THEN sto.store_name else req.other_store END AS storeName,
+        req.service_city AS serviceCity,
+        req.service_address AS serviceAddress,
+        ffdhr.estimated_price AS estimatedPrice,
+        cdd.description AS estimatedPriceUnit,
+        ffdhr.hr_finish_service_time AS hrFinishServiceTime
+        FROM
+        fdp_fault_dispatch_order ffdo
+        INNER JOIN (SELECT * FROM fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 AND
+        dispatch_main_hr_id = #{hrId,jdbcType=INTEGER}) ffdhr on ffdhr.dispatch_order_id = ffdo.id
+        LEFT JOIN (SELECT * FROM cfg_data_dictionary WHERE type = "MONETARY_UNIT") cdd on cdd.value =
+        ffdhr.estimated_price_unit
+        LEFT JOIN fdp_fault_order_dispatch_request req on req.id = ffdo.fault_dispatch_request_id
+        LEFT JOIN (SELECT * FROM dmi_store WHERE flag_deleted = 0) sto on sto.id = ffdo.store_id
+        LEFT JOIN (SELECT * FROM dmi_brand WHERE flag_deleted = 0) brand on brand.id = sto.brand_id
+        WHERE 1=1
+        <if test="type == 'FINISH'">
+            AND ffdhr.hr_dispatch_status = "FINISH"
+        </if>
+        <if test="serviceCity != null">
+            AND req.service_city = #{serviceCity,jdbcType=VARCHAR}
+        </if>
+        <if test="brandName != null">
+            AND brand.brand_name = #{brandName,jdbcType=VARCHAR}
+        </if>
+        <if test="storeName != null">
+            AND sto.store_name = #{storeName,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus != null">
+            AND ffdhr.hr_dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="hrConfirmTimeStart != null">
+            AND ffdhr.hr_confirm_time >= #{hrConfirmTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="hrConfirmTimeEnd != null">
+            AND ffdhr.hr_confirm_time &lt;= DATE_ADD(#{hrConfirmTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)
+        </if>
+        <if test="hrStartOffTimeStart != null">
+            AND ffdhr.hr_start_off_time >= #{hrStartOffTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="hrStartOffTimeEnd != null">
+            AND ffdhr.hr_start_off_time &lt;= DATE_ADD(#{hrStartOffTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)
+        </if>
+        <if test="hrFinishServiceTimeStart != null">
+            AND ffdhr.hr_finish_service_time >= #{hrFinishServiceTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="hrFinishServiceTimeEnd != null">
+            AND ffdhr.hr_finish_service_time &lt;= DATE_ADD(#{hrFinishServiceTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1
+            DAY)
+        </if>
+        <if test="lastDealTimeStart != null">
+            AND ffdo.dispatch_status = "COMPLETE" AND ffdo.last_deal_time >= #{lastDealTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="lastDealTimeEnd != null">
+            AND ffdo.dispatch_status = "COMPLETE" AND ffdo.last_deal_time &lt;=
+            DATE_ADD(#{lastDealTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)
+        </if>
+        ORDER BY ffdo.last_deal_time DESC
+    </select>
+    <!--服务商查看工单信息-->
+    <select id="serOrderInfo" parameterType="java.lang.Integer"
+            resultType="com.teekee.waterdropservice.entity.fdp.GetServiceOderInfoShow">
+      SELECT
+        dispatchOrder.dispatch_order_number AS dispatchOrderNumber,
+        CASE WHEN brand.brand_name is not null THEN brand.brand_name else request.other_brand END AS brandName,
+        CASE WHEN store.store_name is not null THEN store.store_name else request.other_store END AS storeName,
+        request.backup_device_request backupDeviceRequest,
+        request.equipment_request AS equipmentRequest,
+        request.other_request AS otherRequest,
+        request.longitude,
+        request.latitude,
+        request.service_address AS serviceAddress,
+        request.service_province AS serviceProvince,
+        request.service_city AS serviceCity,
+        dispatchOrder.estimated_service_time AS estimatedServiceTime,
+        request.dispatch_description AS dispatchDescription,
+        request.dispatch_model_request AS dispatchModelRequest,
+        dispatchHrRlt.hr_finish_service_time AS hrFinishServiceTime,
+        contact.mobile
+	FROM
+	(SELECT * FROM fdp_fault_dispatch_order WHERE flag_deleted = 0 AND id = #{orderId,jdbcType=INTEGER}) dispatchOrder
+  LEFT JOIN( SELECT * FROM fdp_fault_order_dispatch_request WHERE flag_deleted = 0 ) request  ON request.id = dispatchOrder.fault_dispatch_request_id
+	LEFT JOIN (SELECT * FROM fdp_fault_dispatch_hr_relation WHERE flag_deleted = 0 AND flag_used = 1) dispatchHrRlt ON dispatchHrRlt.dispatch_order_id = dispatchOrder.id
+	LEFT JOIN (SELECT * FROM bif_dispatch_human_resource WHERE flag_deleted = 0) humanResource ON humanResource.id = dispatchHrRlt.dispatch_main_hr_id
+	LEFT JOIN (SELECT * FROM dmi_store store WHERE flag_deleted = 0)store ON store.id = request.store_id
+	LEFT JOIN (SELECT * FROM dmi_brand WHERE flag_deleted = 0) brand on brand.id = store.brand_id
+	LEFT JOIN (SELECT * FROM dmi_contact_store_relation WHERE flag_deleted = 0 AND flag_major = 1) stoRel ON stoRel.store_id = store.id
+	LEFT JOIN (SELECT * FROM dmi_contact WHERE flag_deleted = 0) contact ON contact.id = stoRel.contact_id
+  </select>
+    <!--服务商查看工单基本信息-->
+    <select id="selectServiceOrderBasic" parameterType="java.lang.Integer"
+            resultType="com.teekee.waterdropservice.entity.fdp.GetServiceOrderBasicInfo">
+    SELECT
+      ffdo.dispatch_order_number AS dispatchOrderNumber,
+      ffdo.estimated_service_time AS  estimatedServiceTime,
+      ffdhr.hr_finish_service_time AS hrFinishServiceTime
+    FROM
+        fdp_fault_dispatch_order ffdo
+    LEFT JOIN (SELECT * FROM fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0) ffdhr on ffdhr.dispatch_order_id = ffdo.id
+    WHERE
+        ffdo.id = #{orderId,jdbcType=INTEGER}
+    AND ffdo.flag_deleted = 0
+  </select>
+    <!--自动完工定时任务 获取工单列表-->
+    <select id="selectFdpFaultDispatchOrderList" resultType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+        select
+        <include refid="Base_Column_List"/>
+        from fdp_fault_dispatch_order
+        where flag_auto_commit=1 and flag_dispatcher_confirm=1 and flag_customer_confirm=0 and
+        DATEDIFF(now(),last_deal_time)>=7
+    </select>
+
+    <!--服务商查看工单基本信息-->
+    <select id="selectDispatchOrderByfdoId" parameterType="java.lang.Integer"
+            resultType="com.teekee.waterdropservice.entity.fdp.FdpFaultDispatchOrder">
+    SELECT
+       upload_file_name uploadFileName,
+       upload_file_url uploadFileUrl,
+       complete_profile_template_name completeProfileTemplateName,
+       complete_profile_template_url completeProfileTemplateUrl
+       from fdp_fault_dispatch_order
+       where fault_dispatch_request_id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+    <select id="findOrderId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT
+       id
+       from fdp_fault_dispatch_order
+       where fault_dispatch_request_id = #{requestId,jdbcType=INTEGER}
+  </select>
+
+</mapper>
