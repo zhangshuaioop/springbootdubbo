@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teekee.blackrockservice.mapper.BifDeviceMapper">
+  <resultMap id="BaseResultMap" type="com.teekee.blackrockservice.entity.BifDevice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+    <result column="device_sn" jdbcType="VARCHAR" property="deviceSn" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+    <result column="model_id" jdbcType="INTEGER" property="modelId" />
+    <result column="catalog_id" jdbcType="INTEGER" property="catalogId" />
+    <result column="tech_param" jdbcType="VARCHAR" property="techParam" />
+    <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
+    <result column="flag_usable" jdbcType="BIT" property="flagUsable" />
+    <result column="flag_warranty" jdbcType="BIT" property="flagWarranty" />
+    <result column="warranty_expire_date" jdbcType="TIMESTAMP" property="warrantyExpireDate" />
+    <result column="use_expire_date" jdbcType="TIMESTAMP" property="useExpireDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_person" jdbcType="INTEGER" property="createPerson" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_person" jdbcType="INTEGER" property="updatePerson" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.teekee.blackrockservice.entity.BifDevice">
+    <result column="memo" jdbcType="LONGVARCHAR" property="memo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, device_name, device_sn, brand, model, model_id, catalog_id, tech_param, flag_deleted, 
+    flag_usable, flag_warranty, warranty_expire_date, use_expire_date, create_time, create_person, 
+    update_time, update_person
+  </sql>
+  <sql id="Blob_Column_List">
+    memo
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bif_device
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bif_device
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.teekee.blackrockservice.entity.BifDevice">
+    insert into bif_device (id, device_name, device_sn, 
+      brand, model, model_id, 
+      catalog_id, tech_param, flag_deleted, 
+      flag_usable, flag_warranty, warranty_expire_date, 
+      use_expire_date, create_time, create_person, 
+      update_time, update_person, memo
+      )
+    values (#{id,jdbcType=INTEGER}, #{deviceName,jdbcType=VARCHAR}, #{deviceSn,jdbcType=VARCHAR}, 
+      #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, #{modelId,jdbcType=INTEGER}, 
+      #{catalogId,jdbcType=INTEGER}, #{techParam,jdbcType=VARCHAR}, #{flagDeleted,jdbcType=BIT}, 
+      #{flagUsable,jdbcType=BIT}, #{flagWarranty,jdbcType=BIT}, #{warrantyExpireDate,jdbcType=TIMESTAMP}, 
+      #{useExpireDate,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{createPerson,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updatePerson,jdbcType=INTEGER}, #{memo,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.teekee.blackrockservice.entity.BifDevice">
+    insert into bif_device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="deviceName != null">
+        device_name,
+      </if>
+      <if test="deviceSn != null">
+        device_sn,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="model != null">
+        model,
+      </if>
+      <if test="modelId != null">
+        model_id,
+      </if>
+      <if test="catalogId != null">
+        catalog_id,
+      </if>
+      <if test="techParam != null">
+        tech_param,
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted,
+      </if>
+      <if test="flagUsable != null">
+        flag_usable,
+      </if>
+      <if test="flagWarranty != null">
+        flag_warranty,
+      </if>
+      <if test="warrantyExpireDate != null">
+        warranty_expire_date,
+      </if>
+      <if test="useExpireDate != null">
+        use_expire_date,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createPerson != null">
+        create_person,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updatePerson != null">
+        update_person,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deviceName != null">
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceSn != null">
+        #{deviceSn,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null">
+        #{modelId,jdbcType=INTEGER},
+      </if>
+      <if test="catalogId != null">
+        #{catalogId,jdbcType=INTEGER},
+      </if>
+      <if test="techParam != null">
+        #{techParam,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null">
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="flagUsable != null">
+        #{flagUsable,jdbcType=BIT},
+      </if>
+      <if test="flagWarranty != null">
+        #{flagWarranty,jdbcType=BIT},
+      </if>
+      <if test="warrantyExpireDate != null">
+        #{warrantyExpireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useExpireDate != null">
+        #{useExpireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.blackrockservice.entity.BifDevice">
+    update bif_device
+    <set>
+      <if test="deviceName != null">
+        device_name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceSn != null">
+        device_sn = #{deviceSn,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null">
+        model_id = #{modelId,jdbcType=INTEGER},
+      </if>
+      <if test="catalogId != null">
+        catalog_id = #{catalogId,jdbcType=INTEGER},
+      </if>
+      <if test="techParam != null">
+        tech_param = #{techParam,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="flagUsable != null">
+        flag_usable = #{flagUsable,jdbcType=BIT},
+      </if>
+      <if test="flagWarranty != null">
+        flag_warranty = #{flagWarranty,jdbcType=BIT},
+      </if>
+      <if test="warrantyExpireDate != null">
+        warranty_expire_date = #{warrantyExpireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useExpireDate != null">
+        use_expire_date = #{useExpireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+  <!--分页查询-->
+  <select id="findPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+  </select>
+
+</mapper>

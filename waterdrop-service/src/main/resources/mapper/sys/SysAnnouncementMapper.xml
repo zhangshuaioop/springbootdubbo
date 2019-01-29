@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.sys.SysAnnouncementMapper">
+    <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.sys.SysAnnouncement">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="create_id" property="createId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.teekee.waterdropservice.entity.sys.SysAnnouncement" extends="BaseResultMap">
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, title, create_id, create_time, flag_deleted
+  </sql>
+    <sql id="Blob_Column_List">
+    content
+  </sql>
+    <select id="selectLastFive" resultMap="ResultMapWithBLOBs">
+        select
+        ann.id,
+        ann.title,
+        ann.content,
+        ann.create_time AS createTime,
+        ann.flag_deleted AS flagDeleted,
+        sys.username AS createPerson
+        from sys_announcement AS ann
+        LEFT JOIN sys_company_users AS sys ON sys.id = ann.create_id
+        WHERE ann.flag_deleted = 0
+        order by ann.create_time desc LIMIT 5
+    </select>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+        select
+        ann.id,
+        ann.title,
+        ann.content,
+        ann.create_time AS createTime,
+        ann.flag_deleted AS flagDeleted,
+        sys.username AS createPerson
+        from sys_announcement AS ann
+        LEFT JOIN sys_company_users AS sys ON sys.id = ann.create_id
+        where ann.id = #{id,jdbcType=INTEGER}
+        AND ann.flag_deleted = 0
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from sys_announcement
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.teekee.waterdropservice.entity.sys.SysAnnouncement" >
+        insert into sys_announcement (id, title, create_id,
+        create_time, flag_deleted, content
+        )
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createId,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}, #{flagDeleted,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.sys.SysAnnouncement" >
+        insert into sys_announcement
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="title != null" >
+                title,
+            </if>
+            <if test="createId != null" >
+                create_id,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="flagDeleted != null" >
+                flag_deleted,
+            </if>
+            <if test="content != null" >
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null" >
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null" >
+                #{createId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flagDeleted != null" >
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="content != null" >
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.sys.SysAnnouncement" >
+        update sys_announcement
+        <set >
+            <if test="title != null" >
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null" >
+                create_id = #{createId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flagDeleted != null" >
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="content != null" >
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.teekee.waterdropservice.entity.sys.SysAnnouncement" >
+        update sys_announcement
+        set title = #{title,jdbcType=VARCHAR},
+        create_id = #{createId,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+        content = #{content,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.teekee.waterdropservice.entity.sys.SysAnnouncement" >
+        update sys_announcement
+        set title = #{title,jdbcType=VARCHAR},
+        create_id = #{createId,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        flag_deleted = #{flagDeleted,jdbcType=BIT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

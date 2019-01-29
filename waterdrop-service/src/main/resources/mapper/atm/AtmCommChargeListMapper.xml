@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.atm.AtmCommChargeListMapper">
+    <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="object_id" property="objectId" jdbcType="INTEGER"/>
+        <result column="object_type" property="objectType" jdbcType="VARCHAR"/>
+        <result column="contract_id" property="contractId" jdbcType="INTEGER"/>
+        <result column="account_period_number" property="accountPeriodNumber" jdbcType="VARCHAR"/>
+        <result column="account_period_start" property="accountPeriodStart" jdbcType="TIMESTAMP"/>
+        <result column="account_period_end" property="accountPeriodEnd" jdbcType="TIMESTAMP"/>
+        <result column="account_index" property="accountIndex" jdbcType="INTEGER"/>
+        <result column="account_total" property="accountTotal" jdbcType="INTEGER"/>
+        <result column="comm_period_fee" property="commPeriodFee" jdbcType="DECIMAL"/>
+        <result column="comm_one_time_fee" property="commOneTimeFee" jdbcType="DECIMAL"/>
+        <result column="fiber_fee" property="fiberFee" jdbcType="DECIMAL"/>
+        <result column="tenement_one_time_fee" property="tenementOneTimeFee" jdbcType="DECIMAL"/>
+        <result column="tenement_period_fee" property="tenementPeriodFee" jdbcType="DECIMAL"/>
+        <result column="expected_total_fee" property="expectedTotalFee" jdbcType="DECIMAL"/>
+        <result column="actual_charge_fee" property="actualChargeFee" jdbcType="DECIMAL"/>
+        <result column="charge_bill_id" property="chargeBillId" jdbcType="INTEGER"/>
+        <result column="flag_fee_different" property="flagFeeDifferent" jdbcType="BIT"/>
+        <result column="flag_change_fee" property="flagChangeFee" jdbcType="BIT"/>
+        <result column="flag_provide_invoice" property="flagProvideInvoice" jdbcType="BIT"/>
+        <result column="flag_completed_charge" property="flagCompletedCharge" jdbcType="BIT"/>
+        <result column="flag_activate" property="flagActivate" jdbcType="BIT"/>
+        <result column="flag_closed" property="flagClosed" jdbcType="BIT"/>
+        <result column="memo" property="memo" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_person" property="createPerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+        <result column="activate_date" property="activateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, object_id, object_type, contract_id, account_period_number, account_period_start, 
+    account_period_end, account_index, account_total, comm_period_fee, comm_one_time_fee, 
+    fiber_fee, tenement_one_time_fee, tenement_period_fee, expected_total_fee, actual_charge_fee, 
+    charge_bill_id, flag_fee_different, flag_change_fee, flag_provide_invoice, flag_completed_charge, 
+    flag_activate, flag_closed, memo, create_time, create_person, update_time, update_person, activate_date
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from atm_comm_charge_list
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        insert into atm_comm_charge_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="objectId != null">
+                object_id,
+            </if>
+            <if test="objectType != null">
+                object_type,
+            </if>
+            <if test="contractId != null">
+                contract_id,
+            </if>
+            <if test="accountPeriodNumber != null">
+                account_period_number,
+            </if>
+            <if test="accountPeriodStart != null">
+                account_period_start,
+            </if>
+            <if test="accountPeriodEnd != null">
+                account_period_end,
+            </if>
+            <if test="accountIndex != null">
+                account_index,
+            </if>
+            <if test="accountTotal != null">
+                account_total,
+            </if>
+            <if test="commPeriodFee != null">
+                comm_period_fee,
+            </if>
+            <if test="commOneTimeFee != null">
+                comm_one_time_fee,
+            </if>
+            <if test="fiberFee != null">
+                fiber_fee,
+            </if>
+            <if test="tenementOneTimeFee != null">
+                tenement_one_time_fee,
+            </if>
+            <if test="tenementPeriodFee != null">
+                tenement_period_fee,
+            </if>
+            <if test="expectedTotalFee != null">
+                expected_total_fee,
+            </if>
+            <if test="actualChargeFee != null">
+                actual_charge_fee,
+            </if>
+            <if test="chargeBillId != null">
+                charge_bill_id,
+            </if>
+            <if test="flagFeeDifferent != null">
+                flag_fee_different,
+            </if>
+            <if test="flagChangeFee != null">
+                flag_change_fee,
+            </if>
+            <if test="flagProvideInvoice != null">
+                flag_provide_invoice,
+            </if>
+            <if test="flagCompletedCharge != null">
+                flag_completed_charge,
+            </if>
+            <if test="flagActivate != null">
+                flag_activate,
+            </if>
+            <if test="flagClosed != null">
+                flag_closed,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="activateDate != null">
+                activate_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="objectId != null">
+                #{objectId,jdbcType=INTEGER},
+            </if>
+            <if test="objectType != null">
+                #{objectType,jdbcType=VARCHAR},
+            </if>
+            <if test="contractId != null">
+                #{contractId,jdbcType=INTEGER},
+            </if>
+            <if test="accountPeriodNumber != null">
+                #{accountPeriodNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPeriodStart != null">
+                #{accountPeriodStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accountPeriodEnd != null">
+                #{accountPeriodEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accountIndex != null">
+                #{accountIndex,jdbcType=INTEGER},
+            </if>
+            <if test="accountTotal != null">
+                #{accountTotal,jdbcType=INTEGER},
+            </if>
+            <if test="commPeriodFee != null">
+                #{commPeriodFee,jdbcType=DECIMAL},
+            </if>
+            <if test="commOneTimeFee != null">
+                #{commOneTimeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="fiberFee != null">
+                #{fiberFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tenementOneTimeFee != null">
+                #{tenementOneTimeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tenementPeriodFee != null">
+                #{tenementPeriodFee,jdbcType=DECIMAL},
+            </if>
+            <if test="expectedTotalFee != null">
+                #{expectedTotalFee,jdbcType=DECIMAL},
+            </if>
+            <if test="actualChargeFee != null">
+                #{actualChargeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="chargeBillId != null">
+                #{chargeBillId,jdbcType=INTEGER},
+            </if>
+            <if test="flagFeeDifferent != null">
+                #{flagFeeDifferent,jdbcType=BIT},
+            </if>
+            <if test="flagChangeFee != null">
+                #{flagChangeFee,jdbcType=BIT},
+            </if>
+            <if test="flagProvideInvoice != null">
+                #{flagProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="flagCompletedCharge != null">
+                #{flagCompletedCharge,jdbcType=BIT},
+            </if>
+            <if test="flagActivate != null">
+                #{flagActivate,jdbcType=BIT},
+            </if>
+            <if test="flagClosed != null">
+                #{flagClosed,jdbcType=BIT},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="activateDate != null">
+                #{activateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        update atm_comm_charge_list
+        <set>
+            <if test="objectId != null">
+                object_id = #{objectId,jdbcType=INTEGER},
+            </if>
+            <if test="objectType != null">
+                object_type = #{objectType,jdbcType=VARCHAR},
+            </if>
+            <if test="contractId != null">
+                contract_id = #{contractId,jdbcType=INTEGER},
+            </if>
+            <if test="accountPeriodNumber != null">
+                account_period_number = #{accountPeriodNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPeriodStart != null">
+                account_period_start = #{accountPeriodStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accountPeriodEnd != null">
+                account_period_end = #{accountPeriodEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accountIndex != null">
+                account_index = #{accountIndex,jdbcType=INTEGER},
+            </if>
+            <if test="accountTotal != null">
+                account_total = #{accountTotal,jdbcType=INTEGER},
+            </if>
+            <if test="commPeriodFee != null">
+                comm_period_fee = #{commPeriodFee,jdbcType=DECIMAL},
+            </if>
+            <if test="commOneTimeFee != null">
+                comm_one_time_fee = #{commOneTimeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="fiberFee != null">
+                fiber_fee = #{fiberFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tenementOneTimeFee != null">
+                tenement_one_time_fee = #{tenementOneTimeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tenementPeriodFee != null">
+                tenement_period_fee = #{tenementPeriodFee,jdbcType=DECIMAL},
+            </if>
+            <if test="expectedTotalFee != null">
+                expected_total_fee = #{expectedTotalFee,jdbcType=DECIMAL},
+            </if>
+            <if test="actualChargeFee != null">
+                actual_charge_fee = #{actualChargeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="chargeBillId != null">
+                charge_bill_id = #{chargeBillId,jdbcType=INTEGER},
+            </if>
+            <if test="flagFeeDifferent != null">
+                flag_fee_different = #{flagFeeDifferent,jdbcType=BIT},
+            </if>
+            <if test="flagChangeFee != null">
+                flag_change_fee = #{flagChangeFee,jdbcType=BIT},
+            </if>
+            <if test="flagProvideInvoice != null">
+                flag_provide_invoice = #{flagProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="flagCompletedCharge != null">
+                flag_completed_charge = #{flagCompletedCharge,jdbcType=BIT},
+            </if>
+            <if test="flagActivate != null">
+                flag_activate = #{flagActivate,jdbcType=BIT},
+            </if>
+            <if test="flagClosed != null">
+                flag_closed = #{flagClosed,jdbcType=BIT},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="activateDate != null">
+                activate_date = #{activateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <insert id="addAtmCommChargeList" parameterType="java.util.List">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT into atm_comm_charge_list
+        (object_id, object_type, contract_id, account_period_number, account_period_start,
+        account_period_end, account_index, account_total, comm_period_fee, comm_one_time_fee,
+        fiber_fee, tenement_one_time_fee, tenement_period_fee, expected_total_fee, actual_charge_fee,
+        charge_bill_id, flag_fee_different, flag_change_fee, flag_provide_invoice, flag_completed_charge,
+        flag_activate, flag_closed, create_time, create_person)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.objectId,jdbcType=INTEGER},
+            #{item.objectType,jdbcType=VARCHAR},
+            #{item.contractId,jdbcType=INTEGER},
+            #{item.accountPeriodNumber,jdbcType=VARCHAR},
+            #{item.accountPeriodStart,jdbcType=TIMESTAMP},
+            #{item.accountPeriodEnd,jdbcType=TIMESTAMP},
+            #{item.accountIndex,jdbcType=INTEGER},
+            #{item.accountTotal,jdbcType=INTEGER},
+            #{item.commPeriodFee,jdbcType=DECIMAL},
+            #{item.commOneTimeFee,jdbcType=DECIMAL},
+            #{item.fiberFee,jdbcType=DECIMAL},
+            #{item.tenementOneTimeFee,jdbcType=DECIMAL},
+            #{item.tenementPeriodFee,jdbcType=DECIMAL},
+            #{item.expectedTotalFee,jdbcType=DECIMAL},
+            #{item.actualChargeFee,jdbcType=DECIMAL},
+            #{item.chargeBillId,jdbcType=INTEGER},
+            #{item.flagFeeDifferent,jdbcType=BIT},
+            #{item.flagChangeFee,jdbcType=BIT},
+            #{item.flagProvideInvoice,jdbcType=BIT},
+            #{item.flagCompletedCharge,jdbcType=BIT},
+            #{item.flagActivate,jdbcType=BIT},
+            #{item.flagClosed,jdbcType=BIT},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.createPerson,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+    <select id="activeChargeList" resultMap="BaseResultMap" parameterType="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        select
+        <include refid="Base_Column_List"/>
+        from atm_comm_charge_list
+        where flag_activate = 1
+        AND object_id = #{objectId,jdbcType=INTEGER}
+        AND object_type = #{objectType,jdbcType=VARCHAR}
+        AND flag_closed = 0
+        <if test="contractId == null">
+            AND contract_id = (SELECT id FROM dmi_comm_charge where object_id = #{objectId,jdbcType=INTEGER}
+            and object_type = #{objectType,jdbcType=VARCHAR}
+            and flag_deleted = 0
+            and flag_lastest = 1)
+        </if>
+        <if test="contractId != null">
+            and contract_id = #{contractId,jdbcType=INTEGER}
+        </if>
+    </select>
+    <update id="exitCharge" parameterType="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        update atm_comm_charge_list
+        SET flag_closed = 1,
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_person = #{updatePerson,jdbcType=INTEGER}
+        where flag_activate = 0
+        AND object_id = #{objectId,jdbcType=INTEGER}
+        AND object_type = #{objectType,jdbcType=VARCHAR}
+        AND contract_id = (SELECT id FROM dmi_comm_charge where object_id = #{objectId,jdbcType=INTEGER}
+        and object_type = #{objectType,jdbcType=VARCHAR}
+        and flag_deleted = 0
+        and flag_lastest = 1)
+    </update>
+    <select id="earliestChargeOfClosed" resultMap="BaseResultMap" parameterType="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        select
+        <include refid="Base_Column_List"/>
+        from atm_comm_charge_list
+        where flag_closed = 1
+        AND contract_id = (SELECT id FROM dmi_comm_charge where object_id = #{objectId,jdbcType=INTEGER} and object_type = #{objectType,jdbcType=VARCHAR}
+        and flag_deleted = 0
+        and flag_lastest = 1)
+        AND account_period_start = (SELECT min(account_period_start) FROM atm_comm_charge_list where flag_closed = 1
+        AND contract_id = (SELECT id FROM dmi_comm_charge where object_id = #{objectId,jdbcType=INTEGER} and object_type = #{objectType,jdbcType=VARCHAR}
+        and flag_deleted = 0
+        and flag_lastest = 1))
+        AND flag_change_fee = 0
+    </select>
+    <select id="lastChargeOfOpened" resultMap="BaseResultMap" parameterType="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        select
+        <include refid="Base_Column_List"/>
+        from atm_comm_charge_list
+        where flag_closed = 0
+        AND contract_id = (SELECT id FROM dmi_comm_charge where object_id = #{objectId,jdbcType=INTEGER} and object_type = #{objectType,jdbcType=VARCHAR}
+        and flag_deleted = 0
+        and flag_lastest = 1)
+        AND account_period_start = (SELECT MAX(account_period_start) FROM atm_comm_charge_list where flag_closed = 0
+        AND contract_id = (SELECT id FROM dmi_comm_charge where object_id = #{objectId,jdbcType=INTEGER} and object_type = #{objectType,jdbcType=VARCHAR}
+        and flag_deleted = 0
+        and flag_lastest = 1))
+        AND flag_change_fee = 0
+    </select>
+    <select id="shouldChargedNotYetListForProduct" resultType="com.teekee.waterdropservice.entity.ret.atm.atmCommChargeList.ShouldChargedNotYetListRet"
+            parameterType="com.teekee.waterdropservice.entity.dto.atm.atmCommChargeList.ShouldChargedNotYetListDTO">
+        SELECT
+        chargeList.update_time AS updateTime,
+        chargeList.id AS id,
+        chargeList.account_period_number AS accountPeriodNumber,
+        companyInfo.company_name AS company,
+        store.store_name AS store,
+        product.product_description AS name,
+        chargeList.account_period_start AS accountPeriodStart,
+        chargeList.account_period_end AS accountPeriodEnd,
+        chargeList.expected_total_fee AS expectedTotalFee,
+        chargeList.account_index AS accountIndex,
+        chargeList.account_total AS accountTotal,
+        chargeList.activate_date AS activateDate
+        FROM (SELECT * FROM atm_comm_charge_list WHERE object_type = 'PRODUCT' AND flag_activate = 1 AND flag_completed_charge = 0 AND charge_bill_id = 0
+        AND flag_change_fee = 0
+        AND flag_closed = 0
+        <if test="accountPeriodNumber != null">
+            AND account_period_number = #{accountPeriodNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="accountPeriodStart != null">
+            AND account_period_start &gt;= #{accountPeriodStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="accountPeriodEnd != null">
+            AND account_period_end &lt;= #{accountPeriodEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="flagAdd == true">
+            AND id NOT IN (SELECT charge_list_id FROM atm_comm_charge_bill_temp_list WHERE temp_bill_number = #{tempBillNumber,jdbcType=VARCHAR})
+        </if>) chargeList
+        INNER JOIN dmi_store_comm_product product ON product.id = chargeList.object_id AND product.flag_deleted = 0
+        <if test="catalogId != 0">
+            AND product.catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+        INNER JOIN (dmi_comm_charge charge INNER JOIN dmi_company_info companyInfo ON companyInfo.id = charge.company_id
+        <if test="companyId != 0">
+            AND companyInfo.id = #{companyId,jdbcType=INTEGER}
+        </if>
+        LEFT JOIN
+        (SELECT * FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeId != 0">
+            AND id = #{storeId,jdbcType=INTEGER}
+        </if>) store ON store.id = charge.store_id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (SELECT * FROM bif_building WHERE 1=1
+        <if test="province != null">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON store.building_id = building.id
+        ) ON charge.id = chargeList.contract_id
+        <if test="communicationBrandId != 0">
+            INNER JOIN cfg_communication_brand commBrand ON commBrand.id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="shouldChargedNotYetListForCampaign" resultType="com.teekee.waterdropservice.entity.ret.atm.atmCommChargeList.ShouldChargedNotYetListRet"
+            parameterType="com.teekee.waterdropservice.entity.dto.atm.atmCommChargeList.ShouldChargedNotYetListDTO">
+        SELECT
+        chargeList.update_time AS updateTime,
+        chargeList.id AS id,
+        chargeList.account_period_number AS accountPeriodNumber,
+        companyInfo.company_name AS company,
+        store.store_name AS store,
+        campaign.campaign_name AS name,
+        chargeList.account_period_start AS accountPeriodStart,
+        chargeList.account_period_end AS accountPeriodEnd,
+        chargeList.expected_total_fee AS expectedTotalFee,
+        chargeList.account_index AS accountIndex,
+        chargeList.account_total AS accountTotal,
+        chargeList.activate_date AS activateDate
+        FROM (SELECT * FROM atm_comm_charge_list WHERE object_type = 'CAMPAIGN' AND flag_activate = 1 AND flag_completed_charge = 0
+        AND charge_bill_id = 0
+        AND flag_change_fee = 0
+        AND flag_closed = 0
+        <if test="accountPeriodNumber != null">
+            AND account_period_number = #{accountPeriodNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="accountPeriodStart != null">
+            AND account_period_start &gt;= #{accountPeriodStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="accountPeriodEnd != null">
+            AND account_period_end &lt;= #{accountPeriodEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="flagAdd == true">
+            AND id NOT IN (SELECT charge_list_id FROM atm_comm_charge_bill_temp_list WHERE temp_bill_number = #{tempBillNumber,jdbcType=VARCHAR})
+        </if>) chargeList
+        INNER JOIN dmi_comm_product_marketing_campaign campaign ON campaign.id = chargeList.object_id AND campaign.flag_deleted = 0
+        <if test="catalogId != 0">
+            AND campaign.id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+        INNER JOIN (dmi_comm_charge charge INNER JOIN dmi_company_info companyInfo ON companyInfo.id = charge.company_id
+        <if test="companyId != 0">
+            AND companyInfo.id = #{companyId,jdbcType=INTEGER}
+        </if>
+        LEFT JOIN
+        (SELECT * FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeId != 0">
+            AND id = #{storeId,jdbcType=INTEGER}
+        </if>) store ON store.id = charge.store_id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (SELECT * FROM bif_building WHERE 1=1
+        <if test="province != null">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON store.building_id = building.id
+        ) ON charge.id = chargeList.contract_id
+        <if test="communicationBrandId != 0">
+            INNER JOIN cfg_communication_brand commBrand ON commBrand.id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="shouldChargedNotYetListForComm" resultType="com.teekee.waterdropservice.entity.ret.atm.atmCommChargeList.ShouldChargedNotYetListRet"
+            parameterType="com.teekee.waterdropservice.entity.dto.atm.atmCommChargeList.ShouldChargedNotYetListDTO">
+        SELECT
+        chargeList.update_time AS updateTime,
+        chargeList.id AS id,
+        chargeList.account_period_number AS accountPeriodNumber,
+        companyInfo.company_name AS company,
+        store.store_name AS store,
+        product.product_description AS name,
+        chargeList.account_period_start AS accountPeriodStart,
+        chargeList.account_period_end AS accountPeriodEnd,
+        chargeList.expected_total_fee AS expectedTotalFee,
+        chargeList.account_index AS accountIndex,
+        chargeList.account_total AS accountTotal,
+        chargeList.activate_date AS activateDate
+        FROM (SELECT * FROM atm_comm_charge_list WHERE object_type = 'PRODUCT' AND flag_activate = 1 AND flag_completed_charge = 0 AND charge_bill_id = 0
+        AND flag_change_fee = 0
+        AND flag_closed = 0
+        <if test="accountPeriodNumber != null">
+            AND account_period_number = #{accountPeriodNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="accountPeriodStart != null">
+            AND account_period_start &gt;= #{accountPeriodStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="accountPeriodEnd != null">
+            AND account_period_end &lt;= #{accountPeriodEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="flagAdd == true">
+            AND id NOT IN (SELECT charge_list_id FROM atm_comm_charge_bill_temp_list WHERE temp_bill_number = #{tempBillNumber,jdbcType=VARCHAR})
+        </if>) chargeList
+        INNER JOIN dmi_store_comm_product product ON product.id = chargeList.object_id AND product.flag_deleted = 0
+        <if test="catalogId != 0">
+            AND product.catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+        INNER JOIN (dmi_comm_charge charge INNER JOIN dmi_company_info companyInfo ON companyInfo.id = charge.company_id
+        <if test="companyId != 0">
+            AND companyInfo.id = #{companyId,jdbcType=INTEGER}
+        </if>
+        LEFT JOIN
+        (SELECT * FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeId != 0">
+            AND id = #{storeId,jdbcType=INTEGER}
+        </if>) store ON store.id = charge.store_id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (SELECT * FROM bif_building WHERE 1=1
+        <if test="province != null">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON store.building_id = building.id
+        ) ON charge.id = chargeList.contract_id
+        <if test="communicationBrandId != 0">
+            INNER JOIN cfg_communication_brand commBrand ON commBrand.id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+        UNION
+        SELECT
+        chargeList.update_time AS updateTime,
+        chargeList.id AS id,
+        chargeList.account_period_number AS accountPeriodNumber,
+        companyInfo.company_name AS company,
+        store.store_name AS store,
+        campaign.campaign_name AS name,
+        chargeList.account_period_start AS accountPeriodStart,
+        chargeList.account_period_end AS accountPeriodEnd,
+        chargeList.expected_total_fee AS expectedTotalFee,
+        chargeList.account_index AS accountIndex,
+        chargeList.account_total AS accountTotal,
+        chargeList.activate_date AS activateDate
+        FROM (SELECT * FROM atm_comm_charge_list WHERE object_type = 'CAMPAIGN' AND flag_activate = 1 AND flag_completed_charge = 0
+        AND charge_bill_id = 0
+        AND flag_change_fee = 0
+        AND flag_closed = 0
+        <if test="accountPeriodNumber != null">
+            AND account_period_number = #{accountPeriodNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="accountPeriodStart != null">
+            AND account_period_start &gt;= #{accountPeriodStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="accountPeriodEnd != null">
+            AND account_period_end &lt;= #{accountPeriodEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="flagAdd == true">
+            AND id NOT IN (SELECT charge_list_id FROM atm_comm_charge_bill_temp_list WHERE temp_bill_number = #{tempBillNumber,jdbcType=VARCHAR})
+        </if>) chargeList
+        INNER JOIN dmi_comm_product_marketing_campaign campaign ON campaign.id = chargeList.object_id AND campaign.flag_deleted = 0
+        <if test="catalogId != 0">
+            AND campaign.id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+        INNER JOIN (dmi_comm_charge charge INNER JOIN dmi_company_info companyInfo ON companyInfo.id = charge.company_id
+        <if test="companyId != 0">
+            AND companyInfo.id = #{companyId,jdbcType=INTEGER}
+        </if>
+        LEFT JOIN
+        (SELECT * FROM dmi_store WHERE 1=1
+        <if test="companyBrandId != 0">
+            AND brand_id = #{companyBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="storeId != 0">
+            AND id = #{storeId,jdbcType=INTEGER}
+        </if>) store ON store.id = charge.store_id
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (SELECT * FROM bif_building WHERE 1=1
+        <if test="province != null">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON store.building_id = building.id
+        ) ON charge.id = chargeList.contract_id
+        <if test="communicationBrandId != 0">
+            INNER JOIN cfg_communication_brand commBrand ON commBrand.id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="listByChargeBillId" resultType="com.teekee.waterdropservice.entity.atm.AtmCommDeletedChargeBillList" parameterType="java.lang.Integer">
+        select
+        chargeBill.bill_number AS billId,
+        chargeList.id AS chargeListId,
+        chargeList.actual_charge_fee AS actualFee
+        from atm_comm_charge_list chargeList
+        LEFT JOIN atm_comm_charge_bill chargeBill ON chargeBill.id = chargeList.charge_bill_id
+        where chargeList.charge_bill_id = #{chargeBillId,jdbcType=INTEGER}
+    </select>
+
+    <select id="lastChargeTenementPeriodFee" resultMap="BaseResultMap" parameterType="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        select
+        <include refid="Base_Column_List"/>
+        from atm_comm_charge_list
+        where flag_closed = 0
+        AND contract_id = (SELECT id FROM dmi_comm_charge where object_id = #{objectId,jdbcType=INTEGER} and object_type = #{objectType,jdbcType=VARCHAR}
+        and flag_deleted = 0
+        and flag_lastest = 1)
+        AND account_period_start = (SELECT max(account_period_start) FROM atm_comm_charge_list where flag_closed = 0
+        AND contract_id = (SELECT id FROM dmi_comm_charge where object_id = #{objectId,jdbcType=INTEGER} and object_type = #{objectType,jdbcType=VARCHAR}
+        and flag_deleted = 0
+        and flag_lastest = 1)
+        and tenement_period_fee != 0
+        )
+        AND flag_change_fee = 0
+    </select>
+
+    <update id="updateAccountTotal" parameterType="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        update atm_comm_charge_list
+        SET account_total = #{accountTotal,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_person = #{updatePerson,jdbcType=INTEGER}
+        where flag_activate = 1
+        AND contract_id = #{contractId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateAllAccountTotal" parameterType="com.teekee.waterdropservice.entity.atm.AtmCommChargeList">
+        update atm_comm_charge_list
+        SET account_total = #{accountTotal,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_person = #{updatePerson,jdbcType=INTEGER}
+        where contract_id = #{contractId,jdbcType=INTEGER}
+    </update>
+</mapper>

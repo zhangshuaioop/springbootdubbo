@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.fdp.FdpDispatchJobContentMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.fdp.FdpDispatchJobContent" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER" />
+    <result column="dispatch_request_id" property="dispatchRequestId" jdbcType="INTEGER" />
+    <result column="request_history_id" property="requestHistoryId" jdbcType="INTEGER" />
+    <result column="job_define_version" property="jobDefineVersion" jdbcType="INTEGER" />
+    <result column="job_step_index" property="jobStepIndex" jdbcType="INTEGER" />
+    <result column="job_step_description" property="jobStepDescription" jdbcType="VARCHAR" />
+    <result column="flag_is_last" property="flagIsLast" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, dispatch_order_id, dispatch_request_id, request_history_id, job_define_version, 
+    job_step_index, job_step_description, flag_is_last, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fdp_dispatch_job_content
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.fdp.FdpDispatchJobContent" >
+    insert into fdp_dispatch_job_content
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dispatchOrderId != null" >
+        dispatch_order_id,
+      </if>
+      <if test="dispatchRequestId != null" >
+        dispatch_request_id,
+      </if>
+      <if test="requestHistoryId != null" >
+        request_history_id,
+      </if>
+      <if test="jobDefineVersion != null" >
+        job_define_version,
+      </if>
+      <if test="jobStepIndex != null" >
+        job_step_index,
+      </if>
+      <if test="jobStepDescription != null" >
+        job_step_description,
+      </if>
+      <if test="flagIsLast != null" >
+        flag_is_last,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dispatchOrderId != null" >
+        #{dispatchOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="dispatchRequestId != null" >
+        #{dispatchRequestId,jdbcType=INTEGER},
+      </if>
+      <if test="requestHistoryId != null" >
+        #{requestHistoryId,jdbcType=INTEGER},
+      </if>
+      <if test="jobDefineVersion != null" >
+        #{jobDefineVersion,jdbcType=INTEGER},
+      </if>
+      <if test="jobStepIndex != null" >
+        #{jobStepIndex,jdbcType=INTEGER},
+      </if>
+      <if test="jobStepDescription != null" >
+        #{jobStepDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="flagIsLast != null" >
+        #{flagIsLast,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.fdp.FdpDispatchJobContent" >
+    update fdp_dispatch_job_content
+    <set >
+      <if test="dispatchOrderId != null" >
+        dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="dispatchRequestId != null" >
+        dispatch_request_id = #{dispatchRequestId,jdbcType=INTEGER},
+      </if>
+      <if test="requestHistoryId != null" >
+        request_history_id = #{requestHistoryId,jdbcType=INTEGER},
+      </if>
+      <if test="jobDefineVersion != null" >
+        job_define_version = #{jobDefineVersion,jdbcType=INTEGER},
+      </if>
+      <if test="jobStepIndex != null" >
+        job_step_index = #{jobStepIndex,jdbcType=INTEGER},
+      </if>
+      <if test="jobStepDescription != null" >
+        job_step_description = #{jobStepDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="flagIsLast != null" >
+        flag_is_last = #{flagIsLast,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByHistoryId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      <include refid="Base_Column_List" />
+    FROM
+        fdp_dispatch_job_content
+    WHERE
+        request_history_id =  #{requestHistoryId,jdbcType=INTEGER}
+    ORDER BY job_step_index
+  </select>
+  <update id="updateFlagIsLastByFaultOrderId" parameterType="java.lang.Integer" >
+    update fdp_dispatch_job_content set flag_is_last=0 where dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
+  </update>
+  <select id="seleteByDispatchRequestId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from fdp_dispatch_job_content
+    where dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER} and flag_is_last=1
+  </select>
+</mapper>

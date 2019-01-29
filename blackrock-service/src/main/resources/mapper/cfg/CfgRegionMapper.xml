@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.blackrockservice.mapper.cfg.CfgRegionMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.blackrockservice.entity.cfg.CfgRegion" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="region_code" property="regionCode" jdbcType="VARCHAR" />
+    <result column="region_name" property="regionName" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="DOUBLE" />
+    <result column="level" property="level" jdbcType="DOUBLE" />
+    <result column="order_id" property="orderId" jdbcType="DOUBLE" />
+    <result column="name_en" property="nameEn" jdbcType="VARCHAR" />
+    <result column="shortname_en" property="shortnameEn" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, region_code, region_name, parent_id, level, order_id, name_en, shortname_en
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from cfg_region
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectListByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from cfg_region
+    where parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
+  <select id="queryProvice" resultType="com.teekee.blackrockservice.entity.cfg.CfgRegionList">
+    SELECT
+        id,
+        region_name AS regionName
+    FROM
+        `cfg_region`
+    WHERE
+        `level` = 2
+  </select>
+  <select id="queryCity" resultType="com.teekee.blackrockservice.entity.cfg.CfgRegionList" parameterType="java.lang.Integer">
+    SELECT
+    id,
+    region_name AS regionName
+    FROM
+    `cfg_region`
+    WHERE
+    `level` = 3
+    AND parent_id = #{parentId,jdbcType=INTEGER}
+    AND region_name != ''
+  </select>
+</mapper>

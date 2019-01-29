@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.bif.BifDeviceModelMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.bif.BifDeviceModel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="model_name" property="modelName" jdbcType="VARCHAR" />
+    <result column="series_id" property="seriesId" jdbcType="INTEGER" />
+    <result column="model_code" property="modelCode" jdbcType="VARCHAR" />
+    <result column="flag_deleted" property="flagDeleted" jdbcType="BIT" />
+    <result column="flag_available" property="flagAvailable" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_person" property="updatePerson" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.teekee.waterdropservice.entity.bif.BifDeviceModel" extends="BaseResultMap" >
+    <result column="memo" property="memo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, model_name, series_id, model_code, flag_deleted, flag_available, create_time, 
+    create_person, update_time, update_person
+  </sql>
+  <sql id="Blob_Column_List" >
+    memo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bif_device_model
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.bif.BifDeviceModel" >
+    insert into bif_device_model
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="modelName != null" >
+        model_name,
+      </if>
+      <if test="seriesId != null" >
+        series_id,
+      </if>
+      <if test="modelCode != null" >
+        model_code,
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted,
+      </if>
+      <if test="flagAvailable != null" >
+        flag_available,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="updatePerson != null" >
+        update_person,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="modelName != null" >
+        #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="seriesId != null" >
+        #{seriesId,jdbcType=INTEGER},
+      </if>
+      <if test="modelCode != null" >
+        #{modelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="flagAvailable != null" >
+        #{flagAvailable,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.bif.BifDeviceModel" >
+    update bif_device_model
+    <set >
+      <if test="modelName != null" >
+        model_name = #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="seriesId != null" >
+        series_id = #{seriesId,jdbcType=INTEGER},
+      </if>
+      <if test="modelCode != null" >
+        model_code = #{modelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="flagAvailable != null" >
+        flag_available = #{flagAvailable,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bif_device_model
+    where series_id = #{seriesId,jdbcType=INTEGER}
+    and flag_deleted = 0
+  </select>
+  <update id="invalidBySeries" parameterType="com.teekee.waterdropservice.entity.bif.BifDeviceModel" >
+    update bif_device_model
+    <set >
+      flag_available = #{flagAvailable,jdbcType=BIT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_person = #{updatePerson,jdbcType=INTEGER},
+    </set>
+    where series_id = #{seriesId,jdbcType=INTEGER}
+  </update>
+</mapper>

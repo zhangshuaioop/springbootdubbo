@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teekee.blueoceanservice.mapper.pjt.PjtProjectMapper">
+  <resultMap id="BaseResultMap" type="com.teekee.blueoceanservice.entity.pjt.PjtProject">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="project_code" jdbcType="VARCHAR" property="projectCode" />
+    <result column="flag_available" jdbcType="BIT" property="flagAvailable" />
+    <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
+    <result column="belong_object_type" jdbcType="VARCHAR" property="belongObjectType" />
+    <result column="belong_object_id" jdbcType="INTEGER" property="belongObjectId" />
+    <result column="create_person" jdbcType="INTEGER" property="createPerson" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_person" jdbcType="INTEGER" property="updatePerson" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="flag_default" jdbcType="BIT" property="flagDefault" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, company_id, project_name, project_code, flag_available, flag_deleted, belong_object_type, 
+    belong_object_id, create_person, create_time, update_person, update_time, flag_default
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pjt_project
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pjt_project
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.teekee.blueoceanservice.entity.pjt.PjtProject">
+    insert into pjt_project (id, company_id, project_name, 
+      project_code, flag_available, flag_deleted, 
+      belong_object_type, belong_object_id, create_person, 
+      create_time, update_person, update_time, 
+      flag_default)
+    values (#{id,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
+      #{projectCode,jdbcType=VARCHAR}, #{flagAvailable,jdbcType=BIT}, #{flagDeleted,jdbcType=BIT}, 
+      #{belongObjectType,jdbcType=VARCHAR}, #{belongObjectId,jdbcType=INTEGER}, #{createPerson,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatePerson,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{flagDefault,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.teekee.blueoceanservice.entity.pjt.PjtProject">
+    insert into pjt_project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="projectCode != null">
+        project_code,
+      </if>
+      <if test="flagAvailable != null">
+        flag_available,
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted,
+      </if>
+      <if test="belongObjectType != null">
+        belong_object_type,
+      </if>
+      <if test="belongObjectId != null">
+        belong_object_id,
+      </if>
+      <if test="createPerson != null">
+        create_person,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updatePerson != null">
+        update_person,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="flagDefault != null">
+        flag_default,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null">
+        #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="flagAvailable != null">
+        #{flagAvailable,jdbcType=BIT},
+      </if>
+      <if test="flagDeleted != null">
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="belongObjectType != null">
+        #{belongObjectType,jdbcType=VARCHAR},
+      </if>
+      <if test="belongObjectId != null">
+        #{belongObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="createPerson != null">
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagDefault != null">
+        #{flagDefault,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.blueoceanservice.entity.pjt.PjtProject">
+    update pjt_project
+    <set>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null">
+        project_code = #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="flagAvailable != null">
+        flag_available = #{flagAvailable,jdbcType=BIT},
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="belongObjectType != null">
+        belong_object_type = #{belongObjectType,jdbcType=VARCHAR},
+      </if>
+      <if test="belongObjectId != null">
+        belong_object_id = #{belongObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagDefault != null">
+        flag_default = #{flagDefault,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.teekee.blueoceanservice.entity.pjt.PjtProject">
+    update pjt_project
+    set company_id = #{companyId,jdbcType=INTEGER},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
+      flag_available = #{flagAvailable,jdbcType=BIT},
+      flag_deleted = #{flagDeleted,jdbcType=BIT},
+      belong_object_type = #{belongObjectType,jdbcType=VARCHAR},
+      belong_object_id = #{belongObjectId,jdbcType=INTEGER},
+      create_person = #{createPerson,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_person = #{updatePerson,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      flag_default = #{flagDefault,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectAll" parameterType="com.teekee.blueoceanservice.entity.pjt.PjtProject" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pjt_project
+    where 1 = 1
+    <if test="id != null">
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="companyId != null">
+      and company_id = #{companyId,jdbcType=INTEGER}
+    </if>
+    <if test="projectName != null">
+      and project_name = #{projectName,jdbcType=VARCHAR}
+    </if>
+    <if test="projectCode != null">
+      and project_code = #{projectCode,jdbcType=VARCHAR}
+    </if>
+    <if test="flagAvailable != null">
+      and flag_available = #{flagAvailable,jdbcType=BIT}
+    </if>
+    <if test="flagDeleted != null">
+      and flag_deleted = #{flagDeleted,jdbcType=BIT}
+    </if>
+    <if test="belongObjectType != null">
+      and belong_object_type = #{belongObjectType,jdbcType=VARCHAR}
+    </if>
+    <if test="belongObjectId != null">
+      and belong_object_id = #{belongObjectId,jdbcType=INTEGER}
+    </if>
+    <if test="createPerson != null">
+      and create_person = #{createPerson,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatePerson != null">
+      and update_person = #{updatePerson,jdbcType=INTEGER}
+    </if>
+    <if test="updateTime != null">
+      and  update_time = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="flagDefault != null">
+      and flag_default = #{flagDefault,jdbcType=BIT}
+    </if>
+  </select>
+
+</mapper>

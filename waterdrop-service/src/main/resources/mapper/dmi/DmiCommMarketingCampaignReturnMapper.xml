@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.waterdropservice.mapper.dmi.DmiCommMarketingCampaignReturnMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.waterdropservice.entity.dmi.DmiCommMarketingCampaignReturn" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="campaign_id" property="campaignId" jdbcType="INTEGER" />
+    <result column="contract_id" property="contractId" jdbcType="INTEGER" />
+    <result column="return_amount" property="returnAmount" jdbcType="DECIMAL" />
+    <result column="return_months" property="returnMonths" jdbcType="INTEGER" />
+    <result column="monthly_return_fee" property="monthlyReturnFee" jdbcType="DECIMAL" />
+    <result column="change_fee_month" property="changeFeeMonth" jdbcType="VARCHAR" />
+    <result column="change_fee" property="changeFee" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+    <result column="update_person" property="updatePerson" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, store_id, company_id, campaign_id, contract_id, return_amount, return_months, 
+    monthly_return_fee, change_fee_month, change_fee, create_time, create_person, update_person, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dmi_comm_marketing_campaign_return
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.teekee.waterdropservice.entity.dmi.DmiCommMarketingCampaignReturn" >
+    insert into dmi_comm_marketing_campaign_return
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="campaignId != null" >
+        campaign_id,
+      </if>
+      <if test="contractId != null" >
+        contract_id,
+      </if>
+      <if test="returnAmount != null" >
+        return_amount,
+      </if>
+      <if test="returnMonths != null" >
+        return_months,
+      </if>
+      <if test="monthlyReturnFee != null" >
+        monthly_return_fee,
+      </if>
+      <if test="changeFeeMonth != null" >
+        change_fee_month,
+      </if>
+      <if test="changeFee != null" >
+        change_fee,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+      <if test="updatePerson != null" >
+        update_person,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="campaignId != null" >
+        #{campaignId,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null" >
+        #{contractId,jdbcType=INTEGER},
+      </if>
+      <if test="returnAmount != null" >
+        #{returnAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="returnMonths != null" >
+        #{returnMonths,jdbcType=INTEGER},
+      </if>
+      <if test="monthlyReturnFee != null" >
+        #{monthlyReturnFee,jdbcType=DECIMAL},
+      </if>
+      <if test="changeFeeMonth != null" >
+        #{changeFeeMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="changeFee != null" >
+        #{changeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updatePerson != null" >
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.waterdropservice.entity.dmi.DmiCommMarketingCampaignReturn" >
+    update dmi_comm_marketing_campaign_return
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="campaignId != null" >
+        campaign_id = #{campaignId,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null" >
+        contract_id = #{contractId,jdbcType=INTEGER},
+      </if>
+      <if test="returnAmount != null" >
+        return_amount = #{returnAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="returnMonths != null" >
+        return_months = #{returnMonths,jdbcType=INTEGER},
+      </if>
+      <if test="monthlyReturnFee != null" >
+        monthly_return_fee = #{monthlyReturnFee,jdbcType=DECIMAL},
+      </if>
+      <if test="changeFeeMonth != null" >
+        change_fee_month = #{changeFeeMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="changeFee != null" >
+        change_fee = #{changeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updatePerson != null" >
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="showByContractId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from dmi_comm_marketing_campaign_return
+    where contract_id = #{contractId,jdbcType=INTEGER}
+  </select>
+</mapper>

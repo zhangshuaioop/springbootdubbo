@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.blackrockservice.mapper.bif.BifDispatchHrAccountInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.blackrockservice.entity.bif.BifDispatchHrAccountInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="hr_id" property="hrId" jdbcType="INTEGER" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="alipay_account" property="alipayAccount" jdbcType="VARCHAR" />
+    <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR" />
+    <result column="flag_deleted" property="flagDeleted" jdbcType="BIT" />
+    <result column="flag_default" property="flagDefault" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_person" property="updatePerson" jdbcType="INTEGER" />
+    <result column="user_update_time" property="userUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, hr_id, full_name, bank_name, account, alipay_account, payment_method, flag_deleted, 
+    flag_default, create_time, create_person, update_time, update_person, user_update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bif_dispatch_hr_account_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bif_dispatch_hr_account_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.teekee.blackrockservice.entity.bif.BifDispatchHrAccountInfo" >
+    insert into bif_dispatch_hr_account_info (id, hr_id, full_name, 
+      bank_name, account, alipay_account, 
+      payment_method, flag_deleted, flag_default, 
+      create_time, create_person, update_time, 
+      update_person, user_update_time)
+    values (#{id,jdbcType=INTEGER}, #{hrId,jdbcType=INTEGER}, #{fullName,jdbcType=VARCHAR}, 
+      #{bankName,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{alipayAccount,jdbcType=VARCHAR}, 
+      #{paymentMethod,jdbcType=VARCHAR}, #{flagDeleted,jdbcType=BIT}, #{flagDefault,jdbcType=BIT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createPerson,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updatePerson,jdbcType=INTEGER}, #{userUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.teekee.blackrockservice.entity.bif.BifDispatchHrAccountInfo" >
+    insert into bif_dispatch_hr_account_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="hrId != null" >
+        hr_id,
+      </if>
+      <if test="fullName != null" >
+        full_name,
+      </if>
+      <if test="bankName != null" >
+        bank_name,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="alipayAccount != null" >
+        alipay_account,
+      </if>
+      <if test="paymentMethod != null" >
+        payment_method,
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted,
+      </if>
+      <if test="flagDefault != null" >
+        flag_default,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="updatePerson != null" >
+        update_person,
+      </if>
+      <if test="userUpdateTime != null" >
+        user_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="hrId != null" >
+        #{hrId,jdbcType=INTEGER},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="alipayAccount != null" >
+        #{alipayAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentMethod != null" >
+        #{paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="flagDefault != null" >
+        #{flagDefault,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="userUpdateTime != null" >
+        #{userUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.blackrockservice.entity.bif.BifDispatchHrAccountInfo" >
+    update bif_dispatch_hr_account_info
+    <set >
+      <if test="hrId != null" >
+        hr_id = #{hrId,jdbcType=INTEGER},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="alipayAccount != null" >
+        alipay_account = #{alipayAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentMethod != null" >
+        payment_method = #{paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="flagDefault != null" >
+        flag_default = #{flagDefault,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="userUpdateTime != null" >
+        user_update_time = #{userUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.teekee.blackrockservice.entity.bif.BifDispatchHrAccountInfo" >
+    update bif_dispatch_hr_account_info
+    set hr_id = #{hrId,jdbcType=INTEGER},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      alipay_account = #{alipayAccount,jdbcType=VARCHAR},
+      payment_method = #{paymentMethod,jdbcType=VARCHAR},
+      flag_deleted = #{flagDeleted,jdbcType=BIT},
+      flag_default = #{flagDefault,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_person = #{createPerson,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_person = #{updatePerson,jdbcType=INTEGER},
+      user_update_time = #{userUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--根据hrId查询默认账户列表-->
+  <select id="selectDefaultByHrId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bif_dispatch_hr_account_info
+    where hr_id = #{hrId,jdbcType=INTEGER}
+    AND flag_default = 1
+    AND flag_deleted = 0
+  </select>
+  <!--根据hrId查询账户列表条数-->
+  <select id="selelctByHrId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    count(id)
+    from bif_dispatch_hr_account_info
+    where hr_id = #{hrId,jdbcType=INTEGER}
+    AND flag_deleted = 0
+  </select>
+  <!-- 查询账户列表selectAccountList -->
+  <select id="selectAccountList" parameterType="java.lang.Integer" resultType="com.teekee.blackrockservice.entity.bif.ListDispatchAccountInfo">
+    select
+    acc.id,
+		acc.hr_id AS hrId,
+		acc.full_name AS fullName,
+		acc.bank_name AS bankName,
+		acc.account,
+		acc.alipay_account AS alipayAccount,
+		dic.description AS paymentMethod,
+		acc.flag_default AS flagDefault
+    from bif_dispatch_hr_account_info acc
+		LEFT JOIN (SELECT * FROM cfg_data_dictionary WHERE type = "PAYMENT_TYPE") dic on dic.`value` = acc.payment_method
+    where acc.flag_deleted = 0
+    ORDER BY acc.flag_default DESC
+  </select>
+  <!--根据hrId查询账户列表-->
+  <select id="selectByHrId" parameterType="java.lang.Integer" resultType="com.teekee.blackrockservice.entity.bif.ListDispatchAccountInfo">
+    select
+    acc.id,
+		acc.hr_id AS hrId,
+		acc.full_name AS fullName,
+		acc.bank_name AS bankName,
+		acc.account,
+		acc.alipay_account AS alipayAccount,
+		dic.description AS paymentMethod,
+		acc.flag_default AS flagDefault
+    from bif_dispatch_hr_account_info acc
+		LEFT JOIN (SELECT * FROM cfg_data_dictionary WHERE type = "PAYMENT_TYPE") dic on dic.`value` = acc.payment_method
+    where acc.hr_id = #{hrId,jdbcType=INTEGER}
+    AND acc.flag_deleted = 0
+    ORDER BY acc.flag_default DESC
+  </select>
+  <!--根据id查询账户信息-->
+  <select id="selectById" parameterType="java.lang.Integer" resultType="com.teekee.blackrockservice.entity.bif.ListDispatchAccountInfo">
+     select
+        acc.id,
+		acc.hr_id AS hrId,
+		acc.full_name AS fullName,
+		acc.bank_name AS bankName,
+		acc.account,
+		acc.alipay_account AS alipayAccount,
+		dic.description AS paymentMethod,
+		acc.flag_default AS flagDefault
+    from bif_dispatch_hr_account_info acc
+		LEFT JOIN (SELECT * FROM cfg_data_dictionary WHERE type = "PAYMENT_TYPE") dic on dic.`value` = acc.payment_method
+    where acc.id = #{id,jdbcType=INTEGER}
+    AND acc.flag_deleted = 0
+    AND flag_deleted = 0
+  </select>
+  <update id="updateDefaultByHrId" parameterType="com.teekee.blackrockservice.entity.bif.BifDispatchHrAccountInfo" >
+    update bif_dispatch_hr_account_info
+    set
+    flag_default = #{flagDefault,jdbcType=BIT},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where hr_id = #{hrId,jdbcType=INTEGER}
+  </update>
+  <!--查询最近创建账户信息-->
+  <select id="selectLastTimeAccount" parameterType="java.lang.Integer" resultType="com.teekee.blackrockservice.entity.bif.BifDispatchHrAccountInfo">
+    SELECT
+        id,
+        MAX( create_time ) AS createTime
+    FROM
+        bif_dispatch_hr_account_info
+    WHERE
+        hr_id = #{hrId,jdbcType=INTEGER}
+    AND flag_deleted = 0
+  </select>
+</mapper>

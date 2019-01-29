@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.teekee.blackrockservice.mapper.sys.SysAppTokenMapper" >
+  <resultMap id="BaseResultMap" type="com.teekee.blackrockservice.entity.sys.SysAppToken" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="account_type" property="accountType" jdbcType="VARCHAR" />
+    <result column="wechat_open_id" property="wechatOpenId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="expired_time" property="expiredTime" jdbcType="TIMESTAMP" />
+    <result column="flag_avaliable" property="flagAvaliable" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, source, account_type, wechat_open_id, user_id, token, create_time, expired_time, 
+    flag_avaliable
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_app_token
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_app_token
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.teekee.blackrockservice.entity.sys.SysAppToken" >
+    insert into sys_app_token (id, source, account_type, 
+      wechat_open_id, user_id, token, 
+      create_time, expired_time, flag_avaliable
+      )
+    values (#{id,jdbcType=INTEGER}, #{source,jdbcType=VARCHAR}, #{accountType,jdbcType=VARCHAR}, 
+      #{wechatOpenId,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{expiredTime,jdbcType=TIMESTAMP}, #{flagAvaliable,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.teekee.blackrockservice.entity.sys.SysAppToken" >
+    insert into sys_app_token
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="accountType != null" >
+        account_type,
+      </if>
+      <if test="wechatOpenId != null" >
+        wechat_open_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="token != null" >
+        token,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="expiredTime != null" >
+        expired_time,
+      </if>
+      <if test="flagAvaliable != null" >
+        flag_avaliable,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null" >
+        #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatOpenId != null" >
+        #{wechatOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredTime != null" >
+        #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagAvaliable != null" >
+        #{flagAvaliable,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.teekee.blackrockservice.entity.sys.SysAppToken" >
+    update sys_app_token
+    <set>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null" >
+        account_type = #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatOpenId != null" >
+        wechat_open_id = #{wechatOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredTime != null" >
+        expired_time = #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagAvaliable != null" >
+        flag_avaliable = #{flagAvaliable,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.teekee.blackrockservice.entity.sys.SysAppToken" >
+    update sys_app_token
+    set source = #{source,jdbcType=VARCHAR},
+      account_type = #{accountType,jdbcType=VARCHAR},
+      wechat_open_id = #{wechatOpenId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      token = #{token,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      expired_time = #{expiredTime,jdbcType=TIMESTAMP},
+      flag_avaliable = #{flagAvaliable,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getTokenByUerId" parameterType="com.teekee.blackrockservice.entity.sys.SysAppToken" resultMap="BaseResultMap">
+    SELECT
+      <include refid="Base_Column_List" />
+    FROM
+      sys_app_token
+    WHERE
+      user_id = #{userId,jdbcType=INTEGER}
+      AND source = #{source,jdbcType=VARCHAR}
+      AND flag_avaliable = 1
+      AND expired_time > NOW( )
+  </select>
+  <update id="updateByUserId" parameterType="com.teekee.blackrockservice.entity.sys.SysAppToken" >
+    update sys_app_token
+    <set>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null" >
+        account_type = #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatOpenId != null" >
+        wechat_open_id = #{wechatOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredTime != null" >
+        expired_time = #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagAvaliable != null" >
+        flag_avaliable = #{flagAvaliable,jdbcType=BIT},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+    AND flag_avaliable = 1
+    AND source = #{source,jdbcType=VARCHAR}
+  </update>
+  <!--服务商APP登录-->
+  <select id="getTokenValidity" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    sys_app_token
+    WHERE
+    token = #{token,jdbcType=VARCHAR}
+--     AND source = "APP"
+    AND flag_avaliable = 1
+    AND expired_time > NOW( )
+  </select>
+  <!--查询token-->
+  <select id="queryToken" parameterType="java.lang.String" resultType="com.teekee.blackrockservice.entity.sys.SysAppToken">
+    SELECT
+        token,
+        app.user_id userId,
+        app.wechat_open_id wechatOpenId
+    FROM
+        sys_app_token app
+        LEFT JOIN sys_user_wechat_relation rel ON app.wechat_open_id = rel.wechat_open_id
+        AND app.user_id = rel.user_id
+    WHERE
+        app.token = #{token,jdbcType=VARCHAR}
+        AND app.source = "WECHAT"
+        AND app.flag_avaliable = 1
+        AND app.expired_time > NOW()
+        AND rel.user_type = "DISPATCH_HR"
+  </select>
+</mapper>
