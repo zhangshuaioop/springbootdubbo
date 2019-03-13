@@ -17,7 +17,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
@@ -100,7 +99,7 @@ public class DmiEmployeeService {
      * @param uniqueness
      * @return
      */
-    public Result check(MultipartFile file, String uniqueness) {
+    public Result check(CommonsMultipartFile file, String uniqueness) {
 
         SysCompanyUsers user = CurrentUtil.getCurrent();
 

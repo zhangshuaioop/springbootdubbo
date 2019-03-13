@@ -166,10 +166,7 @@ public class FdpFaultOrderDispatchRequest {
 
     private String materialRejectCauseContext;
 
-    /**
-     * 品牌id
-     */
-    private Integer brandId;
+    private Integer wpFrameProcessId;
 
     public String getBatchNumber() {
         return batchNumber;
@@ -800,32 +797,12 @@ public class FdpFaultOrderDispatchRequest {
         this.materialRejectCauseContext = materialRejectCauseContext;
     }
 
-    public boolean isFlagFuzzyAddress() {
-        return flagFuzzyAddress;
+    public Integer getWpFrameProcessId() {
+        return wpFrameProcessId;
     }
 
-    public boolean isFlagFixedPrice() {
-        return flagFixedPrice;
-    }
-
-    public boolean isFlagRequestModified() {
-        return flagRequestModified;
-    }
-
-    public boolean isFlagDraft() {
-        return flagDraft;
-    }
-
-    public boolean isFlagSubmit() {
-        return flagSubmit;
-    }
-
-    public Integer getBrandId() {
-        return brandId;
-    }
-
-    public void setBrandId(Integer brandId) {
-        this.brandId = brandId;
+    public void setWpFrameProcessId(Integer wpFrameProcessId) {
+        this.wpFrameProcessId = wpFrameProcessId;
     }
 
     @Override
@@ -906,7 +883,7 @@ public class FdpFaultOrderDispatchRequest {
                 ", privateNote='" + privateNote + '\'' +
                 ", personRejectCauseContext='" + personRejectCauseContext + '\'' +
                 ", materialRejectCauseContext='" + materialRejectCauseContext + '\'' +
-                ", brandId=" + brandId +
+                ", wpFrameProcessId=" + wpFrameProcessId +
                 ", expectCompleteTime=" + expectCompleteTime +
                 ", otherSystemNumber='" + otherSystemNumber + '\'' +
                 ", dispatchStatus='" + dispatchStatus + '\'' +

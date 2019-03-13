@@ -1616,17 +1616,4 @@
         </if>
     </select>
 
-
-
-
-
-    <!--获取当前关联公司-->
-    <select id="companyListParam" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.dmi.DmiCompanyInfo" >
-        SELECT info.id,info.company_name FROM sys_company_relation relation
-LEFT JOIN dmi_company_info info ON info.id=relation.authorized_company_id
-WHERE info.flag_deleted=0 AND relation.empower_company_id=#{companyId,jdbcType=INTEGER}
-    </select>
-
-
-
 </mapper>

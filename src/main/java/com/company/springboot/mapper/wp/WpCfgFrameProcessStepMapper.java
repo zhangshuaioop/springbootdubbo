@@ -7,4 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface WpCfgFrameProcessStepMapper extends BaseMapper<WpCfgFrameProcessStep> {
+
+    WpCfgFrameProcessStep selectNowVersion(int cfgFrameProcessId,int versionId);
+
+    WpCfgFrameProcessStep selectByWpCfgFrameProcessStep(WpCfgFrameProcessStep wpCfgFrameProcessStep);
+
 }

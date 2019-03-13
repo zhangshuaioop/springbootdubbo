@@ -1,7 +1,12 @@
 package com.company.springboot.utils;
 
 import com.company.springboot.entity.sys.SysCompanyUsers;
+import com.company.springboot.entity.wp.WpFrameProcess;
+import com.company.springboot.entity.wp.WpProcessOperateLog;
 import com.company.springboot.mapper.sys.SysCompanyRelationMapper;
+import com.company.springboot.mapper.wp.WpFrameProcessMapper;
+import com.company.springboot.mapper.wp.WpProcessOperateLogMapper;
+import com.company.springboot.service.wp.WpCfgFrameProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 
 /**
@@ -23,8 +29,30 @@ import java.util.HashSet;
 public class CurrentUtil {
 
 
+    /**
+     * 系统公司关系
+     */
     @Autowired
     private SysCompanyRelationMapper sysCompanyRelationMapper;
+
+    /**
+     * 框架流程配置
+     */
+    @Autowired
+    private WpCfgFrameProcessService wpCfgFrameProcessService;
+
+    /**
+     * 流程操作日志Mapper
+     */
+    @Autowired
+    private WpProcessOperateLogMapper wpProcessOperateLogMapper;
+
+    /**
+     * 框架流程Mapper
+     */
+    @Autowired
+    private WpFrameProcessMapper wpFrameProcessMapper;
+
     private static CurrentUtil currentUtilService;
 
     public CurrentUtil(){
@@ -38,7 +66,11 @@ public class CurrentUtil {
     public void init() {
         System.out.println("实例化成功");
         currentUtilService = this;
-        currentUtilService.sysCompanyRelationMapper = this.sysCompanyRelationMapper;
+        currentUtilService.sysCompanyRelationMapper = this.sysCompanyRelationMapper; //系统公司关系
+        currentUtilService.wpCfgFrameProcessService = this.wpCfgFrameProcessService;  //框架流程配置
+        currentUtilService.wpProcessOperateLogMapper = this.wpProcessOperateLogMapper; //流程操作日志
+        currentUtilService.wpFrameProcessMapper = this.wpFrameProcessMapper; //框架流程Mapper
+
     }
 
     /**
@@ -76,4 +108,45 @@ public class CurrentUtil {
         }
         return collection;
     }
+
+
+    /**
+     * 流程自动化-下一个处理人
+     * @param orderId   订单id
+     * @return
+     */
+    public static Result nextDeal(Integer orderId) {
+        WpFrameProcess wpFrameProcess = currentUtilService.wpFrameProcessMapper.selectByOrderId(orderId);
+        Result result = currentUtilService.wpCfgFrameProcessService.nextDeal(orderId,wpFrameProcess.getId());
+        return result;
+    }
+
+
+    /**
+     * 流程自动化-上一个处理人
+     * @param orderId   订单id
+     * @return
+     */
+    public static Result topDeal(Integer orderId) {
+        WpFrameProcess wpFrameProcess = currentUtilService.wpFrameProcessMapper.selectByOrderId(orderId);
+        Result result = currentUtilService.wpCfgFrameProcessService.topDeal(orderId,wpFrameProcess.getId());
+        return result;
+    }
+
+    /**
+     * 流程自动化-日志记录
+     * @param wpProcessOperateLog   流程操作日志
+     * @return
+     */
+    public static Result recordLog(WpProcessOperateLog wpProcessOperateLog) {
+        WpFrameProcess wpFrameProcess = currentUtilService.wpFrameProcessMapper.selectByOrderId(wpProcessOperateLog.getOrderId());
+        wpProcessOperateLog.setFrameProcessId(wpFrameProcess.getId());  //框架流程ID
+        wpProcessOperateLog.setCfgProcessStepId(wpFrameProcess.getCurrentProcessStepId());//当前步骤ID
+        wpProcessOperateLog.setOperatePerson(getCurrent().getId());    //当前处理人id
+        wpProcessOperateLog.setOperateTime(new Date());
+        currentUtilService.wpProcessOperateLogMapper.insertSelective(wpProcessOperateLog);
+        return ResultUtil.success();
+    }
+
+
 }

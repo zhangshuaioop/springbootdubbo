@@ -1,31 +1,51 @@
 package com.company.springboot.entity.wp;
 
+import com.company.springboot.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
-public class WpCfgProcess {
+@ApiModel(value = "流程配置")
+public class WpCfgProcess extends BaseEntity {
+    @ApiModelProperty(value = "id", example = "1", required = true)
     private Integer id;
 
+    @ApiModelProperty(value = "创建公司ID", example = "1", required = true)
     private Integer companyId;
 
+    @ApiModelProperty(value = "流程名称", example = "1", required = true)
     private String processName;
 
+    @ApiModelProperty(value = "描述", example = "1", required = true)
     private String description;
 
+    @ApiModelProperty(value = "框架流程编号。同一套框架流程多次编辑时，此编号不变化。", example = "1", required = true)
     private String processCode;
 
+    @ApiModelProperty(value = "是否生效", example = "1", required = true)
     private Boolean flagAvaliable;
 
+    @ApiModelProperty(value = "是否删除", example = "1", required = true)
     private Boolean flagDeleted;
 
+    @ApiModelProperty(value = "创建人ID", example = "1", required = true)
     private Integer createPerson;
 
+    @ApiModelProperty(value = "创建时间", example = "1", required = true)
     private Date createTime;
 
+    @ApiModelProperty(value = "更新人", example = "1", required = true)
     private Integer updatePerson;
 
+    @ApiModelProperty(value = "更新时间", example = "1", required = true)
     private Date updateTime;
 
+    @ApiModelProperty(value = "生效时间", example = "1", required = true)
     private Date avaliableTime;
+
+    @ApiModelProperty(value = "配置版本Id", example = "1", required = true)
+    private Integer versionId;
 
     public Integer getId() {
         return id;
@@ -121,5 +141,32 @@ public class WpCfgProcess {
 
     public void setAvaliableTime(Date avaliableTime) {
         this.avaliableTime = avaliableTime;
+    }
+
+    public Integer getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(Integer versionId) {
+        this.versionId = versionId;
+    }
+
+    @Override
+    public String toString() {
+        return "WpCfgProcess{" +
+                "id=" + id +
+                ", companyId=" + companyId +
+                ", processName='" + processName + '\'' +
+                ", description='" + description + '\'' +
+                ", processCode='" + processCode + '\'' +
+                ", flagAvaliable=" + flagAvaliable +
+                ", flagDeleted=" + flagDeleted +
+                ", createPerson=" + createPerson +
+                ", createTime=" + createTime +
+                ", updatePerson=" + updatePerson +
+                ", updateTime=" + updateTime +
+                ", avaliableTime=" + avaliableTime +
+                ", versionId=" + versionId +
+                '}';
     }
 }

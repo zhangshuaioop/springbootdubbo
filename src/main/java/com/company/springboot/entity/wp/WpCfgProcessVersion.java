@@ -1,24 +1,39 @@
 package com.company.springboot.entity.wp;
 
+import com.company.springboot.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
-public class WpCfgProcessVersion {
+@ApiModel(value = "框架流程配置的版本管理")
+public class WpCfgProcessVersion extends BaseEntity {
+
+    @ApiModelProperty(value = "id", example = "1", required = true)
     private Integer id;
 
+    @ApiModelProperty(value = "版本号", example = "1", required = true)
     private Integer version;
 
+    @ApiModelProperty(value = "框架流程编号", example = "1", required = true)
     private Integer cfgProcessId;
 
+    @ApiModelProperty(value = "是否生效", example = "1", required = true)
     private Boolean flagAvaliable;
 
+    @ApiModelProperty(value = "创建人ID", example = "1", required = true)
     private Integer createPerson;
 
+    @ApiModelProperty(value = "创建时间", example = "1", required = true)
     private Date createTime;
 
+    @ApiModelProperty(value = "更新人", example = "1", required = true)
     private Integer updatePerson;
 
+    @ApiModelProperty(value = "更新时间", example = "1", required = true)
     private Date updateTime;
 
+    @ApiModelProperty(value = "是否是最新版本", example = "1", required = true)
     private Boolean flagIsLast;
 
     public Integer getId() {
@@ -91,5 +106,20 @@ public class WpCfgProcessVersion {
 
     public void setFlagIsLast(Boolean flagIsLast) {
         this.flagIsLast = flagIsLast;
+    }
+
+    @Override
+    public String toString() {
+        return "WpCfgProcessVersion{" +
+                "id=" + id +
+                ", version=" + version +
+                ", cfgProcessId=" + cfgProcessId +
+                ", flagAvaliable=" + flagAvaliable +
+                ", createPerson=" + createPerson +
+                ", createTime=" + createTime +
+                ", updatePerson=" + updatePerson +
+                ", updateTime=" + updateTime +
+                ", flagIsLast=" + flagIsLast +
+                '}';
     }
 }

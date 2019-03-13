@@ -348,9 +348,6 @@ public class ValiDateUtil {
      * @return
      */
     public static boolean isRowEmpty(Row row) {
-        if(row==null){
-            return true;
-        }
         for (int c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
             Cell cell = row.getCell(c);
             if (cell != null && cell.getCellTypeEnum()!=null) {

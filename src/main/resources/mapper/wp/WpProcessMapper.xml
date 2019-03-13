@@ -114,4 +114,31 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectAll" parameterType="com.company.springboot.entity.wp.WpProcess" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wp_process
+    where 1=1
+    <if test="frameProcessId != null">
+      and frame_process_id = #{frameProcessId,jdbcType=INTEGER}
+    </if>
+    <if test="processCfgId != null">
+      and process_cfg_id = #{processCfgId,jdbcType=INTEGER}
+    </if>
+    <if test="versionId != null">
+      and version_id = #{versionId,jdbcType=INTEGER}
+    </if>
+    <if test="flagDeleted != null">
+      and flag_deleted = #{flagDeleted,jdbcType=BIT}
+    </if>
+    <if test="createPerson != null">
+      and create_person = #{createPerson,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
 </mapper>

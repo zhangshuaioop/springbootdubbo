@@ -1,259 +1,634 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.company.springboot.mapper.wp.WpCfgProcessStepMapper">
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.wp.WpCfgProcessStep">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="cfg_process_id" jdbcType="INTEGER" property="cfgProcessId" />
-    <result column="version_id" jdbcType="INTEGER" property="versionId" />
-    <result column="step_name" jdbcType="VARCHAR" property="stepName" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="unit_type" jdbcType="VARCHAR" property="unitType" />
-    <result column="operator_type" jdbcType="VARCHAR" property="operatorType" />
-    <result column="operator_id" jdbcType="INTEGER" property="operatorId" />
-    <result column="unit_x" jdbcType="INTEGER" property="unitX" />
-    <result column="unit_y" jdbcType="INTEGER" property="unitY" />
-    <result column="length" jdbcType="INTEGER" property="length" />
-    <result column="height" jdbcType="INTEGER" property="height" />
-    <result column="execution_rules" jdbcType="VARCHAR" property="executionRules" />
-    <result column="execution_rules_number" jdbcType="INTEGER" property="executionRulesNumber" />
-    <result column="time_exam_minute" jdbcType="INTEGER" property="timeExamMinute" />
-    <result column="default_no_operator_rule" jdbcType="VARCHAR" property="defaultNoOperatorRule" />
-    <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
-    <result column="authorized_fields" jdbcType="VARCHAR" property="authorizedFields" />
-    <result column="operate_type" jdbcType="VARCHAR" property="operateType" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.company.springboot.entity.wp.WpCfgProcessStep">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="cfg_process_id" jdbcType="INTEGER" property="cfgProcessId"/>
+        <result column="version_id" jdbcType="INTEGER" property="versionId"/>
+        <result column="step_name" jdbcType="VARCHAR" property="stepName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="unit_type" jdbcType="VARCHAR" property="unitType"/>
+        <result column="operator_type" jdbcType="VARCHAR" property="operatorType"/>
+        <result column="operator_id" jdbcType="VARCHAR" property="operatorId"/>
+        <result column="unit_x" jdbcType="INTEGER" property="unitX"/>
+        <result column="unit_y" jdbcType="INTEGER" property="unitY"/>
+        <result column="length" jdbcType="INTEGER" property="length"/>
+        <result column="height" jdbcType="INTEGER" property="height"/>
+        <result column="execution_rules" jdbcType="VARCHAR" property="executionRules"/>
+        <result column="execution_rules_number" jdbcType="INTEGER" property="executionRulesNumber"/>
+        <result column="time_exam_minute" jdbcType="INTEGER" property="timeExamMinute"/>
+        <result column="default_no_operator_rule" jdbcType="VARCHAR" property="defaultNoOperatorRule"/>
+        <result column="flag_deleted" jdbcType="BIT" property="flagDeleted"/>
+        <result column="authorized_fields" jdbcType="VARCHAR" property="authorizedFields"/>
+        <result column="operate_type" jdbcType="VARCHAR" property="operateType"/>
+        <result column="step_code" jdbcType="VARCHAR" property="stepCode"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, cfg_process_id, version_id, step_name, description, unit_type, operator_type, 
     operator_id, unit_x, unit_y, length, height, execution_rules, execution_rules_number, 
-    time_exam_minute, default_no_operator_rule, flag_deleted, authorized_fields, operate_type
+    time_exam_minute, default_no_operator_rule, flag_deleted, authorized_fields, operate_type,step_code
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from wp_cfg_process_step
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wp_cfg_process_step
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from wp_cfg_process_step
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.wp.WpCfgProcessStep">
-    insert into wp_cfg_process_step (id, cfg_process_id, version_id, 
-      step_name, description, unit_type, 
-      operator_type, operator_id, unit_x, 
-      unit_y, length, height, 
-      execution_rules, execution_rules_number, time_exam_minute, 
-      default_no_operator_rule, flag_deleted, authorized_fields, 
-      operate_type)
-    values (#{id,jdbcType=INTEGER}, #{cfgProcessId,jdbcType=INTEGER}, #{versionId,jdbcType=INTEGER}, 
-      #{stepName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{unitType,jdbcType=VARCHAR}, 
-      #{operatorType,jdbcType=VARCHAR}, #{operatorId,jdbcType=INTEGER}, #{unitX,jdbcType=INTEGER}, 
-      #{unitY,jdbcType=INTEGER}, #{length,jdbcType=INTEGER}, #{height,jdbcType=INTEGER}, 
-      #{executionRules,jdbcType=VARCHAR}, #{executionRulesNumber,jdbcType=INTEGER}, #{timeExamMinute,jdbcType=INTEGER}, 
-      #{defaultNoOperatorRule,jdbcType=VARCHAR}, #{flagDeleted,jdbcType=BIT}, #{authorizedFields,jdbcType=VARCHAR}, 
-      #{operateType,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.wp.WpCfgProcessStep">
-    insert into wp_cfg_process_step
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="cfgProcessId != null">
-        cfg_process_id,
-      </if>
-      <if test="versionId != null">
-        version_id,
-      </if>
-      <if test="stepName != null">
-        step_name,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="unitType != null">
-        unit_type,
-      </if>
-      <if test="operatorType != null">
-        operator_type,
-      </if>
-      <if test="operatorId != null">
-        operator_id,
-      </if>
-      <if test="unitX != null">
-        unit_x,
-      </if>
-      <if test="unitY != null">
-        unit_y,
-      </if>
-      <if test="length != null">
-        length,
-      </if>
-      <if test="height != null">
-        height,
-      </if>
-      <if test="executionRules != null">
-        execution_rules,
-      </if>
-      <if test="executionRulesNumber != null">
-        execution_rules_number,
-      </if>
-      <if test="timeExamMinute != null">
-        time_exam_minute,
-      </if>
-      <if test="defaultNoOperatorRule != null">
-        default_no_operator_rule,
-      </if>
-      <if test="flagDeleted != null">
-        flag_deleted,
-      </if>
-      <if test="authorizedFields != null">
-        authorized_fields,
-      </if>
-      <if test="operateType != null">
-        operate_type,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="cfgProcessId != null">
-        #{cfgProcessId,jdbcType=INTEGER},
-      </if>
-      <if test="versionId != null">
-        #{versionId,jdbcType=INTEGER},
-      </if>
-      <if test="stepName != null">
-        #{stepName,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="unitType != null">
-        #{unitType,jdbcType=VARCHAR},
-      </if>
-      <if test="operatorType != null">
-        #{operatorType,jdbcType=VARCHAR},
-      </if>
-      <if test="operatorId != null">
-        #{operatorId,jdbcType=INTEGER},
-      </if>
-      <if test="unitX != null">
-        #{unitX,jdbcType=INTEGER},
-      </if>
-      <if test="unitY != null">
-        #{unitY,jdbcType=INTEGER},
-      </if>
-      <if test="length != null">
-        #{length,jdbcType=INTEGER},
-      </if>
-      <if test="height != null">
-        #{height,jdbcType=INTEGER},
-      </if>
-      <if test="executionRules != null">
-        #{executionRules,jdbcType=VARCHAR},
-      </if>
-      <if test="executionRulesNumber != null">
-        #{executionRulesNumber,jdbcType=INTEGER},
-      </if>
-      <if test="timeExamMinute != null">
-        #{timeExamMinute,jdbcType=INTEGER},
-      </if>
-      <if test="defaultNoOperatorRule != null">
-        #{defaultNoOperatorRule,jdbcType=VARCHAR},
-      </if>
-      <if test="flagDeleted != null">
-        #{flagDeleted,jdbcType=BIT},
-      </if>
-      <if test="authorizedFields != null">
-        #{authorizedFields,jdbcType=VARCHAR},
-      </if>
-      <if test="operateType != null">
-        #{operateType,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.wp.WpCfgProcessStep">
-    update wp_cfg_process_step
-    <set>
-      <if test="cfgProcessId != null">
-        cfg_process_id = #{cfgProcessId,jdbcType=INTEGER},
-      </if>
-      <if test="versionId != null">
-        version_id = #{versionId,jdbcType=INTEGER},
-      </if>
-      <if test="stepName != null">
-        step_name = #{stepName,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="unitType != null">
-        unit_type = #{unitType,jdbcType=VARCHAR},
-      </if>
-      <if test="operatorType != null">
-        operator_type = #{operatorType,jdbcType=VARCHAR},
-      </if>
-      <if test="operatorId != null">
-        operator_id = #{operatorId,jdbcType=INTEGER},
-      </if>
-      <if test="unitX != null">
-        unit_x = #{unitX,jdbcType=INTEGER},
-      </if>
-      <if test="unitY != null">
-        unit_y = #{unitY,jdbcType=INTEGER},
-      </if>
-      <if test="length != null">
-        length = #{length,jdbcType=INTEGER},
-      </if>
-      <if test="height != null">
-        height = #{height,jdbcType=INTEGER},
-      </if>
-      <if test="executionRules != null">
-        execution_rules = #{executionRules,jdbcType=VARCHAR},
-      </if>
-      <if test="executionRulesNumber != null">
-        execution_rules_number = #{executionRulesNumber,jdbcType=INTEGER},
-      </if>
-      <if test="timeExamMinute != null">
-        time_exam_minute = #{timeExamMinute,jdbcType=INTEGER},
-      </if>
-      <if test="defaultNoOperatorRule != null">
-        default_no_operator_rule = #{defaultNoOperatorRule,jdbcType=VARCHAR},
-      </if>
-      <if test="flagDeleted != null">
-        flag_deleted = #{flagDeleted,jdbcType=BIT},
-      </if>
-      <if test="authorizedFields != null">
-        authorized_fields = #{authorizedFields,jdbcType=VARCHAR},
-      </if>
-      <if test="operateType != null">
-        operate_type = #{operateType,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.wp.WpCfgProcessStep">
-    update wp_cfg_process_step
-    set cfg_process_id = #{cfgProcessId,jdbcType=INTEGER},
-      version_id = #{versionId,jdbcType=INTEGER},
-      step_name = #{stepName,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      unit_type = #{unitType,jdbcType=VARCHAR},
-      operator_type = #{operatorType,jdbcType=VARCHAR},
-      operator_id = #{operatorId,jdbcType=INTEGER},
-      unit_x = #{unitX,jdbcType=INTEGER},
-      unit_y = #{unitY,jdbcType=INTEGER},
-      length = #{length,jdbcType=INTEGER},
-      height = #{height,jdbcType=INTEGER},
-      execution_rules = #{executionRules,jdbcType=VARCHAR},
-      execution_rules_number = #{executionRulesNumber,jdbcType=INTEGER},
-      time_exam_minute = #{timeExamMinute,jdbcType=INTEGER},
-      default_no_operator_rule = #{defaultNoOperatorRule,jdbcType=VARCHAR},
-      flag_deleted = #{flagDeleted,jdbcType=BIT},
-      authorized_fields = #{authorizedFields,jdbcType=VARCHAR},
-      operate_type = #{operateType,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <insert id="insertSelective" parameterType="com.company.springboot.entity.wp.WpCfgProcessStep">
+        insert into wp_cfg_process_step
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="cfgProcessId != null">
+                cfg_process_id,
+            </if>
+            <if test="versionId != null">
+                version_id,
+            </if>
+            <if test="stepName != null">
+                step_name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="unitType != null">
+                unit_type,
+            </if>
+            <if test="operatorType != null">
+                operator_type,
+            </if>
+            <if test="operatorId != null">
+                operator_id,
+            </if>
+            <if test="unitX != null">
+                unit_x,
+            </if>
+            <if test="unitY != null">
+                unit_y,
+            </if>
+            <if test="length != null">
+                length,
+            </if>
+            <if test="height != null">
+                height,
+            </if>
+            <if test="executionRules != null">
+                execution_rules,
+            </if>
+            <if test="executionRulesNumber != null">
+                execution_rules_number,
+            </if>
+            <if test="timeExamMinute != null">
+                time_exam_minute,
+            </if>
+            <if test="defaultNoOperatorRule != null">
+                default_no_operator_rule,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="authorizedFields != null">
+                authorized_fields,
+            </if>
+            <if test="operateType != null">
+                operate_type,
+            </if>
+            <if test="stepCode != null">
+                step_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="cfgProcessId != null">
+                #{cfgProcessId,jdbcType=INTEGER},
+            </if>
+            <if test="versionId != null">
+                #{versionId,jdbcType=INTEGER},
+            </if>
+            <if test="stepName != null">
+                #{stepName,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="unitType != null">
+                #{unitType,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorType != null">
+                #{operatorType,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorId != null">
+                #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitX != null">
+                #{unitX,jdbcType=INTEGER},
+            </if>
+            <if test="unitY != null">
+                #{unitY,jdbcType=INTEGER},
+            </if>
+            <if test="length != null">
+                #{length,jdbcType=INTEGER},
+            </if>
+            <if test="height != null">
+                #{height,jdbcType=INTEGER},
+            </if>
+            <if test="executionRules != null">
+                #{executionRules,jdbcType=VARCHAR},
+            </if>
+            <if test="executionRulesNumber != null">
+                #{executionRulesNumber,jdbcType=INTEGER},
+            </if>
+            <if test="timeExamMinute != null">
+                #{timeExamMinute,jdbcType=INTEGER},
+            </if>
+            <if test="defaultNoOperatorRule != null">
+                #{defaultNoOperatorRule,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="authorizedFields != null">
+                #{authorizedFields,jdbcType=VARCHAR},
+            </if>
+            <if test="operateType != null">
+                #{operateType,jdbcType=VARCHAR},
+            </if>
+            <if test="stepCode != null">
+                #{step_code,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.wp.WpCfgProcessStep">
+        update wp_cfg_process_step
+        <set>
+            <if test="cfgProcessId != null">
+                cfg_process_id = #{cfgProcessId,jdbcType=INTEGER},
+            </if>
+            <if test="versionId != null">
+                version_id = #{versionId,jdbcType=INTEGER},
+            </if>
+            <if test="stepName != null">
+                step_name = #{stepName,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="unitType != null">
+                unit_type = #{unitType,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorType != null">
+                operator_type = #{operatorType,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitX != null">
+                unit_x = #{unitX,jdbcType=INTEGER},
+            </if>
+            <if test="unitY != null">
+                unit_y = #{unitY,jdbcType=INTEGER},
+            </if>
+            <if test="length != null">
+                length = #{length,jdbcType=INTEGER},
+            </if>
+            <if test="height != null">
+                height = #{height,jdbcType=INTEGER},
+            </if>
+            <if test="executionRules != null">
+                execution_rules = #{executionRules,jdbcType=VARCHAR},
+            </if>
+            <if test="executionRulesNumber != null">
+                execution_rules_number = #{executionRulesNumber,jdbcType=INTEGER},
+            </if>
+            <if test="timeExamMinute != null">
+                time_exam_minute = #{timeExamMinute,jdbcType=INTEGER},
+            </if>
+            <if test="defaultNoOperatorRule != null">
+                default_no_operator_rule = #{defaultNoOperatorRule,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="authorizedFields != null">
+                authorized_fields = #{authorizedFields,jdbcType=VARCHAR},
+            </if>
+            <if test="operateType != null">
+                operate_type = #{operateType,jdbcType=VARCHAR},
+            </if>
+            <if test="stepCode != null">
+                step_code = #{stepCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectAll" parameterType="com.company.springboot.entity.wp.WpCfgProcessStep" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wp_cfg_process_step
+        where 1=1
+        <if test="cfgProcessId != null">
+            and cfg_process_id = #{cfgProcessId,jdbcType=INTEGER}
+        </if>
+        <if test="versionId != null">
+            and version_id = #{versionId,jdbcType=INTEGER}
+        </if>
+        <if test="stepName != null">
+            and step_name = #{stepName,jdbcType=VARCHAR}
+        </if>
+        <if test="description != null">
+            and description = #{description,jdbcType=VARCHAR}
+        </if>
+        <if test="unitType != null">
+            and unit_type = #{unitType,jdbcType=VARCHAR}
+        </if>
+        <if test="operatorType != null">
+            and operator_type = #{operatorType,jdbcType=VARCHAR}
+        </if>
+        <if test="operatorId != null">
+            and operator_id = #{operatorId,jdbcType=VARCHAR}
+        </if>
+        <if test="unitX != null">
+            and unit_x = #{unitX,jdbcType=INTEGER}
+        </if>
+        <if test="unitY != null">
+            and unit_y = #{unitY,jdbcType=INTEGER}
+        </if>
+        <if test="length != null">
+            and length = #{length,jdbcType=INTEGER}
+        </if>
+        <if test="height != null">
+            and height = #{height,jdbcType=INTEGER}
+        </if>
+        <if test="executionRules != null">
+            and execution_rules = #{executionRules,jdbcType=VARCHAR}
+        </if>
+        <if test="executionRulesNumber != null">
+            and execution_rules_number = #{executionRulesNumber,jdbcType=INTEGER}
+        </if>
+        <if test="timeExamMinute != null">
+            and time_exam_minute = #{timeExamMinute,jdbcType=INTEGER}
+        </if>
+        <if test="defaultNoOperatorRule != null">
+            and default_no_operator_rule = #{defaultNoOperatorRule,jdbcType=VARCHAR}
+        </if>
+        <if test="flagDeleted != null">
+            and flag_deleted = #{flagDeleted,jdbcType=BIT}
+        </if>
+        <if test="authorizedFields != null">
+            and authorized_fields = #{authorizedFields,jdbcType=VARCHAR}
+        </if>
+        <if test="operateType != null">
+            and operate_type = #{operateType,jdbcType=VARCHAR}
+        </if>
+        <if test="stepCode != null">
+            and step_code = #{stepCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="selectByWpCfgProcessStep" parameterType="com.company.springboot.entity.wp.WpCfgProcessStep"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wp_cfg_process_step
+        where 1=1
+        <if test="cfgProcessId != null">
+            and cfg_process_id = #{cfgProcessId,jdbcType=INTEGER}
+        </if>
+        <if test="versionId != null">
+            and version_id = #{versionId,jdbcType=INTEGER}
+        </if>
+        <if test="stepName != null">
+            and step_name = #{stepName,jdbcType=VARCHAR}
+        </if>
+        <if test="description != null">
+            and description = #{description,jdbcType=VARCHAR}
+        </if>
+        <if test="unitType != null">
+            and unit_type = #{unitType,jdbcType=VARCHAR}
+        </if>
+        <if test="operatorType != null">
+            and operator_type = #{operatorType,jdbcType=VARCHAR}
+        </if>
+        <if test="operatorId != null">
+            and operator_id = #{operatorId,jdbcType=VARCHAR}
+        </if>
+        <if test="unitX != null">
+            and unit_x = #{unitX,jdbcType=INTEGER}
+        </if>
+        <if test="unitY != null">
+            and unit_y = #{unitY,jdbcType=INTEGER}
+        </if>
+        <if test="length != null">
+            and length = #{length,jdbcType=INTEGER}
+        </if>
+        <if test="height != null">
+            and height = #{height,jdbcType=INTEGER}
+        </if>
+        <if test="executionRules != null">
+            and execution_rules = #{executionRules,jdbcType=VARCHAR}
+        </if>
+        <if test="executionRulesNumber != null">
+            and execution_rules_number = #{executionRulesNumber,jdbcType=INTEGER}
+        </if>
+        <if test="timeExamMinute != null">
+            and time_exam_minute = #{timeExamMinute,jdbcType=INTEGER}
+        </if>
+        <if test="defaultNoOperatorRule != null">
+            and default_no_operator_rule = #{defaultNoOperatorRule,jdbcType=VARCHAR}
+        </if>
+        <if test="flagDeleted != null">
+            and flag_deleted = #{flagDeleted,jdbcType=BIT}
+        </if>
+        <if test="authorizedFields != null">
+            and authorized_fields = #{authorizedFields,jdbcType=VARCHAR}
+        </if>
+        <if test="operateType != null">
+            and operate_type = #{operateType,jdbcType=VARCHAR}
+        </if>
+        <if test="stepCode != null">
+            and step_code = #{stepCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <select id="selectLast" parameterType="java.lang.String"
+            resultType="com.company.springboot.entity.wp.WpCfgProcessStep">
+    SELECT
+	wcps.id,
+	wcps.cfg_process_id cfgProcessId,
+	wcps.version_id versionId,
+	wcps.step_name stepName,
+	wcps.description,
+	wcps.unit_type unitType,
+	wcps.operator_type operatorType,
+	wcps.operator_id operatorId,
+	wcps.unit_x unitx,
+	wcps.unit_y unity,
+	wcps.length,
+	wcps.height,
+	wcps.execution_rules executionRules,
+	wcps.execution_rules_number executionRulesNumber,
+	wcps.time_exam_minute timeExamMinute,
+	wcps.default_no_operator_rule defaultNoOperatorRule,
+	wcps.flag_deleted flagDeleted,
+	wcps.authorized_fields authorizedFields,
+	wcps.operate_type operateType,
+	wcps.step_code stepCode
+FROM
+	wp_cfg_process_step wcps
+	LEFT JOIN wp_cfg_process_step_line wcpsl ON wcps.step_code = wcpsl.start_step_code and wcpsl.flag_deleted=0
+WHERE
+	wcps.step_code = #{stepCode,jdbcType=VARCHAR}
+  </select>
+
+    <select id="selectByOrderId" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.wp.WpCfgProcessStep">
+    SELECT
+	wcps.id,
+	wcps.cfg_process_id cfgProcessId,
+	wcps.version_id versionId,
+	wcps.step_name stepName,
+	wcps.description,
+	wcps.unit_type unitType,
+	wcps.operator_type operatorType,
+	wcps.operator_id operatorId,
+	wcps.unit_x unitx,
+	wcps.unit_y unity,
+	wcps.length,
+	wcps.height,
+	wcps.execution_rules executionRules,
+	wcps.execution_rules_number executionRulesNumber,
+	wcps.time_exam_minute timeExamMinute,
+	wcps.default_no_operator_rule defaultNoOperatorRule,
+	wcps.flag_deleted flagDeleted,
+	wcps.authorized_fields authorizedFields,
+	wcps.operate_type operateType,
+	wcps.step_code stepCode
+	FROM
+	fdp_fault_dispatch_order ffdo
+	LEFT JOIN wp_frame_process wfp ON wfp.id = ffdo.wp_frame_process_id AND wfp.flag_deleted = 0
+    LEFT JOIN wp_cfg_process_step wcps ON wfp.current_process_step_id = wcps.id AND wcps.flag_deleted = 0
+    WHERE
+	ffdo.id = #{orderId,jdbcType=VARCHAR}
+  </select>
+
+    <select id="findWpCfgProcessStepByStepId" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.wp.WpCfgProcessStep">
+    select
+	wcps.id,
+	wcps.cfg_process_id cfgProcessId,
+	wcps.version_id versionId,
+	wcps.step_name stepName,
+	wcps.description,
+	wcps.unit_type unitType,
+	wcps.operator_type operatorType,
+	wcps.operator_id operatorId,
+	wcps.unit_x unitx,
+	wcps.unit_y unity,
+	wcps.length,
+	wcps.height,
+	wcps.execution_rules executionRules,
+	wcps.execution_rules_number executionRulesNumber,
+	wcps.time_exam_minute timeExamMinute,
+	wcps.default_no_operator_rule defaultNoOperatorRule,
+	wcps.flag_deleted flagDeleted,
+	wcps.authorized_fields authorizedFields,
+	wcps.operate_type operateType,
+	wcps.step_code stepCode
+	from
+	wp_cfg_frame_process_step_assembly assembly
+	left join wp_cfg_process_step wcps on wcps.cfg_process_id=assembly.cfg_process_id and wcps.flag_deleted=0
+	where assembly.cfg_frame_process_step_id=#{cfgFrameprocessStepId,jdbcType=INTEGER}
+	and assembly.version_id=#{versionId,jdbcType=INTEGER} and assembly.flag_deleted=0
+  </select>
+
+    <select id="findWpCfgProcessNextStepByWpFrameProcessId" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.wp.WpCfgProcessStep">
+	SELECT
+	wcpsNext.id,
+    wcpsNext.cfg_process_id cfgProcessId,
+    wcpsNext.version_id versionId,
+    wcpsNext.step_name stepName,
+    wcpsNext.description,
+    wcpsNext.unit_type unitType,
+    wcpsNext.operator_type operatorType,
+    wcpsNext.operator_id operatorId,
+    wcpsNext.unit_x unitx,
+    wcpsNext.unit_y unity,
+    wcpsNext.length,
+    wcpsNext.height,
+    wcpsNext.execution_rules executionRules,
+    wcpsNext.execution_rules_number executionRulesNumber,
+    wcpsNext.time_exam_minute timeExamMinute,
+    wcpsNext.default_no_operator_rule defaultNoOperatorRule,
+    wcpsNext.flag_deleted flagDeleted,
+    wcpsNext.authorized_fields authorizedFields,
+    wcpsNext.operate_type operateType,
+    wcpsNext.step_code stepCode
+	FROM
+	wp_frame_process process
+	LEFT JOIN wp_cfg_process_step step ON step.id = process.current_process_step_id and step.flag_deleted=0
+	LEFT JOIN wp_cfg_process_step_line line ON line.start_step_code = step.step_code AND line.version_id = step.version_id AND line.cfg_process_id = step.cfg_process_id and line.flag_deleted=0
+	LEFT JOIN wp_cfg_process_step wcpsNext ON wcpsNext.step_code = line.end_step_code AND line.cfg_process_id = wcpsNext.cfg_process_id
+	AND line.version_id = wcpsNext.version_id AND line.cfg_process_id = wcpsNext.cfg_process_id AND wcpsNext.flag_deleted = 0
+    where process.flag_deleted=0 AND process.id=#{wpFrameProcessId,jdbcType=INTEGER}
+  </select>
+
+    <select id="findWpCfgProcessTopStepByWpFrameProcessId" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.wp.WpCfgProcessStep">
+	SELECT
+	wcpsTop.id,
+    wcpsTop.cfg_process_id cfgProcessId,
+    wcpsTop.version_id versionId,
+    wcpsTop.step_name stepName,
+    wcpsTop.description,
+    wcpsTop.unit_type unitType,
+    wcpsTop.operator_type operatorType,
+    wcpsTop.operator_id operatorId,
+    wcpsTop.unit_x unitx,
+    wcpsTop.unit_y unity,
+    wcpsTop.length,
+    wcpsTop.height,
+    wcpsTop.execution_rules executionRules,
+    wcpsTop.execution_rules_number executionRulesNumber,
+    wcpsTop.time_exam_minute timeExamMinute,
+    wcpsTop.default_no_operator_rule defaultNoOperatorRule,
+    wcpsTop.flag_deleted flagDeleted,
+    wcpsTop.authorized_fields authorizedFields,
+    wcpsTop.operate_type operateType,
+    wcpsTop.step_code stepCode
+	FROM
+	wp_frame_process process
+	LEFT JOIN wp_cfg_process_step step ON step.id = process.current_process_step_id and step.flag_deleted=0
+	LEFT JOIN wp_cfg_process_step_line line ON line.end_step_code = step.step_code AND line.version_id = step.version_id AND line.cfg_process_id = step.cfg_process_id and line.flag_deleted=0
+	LEFT JOIN wp_cfg_process_step wcpsTop ON wcpsTop.step_code = line.start_step_code AND line.cfg_process_id = wcpsTop.cfg_process_id
+	AND line.version_id = wcpsTop.version_id AND line.cfg_process_id = wcpsTop.cfg_process_id AND wcpsTop.flag_deleted = 0
+    where process.flag_deleted=0 AND process.id=#{wpFrameProcessId,jdbcType=INTEGER}
+  </select>
+
+
+    <select id="findWpCfgProcessStepByCompanyId" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.wp.WpCfgProcessStep">
+    select
+	ps1.id,
+	ps1.cfg_process_id cfgProcessId,
+	ps1.version_id versionId,
+	ps1.step_name stepName,
+	ps1.description,
+	ps1.unit_type unitType,
+	ps1.operator_type operatorType,
+	ps1.operator_id operatorId,
+	ps1.unit_x unitx,
+	ps1.unit_y unity,
+	ps1.length,
+	ps1.height,
+	ps1.execution_rules executionRules,
+	ps1.execution_rules_number executionRulesNumber,
+	ps1.time_exam_minute timeExamMinute,
+	ps1.default_no_operator_rule defaultNoOperatorRule,
+	ps1.flag_deleted flagDeleted,
+	ps1.authorized_fields authorizedFields,
+	ps1.operate_type operateType,
+	ps1.step_code stepCode,
+	fps.cfg_frame_process_id cfgFrameProcessId,
+	fps.step_code frameStepCode,
+	fps.version_id frameVersionId
+	FROM wp_cfg_frame_process fp
+    LEFT JOIN wp_cfg_frame_process_version fpv on fp.id=fpv.cfg_frame_process_id and fpv.flag_avaliable=1 and fpv.flag_is_last=1
+    LEFT JOIN wp_cfg_frame_process_step fps on fpv.version=fps.version_id and fps.flag_deleted=0 and fps.sort_id=1
+    LEFT JOIN wp_cfg_frame_process_step_assembly fs on fs.cfg_frame_process_step_id=fps.id and fs.cfg_process_version_id=fps.version_id and fs.flag_deleted=0
+    LEFT JOIN wp_cfg_process_version pv on pv.cfg_process_id=fs.cfg_process_id and pv.flag_avaliable=1 and pv.flag_is_last=1
+    LEFT JOIN wp_cfg_process_step ps on ps.cfg_process_id=pv.cfg_process_id and ps.version_id=pv.version and ps.flag_deleted=0 and ps.unit_type='START'
+    LEFT JOIN wp_cfg_process_step_line sl on sl.cfg_process_id=ps.cfg_process_id and sl.version_id=ps.version_id and sl.flag_deleted=0 and sl.start_step_code=ps.step_code
+    LEFT JOIN wp_cfg_process_step ps1 on ps1.cfg_process_id=sl.cfg_process_id and ps1.step_code=sl.end_step_code and sl.version_id=ps1.version_id and ps1.flag_deleted=0
+    where  fp.flag_tested=1 and fp.flag_deleted=0 and fp.flag_avaliable=1 and fp.company_id=#{companyId,jdbcType=INTEGER}
+  </select>
+
+
+    <select id="findWpCfgProcessNextStepByWpCfgProcessStepId" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.wp.WpCfgProcessStep">
+	SELECT
+	wcfgs.id,
+    wcfgs.cfg_process_id cfgProcessId,
+    wcfgs.version_id versionId,
+    wcfgs.step_name stepName,
+    wcfgs.description,
+    wcfgs.unit_type unitType,
+    wcfgs.operator_type operatorType,
+    wcfgs.operator_id operatorId,
+    wcfgs.unit_x unitx,
+    wcfgs.unit_y unity,
+    wcfgs.length,
+    wcfgs.height,
+    wcfgs.execution_rules executionRules,
+    wcfgs.execution_rules_number executionRulesNumber,
+    wcfgs.time_exam_minute timeExamMinute,
+    wcfgs.default_no_operator_rule defaultNoOperatorRule,
+    wcfgs.flag_deleted flagDeleted,
+    wcfgs.authorized_fields authorizedFields,
+    wcfgs.operate_type operateType,
+    wcfgs.step_code stepCode
+	FROM
+	wp_cfg_process_step ps
+	LEFT JOIN wp_cfg_frame_process_step_assembly fa on ps.cfg_process_id=fa.cfg_process_id
+	and fa.cfg_process_version_id=ps.version_id and fa.flag_deleted=0
+	left join wp_cfg_frame_process_step fps on fps.id=fa.cfg_frame_process_step_id and fps.flag_deleted=0
+	left join wp_cfg_frame_process_step_line fl on fl.start_step_code=fps.step_code and fl.version_id=fps.version_id
+	and fl.flag_deleted=0 and fl.cfg_frame_process_id=fps.cfg_frame_process_id
+	left join wp_cfg_frame_process_step fpsn on fl.cfg_frame_process_id=fpsn.cfg_frame_process_id and fpsn.step_code=fl.end_step_code and fpsn.flag_deleted=0
+	left join wp_cfg_frame_process_step_assembly fan on fan.cfg_frame_process_step_id=fpsn.id and fan.flag_deleted=0
+	left join wp_cfg_process_version cpv on cpv.cfg_process_id=fan.cfg_process_id
+	and fan.cfg_process_version_id=cpv.version and cpv.flag_avaliable=1 and cpv.flag_is_last=1
+	left join wp_cfg_process_step cpss on cpss.cfg_process_id=cpv.cfg_process_id and cpv.version=cpss.version_id and cpss.flag_deleted=0 and cpss.unit_type='START'
+	left join wp_cfg_process_step_line cpsl on cpsl.start_step_code=cpss.step_code and cpsl.flag_deleted=0 and cpsl.version_id=cpss.version_id and cpsl.cfg_process_id=cpss.cfg_process_id
+	left join wp_cfg_process_step wcfgs on wcfgs.step_code=cpsl.end_step_code and wcfgs.flag_deleted=0 and cpsl.version_id=wcfgs.version_id and wcfgs.cfg_process_id=cpsl.cfg_process_id
+    where ps.id=#{id,jdbcType=INTEGER} and ps.flag_deleted=0
+  </select>
+
+    <select id="findWpCfgProcessTopStepByWpCfgProcessStepId" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.wp.WpCfgProcessStep">
+	SELECT
+	wcfgs.id,
+    wcfgs.cfg_process_id cfgProcessId,
+    wcfgs.version_id versionId,
+    wcfgs.step_name stepName,
+    wcfgs.description,
+    wcfgs.unit_type unitType,
+    wcfgs.operator_type operatorType,
+    wcfgs.operator_id operatorId,
+    wcfgs.unit_x unitx,
+    wcfgs.unit_y unity,
+    wcfgs.length,
+    wcfgs.height,
+    wcfgs.execution_rules executionRules,
+    wcfgs.execution_rules_number executionRulesNumber,
+    wcfgs.time_exam_minute timeExamMinute,
+    wcfgs.default_no_operator_rule defaultNoOperatorRule,
+    wcfgs.flag_deleted flagDeleted,
+    wcfgs.authorized_fields authorizedFields,
+    wcfgs.operate_type operateType,
+    wcfgs.step_code stepCode
+	FROM
+	wp_cfg_process_step ps
+	LEFT JOIN wp_cfg_frame_process_step_assembly fa on ps.cfg_process_id=fa.cfg_process_id
+	and fa.cfg_process_version_id=ps.version_id and fa.flag_deleted=0
+	left join wp_cfg_frame_process_step fps on fps.id=fa.cfg_frame_process_step_id and fps.flag_deleted=0
+	left join wp_cfg_frame_process_step_line fl on fl.end_step_code=fps.step_code and fl.version_id=fps.version_id
+	and fl.flag_deleted=0 and fl.cfg_frame_process_id=fps.cfg_frame_process_id
+	left join wp_cfg_frame_process_step fpsn on fl.cfg_frame_process_id=fpsn.cfg_frame_process_id and fpsn.step_code=fl.start_step_code and fpsn.flag_deleted=0
+	left join wp_cfg_frame_process_step_assembly fan on fan.cfg_frame_process_step_id=fpsn.id and fan.flag_deleted=0
+	left join wp_cfg_process_version cpv on cpv.cfg_process_id=fan.cfg_process_id
+	and fan.cfg_process_version_id=cpv.version and cpv.flag_avaliable=1 and cpv.flag_is_last=1
+	left join wp_cfg_process_step cpss on cpss.cfg_process_id=cpv.cfg_process_id and cpv.version=cpss.version_id and cpss.flag_deleted=0 and cpss.unit_type='END'
+	left join wp_cfg_process_step_line cpsl on cpsl.end_step_code=cpss.step_code and cpsl.flag_deleted=0 and cpsl.version_id=cpss.version_id and cpsl.cfg_process_id=cpss.cfg_process_id
+	left join wp_cfg_process_step wcfgs on wcfgs.step_code=cpsl.start_step_code and wcfgs.flag_deleted=0 and cpsl.version_id=wcfgs.version_id and wcfgs.cfg_process_id=cpsl.cfg_process_id
+    where ps.id=#{id,jdbcType=INTEGER} and ps.flag_deleted=0
+  </select>
+
 </mapper>

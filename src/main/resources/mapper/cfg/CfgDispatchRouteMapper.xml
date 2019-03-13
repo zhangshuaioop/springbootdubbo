@@ -23,24 +23,6 @@
         from cfg_dispatch_route
         where id = #{id,jdbcType=INTEGER}
     </select>
-
-
-    <select id="selectById" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.cfg.CfgDispatchRoute">
-        select
-        route.id, route.project_id projectId,
-        route.name, route.persons,
-        route.start_time startTime,
-        route.flag_project flagProject,
-        route.flag_default flagDefault,
-        route.create_time createTime,
-        route.create_person createPerson,
-        route.flag_take_status flagTakeStatus,
-        project.company_id companyId
-        from cfg_dispatch_route route
-        LEFT JOIN pjt_project project ON project.id=route.project_id
-        where route.id = #{id,jdbcType=INTEGER}
-    </select>
-
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cfg_dispatch_route
     where id = #{id,jdbcType=INTEGER}
@@ -173,18 +155,16 @@
     <!--查询项目规则配置列表-->
     <select id="selectAll" resultType="com.company.springboot.entity.cfg.CfgDispatchRoute">
         SELECT route.id,route.name,
-        route.start_time startTime,
-        route.create_time createTime,
+        DATE_FORMAT(route.start_time,'%Y-%c-%d %H:%i:%s') startTime,
+        DATE_FORMAT(route.create_time,'%Y-%c-%d %H:%i:%s') createTime,
         route.flag_project flagProject,route.flag_default flagDefault,route.flag_take_status flagTakeStatus,
         CASE WHEN COUNT(route.id)=(SELECT count(1) FROM cfg_region WHERE LEVEL=3 AND region_name is NOT NULL AND region_name!='')
         or (route.flag_default=1 and route.persons is not null)
         THEN 1
-        ELSE 0 END flagCheck,
-        route.persons
+        ELSE 0 END flagCheck
         FROM cfg_dispatch_route route
-        LEFT JOIN sys_company_users users ON users.id = route.create_person
         LEFT JOIN cfg_dispatch_route_detail detail ON detail.route_id=route.id
-        where users.company_id = #{companyId,jdbcType=INTEGER}
+        where 1=1
         <if test="name != null">
             and name = #{name,jdbcType=VARCHAR}
         </if>

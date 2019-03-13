@@ -32,9 +32,7 @@ public class GetFaultDispatchRequestList extends BaseEntity {
     private Integer type;
     private String actType;
     private Date updateTime;
-    private Integer userCompanyId;
-
-    private String customerSource;
+    private int userCompanyId;
 
     public int getActVendorId() {
         return actVendorId;
@@ -245,19 +243,11 @@ public class GetFaultDispatchRequestList extends BaseEntity {
         this.estimatedPriceEnd = estimatedPriceEnd;
     }
 
-    public Integer getUserCompanyId() {
+    public int getUserCompanyId() {
         return userCompanyId;
     }
 
-    public void setUserCompanyId(Integer userCompanyId) {
+    public void setUserCompanyId(int userCompanyId) {
         this.userCompanyId = userCompanyId;
-    }
-
-    public String getCustomerSource() {
-        return customerSource;
-    }
-
-    public void setCustomerSource(String customerSource) {
-        this.customerSource = customerSource;
     }
 }

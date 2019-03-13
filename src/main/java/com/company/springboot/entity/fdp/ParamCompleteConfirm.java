@@ -1,7 +1,5 @@
 package com.company.springboot.entity.fdp;
 
-import io.swagger.annotations.ApiModelProperty;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -35,26 +33,6 @@ public class ParamCompleteConfirm {
     private boolean flagNoPrice;
     private String privateNote;
     private Date userCompleteTime;
-
-    @ApiModelProperty(value = "实际设备费用", example = "1", required = true)
-    private BigDecimal actualDeviceCost;
-    @ApiModelProperty(value = "实际设备费用备注", example = "1", required = true)
-    private String actualDeviceMemo;
-
-    @ApiModelProperty(value = "实际通信线路费用", example = "1", required = true)
-    private BigDecimal actualCommResourceCost;
-    @ApiModelProperty(value = "实际通信线路费用备注", example = "1", required = true)
-    private String actualCommResourceMemo;
-
-    @ApiModelProperty(value = "实际人力费用", example = "1", required = true)
-    private BigDecimal actualHrCost;
-    @ApiModelProperty(value = "实际人力费用备注", example = "1", required = true)
-    private String actualHrMemo;
-
-    @ApiModelProperty(value = "实际其他费用", example = "1", required = true)
-    private BigDecimal actualOtherCost;
-    @ApiModelProperty(value = "实际其他费用备注", example = "1", required = true)
-    private String actualOtherMemo;
 
     public boolean getFlagNoPrice() {
         return flagNoPrice;
@@ -232,70 +210,6 @@ public class ParamCompleteConfirm {
         this.userCompleteTime = userCompleteTime;
     }
 
-    public BigDecimal getActualDeviceCost() {
-        return actualDeviceCost;
-    }
-
-    public void setActualDeviceCost(BigDecimal actualDeviceCost) {
-        this.actualDeviceCost = actualDeviceCost;
-    }
-
-    public String getActualDeviceMemo() {
-        return actualDeviceMemo;
-    }
-
-    public void setActualDeviceMemo(String actualDeviceMemo) {
-        this.actualDeviceMemo = actualDeviceMemo;
-    }
-
-    public BigDecimal getActualCommResourceCost() {
-        return actualCommResourceCost;
-    }
-
-    public void setActualCommResourceCost(BigDecimal actualCommResourceCost) {
-        this.actualCommResourceCost = actualCommResourceCost;
-    }
-
-    public String getActualCommResourceMemo() {
-        return actualCommResourceMemo;
-    }
-
-    public void setActualCommResourceMemo(String actualCommResourceMemo) {
-        this.actualCommResourceMemo = actualCommResourceMemo;
-    }
-
-    public BigDecimal getActualHrCost() {
-        return actualHrCost;
-    }
-
-    public void setActualHrCost(BigDecimal actualHrCost) {
-        this.actualHrCost = actualHrCost;
-    }
-
-    public String getActualHrMemo() {
-        return actualHrMemo;
-    }
-
-    public void setActualHrMemo(String actualHrMemo) {
-        this.actualHrMemo = actualHrMemo;
-    }
-
-    public BigDecimal getActualOtherCost() {
-        return actualOtherCost;
-    }
-
-    public void setActualOtherCost(BigDecimal actualOtherCost) {
-        this.actualOtherCost = actualOtherCost;
-    }
-
-    public String getActualOtherMemo() {
-        return actualOtherMemo;
-    }
-
-    public void setActualOtherMemo(String actualOtherMemo) {
-        this.actualOtherMemo = actualOtherMemo;
-    }
-
     @Override
     public String toString() {
         return "ParamCompleteConfirm{" +
@@ -321,14 +235,6 @@ public class ParamCompleteConfirm {
                 ", flagNoPrice=" + flagNoPrice +
                 ", privateNote='" + privateNote + '\'' +
                 ", userCompleteTime=" + userCompleteTime +
-                ", actualDeviceCost=" + actualDeviceCost +
-                ", actualDeviceMemo='" + actualDeviceMemo + '\'' +
-                ", actualCommResourceCost=" + actualCommResourceCost +
-                ", actualCommResourceMemo='" + actualCommResourceMemo + '\'' +
-                ", actualHrCost=" + actualHrCost +
-                ", actualHrMemo='" + actualHrMemo + '\'' +
-                ", actualOtherCost=" + actualOtherCost +
-                ", actualOtherMemo='" + actualOtherMemo + '\'' +
                 '}';
     }
 }

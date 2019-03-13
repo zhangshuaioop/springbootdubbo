@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.springboot.mapper.wp.WpCfgProcessStepLineMapper">
+  <resultMap id="BaseResultMap" type="com.company.springboot.entity.wp.WpCfgProcessStepLine">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cfg_process_id" jdbcType="INTEGER" property="cfgProcessId" />
+    <result column="version_id" jdbcType="INTEGER" property="versionId" />
+    <result column="start_step_code" jdbcType="VARCHAR" property="startStepCode" />
+    <result column="end_step_code" jdbcType="VARCHAR" property="endStepCode" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="unit_type" jdbcType="VARCHAR" property="unitType" />
+    <result column="start_x" jdbcType="INTEGER" property="startX" />
+    <result column="start_y" jdbcType="INTEGER" property="startY" />
+    <result column="end_x" jdbcType="INTEGER" property="endX" />
+    <result column="end_y" jdbcType="INTEGER" property="endY" />
+    <result column="execution_rules" jdbcType="VARCHAR" property="executionRules" />
+    <result column="execution_rules_number" jdbcType="INTEGER" property="executionRulesNumber" />
+    <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cfg_process_id, version_id, start_step_code, end_step_code, description, unit_type,
+    start_x, start_y, end_x, end_y, execution_rules, execution_rules_number, flag_deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from wp_cfg_process_step_line
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from wp_cfg_process_step_line
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.company.springboot.entity.wp.WpCfgProcessStepLine">
+    insert into wp_cfg_process_step_line
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cfgProcessId != null">
+        cfg_process_id,
+      </if>
+      <if test="versionId != null">
+        version_id,
+      </if>
+      <if test="startStepCode != null">
+        start_step_code,
+      </if>
+      <if test="endStepCode != null">
+        end_step_code,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="unitType != null">
+        unit_type,
+      </if>
+      <if test="startX != null">
+        start_x,
+      </if>
+      <if test="startY != null">
+        start_y,
+      </if>
+      <if test="endX != null">
+        end_x,
+      </if>
+      <if test="endY != null">
+        end_y,
+      </if>
+      <if test="executionRules != null">
+        execution_rules,
+      </if>
+      <if test="executionRulesNumber != null">
+        execution_rules_number,
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cfgProcessId != null">
+        #{cfgProcessId,jdbcType=INTEGER},
+      </if>
+      <if test="versionId != null">
+        #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="startStepCode != null">
+        #{startStepCode,jdbcType=VARCHAR},
+      </if>
+      <if test="endStepCode != null">
+        #{endStepCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="unitType != null">
+        #{unitType,jdbcType=VARCHAR},
+      </if>
+      <if test="startX != null">
+        #{startX,jdbcType=INTEGER},
+      </if>
+      <if test="startY != null">
+        #{startY,jdbcType=INTEGER},
+      </if>
+      <if test="endX != null">
+        #{endX,jdbcType=INTEGER},
+      </if>
+      <if test="endY != null">
+        #{endY,jdbcType=INTEGER},
+      </if>
+      <if test="executionRules != null">
+        #{executionRules,jdbcType=VARCHAR},
+      </if>
+      <if test="executionRulesNumber != null">
+        #{executionRulesNumber,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.wp.WpCfgProcessStepLine">
+    update wp_cfg_process_step_line
+    <set>
+      <if test="cfgProcessId != null">
+        cfg_process_id = #{cfgProcessId,jdbcType=INTEGER},
+      </if>
+      <if test="versionId != null">
+        version_id = #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="startStepCode != null">
+        start_step_code = #{startStepCode,jdbcType=VARCHAR},
+      </if>
+      <if test="endStepCode != null">
+        end_step_code = #{endStepCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="unitType != null">
+        unit_type = #{unitType,jdbcType=VARCHAR},
+      </if>
+      <if test="startX != null">
+        start_x = #{startX,jdbcType=INTEGER},
+      </if>
+      <if test="startY != null">
+        start_y = #{startY,jdbcType=INTEGER},
+      </if>
+      <if test="endX != null">
+        end_x = #{endX,jdbcType=INTEGER},
+      </if>
+      <if test="endY != null">
+        end_y = #{endY,jdbcType=INTEGER},
+      </if>
+      <if test="executionRules != null">
+        execution_rules = #{executionRules,jdbcType=VARCHAR},
+      </if>
+      <if test="executionRulesNumber != null">
+        execution_rules_number = #{executionRulesNumber,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectByWpCfgProcessStepLine" parameterType="com.company.springboot.entity.wp.WpCfgProcessStepLine" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wp_cfg_process_step_line
+    where 1=1
+    <if test="cfgProcessId != null">
+     and cfg_process_id = #{cfgProcessId,jdbcType=INTEGER}
+    </if>
+    <if test="versionId != null">
+     and version_id = #{versionId,jdbcType=INTEGER}
+    </if>
+    <if test="startStepCode != null">
+     and start_step_code = #{startStepCode,jdbcType=VARCHAR}
+    </if>
+    <if test="endStepCode != null">
+     and end_step_code = #{endStepCode,jdbcType=VARCHAR}
+    </if>
+    <if test="description != null">
+     and description = #{description,jdbcType=VARCHAR}
+    </if>
+    <if test="unitType != null">
+     and unit_type = #{unitType,jdbcType=VARCHAR}
+    </if>
+    <if test="startX != null">
+      and start_x = #{startX,jdbcType=INTEGER}
+    </if>
+    <if test="startY != null">
+     and start_y = #{startY,jdbcType=INTEGER}
+    </if>
+    <if test="endX != null">
+     and end_x = #{endX,jdbcType=INTEGER}
+    </if>
+    <if test="endY != null">
+      and end_y = #{endY,jdbcType=INTEGER}
+    </if>
+    <if test="executionRules != null">
+     and execution_rules = #{executionRules,jdbcType=VARCHAR}
+    </if>
+    <if test="executionRulesNumber != null">
+     and execution_rules_number = #{executionRulesNumber,jdbcType=INTEGER}
+    </if>
+    <if test="flagDeleted != null">
+     and flag_deleted = #{flagDeleted,jdbcType=BIT}
+    </if>
+  </select>
+
+</mapper>

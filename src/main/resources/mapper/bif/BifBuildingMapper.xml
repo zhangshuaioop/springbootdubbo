@@ -195,8 +195,7 @@
     users.username AS createPerson,
     building.update_time AS updateTime,
     address.road AS road,
-    address.id AS addressId,
-    building.flag_amend flagAmend
+    address.id AS addressId
     from bif_building building
     inner join bif_building_address address ON address.building_id = building.id and address.flag_major = 1 and address.flag_deleted = 0
     LEFT JOIN sys_company_users users ON  building.create_person = users.id

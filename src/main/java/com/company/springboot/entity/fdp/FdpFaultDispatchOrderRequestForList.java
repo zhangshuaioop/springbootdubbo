@@ -111,11 +111,19 @@ public class FdpFaultDispatchOrderRequestForList {
     //批次号
     private String batchNumber;
 
-
     private Date finishTime;
 
-    //短工单编号
-    private String shortOrderCode;
+    //是否是2.0版本的自定义流程
+    private Boolean flagIsProcess2;
+
+    //自定义流程类型
+    private String operateType;
+
+    //框架流程id
+    private Integer wpFrameProcessId;
+
+    //是否需要审核/转发
+    private  Boolean examineStatus;
 
     public String getBatchNumber() {
         return batchNumber;
@@ -531,11 +539,35 @@ public class FdpFaultDispatchOrderRequestForList {
         this.finishTime = finishTime;
     }
 
-    public String getShortOrderCode() {
-        return shortOrderCode;
+    public Boolean getFlagIsProcess2() {
+        return flagIsProcess2;
     }
 
-    public void setShortOrderCode(String shortOrderCode) {
-        this.shortOrderCode = shortOrderCode;
+    public void setFlagIsProcess2(Boolean flagIsProcess2) {
+        this.flagIsProcess2 = flagIsProcess2;
+    }
+
+    public String getOperateType() {
+        return operateType;
+    }
+
+    public void setOperateType(String operateType) {
+        this.operateType = operateType;
+    }
+
+    public Integer getWpFrameProcessId() {
+        return wpFrameProcessId;
+    }
+
+    public void setWpFrameProcessId(Integer wpFrameProcessId) {
+        this.wpFrameProcessId = wpFrameProcessId;
+    }
+
+    public Boolean getExamineStatus() {
+        return examineStatus;
+    }
+
+    public void setExamineStatus(Boolean examineStatus) {
+        this.examineStatus = examineStatus;
     }
 }

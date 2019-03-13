@@ -736,9 +736,8 @@
     <if test="createTimeEnd != null">
         <![CDATA[ and register_time <=  DATE_ADD(#{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)   ]]>
     </if>
-
-    order by register_time DESC
-
+    order by update_time DESC
+    group by bdhr.id
 </select>
 
 <select id="selectServiceInfoById" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.bif.BifServiceShow">

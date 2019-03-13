@@ -69,7 +69,7 @@ public class CfgDispatchRouteController {
     @RequestMapping(value = "/findDetail",method=RequestMethod.GET)
     public Result findDetail(@RequestParam Integer id) {
         logger.info("项目规则配置列表详情开始,入参:id="+id);
-        Result result = cfgDispatchRouteService.getRoute(id);
+        Result result = ResultUtil.success(cfgDispatchRouteService.get(id));
         logger.info("项目规则配置列表详情结束,出参:"+result.toString());
         return result;
     }

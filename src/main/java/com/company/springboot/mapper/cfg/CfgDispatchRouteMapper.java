@@ -53,11 +53,4 @@ public interface CfgDispatchRouteMapper extends BaseMapper<CfgDispatchRoute> {
      * @return
      */
     int selectByIsNoProject();
-
-    /**
-     * 项目规则配置列表详情
-     * @param id
-     * @return
-     */
-    CfgDispatchRoute selectById(Integer id);
 }

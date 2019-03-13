@@ -193,9 +193,10 @@
     CONCAT(users.company_id,",",GROUP_CONCAT(relation.authorized_company_id))
     END relationCompanyIds,
 
-    (SELECT version_id FROM sys_company_purchase_version WHERE flag_deleted=0 AND company_id =users.company_id) versionId
-
+    (SELECT version_id FROM sys_company_purchase_version WHERE flag_deleted=0 AND company_id =users.company_id) versionId,
+company.company_type companyType
     from sys_company_users users
+    LEFT JOIN dmi_company_info company ON company.id=users.company_id
     LEFT JOIN sys_company_relation relation ON users.company_id=relation.empower_company_id
     where users.username = #{username,jdbcType=VARCHAR} and users.flag_deleted=0 and  users.flag_available=1
   </select>
@@ -357,11 +358,17 @@ AND company.company_type = #{companyType,jdbcType=VARCHAR}
 
 
   <!--查看接单路径配置关联用户-->
-  <select id="selectByRouteCfg" parameterType="java.lang.String"  resultMap="BaseResultMap">
+  <select id="selectByRouteCfg"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from sys_company_users
-    where find_in_set(id,#{ids,jdbcType=VARCHAR})
+    where id in
+
+    <foreach collection="ids" item="id" index="index"
+             open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+
   </select>
 
 </mapper>

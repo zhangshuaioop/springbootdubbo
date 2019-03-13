@@ -34,11 +34,6 @@ public class FdpFaultdispatchRequestList {
     private Date finishTime;
     private Date createTime;
 
-    /**
-     * 批次号
-     */
-    private String batchNumber;
-
 
     public String getEstimatedPriceUnit() {
         return estimatedPriceUnit;
@@ -264,45 +259,5 @@ public class FdpFaultdispatchRequestList {
         this.otherRequest = otherRequest;
     }
 
-    public String getBatchNumber() {
-        return batchNumber;
-    }
 
-    public void setBatchNumber(String batchNumber) {
-        this.batchNumber = batchNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "FdpFaultdispatchRequestList{" +
-                "dispatchOrderNumber='" + dispatchOrderNumber + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", storeName='" + storeName + '\'' +
-                ", faultOrderId=" + faultOrderId +
-                ", dispatchModelRequest='" + dispatchModelRequest + '\'' +
-                ", province='" + province + '\'' +
-                ", city='" + city + '\'' +
-                ", serviceAddress='" + serviceAddress + '\'' +
-                ", brandName='" + brandName + '\'' +
-                ", dispatchStatus='" + dispatchStatus + '\'' +
-                ", lastDealTime=" + lastDealTime +
-                ", userCompleteTime=" + userCompleteTime +
-                ", hrCount=" + hrCount +
-                ", createPersonName='" + createPersonName + '\'' +
-                ", actualPrice=" + actualPrice +
-                ", estimatedPrice=" + estimatedPrice +
-                ", dispatchDescription='" + dispatchDescription + '\'' +
-                ", equimentRequest='" + equimentRequest + '\'' +
-                ", otherRequest='" + otherRequest + '\'' +
-                ", customerSource='" + customerSource + '\'' +
-                ", finishType='" + finishType + '\'' +
-                ", deviceRequest='" + deviceRequest + '\'' +
-                ", estimatedPriceUnit='" + estimatedPriceUnit + '\'' +
-                ", actualPriceUnit='" + actualPriceUnit + '\'' +
-                ", flagFinish=" + flagFinish +
-                ", finishTime=" + finishTime +
-                ", createTime=" + createTime +
-                ", batchNumber='" + batchNumber + '\'' +
-                '}';
-    }
 }

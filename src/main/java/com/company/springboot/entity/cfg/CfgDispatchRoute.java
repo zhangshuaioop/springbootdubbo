@@ -45,11 +45,6 @@ public class CfgDispatchRoute extends BaseEntity {
     @ApiModelProperty(value = "1校验通过，0不通过", example = "1", required = true)
     private Boolean flagCheck;
 
-    /**
-     * 公司id
-     */
-    private Integer companyId;
-
     public Integer getId() {
         return id;
     }
@@ -138,14 +133,6 @@ public class CfgDispatchRoute extends BaseEntity {
         this.flagCheck = flagCheck;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
-
     @Override
     public String toString() {
         return "CfgDispatchRoute{" +
@@ -160,7 +147,6 @@ public class CfgDispatchRoute extends BaseEntity {
                 ", createPerson=" + createPerson +
                 ", flagTakeStatus=" + flagTakeStatus +
                 ", flagCheck=" + flagCheck +
-                ", companyId=" + companyId +
                 '}';
     }
 }

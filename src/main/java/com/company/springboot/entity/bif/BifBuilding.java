@@ -34,9 +34,25 @@ public class BifBuilding extends BaseEntity {
 
     private boolean flagAlongTheStreet;
 
-    private Boolean flagAmend;
+    private boolean flagAmend;
 
-    private Boolean flagImport;
+    private boolean flagImport;
+
+    public boolean isFlagImport() {
+        return flagImport;
+    }
+
+    public void setFlagImport(boolean flagImport) {
+        this.flagImport = flagImport;
+    }
+
+    public boolean isFlagAmend() {
+        return flagAmend;
+    }
+
+    public void setFlagAmend(boolean flagAmend) {
+        this.flagAmend = flagAmend;
+    }
 
     public boolean isFlagAlongTheStreet() {
         return flagAlongTheStreet;
@@ -148,22 +164,6 @@ public class BifBuilding extends BaseEntity {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
-    }
-
-    public Boolean getFlagAmend() {
-        return flagAmend;
-    }
-
-    public void setFlagAmend(Boolean flagAmend) {
-        this.flagAmend = flagAmend;
-    }
-
-    public Boolean getFlagImport() {
-        return flagImport;
-    }
-
-    public void setFlagImport(Boolean flagImport) {
-        this.flagImport = flagImport;
     }
 
     @Override

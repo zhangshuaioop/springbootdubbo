@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
@@ -56,7 +55,7 @@ public class DmiEmployeeController {
     @ApiOperation(value = "校验导入数据",
             notes = "校验导入数据")
     @RequestMapping(value = "/check", method = RequestMethod.POST)
-    public Result check(@RequestParam("file") MultipartFile file, @RequestParam("uniqueness") String uniqueness) {
+    public Result check(@RequestParam("file") CommonsMultipartFile file, @RequestParam("uniqueness") String uniqueness) {
         log.info("校验导入数据-开始，入参：file="+file+",uniqueness="+uniqueness);
         Result result = null;
         try {

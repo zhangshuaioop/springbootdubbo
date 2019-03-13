@@ -1,9 +1,10 @@
 package com.company.springboot.filter;
 
+import com.company.springboot.entity.sys.JwtUser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.company.springboot.entity.LoginUser;
 import com.company.springboot.entity.sys.JwtUser;
 import com.company.springboot.utils.JwtTokenUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -74,13 +76,21 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 按照jwt的规定，最后请求的时候应该是 `Bearer token`
         response.setHeader("token", JwtTokenUtils.TOKEN_PREFIX + token);
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write("{\"status\":\"200\",\"msg\":\"登陆成功!\",\"token\":\""+JwtTokenUtils.TOKEN_PREFIX + token+"\"}");
+        PrintWriter out = response.getWriter();
+        out.write("{\"status\":\"200\",\"msg\":\"登陆成功!\",\"token\":\""+JwtTokenUtils.TOKEN_PREFIX + token+"\"}");
+        out.flush();
+        out.close();
 
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write("{\"status\":\"201\",\"msg\":\"登陆失败!\"}");
+        PrintWriter out = response.getWriter();
+        out.write("{\"status\":\"201\",\"msg\":\"登陆失败!\"}");
+        out.flush();
+        out.close();
+
     }
 }

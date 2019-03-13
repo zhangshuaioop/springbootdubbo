@@ -1,9 +1,9 @@
 package com.company.springboot.filter;
 
 import com.company.springboot.entity.sys.SysCompanyUsers;
-import com.company.springboot.utils.CurrentUtil;
 import com.company.springboot.utils.JwtTokenUtils;
-import com.company.springboot.utils.RedisUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -23,6 +24,8 @@ import java.util.HashSet;
  */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -45,8 +48,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         // 如果请求头中没有Authorization信息则直接返回
         if (tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtils.TOKEN_PREFIX)) {
 //            chain.doFilter(request, response);
+
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write("{\"code\":666,\"msg\":\"授权失败!\"}");
+            PrintWriter out = response.getWriter();
+            out.write("{\"code\":666,\"msg\":\"授权失败!\"}");
+            out.flush();
+            out.close();
 
             return;
         }
@@ -58,33 +65,42 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
         try {
-            String redisStr = RedisUtil.get("sys_company_api_all");
-//            List<RedisCompanyPermissionApiRes> list = JsonUtils.getStringToList(redisStr,RedisCompanyPermissionApiRes.class);
-            if(redisStr != null && redisStr.length()>0){
-                SysCompanyUsers sysCompanyUsers = CurrentUtil.getCurrent();
+//            String redisStr = RedisUtil.get("sys_company_api_all");
+////            List<RedisCompanyPermissionApiRes> list = JsonUtils.getStringToList(redisStr,RedisCompanyPermissionApiRes.class);
+//            if(redisStr != null && redisStr.length()>0){
+//                SysCompanyUsers sysCompanyUsers = CurrentUtil.getCurrent();
+//
+//                if(redisStr.contains("{\"apiUrl\":\""+request.getRequestURI()+"\",\"companyId\":"+sysCompanyUsers.getCompanyId()+",\"userId\":"+sysCompanyUsers.getId()+"}")){
+//                    // 继续调用 Filter 链
+//                    super.doFilterInternal(request, response, chain);
+//                    return;
+//                }
+//
+//                response.setContentType("application/json;charset=UTF-8");
+//                PrintWriter out = response.getWriter();
+//                out.write("{\"code\":666,\"msg\":\"无此权限!\"}");
+//                out.flush();
+//                out.close();
+//                return;
+//            }else {
+//                response.setContentType("application/json;charset=UTF-8");
+//                PrintWriter out = response.getWriter();
+//                out.write("{\"code\":666,\"msg\":\"无此权限!\"}");
+//                out.flush();
+//                out.close();
+//                return;
+//            }
 
-                if(redisStr.contains("{\"apiUrl\":\""+request.getRequestURI()+"\",\"companyId\":"+sysCompanyUsers.getCompanyId()+",\"userId\":"+sysCompanyUsers.getId()+"}")){
-                    // 继续调用 Filter 链
-                    super.doFilterInternal(request, response, chain);
-                    return;
-                }
-                response.setContentType("application/json;charset=UTF-8");
-                response.getWriter().write("{\"code\":666,\"msg\":\"无此权限!\"}");
-                return;
-            }else {
-                response.setContentType("application/json;charset=UTF-8");
-                response.getWriter().write("{\"code\":666,\"msg\":\"无此权限!\"}");
-                return;
-            }
-
-//            super.doFilterInternal(request, response, chain);
-//            return;
+            super.doFilterInternal(request, response, chain);
+            return;
 
         } catch (Exception e) {
             e.printStackTrace();
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write("{\"code\":500,\"msg\":\"程序异常!\"}");
-
+            PrintWriter out = response.getWriter();
+            out.write("{\"code\":500,\"msg\":\"程序异常!\"}");
+            out.flush();
+            out.close();
             return;
         }
 
@@ -101,13 +117,19 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         SysCompanyUsers user = JwtTokenUtils.getUser(token);
         if(username.equals("")){
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write("{\"code\":666,\"msg\":\"授权失败!\"}");
+            PrintWriter out = response.getWriter();
+            out.write("{\"code\":666,\"msg\":\"授权失败!\"}");
+            out.flush();
+            out.close();
             return null;
         }
 
         if(role.equals("")){
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write("{\"code\":666,\"msg\":\"无权限!\"}");
+            PrintWriter out = response.getWriter();
+            out.write("{\"code\":666,\"msg\":\"无权限!\"}");
+            out.flush();
+            out.close();
             return null;
         }
 

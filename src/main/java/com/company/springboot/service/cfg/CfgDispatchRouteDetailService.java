@@ -62,7 +62,7 @@ public class CfgDispatchRouteDetailService {
         //可分配人员
         List<SysCompanyUsers> sysCompanyUsers = new ArrayList<>();
         if(cfgDispatchRoute != null && cfgDispatchRoute.getPersons()!=null && cfgDispatchRoute.getPersons().length()>0){
-            sysCompanyUsers = sysCompanyUsersMapper.selectByRouteCfg(cfgDispatchRoute.getPersons());
+            sysCompanyUsers = sysCompanyUsersMapper.selectByRouteCfg(cfgDispatchRoute.getPersons().split(","));
         }
 
         Map<String,Object> map = new HashMap<>();

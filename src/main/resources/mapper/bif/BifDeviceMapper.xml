@@ -726,7 +726,7 @@
         (select series.series_name from bif_device_series series where series.id=model.series_id) series
         from bif_device device
         LEFT JOIN bif_device_model model on model.id=device.model_id
-        LEFT JOIN bif_device_brand brand on brand.brand_code=device.device_sn
+        LEFT JOIN bif_device_brand brand on brand.brand_name=device.brand
         where device.id=#{id,jdbcType=INTEGER}
     </select>
 </mapper>

@@ -14,10 +14,11 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_person" jdbcType="INTEGER" property="updatePerson" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="step_code" jdbcType="VARCHAR" property="stepCode" />
   </resultMap>
   <sql id="Base_Column_List">
     id, cfg_frame_process_id, version_id, step_name, description, sort_id, company_id, 
-    flag_deleted, create_person, create_time, update_person, update_time
+    flag_deleted, create_person, create_time, update_person, update_time,step_code
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -29,18 +30,6 @@
     delete from wp_cfg_frame_process_step
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStep">
-    insert into wp_cfg_frame_process_step (id, cfg_frame_process_id, version_id, 
-      step_name, description, sort_id, 
-      company_id, flag_deleted, create_person, 
-      create_time, update_person, update_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{cfgFrameProcessId,jdbcType=INTEGER}, #{versionId,jdbcType=INTEGER}, 
-      #{stepName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{sortId,jdbcType=INTEGER}, 
-      #{companyId,jdbcType=INTEGER}, #{flagDeleted,jdbcType=BIT}, #{createPerson,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updatePerson,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
   <insert id="insertSelective" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStep">
     insert into wp_cfg_frame_process_step
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -80,6 +69,9 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="stepCode != null">
+        step_code,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -117,6 +109,9 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stepCode != null">
+        #{step_code,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,22 +151,103 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="stepCode != null">
+        step_code = #{stepCode,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStep">
-    update wp_cfg_frame_process_step
-    set cfg_frame_process_id = #{cfgFrameProcessId,jdbcType=INTEGER},
-      version_id = #{versionId,jdbcType=INTEGER},
-      step_name = #{stepName,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      sort_id = #{sortId,jdbcType=INTEGER},
-      company_id = #{companyId,jdbcType=INTEGER},
-      flag_deleted = #{flagDeleted,jdbcType=BIT},
-      create_person = #{createPerson,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_person = #{updatePerson,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+  <select id="selectAll" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStep" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wp_cfg_frame_process_step
+    where 1=1
+    <if test="cfgFrameProcessId != null">
+      and cfg_frame_process_id = #{cfgFrameProcessId,jdbcType=INTEGER}
+    </if>
+    <if test="versionId != null">
+      and version_id = #{versionId,jdbcType=INTEGER}
+    </if>
+    <if test="stepName != null">
+      and step_name = #{stepName,jdbcType=VARCHAR}
+    </if>
+    <if test="description != null">
+      and description = #{description,jdbcType=VARCHAR}
+    </if>
+    <if test="sortId != null">
+      and sort_id = #{sortId,jdbcType=INTEGER}
+    </if>
+    <if test="companyId != null">
+      and company_id = #{companyId,jdbcType=INTEGER}
+    </if>
+    <if test="flagDeleted != null">
+      and flag_deleted = #{flagDeleted,jdbcType=BIT}
+    </if>
+    <if test="createPerson != null">
+      and create_person = #{createPerson,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatePerson != null">
+      and update_person = #{updatePerson,jdbcType=INTEGER}
+    </if>
+    <if test="updateTime != null">
+      and update_time = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="stepCode != null">
+      and step_code = #{stepCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectNowVersion" resultType="com.company.springboot.entity.wp.WpCfgFrameProcessStep">
+    select
+    <include refid="Base_Column_List" />
+    from wp_cfg_frame_process_step
+    where cfg_frame_process_id = #{cfgFrameProcessId,jdbcType=INTEGER}
+    and version_id = #{versionId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByWpCfgFrameProcessStep" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStep" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wp_cfg_frame_process_step
+    where 1=1
+    <if test="cfgFrameProcessId != null">
+      and cfg_frame_process_id = #{cfgFrameProcessId,jdbcType=INTEGER}
+    </if>
+    <if test="versionId != null">
+      and version_id = #{versionId,jdbcType=INTEGER}
+    </if>
+    <if test="stepName != null">
+      and step_name = #{stepName,jdbcType=VARCHAR}
+    </if>
+    <if test="description != null">
+      and description = #{description,jdbcType=VARCHAR}
+    </if>
+    <if test="sortId != null">
+      and sort_id = #{sortId,jdbcType=INTEGER}
+    </if>
+    <if test="companyId != null">
+      and company_id = #{companyId,jdbcType=INTEGER}
+    </if>
+    <if test="flagDeleted != null">
+      and flag_deleted = #{flagDeleted,jdbcType=BIT}
+    </if>
+    <if test="createPerson != null">
+      and create_person = #{createPerson,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatePerson != null">
+      and update_person = #{updatePerson,jdbcType=INTEGER}
+    </if>
+    <if test="updateTime != null">
+      and update_time = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="stepCode != null">
+      and step_code = #{stepCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+
 </mapper>

@@ -2,8 +2,6 @@ package com.company.springboot.utils;
 
 import com.company.springboot.entity.sys.JwtUser;
 import com.company.springboot.entity.sys.SysCompanyUsers;
-import com.company.springboot.entity.sys.JwtUser;
-import com.company.springboot.entity.sys.SysCompanyUsers;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

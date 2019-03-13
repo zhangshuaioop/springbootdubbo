@@ -2624,19 +2624,19 @@ public class ExcelUtil {
         HSSFRow row = sheet.createRow(rowIndex);
         HSSFCell cell = row.createCell(0);
         cell.setCellStyle(styleBig);
-        HSSFRichTextString text = new HSSFRichTextString("派工总量(个)");
+        HSSFRichTextString text = new HSSFRichTextString("派工总量");
         cell.setCellValue(text);
         cell = row.createCell(1);
         cell.setCellStyle(styleBig);
-        text = new HSSFRichTextString("完成总量(个)");
+        text = new HSSFRichTextString("完成总量");
         cell.setCellValue(text);
         cell = row.createCell(2);
         cell.setCellStyle(styleBig);
-        text = new HSSFRichTextString("未完成量(个)");
+        text = new HSSFRichTextString("为完成量");
         cell.setCellValue(text);
         cell = row.createCell(3);
         cell.setCellStyle(styleBig);
-        text = new HSSFRichTextString("取消总量(个)");
+        text = new HSSFRichTextString("取消总量");
         cell.setCellValue(text);
         cell = row.createCell(4);
         cell.setCellStyle(styleBig);
@@ -2704,15 +2704,15 @@ public class ExcelUtil {
         cell2.setCellValue(text2);
         cell2 = row2.createCell(1);
         cell2.setCellStyle(styleBig);
-        text2 = new HSSFRichTextString("总量(个)");
+        text2 = new HSSFRichTextString("总量");
         cell2.setCellValue(text2);
         cell2 = row2.createCell(2);
         cell2.setCellStyle(styleBig);
-        text2 = new HSSFRichTextString("已完成(个)");
+        text2 = new HSSFRichTextString("已完成");
         cell2.setCellValue(text2);
         cell2 = row2.createCell(3);
         cell2.setCellStyle(styleBig);
-        text2 = new HSSFRichTextString("未完成(个)");
+        text2 = new HSSFRichTextString("未完成");
         cell2.setCellValue(text2);
 
 
@@ -2753,15 +2753,15 @@ public class ExcelUtil {
         cell3.setCellValue(text3);
         cell3 = row3.createCell(1);
         cell3.setCellStyle(styleBig);
-        text3 = new HSSFRichTextString("总量(个)");
+        text3 = new HSSFRichTextString("总量");
         cell3.setCellValue(text3);
         cell3 = row3.createCell(2);
         cell3.setCellStyle(styleBig);
-        text3 = new HSSFRichTextString("已完成(个)");
+        text3 = new HSSFRichTextString("已完成");
         cell3.setCellValue(text3);
         cell3 = row3.createCell(3);
         cell3.setCellStyle(styleBig);
-        text3 = new HSSFRichTextString("未完成(个)");
+        text3 = new HSSFRichTextString("未完成");
         cell3.setCellValue(text3);
 
 

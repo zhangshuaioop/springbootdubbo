@@ -102,13 +102,13 @@ public interface FdpFaultDispatchOrderMapper {
 
     FaultOrderRequestCount selectRequestCompletePrice(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
-    List<FaultOrderRequestCountByCompany> selectRequestByCompanyAll(GetFaultDispatchRequestList getFaultDispatchRequestList);
+    Page<FaultOrderRequestCount> selectRequestByCompanyAll(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
     List<FaultOrderRequestCount> selectRequestByCompanyComplete(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
     List<FaultOrderRequestCount> selectRequestByCompanyUnComplete(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
-    List<FaultOrderRequestCountByCompany> selectRequestByCreatePersonyAll(GetFaultDispatchRequestList getFaultDispatchRequestList);
+    Page<FaultOrderRequestCount> selectRequestByCreatePersonyAll(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
     List<FaultOrderRequestCount> selectRequestByCreatePersonyComplete(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
@@ -116,17 +116,15 @@ public interface FdpFaultDispatchOrderMapper {
 
     int selectOrderCount(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
-    FaultOrderCount selectOrderCounts(GetFaultDispatchRequestList getFaultDispatchRequestList);
-
     FaultOrderCount selectOrderCompletePrice(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
-    List<FaultOrderRequestCountByCompany> selectOrderByCompanyAll(GetFaultDispatchRequestList getFaultDispatchRequestList);
+    Page<FaultOrderCount> selectOrderByCompanyAll(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
     List<FaultOrderCount> selectOrderByCompanyComplete(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
     List<FaultOrderCount> selectOrderByCompanyUnComplete(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
-    Page<FaultOrderRequestCountByCompany> selectOrderByDealPersonAll(GetFaultDispatchRequestList getFaultDispatchRequestList);
+    Page<FaultOrderCount> selectOrderByDealPersonAll(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
     List<FaultOrderCount> selectOrderByCreatePersonComplete(GetFaultDispatchRequestList getFaultDispatchRequestList);
 
@@ -203,11 +201,4 @@ public interface FdpFaultDispatchOrderMapper {
      * @return
      */
     Integer updateServiceTime(@Param("estimatedServiceTime") String estimatedServiceTime,  @Param("requestId") Integer requestId);
-
-    /**
-     * 根据短工单号查询工单
-     * @param shortOrderCode
-     * @return
-     */
-    Integer findOrderByShortOrderCode(@Param("shortOrderCode") String shortOrderCode);
 }

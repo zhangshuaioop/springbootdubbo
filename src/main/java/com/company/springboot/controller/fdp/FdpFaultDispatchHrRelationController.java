@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 
 /**
  * @author zhanghao
@@ -38,7 +39,7 @@ public class FdpFaultDispatchHrRelationController {
 
     @ApiOperation(value = "采购补充完工资料", httpMethod = "POST", notes = "采购补充完工资料")
     @PostMapping(value = "/extendProfile")
-    public Result extendProfile(@RequestBody String json) {
+    public Result extendProfile(@RequestBody String json) throws ParseException {
         log.info("采购补充完工资料-开始 入参：json：" + json);
         Result result = fdpDispatchHrRelationService.extendProfile(json);
         log.info("采购补充完工资料-结束");
@@ -78,15 +79,6 @@ public class FdpFaultDispatchHrRelationController {
         log.info("控制是否显示服务商信息-开始 入参："+hrRelation.toString());
         Result result = fdpDispatchHrRelationService.changeFlagDispatch(hrRelation);
         log.info("控制是否显示服务商信息-结束");
-        return result;
-    }
-
-    @ApiOperation(value = "查询服务商修改时间记录", notes = "查询修改时间记录")
-    @GetMapping(value = "/findServiceTime")
-    public Result selectServiceTimeLog(@RequestParam Integer orderId) {
-        log.info("查询服务商修改时间记录-开始");
-        Result result = fdpDispatchHrRelationService.selectServiceTime(orderId);
-        log.info("查询服务商修改时间记录-结束");
         return result;
     }
 }

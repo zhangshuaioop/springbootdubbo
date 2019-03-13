@@ -16,11 +16,6 @@ public class FaultOrderRequestCount {
     private String actualPriceUnit;
     private String estimatedPriceUnit;
 
-    private Integer unCompleteCount;
-
-    private Integer completeCount;
-
-
 
     public String getActualPriceUnit() {
         return actualPriceUnit;
@@ -116,41 +111,5 @@ public class FaultOrderRequestCount {
 
     public void setActualPriceUncomplete(BigDecimal actualPriceUncomplete) {
         this.actualPriceUncomplete = actualPriceUncomplete;
-    }
-
-    public Integer getUnCompleteCount() {
-        return unCompleteCount;
-    }
-
-    public void setUnCompleteCount(Integer unCompleteCount) {
-        this.unCompleteCount = unCompleteCount;
-    }
-
-    public Integer getCompleteCount() {
-        return completeCount;
-    }
-
-    public void setCompleteCount(Integer completeCount) {
-        this.completeCount = completeCount;
-    }
-
-    @Override
-    public String toString() {
-        return "FaultOrderRequestCount{" +
-                "companyName='" + companyName + '\'' +
-                ", username='" + username + '\'' +
-                ", requestCountAll=" + requestCountAll +
-                ", requestCountComplete=" + requestCountComplete +
-                ", reqeustCountUncomplete=" + reqeustCountUncomplete +
-                ", requestCountCancel=" + requestCountCancel +
-                ", estimatedPriceComplete=" + estimatedPriceComplete +
-                ", estimatedPriceUncomplete=" + estimatedPriceUncomplete +
-                ", actualPriceComplete=" + actualPriceComplete +
-                ", actualPriceUncomplete=" + actualPriceUncomplete +
-                ", actualPriceUnit='" + actualPriceUnit + '\'' +
-                ", estimatedPriceUnit='" + estimatedPriceUnit + '\'' +
-                ", unCompleteCount=" + unCompleteCount +
-                ", completeCount=" + completeCount +
-                '}';
     }
 }

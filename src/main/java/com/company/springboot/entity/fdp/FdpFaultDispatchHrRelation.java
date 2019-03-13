@@ -1,7 +1,5 @@
 package com.company.springboot.entity.fdp;
 
-import io.swagger.annotations.ApiModelProperty;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -115,26 +113,6 @@ public class FdpFaultDispatchHrRelation {
     private boolean flagDisplay;
 
     private String personRejectCauseContext;
-
-    @ApiModelProperty(value = "预计设备费用", example = "1", required = true)
-    private BigDecimal estimatedDeviceCost;
-    @ApiModelProperty(value = "预计设备费用备注", example = "1", required = true)
-    private String estimatedDeviceMemo;
-
-    @ApiModelProperty(value = "预计通信线路费用", example = "1", required = true)
-    private BigDecimal estimatedCommResourceCost;
-    @ApiModelProperty(value = "预计通信线路费用备注", example = "1", required = true)
-    private String estimatedCommResourceMemo;
-
-    @ApiModelProperty(value = "预计人力费用", example = "1", required = true)
-    private BigDecimal estimatedHrCost;
-    @ApiModelProperty(value = "预计人力费用备注", example = "1", required = true)
-    private String estimatedHrMemo;
-
-    @ApiModelProperty(value = "预计其他费用", example = "1", required = true)
-    private BigDecimal estimatedOtherCost;
-    @ApiModelProperty(value = "预计其他费用备注", example = "1", required = true)
-    private String estimatedOtherMemo;
 
     public boolean getFlagPurchase() {
         return flagPurchase;
@@ -550,70 +528,6 @@ public class FdpFaultDispatchHrRelation {
 
     public void setPersonRejectCauseContext(String personRejectCauseContext) {
         this.personRejectCauseContext = personRejectCauseContext;
-    }
-
-    public BigDecimal getEstimatedDeviceCost() {
-        return estimatedDeviceCost;
-    }
-
-    public void setEstimatedDeviceCost(BigDecimal estimatedDeviceCost) {
-        this.estimatedDeviceCost = estimatedDeviceCost;
-    }
-
-    public String getEstimatedDeviceMemo() {
-        return estimatedDeviceMemo;
-    }
-
-    public void setEstimatedDeviceMemo(String estimatedDeviceMemo) {
-        this.estimatedDeviceMemo = estimatedDeviceMemo;
-    }
-
-    public BigDecimal getEstimatedCommResourceCost() {
-        return estimatedCommResourceCost;
-    }
-
-    public void setEstimatedCommResourceCost(BigDecimal estimatedCommResourceCost) {
-        this.estimatedCommResourceCost = estimatedCommResourceCost;
-    }
-
-    public String getEstimatedCommResourceMemo() {
-        return estimatedCommResourceMemo;
-    }
-
-    public void setEstimatedCommResourceMemo(String estimatedCommResourceMemo) {
-        this.estimatedCommResourceMemo = estimatedCommResourceMemo;
-    }
-
-    public BigDecimal getEstimatedHrCost() {
-        return estimatedHrCost;
-    }
-
-    public void setEstimatedHrCost(BigDecimal estimatedHrCost) {
-        this.estimatedHrCost = estimatedHrCost;
-    }
-
-    public String getEstimatedHrMemo() {
-        return estimatedHrMemo;
-    }
-
-    public void setEstimatedHrMemo(String estimatedHrMemo) {
-        this.estimatedHrMemo = estimatedHrMemo;
-    }
-
-    public BigDecimal getEstimatedOtherCost() {
-        return estimatedOtherCost;
-    }
-
-    public void setEstimatedOtherCost(BigDecimal estimatedOtherCost) {
-        this.estimatedOtherCost = estimatedOtherCost;
-    }
-
-    public String getEstimatedOtherMemo() {
-        return estimatedOtherMemo;
-    }
-
-    public void setEstimatedOtherMemo(String estimatedOtherMemo) {
-        this.estimatedOtherMemo = estimatedOtherMemo;
     }
 
     @Override

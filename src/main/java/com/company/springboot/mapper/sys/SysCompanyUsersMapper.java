@@ -47,5 +47,5 @@ public interface SysCompanyUsersMapper extends BaseMapper<SysCompanyUsers> {
      * @param ids
      * @return
      */
-    List<SysCompanyUsers> selectByRouteCfg(String ids);
+    List<SysCompanyUsers> selectByRouteCfg(@Param("ids") String[] ids);
 }

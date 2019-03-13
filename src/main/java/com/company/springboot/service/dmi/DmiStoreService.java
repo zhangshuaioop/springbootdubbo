@@ -9,7 +9,6 @@ import com.company.springboot.entity.bif.BifMd5CodePool;
 import com.company.springboot.entity.cfg.CfgCommunicationBrand;
 import com.company.springboot.entity.cfg.CfgDeviceTypeCatalog;
 import com.company.springboot.entity.dmi.*;
-import com.company.springboot.entity.dmi.req.DmiStoryRequest;
 import com.company.springboot.entity.dmi.ret.dmiStore.IndieProductInfo;
 import com.company.springboot.entity.dmi.ret.dmiStore.ListRet;
 import com.company.springboot.entity.file.DeleteFile;
@@ -36,10 +35,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -68,7 +67,6 @@ public class DmiStoreService extends CommonBiz {
     ImportStoreThread storeThread;
     @Autowired
     private TrcDmiBatchEmpolyeeImportMapper batchEmpolyeeImportMapper;
-
     @Value("${filepath}")
     private String filepath;
 
@@ -372,7 +370,7 @@ public class DmiStoreService extends CommonBiz {
      * @author Niting
      * @Date 2018/08/29
      */
-    public Result check(MultipartFile file, int userId, int companyId) {
+    public Result check(CommonsMultipartFile file, int userId, int companyId) {
         HSSFWorkbook wb;
         try {
             wb = new HSSFWorkbook(file.getInputStream());
@@ -654,92 +652,4 @@ public class DmiStoreService extends CommonBiz {
     public int getStoreCountByBusinessLicenseId(int id) {
         return dmiStoreMapper.selectByBusinessLicenseId(id);
     }
-
-
-    /**
-     * 门店导出
-     * @param dmiStoryRequest
-     * @return
-     */
-    public Result storeExport(DmiStoryRequest dmiStoryRequest) {
-
-        List<ListRet> sqlResult = list(dmiStoryRequest);
-
-        if(sqlResult==null||sqlResult.size()==0){
-            return ResultUtil.errorBusinessMsg("无门店信息");
-        }
-        // 下载
-        long fileName = System.currentTimeMillis();
-        OutputStream out;
-        try {
-            File filepath = new File(ExcelUtil.getLocalFilePath());
-            if (!filepath.exists()) {
-                filepath.mkdir();
-            }
-            String sCurrPath = filepath + ExcelUtil.FILE_SEPARATOR + "EMPLOYEE_" + fileName + ".xls";
-            out = new FileOutputStream(sCurrPath);
-        } catch (FileNotFoundException e) {
-            return ResultUtil.errorExceptionMsg("找不到默认保存文件的目录，请联系管理员!");
-        }
-
-        ExcelUtil.exportStoreExcel(sqlResult, out);
-        File uploadFile = new File(ExcelUtil.getLocalFilePath() + ExcelUtil.FILE_SEPARATOR + "EMPLOYEE_" + fileName + ".xls");
-        try {
-            return fileService.upload(fileName + ".xls", new FileInputStream(uploadFile), "excel");
-        } catch (FileNotFoundException e) {
-            return ResultUtil.errorExceptionMsg("文件没有找到，请联系管理员！");
-        }
-    }
-
-
-
-
-    public List<ListRet> list(DmiStoryRequest dmiStoryRequest) {
-
-
-        DmiStore record = new DmiStore();
-        if(dmiStoryRequest.getCompanyId() != null){
-            record.setCompanyId(dmiStoryRequest.getCompanyId());
-        }
-        if(dmiStoryRequest.getAreaId() != null){
-            record.setAreaId(dmiStoryRequest.getAreaId());
-        }
-        if(dmiStoryRequest.getBrandId() != null){
-            record.setBrandId(dmiStoryRequest.getBrandId());
-        }
-        if(dmiStoryRequest.getProvince() != null){
-            record.setProvince(dmiStoryRequest.getProvince().equals("null") ? null : dmiStoryRequest.getProvince());
-        }
-        if(dmiStoryRequest.getCity() != null){
-            record.setCity(dmiStoryRequest.getCity().equals("null") ? null : dmiStoryRequest.getCity());
-        }
-        if(dmiStoryRequest.getDistrict() != null){
-            record.setDistrict(dmiStoryRequest.getDistrict().equals("null") ? null : dmiStoryRequest.getDistrict());
-        }
-
-        if(dmiStoryRequest.getAreaId() == null || dmiStoryRequest.getAreaId()==0 ){
-            return dmiStoreMapper.queryListByObject(record);
-        }else{
-            //查询是否有子节点
-            List<Integer> list = new ArrayList<Integer>();
-            //创建个空的LIST  ret 用于存放所有子节点的详细store信息
-            List<Integer>  ret=  t1(dmiStoryRequest.getAreaId(),list);
-            ret.add(dmiStoryRequest.getAreaId());
-
-            Map map = new HashMap();
-            map.put("areaList",ret);
-            map.put("companyId",record.getCompanyId());
-            map.put("brandId",record.getBrandId());
-            map.put("province",record.getProvince().equals("null") ? null : record.getProvince());
-            map.put("city",record.getCity().equals("null") ? null : record.getCity());
-            map.put("district",record.getDistrict().equals("null") ? null : record.getDistrict());
-            List<ListRet> storeList =  dmiStoreMapper.queryStoreList(map);
-            return storeList;
-        }
-
-
-    }
-
-
-
 }

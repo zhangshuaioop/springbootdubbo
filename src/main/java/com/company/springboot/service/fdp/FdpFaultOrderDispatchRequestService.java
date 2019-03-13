@@ -7,13 +7,19 @@ import com.company.springboot.entity.dmi.ret.dmiStore.ListRet;
 import com.company.springboot.entity.fdp.*;
 import com.company.springboot.entity.sys.SysCompanyUsers;
 import com.company.springboot.entity.sys.SysOperationMessage;
+import com.company.springboot.entity.wp.WpCfgProcessStep;
+import com.company.springboot.entity.wp.WpFrameProcess;
+import com.company.springboot.entity.wp.WpProcessOperateLog;
 import com.company.springboot.mapper.cfg.CfgDispatchRouteMapper;
 import com.company.springboot.mapper.cfg.CfgDispatchWarningStatusMapper;
 import com.company.springboot.mapper.dmi.DmiStoreMapper;
 import com.company.springboot.mapper.fdp.*;
 import com.company.springboot.mapper.sys.SysCompanyUsersMapper;
 import com.company.springboot.mapper.sys.SysOperationMessageMapper;
+import com.company.springboot.mapper.wp.WpCfgProcessStepMapper;
+import com.company.springboot.mapper.wp.WpFrameProcessMapper;
 import com.company.springboot.service.file.FileServiceImpl;
+import com.company.springboot.service.wp.WpCfgFrameProcessService;
 import com.company.springboot.utils.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -75,6 +81,13 @@ public class FdpFaultOrderDispatchRequestService {
     private FileServiceImpl fileService;
     @Resource
     private FdpFaultDispatchTransferLogMapper fdpFaultDispatchTransferLogMapper;
+    @Resource
+    private WpFrameProcessMapper wpFrameProcessMapper;
+    @Resource
+    private WpCfgProcessStepMapper wpCfgProcessStepMapper;
+    @Resource
+    private WpCfgFrameProcessService wpCfgFrameProcessService;
+
 
     @Value("${filepath}")
     private String filepath;
@@ -93,12 +106,6 @@ public class FdpFaultOrderDispatchRequestService {
         // 根据故障单id，查询故障单详情
         int processId = 0;
         //服务省份为空
-
-        if ((request.getBrandId() == null && request.getBrandName() == null && request.getBrandName().length() < 1) ||
-                (request.getBrandId() != null && request.getBrandName() != null && request.getBrandName().length() > 0)) {
-            return ResultUtil.validateError("品牌和其他品牌只能有一种");
-        }
-
         if (request.getServiceProvince() == null || request.getServiceProvince().equals("")) {
             return ResultUtil.validateError("请填写服务省份！");
         }
@@ -213,6 +220,28 @@ public class FdpFaultOrderDispatchRequestService {
             }
 
             orderMapper.updateDispatchOrderByRequestId(order);
+
+            //是否存草稿
+            if (request.getFlagDraft() == false) {
+                //新增框架流程日志记录
+                WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+                wpProcessOperateLog.setOrderId(request.getDispatchOrderId());
+                wpProcessOperateLog.setDescription("编辑派工单");
+                CurrentUtil.recordLog(wpProcessOperateLog);
+                //获取下一步子流程
+                WpCfgProcessStep wpCfgProcessStep = wpCfgProcessStepMapper.findWpCfgProcessNextStepByWpFrameProcessId(request.getWpFrameProcessId());
+                if (wpCfgProcessStep != null) {
+                    //保存框架流程 当前流程步骤id
+                    WpFrameProcess wpFrameProcess = new WpFrameProcess();
+                    wpFrameProcess.setId(request.getWpFrameProcessId());
+                    wpFrameProcess.setCurrentProcessStepId(wpCfgProcessStep.getId());
+                    wpFrameProcessMapper.updateByPrimaryKeySelective(wpFrameProcess);
+                    //获取下一步缓存对应的子流程
+                    wpCfgFrameProcessService.redis(request.getDispatchOrderId(), request.getWpFrameProcessId(),wpCfgProcessStep.getId());
+                }
+            }
+
+
         }
 
         if (request.getFlagDraft() != true) {
@@ -308,6 +337,25 @@ public class FdpFaultOrderDispatchRequestService {
         selectMessageInfo(fdpFaultDispatchOrder.getId());
         //生成操作记录
         insertDispatchProcessLog(fdpFaultDispatchOrder.getId(), fdpFaultOrderDispatchRequest.getCreatePerson(), "DISPATCH", "", "NEW", "新增派工单", fdpFaultDispatchOrder.getLastDealTime());
+
+        if(fdpFaultOrderDispatchRequest.getFlagDraft()==false){
+            //新增框架流程日志记录
+            WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+            wpProcessOperateLog.setOrderId(fdpFaultDispatchOrder.getId());
+            wpProcessOperateLog.setDescription("新增工单");
+            CurrentUtil.recordLog(wpProcessOperateLog);
+            //获取下一步子流程
+            WpCfgProcessStep wpCfgProcessStep = wpCfgProcessStepMapper.findWpCfgProcessNextStepByWpFrameProcessId(fdpFaultDispatchOrder.getWpFrameProcessId());
+            if (wpCfgProcessStep != null) {
+                //修改框架流程 当前步骤id
+                WpFrameProcess wpFrameProcess = new WpFrameProcess();
+                wpFrameProcess.setId(fdpFaultDispatchOrder.getWpFrameProcessId());
+                wpFrameProcess.setCurrentProcessStepId(wpCfgProcessStep.getId());
+                wpFrameProcessMapper.updateByPrimaryKeySelective(wpFrameProcess);
+                //保存缓存
+                wpCfgFrameProcessService.redis(fdpFaultDispatchOrder.getId(), fdpFaultDispatchOrder.getWpFrameProcessId(),wpCfgProcessStep.getId());
+            }
+        }
 
         return ResultUtil.success();
     }
@@ -459,13 +507,29 @@ public class FdpFaultOrderDispatchRequestService {
         String str = sdf.format(date);
         str = str.substring(2, str.length());
         fdpFaultDispatchOrder.setDispatchOrderNumber("PG" + "_" + str + "_" + getRandom());
-        String orderNum = "";
-        Integer count = 0;
-        do {
-            orderNum = DateUtil.getCode(4);
-            count = orderMapper.findOrderByShortOrderCode(orderNum);
-        } while (count!=0);
-        fdpFaultDispatchOrder.setShortOrderCode(orderNum);
+
+        if(item.getFlagDraft()==false){
+            //TODO 新增框架流程
+            WpCfgProcessStep wpCfgProcessStep = wpCfgProcessStepMapper.findWpCfgProcessStepByCompanyId(item.getCompanyId());
+            if (wpCfgProcessStep != null) {
+                WpFrameProcess wpFrameProcess = new WpFrameProcess();
+                wpFrameProcess.setFrameProcessCfgId(wpCfgProcessStep.getId());
+                wpFrameProcess.setFrameProcessCode(wpCfgProcessStep.getFrameStepCode());
+                wpFrameProcess.setFrameProcessCfgId(wpCfgProcessStep.getCfgFrameProcessId());
+                wpFrameProcess.setVersionId(wpCfgProcessStep.getFrameVersionId());
+                wpFrameProcess.setFlagDeleted(false);
+                wpFrameProcess.setCreatePerson(CurrentUtil.getCurrent().getId());
+                wpFrameProcess.setCreateTime(new Date());
+                wpFrameProcess.setPurchaseCreatePerson(dealPersonId);
+                //子流程id
+                wpFrameProcess.setCurrentProcessStepId(wpCfgProcessStep.getId());
+                wpFrameProcessMapper.insertSelective(wpFrameProcess);
+                fdpFaultDispatchOrder.setFlagIsProcess2(true);
+                fdpFaultDispatchOrder.setWpFrameProcessId(wpFrameProcess.getId());
+            }
+        }
+
+
         return fdpFaultDispatchOrder;
     }
 
@@ -618,6 +682,8 @@ public class FdpFaultOrderDispatchRequestService {
 
     public Result getFaultOrderRequestListByObject(ParamFdpFaultDispatchRequestQuery paramFdpFaultDispatchRequestQuery) {
 
+        Long beginTime = new Date().getTime();
+
         if (paramFdpFaultDispatchRequestQuery.getPageNum() == null || paramFdpFaultDispatchRequestQuery.getPageNum() == 0) {
             paramFdpFaultDispatchRequestQuery.setPageNum(1);
         }
@@ -687,7 +753,7 @@ public class FdpFaultOrderDispatchRequestService {
                     list.setWarningColour("");
                 }
             }
-            if (list.getUpdatePerson().equals(CurrentUtil.getCurrent().getId())) {
+            if (list.getUpdatePerson() == CurrentUtil.getCurrent().getId()) {
                 list.setFlagUserself(true);
             } else {
                 list.setFlagUserself(false);
@@ -697,7 +763,22 @@ public class FdpFaultOrderDispatchRequestService {
                     it.remove();
                 }
             }
+            //判断是否需要审核
+            Map<Object, Object> map = wpCfgFrameProcessService.findRedis(list.getDispatchOrderId(), list.getWpFrameProcessId());
+            Object obj = map.get("users");
+            if (obj != null) {
+                List<Integer> listUser = (List<Integer>) obj;
+                System.out.println("CurrentUtil.getCurrent().getId():"+CurrentUtil.getCurrent().getId());
+                if (listUser.contains(CurrentUtil.getCurrent().getId())) {
+                    list.setExamineStatus(true);
+                } else {
+                    list.setExamineStatus(false);
+                }
+            }
         }
+
+        Long totalConsumedTime=new Date().getTime()-beginTime;
+        System.out.println("工单列表访问时间:"+totalConsumedTime);
         return ResultUtil.success(pageInfo);
     }
 
@@ -729,9 +810,9 @@ public class FdpFaultOrderDispatchRequestService {
         String filePath = filepath + fileName;
         File copyFile = new File(filePath);
 
-//        if (!copyFile.exists() && !copyFile.isDirectory()) {
-//            copyFile.mkdir();
-//        }
+        if (!copyFile.exists() && !copyFile.isDirectory()) {
+            copyFile.mkdir();
+        }
         try {
             file.transferTo(copyFile);
         } catch (IOException e) {
@@ -942,7 +1023,6 @@ public class FdpFaultOrderDispatchRequestService {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return ResultUtil.errorBusinessMsg("校验异常;");
         }
         return ResultUtil.success();
@@ -1066,7 +1146,6 @@ public class FdpFaultOrderDispatchRequestService {
                     if ("".equals(str.toString())) {
                         //写入订单表
                         dispatchRequest.setBatchNumber(uuid);
-                        dispatchRequest.setId(0);
                         handle(dispatchRequest);
                     }
                     result++;
@@ -1089,14 +1168,8 @@ public class FdpFaultOrderDispatchRequestService {
     public Result calculatedPercentage(String fileName) {
         Cache c = CacheManager.getCacheInfo(fileName);
         if (c != null) {
-            if (c.getNewCount() == null) {
-                c.setNewCount(1);
-            }
-            if (c.getCount() == null) {
-                c.setCount(100);
-            }
-            Integer newCount = Integer.parseInt(c.getNewCount() + "");
-            Integer count = Integer.parseInt(c.getCount() + "");
+            Integer newCount = Integer.parseInt(c.getNewCount().toString());
+            Integer count = Integer.parseInt(c.getCount().toString());
             DecimalFormat df = new DecimalFormat();
             df.setMaximumFractionDigits(0);
             df.setMinimumFractionDigits(0);
@@ -1273,18 +1346,19 @@ public class FdpFaultOrderDispatchRequestService {
 
     /**
      * 编辑预计服务时间
-     *
      * @param estimatedServiceTime
      * @param requestId
      * @return
      */
-    public Result editServiceTime(String estimatedServiceTime, Integer requestId) {
+    public  Result editServiceTime(String estimatedServiceTime,Integer requestId){
         Long time = Long.valueOf(estimatedServiceTime);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(time);
-        orderMapper.updateServiceTime(simpleDateFormat.format(date), requestId);
+        orderMapper.updateServiceTime(simpleDateFormat.format(date),requestId);
         return ResultUtil.success();
     }
+
+
 
 
 }

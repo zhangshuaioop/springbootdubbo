@@ -5,7 +5,6 @@ import com.company.springboot.Thread.ImportDTO;
 import com.company.springboot.entity.bif.BifDeviceUploadFileWithList;
 import com.company.springboot.entity.dmi.DmiStore;
 import com.company.springboot.entity.dmi.DmiStoreWithBusinessLicense;
-import com.company.springboot.entity.dmi.req.DmiStoryRequest;
 import com.company.springboot.entity.sys.SysCompanyUsers;
 import com.company.springboot.entity.trc.TrcDmiBatchEmpolyeeImport;
 import com.company.springboot.service.dmi.DmiStoreService;
@@ -18,7 +17,6 @@ import org.apache.log4j.Logger;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 
@@ -97,7 +95,7 @@ public class DmiStoreController {
 
     @ApiOperation(value = "校验导入excel数据", httpMethod = "POST", notes = "校验导入excel数据")
     @RequestMapping(value = "/validateBeforeImport", method = RequestMethod.POST)
-    public Result validateBeforeImport(@RequestParam("file") MultipartFile file) {
+    public Result validateBeforeImport(@RequestParam("file") CommonsMultipartFile file) {
         SysCompanyUsers sysCompanyUsers = CurrentUtil.getCurrent();
         logger.info("校验导入excel数据开始,入参:file=" + file);
         Result result = null;
@@ -124,24 +122,12 @@ public class DmiStoreController {
         return result;
     }
 
-    @ApiOperation(value = "导入门店回调", httpMethod = "GET", notes = "导入门店回调")
-    @RequestMapping(value = "/importCallBack", method = RequestMethod.GET)
+    @ApiOperation(value = "导入门店回调", httpMethod = "POST", notes = "导入门店回调")
+    @RequestMapping(value = "/importCallBack", method = RequestMethod.POST)
     public Result importCallBack(@RequestParam String batchInsertCode) {
         logger.info("导入门店回调,入参:batchInsertCode=" + batchInsertCode);
         TrcDmiBatchEmpolyeeImport result = dmiStoreService.importCallBack(batchInsertCode);
         logger.info("导入门店回调,出参:" + result.toString());
         return ResultUtil.success(result);
     }
-
-
-
-    @ApiOperation(value = "根据条件导出门店", httpMethod = "POST", notes = "门店导入")
-    @RequestMapping(value = "/storeExport", method = RequestMethod.POST)
-    public Result storeExport(@RequestBody DmiStoryRequest dmiStoryRequest) {
-        logger.info("根据条件导出门店-开始,入参:dmiStoryRequest="+dmiStoryRequest.toString());
-        Result result = dmiStoreService.storeExport(dmiStoryRequest);
-        logger.info("根据条件导出门店-结束,出参:"+result.toString());
-        return result;
-    }
-
 }

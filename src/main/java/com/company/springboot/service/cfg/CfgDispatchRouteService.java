@@ -4,7 +4,6 @@ import com.company.springboot.base.BaseService;
 import com.company.springboot.entity.cfg.CfgDispatchRoute;
 import com.company.springboot.entity.dmi.DmiCompanyInfo;
 import com.company.springboot.entity.pjt.PjtProject;
-import com.company.springboot.entity.sys.SysCompanyUsers;
 import com.company.springboot.mapper.cfg.CfgDispatchRouteDetailMapper;
 import com.company.springboot.mapper.cfg.CfgDispatchRouteMapper;
 import com.company.springboot.mapper.dmi.DmiCompanyInfoMapper;
@@ -61,7 +60,6 @@ public class CfgDispatchRouteService extends BaseService<CfgDispatchRouteMapper,
      */
     public Result findPage(CfgDispatchRoute cfgDispatchRoute){
         PageHelper.startPage(cfgDispatchRoute.getPageNum(), cfgDispatchRoute.getPageSize());
-        cfgDispatchRoute.setCompanyId(CurrentUtil.getCurrent().getCompanyId());
         List<CfgDispatchRoute> persons = cfgDispatchRouteMapper.selectAll(cfgDispatchRoute);
         // 需要把Page包装成PageInfo对象才能序列化。该插件也默认实现了一个PageInfo
         PageInfo<CfgDispatchRoute> pageInfo = new PageInfo<>(persons);
@@ -77,12 +75,12 @@ public class CfgDispatchRouteService extends BaseService<CfgDispatchRouteMapper,
     public Result findPerson(Integer id){
         CfgDispatchRoute cfgDispatchRoute = cfgDispatchRouteMapper.selectByPrimaryKey(id);
         String[] ids = {};
-
+        if(cfgDispatchRoute != null && cfgDispatchRoute.getPersons() != null && cfgDispatchRoute.getPersons().length()>0){
+            ids = cfgDispatchRoute.getPersons().split(",");
+        }
         Map<String,Object> map = new HashMap<>();
         map.put("sysUsers",sysCompanyUsersMapper.selectByCompanyType("PLATFORM")); //平台自营
-        if(cfgDispatchRoute != null && cfgDispatchRoute.getPersons() != null && cfgDispatchRoute.getPersons().length()>0){
-            map.put("cfgUsers",sysCompanyUsersMapper.selectByRouteCfg(cfgDispatchRoute.getPersons()));
-        }
+        map.put("cfgUsers",sysCompanyUsersMapper.selectByRouteCfg(ids));
         return ResultUtil.success(map);
     }
 
@@ -96,15 +94,6 @@ public class CfgDispatchRouteService extends BaseService<CfgDispatchRouteMapper,
         return ResultUtil.success(dmiCompanyInfoMapper.companyByUserList(CurrentUtil.getCompanyIds(CurrentUtil.getCurrent().getId())));
     }
 
-
-    /**
-     * 项目规则配置列表详情
-     * @param id
-     * @return
-     */
-    public Result getRoute(Integer id){
-        return ResultUtil.success(cfgDispatchRouteMapper.selectById(id));
-    }
 
     /**
      * 根据公司id获取项目列表
@@ -127,9 +116,6 @@ public class CfgDispatchRouteService extends BaseService<CfgDispatchRouteMapper,
     public Result saveOrUpdate(CfgDispatchRoute cfgDispatchRoute){
         if(cfgDispatchRoute != null && cfgDispatchRoute.getId() != null && cfgDispatchRoute.getId() != 0){
             logger.info("进入更新操作");
-            if(cfgDispatchRoute.getFlagTakeStatus()){
-                cfgDispatchRoute.setStartTime(new Date());
-            }
             cfgDispatchRouteMapper.updateByPrimaryKeySelective(cfgDispatchRoute);
         }else {
             logger.info("进入保存操作");

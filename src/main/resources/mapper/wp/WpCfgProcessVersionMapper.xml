@@ -139,4 +139,36 @@
       flag_is_last = #{flagIsLast,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectAll" parameterType="com.company.springboot.entity.wp.WpCfgProcessVersion" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wp_cfg_process_version
+    where 1=1
+    <if test="version != null">
+      and version = #{version,jdbcType=INTEGER}
+    </if>
+    <if test="cfgProcessId != null">
+      and cfg_process_id = #{cfgProcessId,jdbcType=INTEGER}
+    </if>
+    <if test="flagAvaliable != null">
+      and flag_avaliable = #{flagAvaliable,jdbcType=BIT}
+    </if>
+    <if test="createPerson != null">
+      and create_person = #{createPerson,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatePerson != null">
+      and update_person = #{updatePerson,jdbcType=INTEGER}
+    </if>
+    <if test="updateTime != null">
+      and update_time = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="flagIsLast != null">
+      and flag_is_last = #{flagIsLast,jdbcType=BIT}
+    </if>
+  </select>
+
 </mapper>

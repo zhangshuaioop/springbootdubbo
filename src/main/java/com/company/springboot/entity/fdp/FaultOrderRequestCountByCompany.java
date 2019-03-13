@@ -8,11 +8,6 @@ public class FaultOrderRequestCountByCompany extends BaseEntity {
     private int completeCount;
     private int unCompleteCount;
 
-    /**
-     * 品牌id
-     */
-    private String brandName;
-
     public String getCompanyName() {
         return companyName;
     }
@@ -43,13 +38,5 @@ public class FaultOrderRequestCountByCompany extends BaseEntity {
 
     public void setUnCompleteCount(int unCompleteCount) {
         this.unCompleteCount = unCompleteCount;
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
     }
 }

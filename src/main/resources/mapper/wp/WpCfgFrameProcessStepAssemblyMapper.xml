@@ -5,12 +5,13 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="cfg_frame_process_step_id" jdbcType="INTEGER" property="cfgFrameProcessStepId" />
     <result column="cfg_process_id" jdbcType="INTEGER" property="cfgProcessId" />
+    <result column="cfg_process_version_id" jdbcType="INTEGER" property="cfgProcessVersionId" />
     <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_person" jdbcType="INTEGER" property="createPerson" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, cfg_frame_process_step_id, cfg_process_id, flag_deleted, create_time, create_person
+    id, cfg_frame_process_step_id, cfg_process_id,cfg_process_version_id, flag_deleted, create_time, create_person
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -22,14 +23,6 @@
     delete from wp_cfg_frame_process_step_assembly
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStepAssembly">
-    insert into wp_cfg_frame_process_step_assembly (id, cfg_frame_process_step_id, cfg_process_id, 
-      flag_deleted, create_time, create_person
-      )
-    values (#{id,jdbcType=INTEGER}, #{cfgFrameProcessStepId,jdbcType=INTEGER}, #{cfgProcessId,jdbcType=INTEGER}, 
-      #{flagDeleted,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createPerson,jdbcType=INTEGER}
-      )
-  </insert>
   <insert id="insertSelective" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStepAssembly">
     insert into wp_cfg_frame_process_step_assembly
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -41,6 +34,9 @@
       </if>
       <if test="cfgProcessId != null">
         cfg_process_id,
+      </if>
+      <if test="cfgProcessVersionId != null">
+        cfg_process_version_id,
       </if>
       <if test="flagDeleted != null">
         flag_deleted,
@@ -62,6 +58,9 @@
       <if test="cfgProcessId != null">
         #{cfgProcessId,jdbcType=INTEGER},
       </if>
+      <if test="cfgProcessVersionId != null">
+        #{cfgProcessVersionId,jdbcType=INTEGER},
+      </if>
       <if test="flagDeleted != null">
         #{flagDeleted,jdbcType=BIT},
       </if>
@@ -82,6 +81,9 @@
       <if test="cfgProcessId != null">
         cfg_process_id = #{cfgProcessId,jdbcType=INTEGER},
       </if>
+      <if test="cfgProcessVersionId != null">
+        cfg_process_version_id = #{cfgProcessVersionId,jdbcType=INTEGER},
+      </if>
       <if test="flagDeleted != null">
         flag_deleted = #{flagDeleted,jdbcType=BIT},
       </if>
@@ -94,13 +96,54 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStepAssembly">
-    update wp_cfg_frame_process_step_assembly
-    set cfg_frame_process_step_id = #{cfgFrameProcessStepId,jdbcType=INTEGER},
-      cfg_process_id = #{cfgProcessId,jdbcType=INTEGER},
-      flag_deleted = #{flagDeleted,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_person = #{createPerson,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+  <select id="selectAll" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStepAssembly" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wp_cfg_frame_process_step_assembly
+    where 1=1
+    <if test="cfgFrameProcessStepId != null">
+      and cfg_frame_process_step_id = #{cfgFrameProcessStepId,jdbcType=INTEGER}
+    </if>
+    <if test="cfgProcessId != null">
+      and cfg_process_id = #{cfgProcessId,jdbcType=INTEGER}
+    </if>
+    <if test="cfgProcessVersionId != null">
+      and cfg_process_version_id = #{cfgProcessVersionId,jdbcType=INTEGER}
+    </if>
+    <if test="flagDeleted != null">
+      and flag_deleted = #{flagDeleted,jdbcType=BIT}
+    </if>
+    <if test="createTime != null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="createPerson != null">
+      and create_person = #{createPerson,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="selectByWpCfgFrameProcessStepAssembly" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStepAssembly" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wp_cfg_frame_process_step_assembly
+    where 1=1
+    <if test="cfgFrameProcessStepId != null">
+      and cfg_frame_process_step_id = #{cfgFrameProcessStepId,jdbcType=INTEGER}
+    </if>
+    <if test="cfgProcessId != null">
+      and cfg_process_id = #{cfgProcessId,jdbcType=INTEGER}
+    </if>
+    <if test="cfgProcessVersionId != null">
+      and cfg_process_version_id = #{cfgProcessVersionId,jdbcType=INTEGER}
+    </if>
+    <if test="flagDeleted != null">
+      and flag_deleted = #{flagDeleted,jdbcType=BIT}
+    </if>
+    <if test="createTime != null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="createPerson != null">
+      and create_person = #{createPerson,jdbcType=INTEGER}
+    </if>
+  </select>
+
 </mapper>

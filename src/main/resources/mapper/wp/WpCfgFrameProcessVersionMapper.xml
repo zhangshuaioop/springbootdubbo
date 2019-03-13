@@ -11,10 +11,14 @@
     <result column="update_person" jdbcType="INTEGER" property="updatePerson" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="flag_is_last" jdbcType="BIT" property="flagIsLast" />
+    <result column="company_user_id" jdbcType="INTEGER" property="companyUserId" />
+    <result column="company_active_time" jdbcType="TIMESTAMP" property="companyActiveTime" />
+    <result column="partner_company_user_id" jdbcType="INTEGER" property="partnerCompanyUserId" />
+    <result column="partner_company_active_time" jdbcType="TIMESTAMP" property="partnerCompanyActiveTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, version, cfg_frame_process_id, flag_avaliable, create_person, create_time, update_person, 
-    update_time, flag_is_last
+    update_time, flag_is_last,company_user_id,company_active_time,partner_company_user_id,partner_company_active_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -29,11 +33,15 @@
   <insert id="insert" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessVersion">
     insert into wp_cfg_frame_process_version (id, version, cfg_frame_process_id, 
       flag_avaliable, create_person, create_time, 
-      update_person, update_time, flag_is_last
+      update_person, update_time, flag_is_last,
+      company_user_id,company_active_time,
+      partner_company_user_id,partner_company_active_time
       )
     values (#{id,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{cfgFrameProcessId,jdbcType=INTEGER}, 
       #{flagAvaliable,jdbcType=BIT}, #{createPerson,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updatePerson,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{flagIsLast,jdbcType=BIT}
+      #{updatePerson,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{flagIsLast,jdbcType=BIT},
+      #{companyUserId,jdbcType=INTEGER},#{companyActiveTime,jdbcType=TIMESTAMP},
+      #{partnerCompanyUserId,jdbcType=INTEGER},#{partnerCompanyActiveTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessVersion">
@@ -66,6 +74,18 @@
       <if test="flagIsLast != null">
         flag_is_last,
       </if>
+      <if test="companyUserId != null">
+        company_user_id,
+      </if>
+      <if test="companyActiveTime != null">
+        company_active_time,
+      </if>
+      <if test="partnerCompanyUserId != null">
+        partner_company_user_id,
+      </if>
+      <if test="partnerCompanyActiveTime != null">
+        partner_company_active_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -94,6 +114,18 @@
       </if>
       <if test="flagIsLast != null">
         #{flagIsLast,jdbcType=BIT},
+      </if>
+      <if test="companyUserId != null">
+        #{companyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="companyActiveTime != null">
+        #{companyActiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="partnerCompanyUserId != null">
+        #{partnerCompanyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="partnerCompanyActiveTime != null">
+        #{partnerCompanyActiveTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -124,6 +156,18 @@
       <if test="flagIsLast != null">
         flag_is_last = #{flagIsLast,jdbcType=BIT},
       </if>
+      <if test="companyUserId != null">
+        company_user_id = #{companyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="companyActiveTime != null">
+        company_active_time = #{companyActiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="partnerCompanyUserId != null">
+        partner_company_user_id = #{partnerCompanyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="partnerCompanyActiveTime != null">
+        partner_company_active_time = #{partnerCompanyActiveTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -136,7 +180,62 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_person = #{updatePerson,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      flag_is_last = #{flagIsLast,jdbcType=BIT}
+      flag_is_last = #{flagIsLast,jdbcType=BIT},
+      company_user_id = #{companyUserId,jdbcType=INTEGER},
+      company_active_time = #{companyActiveTime,jdbcType=TIMESTAMP},
+      partner_company_user_id = #{partnerCompanyUserId,jdbcType=INTEGER},
+      partner_company_active_time = #{partnerCompanyActiveTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectAll" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessVersion" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wp_cfg_frame_process_version
+    where 1=1
+    <if test="version != null">
+      and version = #{version,jdbcType=INTEGER}
+    </if>
+    <if test="cfgFrameProcessId != null">
+      and cfg_frame_process_id = #{cfgFrameProcessId,jdbcType=INTEGER}
+    </if>
+    <if test="flagAvaliable != null">
+      and flag_avaliable = #{flagAvaliable,jdbcType=BIT}
+    </if>
+    <if test="createPerson != null">
+      and create_person = #{createPerson,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatePerson != null">
+      and update_person = #{updatePerson,jdbcType=INTEGER}
+    </if>
+    <if test="updateTime != null">
+      and update_time = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="flagIsLast != null">
+      and flag_is_last = #{flagIsLast,jdbcType=BIT}
+    </if>
+    <if test="companyUserId != null">
+      and company_user_id = #{companyUserId,jdbcType=INTEGER}
+    </if>
+    <if test="companyActiveTime != null">
+      and company_active_time = #{companyActiveTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="partnerCompanyUserId != null">
+      and partner_company_user_id = #{partnerCompanyUserId,jdbcType=INTEGER}
+    </if>
+    <if test="partnerCompanyActiveTime != null">
+      and partner_company_active_time = #{partnerCompanyActiveTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+
+  <!--查询最大版本-->
+  <select id="selectVersion" resultType="java.lang.Integer">
+    SELECT MAX(version) version FROM wp_cfg_frame_process_version
+  </select>
+
 </mapper>

@@ -109,8 +109,9 @@ public class FdpFaultDispatchOrder {
      * 是否自动提交完工
      */
     private boolean flagAutoCommit;
-    private String batchNumber;
 
+    @ApiModelProperty(value = "批次号", example = "1", required = true)
+    private String batchNumber;
     /**
      * 结束时间
      */
@@ -122,28 +123,11 @@ public class FdpFaultDispatchOrder {
     @ApiModelProperty(value = "完工资料驳回原因", example = "1", required = true)
     private String materialRejectCauseContext;
 
-    @ApiModelProperty(value = "短工单编号", example = "1", required = true)
-    private String shortOrderCode;
+    @ApiModelProperty(value = "是否是2.0版本的自定义流程",example = "1",required = true)
+    private boolean flagIsProcess2;
 
-    @ApiModelProperty(value = "实际设备费用", example = "1", required = true)
-    private BigDecimal actualDeviceCost;
-    @ApiModelProperty(value = "实际设备费用备注", example = "1", required = true)
-    private String actualDeviceMemo;
-
-    @ApiModelProperty(value = "实际通信线路费用", example = "1", required = true)
-    private BigDecimal actualCommResourceCost;
-    @ApiModelProperty(value = "实际通信线路费用备注", example = "1", required = true)
-    private String actualCommResourceMemo;
-
-    @ApiModelProperty(value = "实际人力费用", example = "1", required = true)
-    private BigDecimal actualHrCost;
-    @ApiModelProperty(value = "实际人力费用备注", example = "1", required = true)
-    private String actualHrMemo;
-
-    @ApiModelProperty(value = "实际其他费用", example = "1", required = true)
-    private BigDecimal actualOtherCost;
-    @ApiModelProperty(value = "实际其他费用备注", example = "1", required = true)
-    private String actualOtherMemo;
+    @ApiModelProperty(value = "框架流程id",example = "1",required = true)
+    private Integer wpFrameProcessId;
 
     public String getBatchNumber() {
         return batchNumber;
@@ -553,75 +537,19 @@ public class FdpFaultDispatchOrder {
         this.materialRejectCauseContext = materialRejectCauseContext;
     }
 
-    public String getShortOrderCode() {
-        return shortOrderCode;
+    public boolean isFlagIsProcess2() {
+        return flagIsProcess2;
     }
 
-    public void setShortOrderCode(String shortOrderCode) {
-        this.shortOrderCode = shortOrderCode;
+    public void setFlagIsProcess2(boolean flagIsProcess2) {
+        this.flagIsProcess2 = flagIsProcess2;
     }
 
-    public BigDecimal getActualDeviceCost() {
-        return actualDeviceCost;
+    public Integer getWpFrameProcessId() {
+        return wpFrameProcessId;
     }
 
-    public void setActualDeviceCost(BigDecimal actualDeviceCost) {
-        this.actualDeviceCost = actualDeviceCost;
-    }
-
-    public String getActualDeviceMemo() {
-        return actualDeviceMemo;
-    }
-
-    public void setActualDeviceMemo(String actualDeviceMemo) {
-        this.actualDeviceMemo = actualDeviceMemo;
-    }
-
-    public BigDecimal getActualCommResourceCost() {
-        return actualCommResourceCost;
-    }
-
-    public void setActualCommResourceCost(BigDecimal actualCommResourceCost) {
-        this.actualCommResourceCost = actualCommResourceCost;
-    }
-
-    public String getActualCommResourceMemo() {
-        return actualCommResourceMemo;
-    }
-
-    public void setActualCommResourceMemo(String actualCommResourceMemo) {
-        this.actualCommResourceMemo = actualCommResourceMemo;
-    }
-
-    public BigDecimal getActualHrCost() {
-        return actualHrCost;
-    }
-
-    public void setActualHrCost(BigDecimal actualHrCost) {
-        this.actualHrCost = actualHrCost;
-    }
-
-    public String getActualHrMemo() {
-        return actualHrMemo;
-    }
-
-    public void setActualHrMemo(String actualHrMemo) {
-        this.actualHrMemo = actualHrMemo;
-    }
-
-    public BigDecimal getActualOtherCost() {
-        return actualOtherCost;
-    }
-
-    public void setActualOtherCost(BigDecimal actualOtherCost) {
-        this.actualOtherCost = actualOtherCost;
-    }
-
-    public String getActualOtherMemo() {
-        return actualOtherMemo;
-    }
-
-    public void setActualOtherMemo(String actualOtherMemo) {
-        this.actualOtherMemo = actualOtherMemo;
+    public void setWpFrameProcessId(Integer wpFrameProcessId) {
+        this.wpFrameProcessId = wpFrameProcessId;
     }
 }

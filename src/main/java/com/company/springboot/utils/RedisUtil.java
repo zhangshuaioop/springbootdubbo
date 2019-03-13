@@ -49,14 +49,32 @@ public class RedisUtil {
             redisUtilService.redisTemplate.opsForValue().set(key, value);
         }
 
+    /** 
+          * 设置 map 类型 key-value 
+          * @param key 
+          * @param value 
+          */
+    public static void setMap(String key,Map<Object, Object> map) {
+        redisUtilService.redisTemplate.opsForValue().set(key, map);
+    }
+
         /** 
      * 获取 String 类型 key-value 
      * @param key 
      * @return 
      */
-        public static String get(String key) {
+     public static String get(String key) {
             return (String) redisUtilService.redisTemplate.opsForValue().get(key);
         }
+
+    /** 
+          * 获取 String 类型 key-value 
+          * @param key 
+          * @return 
+          */
+     public static Map<Object, Object> getMap(String key) {
+        return (Map<Object, Object>) redisUtilService.redisTemplate.opsForValue().get(key);
+    }
 
         /** 
      * 设置 String 类型 key-value 并添加过期时间 (毫秒单位) 

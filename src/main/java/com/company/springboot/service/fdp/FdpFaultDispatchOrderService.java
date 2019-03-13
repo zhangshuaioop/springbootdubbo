@@ -7,11 +7,13 @@ import com.company.springboot.entity.fdp.*;
 import com.company.springboot.entity.sys.ParamSysOperationMessage;
 import com.company.springboot.entity.sys.SysCompanyUsers;
 import com.company.springboot.entity.sys.SysOperationMessage;
+import com.company.springboot.entity.wp.WpProcessOperateLog;
 import com.company.springboot.mapper.bif.BifDispatchHumanResourceMapper;
 import com.company.springboot.mapper.cfg.CfgDispatchWarningStatusMapper;
 import com.company.springboot.mapper.fdp.*;
 import com.company.springboot.mapper.sys.SysCompanyUsersMapper;
 import com.company.springboot.mapper.sys.SysOperationMessageMapper;
+import com.company.springboot.service.wp.WpCfgFrameProcessService;
 import com.company.springboot.utils.CurrentUtil;
 import com.company.springboot.utils.PageInfo;
 import com.company.springboot.utils.Result;
@@ -78,6 +80,9 @@ public class FdpFaultDispatchOrderService {
 
     @Resource
     private FdpFaultDispatchTransferLogMapper transferLogMapper;
+    @Resource
+    private WpCfgFrameProcessService wpCfgFrameProcessService;
+
 
     public Result confirmDispatchCancel(FdpFaultDispatchOrder dispatchCancel) {
         SysCompanyUsers users = CurrentUtil.getCurrent();
@@ -108,11 +113,11 @@ public class FdpFaultDispatchOrderService {
 
         fdpFaultDispatchOrderMapper.updateStatusByRequestId(dispatchCancel);
 
-        //修改hr表状态
-        FdpFaultDispatchHrRelation relation = new FdpFaultDispatchHrRelation();
-        relation.setDispatchOrderId(fdpFaultDispatchOrder.getId());
-        relation.setFlagUsed(false);
-        fdpFaultDispatchHrRelationMapper.updateFlagUsedByOrderId(relation);
+        //保存自定义流程日志记录
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(fdpFaultDispatchOrder.getId());
+        wpProcessOperateLog.setDescription("取消派工");
+        CurrentUtil.recordLog(wpProcessOperateLog);
 
         return ResultUtil.success();
     }
@@ -191,6 +196,18 @@ public class FdpFaultDispatchOrderService {
         }
 
         selectMessageInfo(orderId);
+
+        //保存操作记录
+        //确认派工人员
+        orderId = fdpFaultDispatchOrderMapper.selectFaultOrderId(id);
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(orderId);
+        wpProcessOperateLog.setDescription("确认派工人员");
+        //调用保存操作方法
+        CurrentUtil.recordLog(wpProcessOperateLog);
+        //找/存下一个处理人
+        CurrentUtil.nextDeal(orderId);
+
         return ResultUtil.success("客户确认完工，成功！");
 
     }
@@ -251,10 +268,25 @@ public class FdpFaultDispatchOrderService {
         order.setProcessStage("4");
         order.setDispatchStatus("REJECTFILE");
         order.setFlagCustomerConfirm(false);
+        Integer orderId = fdpFaultDispatchOrderMapper.findOrderId(order.getFaultDispatchRequestId());
+
         if (fdpFaultDispatchOrderMapper.updateDispatchOrderByRequestId(order) > 0) {
             insertDispatchProcessLog(order.getId(), users.getId(), "DISPATCH_HR", order.getDispatchStatus(), "REJECTFILE", "客户驳回完工资料", now);
+
+            WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+            wpProcessOperateLog.setOrderId(orderId);
+            wpProcessOperateLog.setDescription("客户驳回完工资料-成功");
+            CurrentUtil.recordLog(wpProcessOperateLog);  //日志
+
+            CurrentUtil.topDeal(orderId);   //上一个处理人
+
             return ResultUtil.success("驳回成功！");
         }
+
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(orderId);
+        wpProcessOperateLog.setDescription("客户驳回完工资料-驳回失败");
+        CurrentUtil.recordLog(wpProcessOperateLog);  //日志
         return ResultUtil.errorBusinessMsg("驳回失败！");
     }
 
@@ -290,6 +322,15 @@ public class FdpFaultDispatchOrderService {
 
         //给采购发送消息
         selectMessageInfo(order);
+
+        Integer orderId = fdpFaultDispatchOrderMapper.findOrderId(fdpFaultDispatchOrder.getFaultDispatchRequestId());
+
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(orderId);
+        wpProcessOperateLog.setDescription("驳回派工人员-成功");
+        CurrentUtil.recordLog(wpProcessOperateLog); //日志
+
+        CurrentUtil.topDeal(orderId); //上一个处理人
 
         return ResultUtil.success();
     }
@@ -383,6 +424,16 @@ public class FdpFaultDispatchOrderService {
             }
         }
 
+        //保存操作记录
+        //确认派工人员
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(dispatchOrderId);
+        wpProcessOperateLog.setDescription("确认派工人员");
+        //调用保存操作方法
+        CurrentUtil.recordLog(wpProcessOperateLog);
+        //找/存下一个处理人
+        CurrentUtil.nextDeal(dispatchOrderId);
+
         return ResultUtil.success("已确认派工人员！");
 
     }
@@ -448,43 +499,26 @@ public class FdpFaultDispatchOrderService {
     }
 
     public Result confirmDispatch(FdpFaultOrderInsertParam insertParam) {
+
+        SysCompanyUsers users = CurrentUtil.getCurrent();
+
         Integer userId = CurrentUtil.getCurrent().getId();
 
+        BigDecimal num = new BigDecimal("99999999");
+
         if(insertParam.getEstimatedCost()==null){
-            return ResultUtil.errorBusinessMsg("请输入合计成本");
+            return ResultUtil.errorBusinessMsg("请输入预计成本");
         }
         if(insertParam.getEstimatedPrice()==null){
             return ResultUtil.errorBusinessMsg("请输入预计售价");
         }
-        if(insertParam.getEstimatedDeviceCost()==null){
-            return ResultUtil.errorBusinessMsg("请输入预计设备成本");
-        }
-        if(insertParam.getEstimatedCommResourceCost()==null){
-            return ResultUtil.errorBusinessMsg("请输入预计通信线路成本");
-        }
-        if(insertParam.getEstimatedHrCost()==null){
-            return ResultUtil.errorBusinessMsg("请输入预计人力成本");
-        }
-
-        BigDecimal num = new BigDecimal("99999999");
 
         if (insertParam.getEstimatedCost().compareTo(num) == 1) {
-            return ResultUtil.errorBusinessMsg("合计成本长度过长（小于等于八位）");
+            return ResultUtil.errorBusinessMsg("预计成本长度过长（小于等于八位）");
         }
         if (insertParam.getEstimatedPrice().compareTo(num) == 1) {
             return ResultUtil.errorBusinessMsg("预计售价长度过长（小于等于八位）");
         }
-
-        if (insertParam.getEstimatedDeviceCost().compareTo(num) == 1) {
-            return ResultUtil.errorBusinessMsg("预计设备成本长度过长（小于等于八位）");
-        }
-        if (insertParam.getEstimatedCommResourceCost().compareTo(num) == 1) {
-            return ResultUtil.errorBusinessMsg("预计通信线路成本长度过长（小于等于八位）");
-        }
-        if (insertParam.getEstimatedHrCost().compareTo(num) == 1) {
-            return ResultUtil.errorBusinessMsg("预计人力成本长度过长（小于等于八位）");
-        }
-
         // 当前时间
         Date now = new Date();
         //查询当前订单状态
@@ -536,16 +570,6 @@ public class FdpFaultDispatchOrderService {
         param.setEstimatedInvoiceType(insertParam.getEstimatedInvoiceType());
         param.setFlagDeleted(false);
         param.setFlagAvailable(true);
-        //成本拆分
-        param.setEstimatedDeviceCost(insertParam.getEstimatedDeviceCost());
-        param.setEstimatedDeviceMemo(insertParam.getEstimatedDeviceMemo());
-        param.setEstimatedCommResourceCost(insertParam.getEstimatedCommResourceCost());
-        param.setEstimatedCommResourceMemo(insertParam.getEstimatedCommResourceMemo());
-        param.setEstimatedHrCost(insertParam.getEstimatedHrCost());
-        param.setEstimatedHrMemo(insertParam.getEstimatedHrMemo());
-        param.setEstimatedOtherCost(insertParam.getEstimatedOtherCost());
-        param.setEstimatedOtherMemo(insertParam.getEstimatedOtherMemo());
-
         fdpFaultDispatchHrRelationMapper.insertSelective(param);
 
         FdpFaultDispatchChangeLog changeLog = new FdpFaultDispatchChangeLog();
@@ -571,6 +595,17 @@ public class FdpFaultDispatchOrderService {
         fdpFaultOrderProcessMapper.updateByPrimaryKeySelective(process);
         //点击确认派工设为已读
         setReadOther(insertParam.getRequestId());
+
+
+        //保存操作记录
+        //预约派工
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(insertParam.getDispatchOrderId());
+        wpProcessOperateLog.setDescription("预约派工");
+        //调用保存操作方法
+        CurrentUtil.recordLog(wpProcessOperateLog);
+        //找/存下一个处理人
+        CurrentUtil.nextDeal(insertParam.getDispatchOrderId());
 
         return ResultUtil.success();
     }
@@ -656,7 +691,7 @@ public class FdpFaultDispatchOrderService {
                 list.setWarningName("");
                 list.setWarningColour("");
             }
-            if (list.getLastDealPersonId().equals(CurrentUtil.getCurrent().getId())) {
+            if (list.getLastDealPersonId() == CurrentUtil.getCurrent().getId()) {
                 list.setFlagUserself(true);
             } else {
                 list.setFlagUserself(false);
@@ -665,6 +700,17 @@ public class FdpFaultDispatchOrderService {
             if (getDispatchOrderListRequest.getWarningStatus() != null && !getDispatchOrderListRequest.getWarningStatus().equals("")) {
                 if (!list.getWarningName().equals(getDispatchOrderListRequest.getWarningStatus())) {
                     it.remove();
+                }
+            }
+            //判断是否需要审核
+            Map<Object, Object> map= wpCfgFrameProcessService.findRedis(list.getDispatchOrderId(),list.getWpFrameProcessId());
+            Object obj = map.get("users");
+            if(obj!=null){
+                List<Integer> listUser = (List<Integer>) obj;
+                if(listUser.contains(CurrentUtil.getCurrent().getId())){
+                    list.setExamineStatus(true);
+                }else{
+                    list.setExamineStatus(false);
                 }
             }
         }
@@ -693,6 +739,16 @@ public class FdpFaultDispatchOrderService {
         fdpFaultDispatchOrderMapper.updateStatusByDispatchRequestId(dispatchNeedConfirm);
         //采购回复消息
         purchaseReply(dispatchNeedConfirm.getId());
+
+        //保存操作记录
+        //派工信息确认
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(dispatchNeedConfirm.getId());
+        wpProcessOperateLog.setDescription("派工信息确认");
+        //调用保存操作方法
+        CurrentUtil.recordLog(wpProcessOperateLog);
+        //找/存下一个处理人
+        CurrentUtil.nextDeal(dispatchNeedConfirm.getId());
 
         return ResultUtil.success();
 
@@ -775,6 +831,14 @@ public class FdpFaultDispatchOrderService {
         purchaseReply(order.getId());
         setReadPurchase(hrRelation.getFaultDispatchRequestId(), userId);
 
+        //保存日志记录
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(order.getId());
+        wpProcessOperateLog.setDescription("提交完工资料");
+        CurrentUtil.recordLog(wpProcessOperateLog);
+        //找存下一步处理人
+        CurrentUtil.nextDeal(order.getId());
+
         return ResultUtil.success();
     }
 
@@ -811,63 +875,50 @@ public class FdpFaultDispatchOrderService {
 
     public Result confirmActualPrice(ParamCompleteConfirm paramCompleteConfirm) {
 
-        if (paramCompleteConfirm.getActualCost()==null) {
-            return ResultUtil.errorBusinessMsg("实际成本不能为空");
-        }
-        if (paramCompleteConfirm.getActualPrice()==null) {
-            return ResultUtil.errorBusinessMsg("实际售价不能为空");
-        }
-        if (paramCompleteConfirm.getActualDeviceCost()==null) {
-            return ResultUtil.errorBusinessMsg("实际设备成本不能为空");
-        }
-        if (paramCompleteConfirm.getActualCommResourceCost()==null) {
-            return ResultUtil.errorBusinessMsg("实际通信线路成本不能为空");
-        }
-        if (paramCompleteConfirm.getActualHrCost()==null) {
-            return ResultUtil.errorBusinessMsg("实际人力成本不能为空");
-        }
-
         BigDecimal num = new BigDecimal("99999999");
         if (paramCompleteConfirm.getActualCost().compareTo(num) == 1) {
-            return ResultUtil.errorBusinessMsg("实际成本长度过长（小于等于八位）");
+            return ResultUtil.errorBusinessMsg("预计成本长度过长（小于等于八位）");
         }
         if (paramCompleteConfirm.getActualPrice().compareTo(num) == 1) {
-            return ResultUtil.errorBusinessMsg("实际售价长度过长（小于等于八位）");
+            return ResultUtil.errorBusinessMsg("预计售价长度过长（小于等于八位）");
         }
-        if (paramCompleteConfirm.getActualDeviceCost().compareTo(num) == 1) {
-            return ResultUtil.errorBusinessMsg("实际设备成本长度过长（小于等于八位）");
-        }
-        if (paramCompleteConfirm.getActualCommResourceCost().compareTo(num) == 1) {
-            return ResultUtil.errorBusinessMsg("实际通信线路成本长度过长（小于等于八位）");
-        }
-        if (paramCompleteConfirm.getActualHrCost().compareTo(num) == 1) {
-            return ResultUtil.errorBusinessMsg("实际人力成本长度过长（小于等于八位）");
-        }
-
         FdpFaultDispatchOrder order = new FdpFaultDispatchOrder();
-        order.setFaultDispatchRequestId(paramCompleteConfirm.getRequestId());
+        //zhanghao 确认售价记录 预计成本 预计成本单位 预计成本备注
         order.setActualCost(paramCompleteConfirm.getActualCost());
         order.setActualCostMemo(paramCompleteConfirm.getActualCostMemo());
         order.setActualMonetaryUnit(paramCompleteConfirm.getActualMonetaryUnit());
+
+        order.setFaultDispatchRequestId(paramCompleteConfirm.getRequestId());
         order.setActualPrice(paramCompleteConfirm.getActualPrice());
         order.setActualPriceUnit(paramCompleteConfirm.getActualPriceUnit());
         order.setActualPriceMemo(paramCompleteConfirm.getActualPriceMemo());
         order.setFlagNoPrice(paramCompleteConfirm.getFlagNoPrice());
         order.setPrivateNote(paramCompleteConfirm.getPrivateNote());
 
-        order.setActualDeviceCost(paramCompleteConfirm.getActualDeviceCost());
-        order.setActualDeviceMemo(paramCompleteConfirm.getActualDeviceMemo());
-        order.setActualCommResourceCost(paramCompleteConfirm.getActualCommResourceCost());
-        order.setActualCommResourceMemo(paramCompleteConfirm.getActualCommResourceMemo());
-        order.setActualHrCost(paramCompleteConfirm.getActualHrCost());
-        order.setActualHrMemo(paramCompleteConfirm.getActualHrMemo());
-        order.setActualOtherCost(paramCompleteConfirm.getActualOtherCost());
-        order.setActualOtherMemo(paramCompleteConfirm.getActualOtherMemo());
+        Integer orderId = fdpFaultDispatchOrderMapper.findOrderId(paramCompleteConfirm.getRequestId());
 
         //修改实际费用
         if (fdpFaultDispatchOrderMapper.updateStatusByDispatchRequestId(order) > 0) {
+
+
+            //保存日志
+            WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+            wpProcessOperateLog.setOrderId(orderId);
+            wpProcessOperateLog.setDescription("价格确认-成功");
+            CurrentUtil.recordLog(wpProcessOperateLog);
+
+            //找/存下一个处理人
+            CurrentUtil.nextDeal(orderId);
+
             return ResultUtil.success();
         }
+
+        //保存日志
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(orderId);
+        wpProcessOperateLog.setDescription("价格确认-失败");
+        CurrentUtil.recordLog(wpProcessOperateLog);
+
         return ResultUtil.errorBusinessMsg("失败");
     }
 
@@ -980,6 +1031,16 @@ public class FdpFaultDispatchOrderService {
 
         }
 
+        //保存操作记录
+        //采购完工确认
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(dispatchComplete.getId());
+        wpProcessOperateLog.setDescription("采购完工确认");
+        //调用保存操作方法
+        CurrentUtil.recordLog(wpProcessOperateLog);
+        //找/存下一个处理人
+        CurrentUtil.nextDeal(dispatchComplete.getId());
+
         //生成新的消息
         purchaseReply(orderId);
         //标记已读
@@ -990,6 +1051,9 @@ public class FdpFaultDispatchOrderService {
 
 
     public Result abandonDispatch(FdpFaultDispatchOrder dispatchAbandon) {
+
+        SysCompanyUsers users = CurrentUtil.getCurrent();
+
         Integer userId = CurrentUtil.getCurrent().getId();
 
         Date now = new Date();
@@ -1025,13 +1089,6 @@ public class FdpFaultDispatchOrderService {
             processLog.setProcessPersonId(userId);
             fdpFaultOrderProcessLogMapper.insertSelective(processLog);
         }
-
-        //修改hr表状态
-        FdpFaultDispatchHrRelation relation = new FdpFaultDispatchHrRelation();
-        relation.setDispatchOrderId(dispatchAbandon.getId());
-        relation.setFlagUsed(false);
-        fdpFaultDispatchHrRelationMapper.updateFlagUsedByOrderId(relation);
-
         //生成新的消息
         selectMessageInfo(dispatchAbandon.getId());
         ParamSysOperationMessage message = new ParamSysOperationMessage();
@@ -1048,6 +1105,19 @@ public class FdpFaultDispatchOrderService {
         message.setCompanyId(dispatchAbandon.getCompanyId());
         //id为dispatchRequestId
         setReadPurchase(dispatchAbandon.getFaultDispatchRequestId(), userId);
+
+        //保存操作记录
+        //放弃派工
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(dispatchAbandon.getId());
+        wpProcessOperateLog.setDescription("放弃派工");
+        //调用保存操作方法
+        CurrentUtil.recordLog(wpProcessOperateLog);
+        //找/存下一个处理人
+        CurrentUtil.nextDeal(dispatchAbandon.getId());
+
+
+
         return ResultUtil.success();
     }
 
@@ -1122,5 +1192,4 @@ public class FdpFaultDispatchOrderService {
         }
         return ResultUtil.errorBusinessMsg("开放完工资料失败！");
     }
-
 }

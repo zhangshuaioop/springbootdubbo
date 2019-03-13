@@ -35,7 +35,7 @@ public class DmiBrandController {
         Result result = service.getAllBrandByCompanyId(dmiBrand);
         logger.info("根据雇主公司的ID，获取公司所属品牌列表-结束,出参:"+result.toString());
         return result;
-}
+    }
 
     @ApiOperation(
             value = "根据ID，查看品牌详情",

@@ -48,11 +48,6 @@ public class FdpFaultDispatchOrderList {
     private Integer serviceTimeStart;
     private Integer serviceTimeEnd;
 
-    /**
-     * 批次号
-     */
-    private String batchNumber;
-
     public Date getExpectReplyTime() {
         return expectReplyTime;
     }
@@ -391,59 +386,4 @@ public class FdpFaultDispatchOrderList {
 //    public void setActualInvoiceRate(BigDecimal actualInvoiceRate) {
 //        this.actualInvoiceRate = actualInvoiceRate;
 //    }
-
-
-    public String getBatchNumber() {
-        return batchNumber;
-    }
-
-    public void setBatchNumber(String batchNumber) {
-        this.batchNumber = batchNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "FdpFaultDispatchOrderList{" +
-                "dispatchOrderNumber='" + dispatchOrderNumber + '\'' +
-                ", vendorName='" + vendorName + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", storeName='" + storeName + '\'' +
-                ", dispatchModelRequest='" + dispatchModelRequest + '\'' +
-                ", province='" + province + '\'' +
-                ", city='" + city + '\'' +
-                ", serviceDistrict='" + serviceDistrict + '\'' +
-                ", serviceAddress='" + serviceAddress + '\'' +
-                ", username='" + username + '\'' +
-                ", dispatchStatus='" + dispatchStatus + '\'' +
-                ", updateTime=" + updateTime +
-                ", finishTime=" + finishTime +
-                ", createTime=" + createTime +
-                ", hrCount=" + hrCount +
-                ", createPerson='" + createPerson + '\'' +
-                ", actualCost=" + actualCost +
-                ", estimatedCost=" + estimatedCost +
-                ", estimatedPrice=" + estimatedPrice +
-                ", actualPrice=" + actualPrice +
-                ", dispatchDescription='" + dispatchDescription + '\'' +
-                ", equipmentRequest='" + equipmentRequest + '\'' +
-                ", otherRequest='" + otherRequest + '\'' +
-                ", lastDealPersonId=" + lastDealPersonId +
-                ", lastDealPerson='" + lastDealPerson + '\'' +
-                ", flagPaid=" + flagPaid +
-                ", customerSource='" + customerSource + '\'' +
-                ", actualMonetaryUnit='" + actualMonetaryUnit + '\'' +
-                ", estimatedMonetaryUnit='" + estimatedMonetaryUnit + '\'' +
-                ", actualPriceUnit='" + actualPriceUnit + '\'' +
-                ", estimatedPriceUnit='" + estimatedPriceUnit + '\'' +
-                ", otherSystemNumber='" + otherSystemNumber + '\'' +
-                ", backupDeviceRequest='" + backupDeviceRequest + '\'' +
-                ", lastDealTime=" + lastDealTime +
-                ", serviceDate=" + serviceDate +
-                ", expectReplyTime=" + expectReplyTime +
-                ", expectCompleteTime=" + expectCompleteTime +
-                ", serviceTimeStart=" + serviceTimeStart +
-                ", serviceTimeEnd=" + serviceTimeEnd +
-                ", batchNumber='" + batchNumber + '\'' +
-                '}';
-    }
 }

@@ -2,16 +2,21 @@ package com.company.springboot.service.fdp;
 
 import com.alibaba.fastjson.JSON;
 import com.company.springboot.entity.fdp.*;
-import com.company.springboot.entity.trc.TrcFdpDispatchTimeChangeLog;
+import com.company.springboot.entity.sys.SysCompanyUsers;
+import com.company.springboot.entity.wp.*;
 import com.company.springboot.mapper.fdp.*;
-import com.company.springboot.mapper.trc.TrcFdpDispatchTimeChangeLogMapper;
+import com.company.springboot.mapper.wp.*;
 import com.company.springboot.utils.CurrentUtil;
+
+import com.company.springboot.utils.DateUtil;
 import com.company.springboot.utils.Result;
 import com.company.springboot.utils.ResultUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,12 +45,6 @@ public class FdpDispatchHrRelationService {
 
     @Resource
     private FdpFaultDispatchOrderService fdpFaultDispatchOrderService;
-
-    @Resource
-    private TrcFdpDispatchTimeChangeLogMapper trcFdpDispatchTimeChangeLogMapper;
-
-    @Resource
-    private FdpDispatchServiceProcessLogMapper fdpDispatchServiceProcessLogMapper;
 
     public Result profileLogShow(Integer dispatchOrderId) {
         //查询之前是否上传完工资料
@@ -91,7 +90,9 @@ public class FdpDispatchHrRelationService {
         return ResultUtil.success(null);
     }
 
-    public Result extendProfile(String json) {
+    public Result extendProfile(String json) throws ParseException{
+
+        SysCompanyUsers users = CurrentUtil.getCurrent();
 
         FdpFaultDispatchHrRelation hrRelation = JSON.parseObject(json, FdpFaultDispatchHrRelation.class);
         FdpFaultDispatchOrder order = JSON.parseObject(json, FdpFaultDispatchOrder.class);
@@ -106,6 +107,17 @@ public class FdpDispatchHrRelationService {
         FdpFaultDispatchOrder od = fdpFaultDispatchOrderMapper.selectByPrimaryKey(hrRelation.getDispatchOrderId());
 
         od.setPrivateNote(order.getPrivateNote());
+
+        //保存操作记录
+        //采购补充完工资料
+        WpProcessOperateLog wpProcessOperateLog = new WpProcessOperateLog();
+        wpProcessOperateLog.setOrderId(od.getId());
+        wpProcessOperateLog.setDescription("采购补充完工资料");
+        //调用保存操作方法
+        CurrentUtil.recordLog(wpProcessOperateLog);
+        //找/存下一个处理人
+        CurrentUtil.nextDeal(od.getId());
+
         fdpFaultDispatchOrderMapper.updateByPrimaryKeySelective(od);
 
         return ResultUtil.success();
@@ -142,15 +154,6 @@ public class FdpDispatchHrRelationService {
         hr.setEstimatedCostMemo(hrRelation.getEstimatedCostMemo());
         hr.setFlagDeleted(false);
         hr.setFlagAvailable(true);
-        //成本拆分
-        hr.setEstimatedDeviceCost(hrRelation.getEstimatedDeviceCost());
-        hr.setEstimatedDeviceMemo(hrRelation.getEstimatedDeviceMemo());
-        hr.setEstimatedCommResourceCost(hrRelation.getEstimatedCommResourceCost());
-        hr.setEstimatedCommResourceMemo(hrRelation.getEstimatedCommResourceMemo());
-        hr.setEstimatedHrCost(hrRelation.getEstimatedHrCost());
-        hr.setEstimatedHrMemo(hrRelation.getEstimatedHrMemo());
-        hr.setEstimatedOtherCost(hrRelation.getEstimatedOtherCost());
-        hr.setEstimatedOtherMemo(hrRelation.getEstimatedOtherMemo());
         hr.setId(null);
         fdpFaultDispatchHrRelationMapper.insertHrRelation(hr);
 
@@ -282,20 +285,4 @@ public class FdpDispatchHrRelationService {
         return ResultUtil.errorBusinessMsg("操作失败");
     }
 
-    public Result selectServiceTime(int orderId) {
-        FdpDispatchServiceProcessLog fdpDispatchServiceProcessLog = new FdpDispatchServiceProcessLog();
-        List<FdpDispatchServiceProcessLog> listSum = new ArrayList<FdpDispatchServiceProcessLog>();
-        List<TrcFdpDispatchTimeChangeLog> listTrc = trcFdpDispatchTimeChangeLogMapper.selectByOrderId(orderId);
-        if(listTrc!=null&&listTrc.size()>0){
-            fdpDispatchServiceProcessLog.setOperateTime(listTrc.get(0).getBeforTime());
-        }else{
-            FdpFaultDispatchOrder order = fdpFaultDispatchOrderMapper.selectByPrimaryKey(orderId);
-            fdpDispatchServiceProcessLog.setOperateTime(order.getEstimatedServiceTime());
-        }
-        fdpDispatchServiceProcessLog.setOperateDescription("预计上门时间");
-        listSum.add(fdpDispatchServiceProcessLog);
-        List<FdpDispatchServiceProcessLog> list = fdpDispatchServiceProcessLogMapper.findList(orderId);
-        listSum.addAll(list);
-        return ResultUtil.success(listSum);
-    }
 }

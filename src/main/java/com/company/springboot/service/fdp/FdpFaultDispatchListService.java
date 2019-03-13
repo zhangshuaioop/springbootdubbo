@@ -47,7 +47,7 @@ public class FdpFaultDispatchListService {
         Page<GetFdpProcessDetailedList> result = processMapper.getProcessListByObject(param);
         // 需要把Page包装成PageInfo对象才能序列化。该插件也默认实现了一个PageInfo
         PageInfo<GetFdpProcessDetailedList> pageInfo = new PageInfo<>(result);
-        if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+        if(pageInfo.getList()==null||pageInfo.getList().size()==0){
             pageInfo.setPageNum(1);
             pageInfo.setPageSize(10);
         }
@@ -204,7 +204,7 @@ public class FdpFaultDispatchListService {
             PageHelper.startPage(param.getPageNum(), param.getPageSize());
             Page<GetBelongPersonCollerctList> persons = processMapper.selectDealPersonList(param);
             PageInfo<GetBelongPersonCollerctList> pageInfo = new PageInfo<>(persons);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
@@ -251,7 +251,7 @@ public class FdpFaultDispatchListService {
             PageHelper.startPage(param.getPageNum(), param.getPageSize());
             Page<GetDemandCollectList> persons = processMapper.selectDemandList(param);
             PageInfo<GetDemandCollectList> pageInfo = new PageInfo<>(persons);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
@@ -404,7 +404,7 @@ public class FdpFaultDispatchListService {
             PageHelper.startPage(param.getPageNum(), param.getPageSize());
             Page<GetDemandCollectList> persons = processMapper.selectDemandList(param);
             PageInfo<GetDemandCollectList> pageInfo = new PageInfo<>(persons);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
@@ -450,7 +450,7 @@ public class FdpFaultDispatchListService {
             PageHelper.startPage(param.getPageNum(), param.getPageSize());
             Page<GetBelongPersonCollerctList> persons = processMapper.selectDealPersonList(param);
             PageInfo<GetBelongPersonCollerctList> pageInfo = new PageInfo<>(persons);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
@@ -491,7 +491,7 @@ public class FdpFaultDispatchListService {
             getFaultDispatchRequestList.setUserCompanyId(CurrentUtil.getCurrent().getCompanyId());
             Page<FdpFaultdispatchRequestList> list = orderMapper.selectOrderList(getFaultDispatchRequestList);
             PageInfo<FdpFaultdispatchRequestList> pageInfo = new PageInfo<>(list);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
@@ -510,11 +510,9 @@ public class FdpFaultDispatchListService {
 
     public Result exportFaultOrderRequestList(GetFaultDispatchRequestList getFaultDispatchRequestList) {
 
-//        SysCompanyUsers user = CurrentUtil.getCurrent();
-//        List<FdpFaultdispatchRequestList> list = requestList(getFaultDispatchRequestList, user.getId(), user.getCompanyId());
+        SysCompanyUsers user = CurrentUtil.getCurrent();
 
-        getFaultDispatchRequestList.setUserCompanyId(CurrentUtil.getCurrent().getCompanyId());
-        List<FdpFaultdispatchRequestList> list = orderMapper.selectOrderList(getFaultDispatchRequestList);
+        List<FdpFaultdispatchRequestList> list = requestList(getFaultDispatchRequestList, user.getId(), user.getCompanyId());
 
         // 下载
         long fileName = System.currentTimeMillis();
@@ -551,7 +549,7 @@ public class FdpFaultDispatchListService {
                 PageHelper.startPage(getFaultDispatchRequestList.getPageNum(), getFaultDispatchRequestList.getPageSize());
                 // 需要把Page包装成PageInfo对象才能序列化。该插件也默认实现了一个PageInfo
                 PageInfo<FaultOrderRequestCount> pageInfo = new PageInfo<>(requestList);
-                if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+                if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                     pageInfo.setPageNum(1);
                     pageInfo.setPageSize(10);
                 }
@@ -577,11 +575,11 @@ public class FdpFaultDispatchListService {
 
         SysCompanyUsers users = sysCompanyUsersMapper.selectByPrimaryKey(userId);
 
-        if (users != null) {
-            if (users.getActObjectId() != null) {
+        if(users!=null){
+            if(users.getActObjectId()!=null){
                 getFaultDispatchRequestList.setVendorId(users.getActObjectId());
             }
-            if (users.getActType() != null) {
+            if(users.getActType()!=null){
                 getFaultDispatchRequestList.setActType(users.getActType());
             }
 
@@ -669,8 +667,24 @@ public class FdpFaultDispatchListService {
 
     public Result getFaultOrderRequestCountByDemand(GetFaultDispatchRequestList getFaultDispatchRequestList) {
         SysCompanyUsers user = CurrentUtil.getCurrent();
-
-        return requestListCompany(getFaultDispatchRequestList, user.getCompanyId());
+        List<FaultOrderRequestCountByCompany> list = new ArrayList<>();
+        List<FaultOrderRequestCountByCompany> listCompany = requestListCompany(getFaultDispatchRequestList, user.getCompanyId());
+        if (listCompany.size() > 0) {
+            if (getFaultDispatchRequestList.getPageNum() != null && getFaultDispatchRequestList.getPageSize() != null) {
+                PageHelper.startPage(getFaultDispatchRequestList.getPageNum(), getFaultDispatchRequestList.getPageSize());
+                // 需要把Page包装成PageInfo对象才能序列化。该插件也默认实现了一个PageInfo
+                PageInfo<FaultOrderRequestCountByCompany> pageInfo = new PageInfo<>(listCompany);
+                if(pageInfo.getList()==null||pageInfo.getList().size()==0){
+                    pageInfo.setPageNum(1);
+                    pageInfo.setPageSize(10);
+                }
+                return ResultUtil.success(pageInfo);
+            } else {
+                return ResultUtil.success(listCompany);
+            }
+        } else {
+            return ResultUtil.success(list);
+        }
     }
 
     /**
@@ -681,36 +695,55 @@ public class FdpFaultDispatchListService {
      * @param companyId
      * @return
      */
-    private Result requestListCompany(GetFaultDispatchRequestList getFaultDispatchRequestList, int companyId) {
-        List<FaultOrderRequestCountByCompany> listAll;
+    private List<FaultOrderRequestCountByCompany> requestListCompany(GetFaultDispatchRequestList getFaultDispatchRequestList, int companyId) {
+        List<FaultOrderRequestCount> listAll;
         getFaultDispatchRequestList.setUserCompanyId(companyId);
         if (getFaultDispatchRequestList.getPageNum() != null && getFaultDispatchRequestList.getPageSize() != null) {
             // 需要把Page包装成PageInfo对象才能序列化。该插件也默认实现了一个PageInfo
             PageHelper.startPage(getFaultDispatchRequestList.getPageNum(), getFaultDispatchRequestList.getPageSize());
-            List<FaultOrderRequestCountByCompany> listPage = orderMapper.selectRequestByCompanyAll(getFaultDispatchRequestList);
-            PageInfo<FaultOrderRequestCountByCompany> pageInfo = new PageInfo<>(listPage);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            Page<FaultOrderRequestCount> listPage = orderMapper.selectRequestByCompanyAll(getFaultDispatchRequestList);
+            PageInfo<FaultOrderRequestCount> pageInfo = new PageInfo<>(listPage);
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
-            return ResultUtil.success(pageInfo);
+            listAll = pageInfo.getList();
         } else {
             listAll = orderMapper.selectRequestByCompanyAll(getFaultDispatchRequestList);
-            return ResultUtil.success(listAll);
         }
+
+        List<FaultOrderRequestCount> listComplete = orderMapper.selectRequestByCompanyComplete(getFaultDispatchRequestList);
+
+        List<FaultOrderRequestCount> listUnComplete = orderMapper.selectRequestByCompanyUnComplete(getFaultDispatchRequestList);
+
+        List<FaultOrderRequestCountByCompany> listCompany = new ArrayList<FaultOrderRequestCountByCompany>();
+        for (FaultOrderRequestCount cc : listAll) {
+            FaultOrderRequestCountByCompany list = new FaultOrderRequestCountByCompany();
+            list.setCompanyName(cc.getCompanyName());
+            list.setAllCount(cc.getRequestCountAll());
+            for (FaultOrderRequestCount complete : listComplete) {
+                if (cc.getCompanyName().equals(complete.getCompanyName())) {
+                    list.setCompleteCount(complete.getRequestCountComplete());
+
+                }
+            }
+            for (FaultOrderRequestCount unComplete : listUnComplete) {
+
+                if (cc.getCompanyName().equals(unComplete.getCompanyName())) {
+                    list.setUnCompleteCount(unComplete.getReqeustCountUncomplete());
+                }
+            }
+            listCompany.add(list);
+        }
+        return listCompany;
+
 
     }
 
     public Result requestCountByCreatePerson(GetFaultDispatchRequestList getFaultDispatchRequestList) {
-        getFaultDispatchRequestList.setUserCompanyId(CurrentUtil.getCurrent().getCompanyId());
-        PageHelper.startPage(getFaultDispatchRequestList.getPageNum(), getFaultDispatchRequestList.getPageSize());
-        List<FaultOrderRequestCountByCompany> persons = fdpFaultDispatchOrderMapper.selectRequestByCreatePersonyAll(getFaultDispatchRequestList);
-        PageInfo<FaultOrderRequestCountByCompany> pageInfo = new PageInfo<>(persons);
-        if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
-            pageInfo.setPageNum(1);
-            pageInfo.setPageSize(10);
-        }
-        return ResultUtil.success(pageInfo);
+        SysCompanyUsers user = CurrentUtil.getCurrent();
+        List<FaultOrderRequestCountByCompany> listCreatePerson = requestCountByPerson(getFaultDispatchRequestList, user.getCompanyId());
+        return ResultUtil.success(listCreatePerson);
     }
 
     /**
@@ -722,32 +755,59 @@ public class FdpFaultDispatchListService {
      * @Author Liukan
      * @Date 2018/06/19
      */
-    private Result requestCountByPerson(GetFaultDispatchRequestList getFaultDispatchRequestList, int companyId) {
+    private List<FaultOrderRequestCountByCompany> requestCountByPerson(GetFaultDispatchRequestList getFaultDispatchRequestList, int companyId) {
 
-        List<FaultOrderRequestCountByCompany> listAll;
+        List<FaultOrderRequestCount> listAll;
         getFaultDispatchRequestList.setUserCompanyId(companyId);
         if (getFaultDispatchRequestList.getPageNum() != null && getFaultDispatchRequestList.getPageSize() != null) {
             PageHelper.startPage(getFaultDispatchRequestList.getPageNum(), getFaultDispatchRequestList.getPageSize());
-            List<FaultOrderRequestCountByCompany> persons = fdpFaultDispatchOrderMapper.selectRequestByCreatePersonyAll(getFaultDispatchRequestList);
-            PageInfo<FaultOrderRequestCountByCompany> pageInfo = new PageInfo<>(persons);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            Page<FaultOrderRequestCount> persons = fdpFaultDispatchOrderMapper.selectRequestByCreatePersonyAll(getFaultDispatchRequestList);
+            PageInfo<FaultOrderRequestCount> pageInfo = new PageInfo<>(persons);
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
-            return ResultUtil.success(pageInfo);
+            listAll = pageInfo.getList();
         } else {
             listAll = fdpFaultDispatchOrderMapper.selectRequestByCreatePersonyAll(getFaultDispatchRequestList);
-            return ResultUtil.success(listAll);
         }
 
+        List<FaultOrderRequestCount> listComplete = orderMapper.selectRequestByCreatePersonyComplete(getFaultDispatchRequestList);
+
+        List<FaultOrderRequestCount> listUnComplete = orderMapper.selectRequestByCreatePersonyUnComplete(getFaultDispatchRequestList);
+
+        List<FaultOrderRequestCountByCompany> listCreatePerson = new ArrayList<FaultOrderRequestCountByCompany>();
+
+
+        for (FaultOrderRequestCount cc : listAll
+        ) {
+            FaultOrderRequestCountByCompany list = new FaultOrderRequestCountByCompany();
+            list.setCompanyName(cc.getUsername());
+            list.setAllCount(cc.getRequestCountAll());
+            for (FaultOrderRequestCount complete : listComplete
+            ) {
+                if (cc.getUsername().equals(complete.getUsername())) {
+                    list.setCompleteCount(complete.getRequestCountComplete());
+
+                }
+            }
+            for (FaultOrderRequestCount unComplete : listUnComplete) {
+
+                if (cc.getUsername().equals(unComplete.getUsername())) {
+                    list.setUnCompleteCount(unComplete.getReqeustCountUncomplete());
+                }
+            }
+            listCreatePerson.add(list);
+        }
+
+        return listCreatePerson;
     }
 
     public Result exportFaultOrderRequestCount(GetFaultDispatchRequestList getFaultDispatchRequestList) {
         SysCompanyUsers user = CurrentUtil.getCurrent();
         List<FaultOrderRequestCount> requestCountList = requestCountList(getFaultDispatchRequestList, user.getId());
-        getFaultDispatchRequestList.setUserCompanyId(user.getCompanyId());
-        List<FaultOrderRequestCountByCompany> requestListCompany = orderMapper.selectRequestByCompanyAll(getFaultDispatchRequestList);
-        List<FaultOrderRequestCountByCompany> requestCountByPerson = fdpFaultDispatchOrderMapper.selectRequestByCreatePersonyAll(getFaultDispatchRequestList);
+        List<FaultOrderRequestCountByCompany> requestListCompany = requestListCompany(getFaultDispatchRequestList, user.getId());
+        List<FaultOrderRequestCountByCompany> requestCountByPerson = requestCountByPerson(getFaultDispatchRequestList, user.getId());
         // 下载
         long fileName = System.currentTimeMillis();
         OutputStream out;
@@ -780,7 +840,7 @@ public class FdpFaultDispatchListService {
             Page<FdpFaultDispatchOrderList> persons = fdpFaultDispatchOrderMapper.selectDispatchOrderList(getFdpFaultdispatchOrderList);
             // 需要把Page包装成PageInfo对象才能序列化。该插件也默认实现了一个PageInfo
             PageInfo<FdpFaultDispatchOrderList> pageInfo = new PageInfo<>(persons);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
@@ -792,7 +852,6 @@ public class FdpFaultDispatchListService {
     }
 
     public Result exportFaultOrderList(GetFdpFaultdispatchOrderList getFdpFaultdispatchOrderList) {
-        getFdpFaultdispatchOrderList.setUserCompanyId(CurrentUtil.getCurrent().getCompanyId());
         List<FdpFaultDispatchOrderList> list = fdpFaultDispatchOrderMapper.selectDispatchOrderList(getFdpFaultdispatchOrderList);
 
         // 下载
@@ -823,12 +882,9 @@ public class FdpFaultDispatchListService {
 
         List<FaultOrderCount> orderList = faultOrderCount(getFaultDispatchRequestList);
 
+        PageInfo<FaultOrderRequestCountByCompany> listCompany = faultOrderCountByDemand(getFaultDispatchRequestList);
 
-        List<FaultOrderRequestCountByCompany> persons = fdpFaultDispatchOrderMapper.selectOrderByCompanyAll(getFaultDispatchRequestList);
-        PageInfo<FaultOrderRequestCountByCompany> listCompany = new PageInfo<>(persons);
-
-
-        List<FaultOrderRequestCountByCompany> listLastDealPerson = fdpFaultDispatchOrderMapper.selectOrderByDealPersonAll(getFaultDispatchRequestList);
+        List<FaultOrderRequestCountByCompany> listLastDealPerson = faultOrderCountByDealPerson(getFaultDispatchRequestList);
 
         // 下载
         long fileName = System.currentTimeMillis();
@@ -969,44 +1025,101 @@ public class FdpFaultDispatchListService {
         return orderList;
     }
 
-    private Result faultOrderCountByDemand(GetFaultDispatchRequestList getFaultDispatchRequestList) {
-        List<FaultOrderRequestCountByCompany> listAll;
-        getFaultDispatchRequestList.setUserCompanyId(CurrentUtil.getCurrent().getCompanyId());
+    private PageInfo<FaultOrderRequestCountByCompany> faultOrderCountByDemand(GetFaultDispatchRequestList getFaultDispatchRequestList) {
+        List<FaultOrderCount> listAll;
+        getFaultDispatchRequestList.setUserCompanyId(CurrentUtil.getCurrent().getId());
         if (getFaultDispatchRequestList.getPageNum() != null && getFaultDispatchRequestList.getPageSize() != null) {
             PageHelper.startPage(getFaultDispatchRequestList.getPageNum(), getFaultDispatchRequestList.getPageSize());
-            List<FaultOrderRequestCountByCompany> persons = fdpFaultDispatchOrderMapper.selectOrderByCompanyAll(getFaultDispatchRequestList);
-            PageInfo<FaultOrderRequestCountByCompany> pageInfo = new PageInfo<>(persons);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            Page<FaultOrderCount> persons = fdpFaultDispatchOrderMapper.selectOrderByCompanyAll(getFaultDispatchRequestList);
+            PageInfo<FaultOrderCount> pageInfo = new PageInfo<>(persons);
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
-            return ResultUtil.success(pageInfo);
+            listAll = pageInfo.getList();
         } else {
             listAll = fdpFaultDispatchOrderMapper.selectOrderByCompanyAll(getFaultDispatchRequestList);
-            return ResultUtil.success(listAll);
         }
 
+        List<FaultOrderCount> listComplete = fdpFaultDispatchOrderMapper.selectOrderByCompanyComplete(getFaultDispatchRequestList);
+
+        List<FaultOrderCount> listUnComplete = fdpFaultDispatchOrderMapper.selectOrderByCompanyUnComplete(getFaultDispatchRequestList);
+
+        List<FaultOrderRequestCountByCompany> listCompany = new ArrayList<FaultOrderRequestCountByCompany>();
+
+
+        for (FaultOrderCount cc : listAll) {
+            FaultOrderRequestCountByCompany list = new FaultOrderRequestCountByCompany();
+            list.setCompanyName(cc.getCompanyName());
+            list.setAllCount(cc.getOrderCountAll());
+            for (FaultOrderCount complete : listComplete) {
+                if (cc.getCompanyName().equals(complete.getCompanyName())) {
+                    list.setCompleteCount(complete.getOrderCountComplete());
+
+                }
+            }
+            for (FaultOrderCount unComplete : listUnComplete) {
+
+                if (cc.getCompanyName().equals(unComplete.getCompanyName())) {
+                    list.setUnCompleteCount(unComplete.getOrderCountUnComplete());
+                }
+            }
+            listCompany.add(list);
+        }
+
+
+        PageInfo<FaultOrderRequestCountByCompany> pageInfo = new PageInfo<>(listCompany);
+        if(pageInfo.getList()==null||pageInfo.getList().size()==0){
+            pageInfo.setPageNum(1);
+            pageInfo.setPageSize(10);
+        }
+
+        return pageInfo;
 
     }
 
-    private Result faultOrderCountByDealPerson(GetFaultDispatchRequestList getFaultDispatchRequestList) {
+    private List<FaultOrderRequestCountByCompany> faultOrderCountByDealPerson(GetFaultDispatchRequestList getFaultDispatchRequestList) {
 
-        List<FaultOrderRequestCountByCompany> listAll;
-        getFaultDispatchRequestList.setUserCompanyId(CurrentUtil.getCurrent().getCompanyId());
+        List<FaultOrderCount> listAll;
+        getFaultDispatchRequestList.setUserCompanyId(CurrentUtil.getCurrent().getId());
         if (getFaultDispatchRequestList.getPageNum() != null && getFaultDispatchRequestList.getPageSize() != null) {
             PageHelper.startPage(getFaultDispatchRequestList.getPageNum(), getFaultDispatchRequestList.getPageSize());
-            Page<FaultOrderRequestCountByCompany> persons = fdpFaultDispatchOrderMapper.selectOrderByDealPersonAll(getFaultDispatchRequestList);
-            PageInfo<FaultOrderRequestCountByCompany> pageInfo = new PageInfo<>(persons);
-            if (pageInfo.getList() == null || pageInfo.getList().size() == 0) {
+            Page<FaultOrderCount> persons = fdpFaultDispatchOrderMapper.selectOrderByDealPersonAll(getFaultDispatchRequestList);
+            PageInfo<FaultOrderCount> pageInfo = new PageInfo<>(persons);
+            if(pageInfo.getList()==null||pageInfo.getList().size()==0){
                 pageInfo.setPageNum(1);
                 pageInfo.setPageSize(10);
             }
-            return ResultUtil.success(pageInfo);
+            listAll = pageInfo.getList();
         } else {
             listAll = fdpFaultDispatchOrderMapper.selectOrderByDealPersonAll(getFaultDispatchRequestList);
-            return ResultUtil.success(listAll);
         }
 
+        List<FaultOrderCount> listComplete = fdpFaultDispatchOrderMapper.selectOrderByCreatePersonComplete(getFaultDispatchRequestList);
+
+        List<FaultOrderCount> listUnComplete = fdpFaultDispatchOrderMapper.selectOrderByCreatePersonUnComplete(getFaultDispatchRequestList);
+
+        List<FaultOrderRequestCountByCompany> listLastDealPerson = new ArrayList<FaultOrderRequestCountByCompany>();
+
+
+        for (FaultOrderCount cc : listAll) {
+            FaultOrderRequestCountByCompany list = new FaultOrderRequestCountByCompany();
+            list.setCompanyName(cc.getCompanyName());
+            list.setAllCount(cc.getOrderCountAll());
+            for (FaultOrderCount complete : listComplete) {
+                if (cc.getCompanyName().equals(complete.getCompanyName())) {
+                    list.setCompleteCount(complete.getOrderCountComplete());
+                }
+            }
+            for (FaultOrderCount unComplete : listUnComplete) {
+                if (cc.getCompanyName().equals(unComplete.getCompanyName())) {
+                    list.setUnCompleteCount(unComplete.getOrderCountUnComplete());
+                }
+            }
+            listLastDealPerson.add(list);
+        }
+
+        return listLastDealPerson;
 
     }
 
@@ -1018,20 +1131,27 @@ public class FdpFaultDispatchListService {
      */
     public Result getFaultOrderCount(GetFaultDispatchRequestList getFaultDispatchRequestList) {
 
-//        List<FaultOrderCount> orderList = faultOrderCount(getFaultDispatchRequestList);
-        getFaultDispatchRequestList.setUserCompanyId(CurrentUtil.getCurrent().getCompanyId());
-        FaultOrderCount count = fdpFaultDispatchOrderMapper.selectOrderCounts(getFaultDispatchRequestList);
-        return ResultUtil.success(count);
+        List<FaultOrderCount> orderList = faultOrderCount(getFaultDispatchRequestList);
+
+        return ResultUtil.success(orderList);
 
     }
 
     public Result getFaultOrderCountByDemand(GetFaultDispatchRequestList getFaultDispatchRequestList) {
 
-        return faultOrderCountByDemand(getFaultDispatchRequestList);
+        PageInfo<FaultOrderRequestCountByCompany> listCompany = faultOrderCountByDemand(getFaultDispatchRequestList);
+        return ResultUtil.success(listCompany);
     }
 
     public Result getFaultOrderCountByDealPerson(GetFaultDispatchRequestList getFaultDispatchRequestList) {
-        return faultOrderCountByDealPerson(getFaultDispatchRequestList);
+        PageHelper.startPage(getFaultDispatchRequestList.getPageNum(), getFaultDispatchRequestList.getPageSize());
+        List<FaultOrderRequestCountByCompany> listLastDealPerson = faultOrderCountByDealPerson(getFaultDispatchRequestList);
+        PageInfo<FaultOrderRequestCountByCompany> pageInfo = new PageInfo<>(listLastDealPerson);
+        if(pageInfo.getList()==null||pageInfo.getList().size()==0){
+            pageInfo.setPageNum(1);
+            pageInfo.setPageSize(10);
+        }
+        return ResultUtil.success(pageInfo);
     }
 
 }

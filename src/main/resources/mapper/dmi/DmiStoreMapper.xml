@@ -427,7 +427,7 @@
         AS address
         from dmi_store store
         LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
-        LEFT JOIN (dmi_contact_store_relation contactStoreRelation INNER JOIN dmi_contact contact ON contact.id = contactStoreRelation.contact_id and contactStoreRelation.flag_major =1)
+        LEFT JOIN (dmi_contact_store_relation contactStoreRelation INNER JOIN dmi_contact contact ON contact.id = contactStoreRelation.contact_id and flag_major =1)
         ON store.id = contactStoreRelation.store_id
         <if test="province != null">
             RIGHT
@@ -446,14 +446,14 @@
             AND district = #{district,jdbcType=VARCHAR}
         </if>) building ON building.id = buildingAddr.building_id AND buildingAddr.flag_deleted = 0) ON buildingAddr.id = store.address_id
         where store.flag_deleted = 0
-        <if test="companyId != 0 and companyId != null">
+        <if test="companyId != 0">
             AND store.company_id = #{companyId,jdbcType=INTEGER}
         </if>
-        <if test="areaId != 0 and areaId != null">
+        <if test="areaId != 0">
             AND store.area_id =#{areaId,jdbcType=INTEGER}
 
         </if>
-        <if test="brandId != 0 and brandId != null">
+        <if test="brandId != 0">
             AND store.brand_id = #{brandId,jdbcType=INTEGER}
         </if>
     </select>
@@ -545,24 +545,22 @@
         LEFT JOIN dmi_brand companyBrand ON store.brand_id = companyBrand.id
         LEFT JOIN (dmi_contact_store_relation contactStoreRelation INNER JOIN dmi_contact contact ON contact.id = contactStoreRelation.contact_id)
         ON store.id = contactStoreRelation.store_id and contactStoreRelation.flag_major = 1
-        <!--<if test="province != null">-->
-            <!--RIGHT-->
-        <!--</if>-->
-        <!--<if test="province == null">-->
-            <!--LEFT-->
-        <!--</if>-->
-        <!--JOIN (bif_building_address buildingAddr INNER JOIN (SELECT * FROM bif_building WHERE flag_deleted = 0-->
-        <!--<if test="province != null and province !=''">-->
-            <!--AND province = #{province,jdbcType=VARCHAR}-->
-        <!--</if>-->
-        <!--<if test="city != null and city !=''">-->
-            <!--AND city = #{city,jdbcType=VARCHAR}-->
-        <!--</if>-->
-        <!--<if test="district != null and district !='' ">-->
-            <!--AND district = #{district,jdbcType=VARCHAR}-->
-        <!--</if>) building ON building.id = buildingAddr.building_id AND buildingAddr.flag_deleted = 0) ON buildingAddr.id = store.address_id-->
-        LEFT JOIN bif_building building ON store.building_id = building.id and building.flag_deleted = 0
-        LEFT JOIN bif_building_address buildingAddr ON buildingAddr.building_id =store.building_id and buildingAddr.flag_deleted = 0
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN (bif_building_address buildingAddr INNER JOIN (SELECT * FROM bif_building WHERE flag_deleted = 0
+        <if test="province != null and province !=''">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null and city !=''">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null and district !='' ">
+            AND district = #{district,jdbcType=VARCHAR}
+        </if>) building ON building.id = buildingAddr.building_id AND buildingAddr.flag_deleted = 0) ON buildingAddr.id = store.address_id
         where store.flag_deleted = 0
         <if test="companyId !=null and companyId != 0">
             AND store.company_id = #{companyId,jdbcType=INTEGER}
@@ -575,15 +573,6 @@
         </if>
         <if test=" brandId !=null and brandId != 0">
             AND store.brand_id = #{brandId,jdbcType=INTEGER}
-        </if>
-        <if test="province != null and province !=''">
-            AND building.province = #{province,jdbcType=VARCHAR}
-        </if>
-        <if test="city != null and city !=''">
-            AND building.city = #{city,jdbcType=VARCHAR}
-        </if>
-        <if test="district != null and district !='' ">
-            AND building.district = #{district,jdbcType=VARCHAR}
         </if>
         order by store.update_time desc
     </select>

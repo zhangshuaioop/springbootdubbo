@@ -56,11 +56,6 @@ public class ParamFdpFaultDispatchRequestQuery extends BaseEntity {
 	//当前登陆人id
 	private Integer userCompanyId;
 
-	/**
-	 * 品牌id
-	 */
-	private Integer brandId;
-
 	public String getBatchNumber() {
 		return batchNumber;
 	}
@@ -237,14 +232,6 @@ public class ParamFdpFaultDispatchRequestQuery extends BaseEntity {
 		this.userCompanyId = userCompanyId;
 	}
 
-	public Integer getBrandId() {
-		return brandId;
-	}
-
-	public void setBrandId(Integer brandId) {
-		this.brandId = brandId;
-	}
-
 	@Override
 	public String toString() {
 		return "ParamFdpFaultDispatchRequestQuery{" +
@@ -270,7 +257,6 @@ public class ParamFdpFaultDispatchRequestQuery extends BaseEntity {
 				", warningStatus='" + warningStatus + '\'' +
 				", batchNumber='" + batchNumber + '\'' +
 				", userCompanyId=" + userCompanyId +
-				", brandId=" + brandId +
 				'}';
 	}
 }

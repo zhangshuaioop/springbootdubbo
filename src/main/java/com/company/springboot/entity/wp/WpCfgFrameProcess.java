@@ -1,12 +1,13 @@
 package com.company.springboot.entity.wp;
 
+import com.company.springboot.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
 
 @ApiModel(value = "框架流程配置")
-public class WpCfgFrameProcess {
+public class WpCfgFrameProcess extends BaseEntity {
     @ApiModelProperty(value = "id", example = "1", required = true)
     private Integer id;
 
@@ -24,6 +25,9 @@ public class WpCfgFrameProcess {
 
     @ApiModelProperty(value = "框架流程编号。同一套框架流程多次编辑时，此编号不变化。", example = "1", required = true)
     private String frameProcessCode;
+
+    @ApiModelProperty(value = "是否启用1启用0停用", example = "1", required = true)
+    private Boolean flagEnable;
 
     @ApiModelProperty(value = "是否生效", example = "1", required = true)
     private Boolean flagAvaliable;
@@ -48,6 +52,12 @@ public class WpCfgFrameProcess {
 
     @ApiModelProperty(value = "生效时间", example = "1", required = true)
     private Date avaliableTime;
+
+    @ApiModelProperty(value = "合作公司名称", example = "1", required = true)
+    private String partnerCompanyName;
+
+    @ApiModelProperty(value = "框架版本id", example = "1", required = true)
+    private Integer versionId;
 
     public Integer getId() {
         return id;
@@ -161,6 +171,30 @@ public class WpCfgFrameProcess {
         this.avaliableTime = avaliableTime;
     }
 
+    public String getPartnerCompanyName() {
+        return partnerCompanyName;
+    }
+
+    public void setPartnerCompanyName(String partnerCompanyName) {
+        this.partnerCompanyName = partnerCompanyName;
+    }
+
+    public Integer getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(Integer versionId) {
+        this.versionId = versionId;
+    }
+
+    public Boolean getFlagEnable() {
+        return flagEnable;
+    }
+
+    public void setFlagEnable(Boolean flagEnable) {
+        this.flagEnable = flagEnable;
+    }
+
     @Override
     public String toString() {
         return "WpCfgFrameProcess{" +
@@ -170,6 +204,7 @@ public class WpCfgFrameProcess {
                 ", processName='" + processName + '\'' +
                 ", description='" + description + '\'' +
                 ", frameProcessCode='" + frameProcessCode + '\'' +
+                ", flagEnable=" + flagEnable +
                 ", flagAvaliable=" + flagAvaliable +
                 ", flagDeleted=" + flagDeleted +
                 ", flagTested=" + flagTested +
@@ -178,6 +213,8 @@ public class WpCfgFrameProcess {
                 ", updatePerson=" + updatePerson +
                 ", updateTime=" + updateTime +
                 ", avaliableTime=" + avaliableTime +
+                ", partnerCompanyName='" + partnerCompanyName + '\'' +
+                ", versionId=" + versionId +
                 '}';
     }
 }

@@ -214,7 +214,7 @@
 
     SELECT region.id id,
         region.region_name region,
-        IFNULL(route.id,0) detailId,
+        route.id detailId,
         region.parent_id parentId,
 
         CASE WHEN route.id IS NOT NULL

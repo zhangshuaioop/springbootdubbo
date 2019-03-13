@@ -40,6 +40,8 @@
         <result column="actual_cost_memo" property="actualCostMemo" jdbcType="VARCHAR"/>
         <result column="flag_no_price" property="flagNoPrice" jdbcType="BIT"/>
         <result column="private_note" property="privateNote" jdbcType="VARCHAR"/>
+        <result column="flag_is_process2" property="flagIsProcess2" jdbcType="BIT" />
+        <result column="wp_frame_process_id" property="wpFrameProcessId" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List">
     id, company_id, store_id, fault_order_id, root_fault_order_id, fault_dispatch_request_id,
@@ -48,7 +50,7 @@
     actual_invoice_title, actual_invoice_tax_id_number, actual_invoice_number, actual_invoice_fee,
     actual_invoice_rate, last_deal_person_id, last_deal_time, dispatch_status,vendor_id,flag_customer_confirm,
     flag_dispatcher_confirm,process_stage,actual_price,actual_price_unit,cancel_reason,abandon_reason,actual_price_memo,
-    actual_cost_memo,flag_no_price,private_note
+    actual_cost_memo,flag_no_price,private_note,flag_is_process2,wp_frame_process_id
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -218,8 +220,11 @@
             <if test="batchNumber != null and batchNumber!= '' ">
                 batch_number,
             </if>
-            <if test="shortOrderCode != null">
-                short_order_code,
+            <if test="flagIsProcess2 != null">
+                flag_is_process2,
+            </if>
+            <if test="wpFrameProcessId != null">
+                wp_frame_process_id,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -352,8 +357,11 @@
             <if test="batchNumber != null and batchNumber!= '' ">
                 #{batchNumber,jdbcType=VARCHAR},
             </if>
-            <if test="shortOrderCode != null">
-                #{shortOrderCode,jdbcType=VARCHAR},
+            <if test="flagIsProcess2 != null">
+                #{flagIsProcess2,jdbcType=BIT},
+            </if>
+            <if test="wpFrameProcessId != null">
+                #{wpFrameProcessId,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -654,140 +662,7 @@
     <!--时间： 2018-04-26-->
     <select id="getOrderListByObject" parameterType="com.company.springboot.entity.fdp.GetDispatchOrderListRequest"
             resultType="com.company.springboot.entity.fdp.GetDispatchOrderListResp">
-
-
         select
-        dispatchOrder.actual_price actualPrice,
-        dispatchOrder.actual_price_unit actualPriceUnit,
-        ffdhr.flag_enable_modify_profile flagEnableModifyProfile,
-        dispatchOrder.flag_no_price flagNoPrice,
-        dispatchRequest.create_time AS createTime,
-        dispatchOrder.process_stage AS processStage,
-        dispatchOrder.flag_dispatcher_confirm flagDispatcherConfirm,
-        dispatchRequest.update_time updateTime,
-        dispatchRequest.urgency_request urgencyRequest,
-        dispatchOrder.fault_order_id faultOrderId,
-        dispatchOrder.last_deal_person_id as lastDealPersonId,
-        dispatchOrder.dispatch_status as dispatchStatus,
-        dispatchRequest.id as dispatchRequestId,
-        dispatchOrder.id as dispatchOrderId,
-        dispatchRequest.fault_order_number as reportNumber,
-        IFNULL(companyInfo.company_name,dispatchRequest.other_brand) as companyName,
-        IFNULL(storeInfo.store_name,dispatchRequest.other_store) as storeName,
-        dispatchRequest.dispatch_model_request as dispatchRequest,
-        dispatchRequest.service_province as serviceProvince,
-        dispatchRequest.service_city as serviceCity,
-        dispatchOrder.fault_order_id as processId,
-        dispatchOrder.actual_cost actualCost,
-        ffdhr.estimated_price AS estimatedPrice,
-        ffdhr.estimated_cost AS estimatedCost,
-        ffdhr.hr_dispatch_status AS hrDispatchStatus,
-        dispatchOrder.dispatch_order_number as dispatchOrderNumber,
-        dispatchOrder.last_deal_time as lastDealTime,
-        dispatchRequest.service_date as serviceDate,
-        dispatchRequest.upload_file_name as uploadFileName,
-        dispatchRequest.complete_profile_template_name as completeProfileTemplateName,
-        dispatchRequest.service_address as serviceAddress,
-        dispatchRequest.other_system_number as otherSystemNumber,
-        dispatchRequest.dispatch_model_request as dispatchModelRequest,
-        dispatchRequest.dispatch_description as dispatchDescription,
-        dispatchRequest.equipment_request as equipmentRequest,
-        dispatchRequest.backup_device_request as backupDeviceRequest,
-        dispatchRequest.other_request as otherRequest,
-        dispatchRequest.expect_reply_time as expectReplyTime,
-        dispatchRequest.expect_complete_time as expectCompleteTime,
-        dispatchRequest.submit_time as submitTime,
-        dispatchRequest.flag_emergency as flagEmergency,
-        dispatchRequest.batch_number batchNumber,
-        project.project_name as projectName,
-        userInfo.username as dealPersonName,
-        sys.username as createPerson,
-        dispatchOrder.finish_time as finishTime,
-        dispatchOrder.short_order_code as shortOrderCode
-        from
-        (select orders.* from fdp_fault_dispatch_order orders
-        LEFT JOIN sys_company_users users ON orders.last_deal_person_id=users.id
-        where orders.flag_deleted = 0
-        <if test=" companyId!=null and  companyId != 0">
-            and orders.company_id = #{companyId,jdbcType=INTEGER}
-        </if>
-        <if test=" userCompanyId!=null and  userCompanyId != 0">
-            and users.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test=" storeId!=null and storeId != 0">
-            and orders.store_id = #{storeId,jdbcType=INTEGER}
-        </if>
-        <if test=" dealPersonId!=null and dealPersonId != 0">
-            and orders.last_deal_person_id = #{dealPersonId,jdbcType=INTEGER}
-        </if>
-        <if test="dispatchDateStart != null">
-            and orders.estimated_service_time &gt;= #{dispatchDateStart,jdbcType=TIMESTAMP}
-        </if>
-        <if test="dispatchDateEnd != null">
-            and orders.estimated_service_time &lt;= #{dispatchDateEnd,jdbcType=TIMESTAMP}
-        </if>
-        <if test="dispatchOrderNumber != null">
-            and orders.dispatch_order_number LIKE '%${dispatchOrderNumber}%'
-        </if>
-        <if test="dispatchStatus != null">
-            AND orders.dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
-        </if>
-        <if test="vendorId != null">
-            AND orders.vendor_id = #{vendorId,jdbcType=INTEGER}
-        </if>
-        <if test=" batchNumber != null and batchNumber !=''">
-            AND orders.batch_number LIKE CONCAT('%', #{batchNumber,jdbcType=VARCHAR}, '%')
-        </if>
-
-        ) dispatchOrder
-        left join
-        (select * from fdp_fault_order_dispatch_request where flag_deleted = 0 AND flag_draft = 0
-        <if test="dispatchType!= null">
-            AND dispatch_model_request  LIKE  CONCAT('%', #{dispatchType,jdbcType=VARCHAR}, '%')
-        </if>
-        <if test=" companyId!=null and  companyId != 0">
-            and company_id = #{companyId,jdbcType=INTEGER}
-        </if>
-        <if test="storeId != 0">
-            and store_id = #{storeId,jdbcType=INTEGER}
-        </if>
-        <if test="requestDateStart != null">
-            and update_time >= #{requestDateStart,jdbcType=TIMESTAMP}
-        </if>
-        <if test="requestDateEnd != null">
-            and update_time &lt;= #{requestDateEnd,jdbcType=TIMESTAMP}
-        </if>
-        ) dispatchRequest
-        on dispatchOrder.fault_dispatch_request_id = dispatchRequest.id
-
-        left join dmi_store storeInfo on dispatchOrder.store_id = storeInfo.id
-        left join sys_company_users userInfo on dispatchOrder.last_deal_person_id = userInfo.id
-        left join sys_company_users sys on dispatchRequest.create_person = sys.id
-        left join dmi_company_info companyInfo on sys.company_id = companyInfo.id
-        left join pjt_project project on project.id = dispatchRequest.project_id
-        LEFT JOIN (SELECT * FROM fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0) ffdhr on ffdhr.dispatch_order_id = dispatchOrder.id
-        where 1=1
-        <if test="status == 'pending'">
-            AND  (dispatchOrder.dispatch_status = "NEW" OR dispatchOrder.dispatch_status = "DEALING" OR dispatchOrder.dispatch_status = "USED"  OR dispatchOrder.dispatch_status = "DISPATCHAGAIN"  OR dispatchOrder.dispatch_status = "REJECTFILE" OR ffdhr.flag_enable_modify_profile = 1)
-        </if>
-        <if test="status == 'dealing'">
-            AND (dispatchOrder.dispatch_status = "NEEDCONFIRM" OR dispatchOrder.dispatch_status = "FILENEEDCONFIRM") AND ffdhr.flag_enable_modify_profile = 0
-        </if>
-        <if test="status == 'history'">
-            AND (dispatchOrder.dispatch_status = "CANCEL" OR dispatchOrder.dispatch_status = "ABANDON" OR dispatchOrder.dispatch_status = "COMPLETE")
-        </if>
-        <if test="projectName!=null and projectName!='' ">
-            AND  project.project_name LIKE CONCAT('%', #{projectName,jdbcType=VARCHAR}, '%')
-        </if>
-        <if test="projectCode!=null and projectCode!='' ">
-            AND  project.project_code LIKE CONCAT('%', #{projectCode,jdbcType=VARCHAR}, '%')
-        </if>
-        order by dispatchOrder.last_deal_time desc
-
-
-
-
-        <!--select
         dispatchOrder.actual_price actualPrice,
         dispatchOrder.actual_price_unit actualPriceUnit,
         ffdhr.flag_enable_modify_profile flagEnableModifyProfile,
@@ -834,6 +709,9 @@
         dispatchRequest.batch_number batchNumber,
         project.project_name as projectName,
         userInfo.username as dealPersonName,
+        dispatchOrder.flag_is_process2 as flagIsProcess2,
+        dispatchOrder.wp_frame_process_id as wpFrameProcessId,
+        step.operate_type operateType,
         sys.username as createPerson
         from (select * from fdp_fault_order_dispatch_request where flag_deleted = 0 AND flag_draft = 0
         <if test="dispatchType!= null">
@@ -864,9 +742,9 @@
         <if test=" storeId!=null and storeId != 0">
             and orders.store_id = #{storeId,jdbcType=INTEGER}
         </if>
-        <if test=" dealPersonId!=null and dealPersonId != 0">
-            and orders.last_deal_person_id = #{dealPersonId,jdbcType=INTEGER}
-        </if>
+        <!--<if test=" dealPersonId!=null and dealPersonId != 0">-->
+            <!--and orders.last_deal_person_id = #{dealPersonId,jdbcType=INTEGER}-->
+        <!--</if>-->
         <if test="dispatchDateStart != null">
             and orders.estimated_service_time &gt;= #{dispatchDateStart,jdbcType=TIMESTAMP}
         </if>
@@ -894,23 +772,25 @@
         left join sys_company_users sys on dispatchRequest.create_person = sys.id
         left join dmi_intergration_vendors vendors on dispatchOrder.vendor_id = vendors.id
         left join pjt_project project on project.id = dispatchRequest.project_id
+        left join wp_frame_process process on process.id = dispatchOrder.wp_frame_process_id
+        left join wp_cfg_process_step step on step.id=process.current_process_step_id AND step.flag_deleted=0
         LEFT JOIN (SELECT * FROM fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0) ffdhr on
         ffdhr.dispatch_order_id = dispatchOrder.id
         where 1=1
-        <if test="status == 'pending'">
-            AND (dispatchOrder.dispatch_status = "NEW" OR dispatchOrder.dispatch_status = "DEALING" OR
-            dispatchOrder.dispatch_status = "USED" OR dispatchOrder.dispatch_status = "DISPATCHAGAIN" OR
-            dispatchOrder.dispatch_status = "REJECTFILE" OR ffdhr.flag_enable_modify_profile = 1)
-        </if>
-        <if test="status == 'dealing'">
-            AND (dispatchOrder.dispatch_status = "NEEDCONFIRM" OR dispatchOrder.dispatch_status = "FILENEEDCONFIRM") AND
-            ffdhr.flag_enable_modify_profile = 0
-        </if>
-        <if test="status == 'history'">
-            AND (dispatchOrder.dispatch_status = "CANCEL" OR dispatchOrder.dispatch_status = "ABANDON" OR
-            dispatchOrder.dispatch_status = "COMPLETE")
-        </if>
-        order by dispatchOrder.last_deal_time desc-->
+        <!--<if test="status == 'pending'">-->
+            <!--AND (dispatchOrder.dispatch_status = "NEW" OR dispatchOrder.dispatch_status = "DEALING" OR-->
+            <!--dispatchOrder.dispatch_status = "USED" OR dispatchOrder.dispatch_status = "DISPATCHAGAIN" OR-->
+            <!--dispatchOrder.dispatch_status = "REJECTFILE" OR ffdhr.flag_enable_modify_profile = 1)-->
+        <!--</if>-->
+        <!--<if test="status == 'dealing'">-->
+            <!--AND (dispatchOrder.dispatch_status = "NEEDCONFIRM" OR dispatchOrder.dispatch_status = "FILENEEDCONFIRM") AND-->
+            <!--ffdhr.flag_enable_modify_profile = 0-->
+        <!--</if>-->
+        <!--<if test="status == 'history'">-->
+            <!--AND (dispatchOrder.dispatch_status = "CANCEL" OR dispatchOrder.dispatch_status = "ABANDON" OR-->
+            <!--dispatchOrder.dispatch_status = "COMPLETE")-->
+        <!--</if>-->
+        order by dispatchOrder.last_deal_time desc
 
 
     </select>
@@ -1357,31 +1237,7 @@
                 actual_price_memo = #{actualPriceMemo,jdbcType=VARCHAR},
             </if>
             <if test="privateNote != null">
-                private_note = #{privateNote,jdbcType=VARCHAR},
-            </if>
-            <if test="actualDeviceCost != null">
-                actual_device_cost = #{actualDeviceCost,jdbcType=DECIMAL},
-            </if>
-            <if test="actualDeviceMemo != null">
-                actual_device_memo = #{actualDeviceMemo,jdbcType=VARCHAR},
-            </if>
-            <if test="actualCommResourceCost != null">
-                actual_comm_resource_cost = #{actualCommResourceCost,jdbcType=DECIMAL},
-            </if>
-            <if test="actualCommResourceMemo != null">
-                actual_comm_resource_memo = #{actualCommResourceMemo,jdbcType=VARCHAR},
-            </if>
-            <if test="actualHrCost != null">
-                actual_hr_cost = #{actualHrCost,jdbcType=DECIMAL},
-            </if>
-            <if test="actualHrMemo != null">
-                actual_hr_memo = #{actualHrMemo,jdbcType=VARCHAR},
-            </if>
-            <if test="actualOtherCost != null">
-                actual_other_cost = #{actualOtherCost,jdbcType=DECIMAL},
-            </if>
-            <if test="actualOtherMemo != null">
-                actual_other_memo = #{actualOtherMemo,jdbcType=VARCHAR},
+                private_note = #{privateNote,jdbcType=VARCHAR}
             </if>
         </set>
 
@@ -1392,105 +1248,139 @@
     <select id="selectOrderList" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
             resultType="com.company.springboot.entity.fdp.FdpFaultdispatchRequestList">
 
-        SELECT IFNULL(info.company_name,'其他') companyName,IFNULL(ds.store_name , request.other_store) storeName,
-        IFNULL(db.brand_name , request.other_brand) brandName,
-        CASE WHEN request.source_type='CUSTOMER' THEN
-        '客服'
-        ELSE
-        '派工'
-        END customerSource,
-        request.service_province province,
-        dic.description dispatchStatus,
-        sys.real_name createPersonName,
-        dod.dispatch_order_number dispatchOrderNumber,
-        request.service_city city,
-        request.service_address serviceAddress,
-        request.dispatch_model_request dispatchModelRequest,
-        request.hr_count hrCount,
-        request.backup_device_request,
-        request.other_request otherRequest,
-        request.dispatch_description dispatchDescription,
-        CASE WHEN hr.estimated_price is null THEN '0' else hr.estimated_price END AS estimatedPrice,
-        CASE WHEN dod.actual_price is null OR 0>dod.actual_price THEN '0' else dod.actual_price END AS actualPrice,
-        IFNULL(dica.description,'人民币') actualPriceUnit,
-        IFNULL(dice.description,'人民币') estimatedPriceUnit,
-        request.create_time createTime,
-        dod.last_deal_time lastDealTime,
-        request.batch_number batchNumber
+        select
+        ffdo.dispatch_order_number dispatchOrderNumber,
+        CASE WHEN ci.company_name is not null THEN ci.company_name else odr.other_brand END AS companyName,
+        CASE WHEN st.store_name is not null THEN st.store_name else odr.other_store END AS storeName,
+        odr.dispatch_model_request dispatchModelRequest,
+        odr.service_province province,
+        CASE WHEN odr.fault_order_id is null THEN '派工' else '客服'END AS customerSource,
+        odr.service_city city,
+        ffdo.flag_finish flagFinish,
+        ffdo.finish_type finishType,
+        ffdo.last_deal_time lastDealTime,
+        db.brand_name_cn brandName,
+        ffdo.dispatch_status dispatchStatus,
+        odr.create_time createTime,
+        ffdo.hr_count hrCount,
+        su.real_name createPersonName,
+        ffdo.actual_price actualPrice,
+        (select description from cfg_data_dictionary where value = ffdo.actual_price_unit ) actualPriceUnit,
+        CASE WHEN dhr.estimated_price is null THEN '0' else dhr.estimated_price END AS estimatedPrice,
+        CASE WHEN (select description from cfg_data_dictionary where value = dhr.estimated_price_unit ) is null THEN
+        '人民币' else (select description from cfg_data_dictionary where value = dhr.estimated_price_unit ) END AS
+        estimatedPriceUnit,
+        odr.dispatch_description dispatchDescription,
+        odr.service_address serviceAddress,
+        odr.backup_device_request deviceRequest,
+        odr.other_request otherRequest,
+        odr.equipment_request equipmentRequest,
+        odr.other_request otherRequest,
+        odr.create_time createTime
+        from fdp_fault_dispatch_order ffdo
+        left join fdp_fault_order_dispatch_request odr on ffdo.fault_dispatch_request_id =odr.id
+        LEFT JOIN sys_company_users users ON odr.create_person=users.id
+        left join fdp_fault_order_process op on ffdo.fault_order_id =op.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0) dhr on
+        ffdo.id= dhr.dispatch_order_id
+        and dhr.flag_used =1
+        left join dmi_company_info ci on ci.id = ffdo.company_id
+        left join dmi_store st on st.id = ffdo.store_id
+        left join bif_building bb on bb.id = st.building_id
+        left join dmi_brand db on db.id = st.brand_id
+        left join sys_company_users su on su.id = odr.create_person
+        left join bif_dispatch_human_resource bdhr on bdhr.id = dhr.dispatch_main_hr_id
+        where 1=1
+        <!--and (select company_id from sys_company_users where id = odr.create_person) = #{userCompanyId,jdbcType=INTEGER}-->
 
-        FROM fdp_fault_order_dispatch_request request
-        LEFT JOIN sys_company_users sys ON sys.id = request.create_person
-        LEFT JOIN dmi_company_info info ON info.id=request.company_id
-        LEFT JOIN fdp_fault_dispatch_order dod ON request.id = dod.fault_dispatch_request_id AND dod.flag_deleted = 0
-        LEFT JOIN dmi_store ds ON ds.id = request.store_id
-        LEFT JOIN dmi_brand db ON db.id = ds.brand_id
-        LEFT JOIN fdp_fault_dispatch_hr_relation hr ON hr.dispatch_order_id=dod.id and hr.flag_deleted = 0 and hr.flag_used = 1
-        LEFT JOIN cfg_data_dictionary dic ON dic.`value`= dod.dispatch_status AND dic.type='DISPATCH_PROCESS_STATUS'
-        LEFT JOIN cfg_data_dictionary dica ON dica.`value`= dod.actual_price_unit AND dica.type='MONETARY_UNIT'
-        LEFT JOIN cfg_data_dictionary dice ON dice.`value`= hr.estimated_price_unit AND dice.type='MONETARY_UNIT'
-        WHERE request.flag_deleted = 0 and sys.flag_deleted=0 AND dod.dispatch_status is NOT null
-        <if test="userCompanyId != null">
-            and sys.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
-            and request.company_id = #{companyId,jdbcType=INTEGER}
-        </if>
-        <if test="customerSource == '客服'">
-            and request.source_type = 'CUSTOMER'
-        </if>
-        <if test="customerSource == '派工'">
-            and request.source_type = 'SYS'
-        </if>
-        <if test="createPerson != null">
-            and request.create_person = #{createPerson,jdbcType=INTEGER}
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
         </if>
         <if test="city != null">
-            and request.service_city = #{city,jdbcType=VARCHAR}
-        </if>
-        <if test="province != null">
-            and request.service_province = #{province,jdbcType=VARCHAR}
+            and odr.service_city =#{city,jdbcType=VARCHAR}
         </if>
 
+        <if test="type ==0 ">
+            and odr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and odr.fault_order_id is null
+        </if>
+
+        <if test="userCompanyId != null">
+            and users.company_id = #{userCompanyId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId !=0 and companyId != '-1'">
+            and odr.company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId == '-1' ">
+            and odr.company_id = 0
+        </if>
+        <if test="dispatchStatus =='COMPLETE' ">
+            and ffdo.dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dispatchStatus== 'UNCOMPLETE'">
+            AND ffdo.dispatch_status != 'COMPLETE'
+            AND ffdo.dispatch_status != 'CANCEL'
+            AND ffdo.dispatch_status != 'ABANDON'
+        </if>
+        <if test="dispatchStatus== 'CANCEL'">
+            AND (ffdo.dispatch_status = 'CANCEL'
+
+            or ffdo.dispatch_status = 'ABANDON')
+        </if>
+        <if test="createPerson != null">
+            and odr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
         <if test="createTimeStart != null">
-            and request.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}
+            <![CDATA[
+          and odr.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}
+
+          ]]>
         </if>
 
         <if test="createTimeEnd != null">
-            and #{createTimeEnd,jdbcType=TIMESTAMP} >= request.create_time
+            <![CDATA[
+          and odr.create_time <=  DATE_ADD(#{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)
+
+           ]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[
+              and ffdo.dispatch_status='COMPLETE'  and ffdo.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}
+              ]]>
         </if>
 
-        <if test="userCompleteTimeStart != null">
-            and dod.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}
-        </if>
         <if test="userCompleteTimeEnd != null">
-            and #{userCompleteTimeEnd,jdbcType=TIMESTAMP} >= dod.last_deal_time
+            <![CDATA[
+              and ffdo.dispatch_status='COMPLETE'  and ffdo.last_deal_time <=  DATE_ADD(#{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)
+               ]]>
         </if>
 
         <if test="estimatedPriceStart != null">
-            and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}
+            <![CDATA[
+                  and dhr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}
+             ]]>
         </if>
 
         <if test="estimatedPriceEnd != null">
-            and #{estimatedPriceEnd,jdbcType=DECIMAL} >= hr.estimated_price
+            <![CDATA[
+                  and dhr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+             ]]>
         </if>
 
         <if test="actualPriceStart != null">
-            and dod.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}
+            <![CDATA[
+                        and ffdo.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}
+                   ]]>
         </if>
 
         <if test="actualPriceEnd != null">
-            and #{actualPriceEnd,jdbcType=DECIMAL} >= dod.actual_price
-        </if>
-        <if test="dispatchStatus !=null and dispatchStatus != 'UNCOMPLETE'  ">
-            and dod.dispatch_status=#{dispatchStatus,jdbcType=VARCHAR}
-        </if>
-        <if test="dispatchStatus== 'UNCOMPLETE'">
-            AND dod.dispatch_status != 'COMPLETE'
-            AND dod.dispatch_status != 'CANCEL'
-            AND dod.dispatch_status != 'ABANDON'
+            <![CDATA[
+                  and ffdo.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}
+             ]]>
         </if>
 
-        ORDER BY request.update_time desc
 
     </select>
 
@@ -1592,7 +1482,7 @@
             resultType="com.company.springboot.entity.fdp.FdpFaultDispatchOrderList">
         select
         ffdo.dispatch_order_number dispatchOrderNumber,
-        IFNULL(ci.company_name,'其他') companyName,
+        ci.company_name companyName,
         CASE WHEN st.store_name is not null THEN st.store_name else odr.other_store END AS storeName,
 
         CASE
@@ -1630,8 +1520,7 @@
         odr.expect_complete_time expectCompleteTime,
         suu.real_name lastDealPerson,
         concat(bdhr.first_name,bdhr.last_name) hrPerson,
-        dhr.flag_provide_invoice flagProvideInvoice,
-        odr.batch_number batchNumber
+        dhr.flag_provide_invoice flagProvideInvoice
 
         from fdp_fault_dispatch_order ffdo
         LEFT JOIN sys_company_users users ON ffdo.last_deal_person_id=users.id
@@ -1639,12 +1528,12 @@
         left join fdp_fault_order_process op on ffdo.fault_order_id =op.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) dhr on
         ffdo.id= dhr.dispatch_order_id
+        left join dmi_company_info ci on ci.id = ffdo.company_id
         left join dmi_store st on st.id = ffdo.store_id
         left join bif_building bb on bb.id = st.building_id
         left join dmi_brand db on db.id = st.brand_id
         left join sys_company_users su on su.id = odr.create_person
         left join sys_company_users suu on suu.id=ffdo.last_deal_person_id
-        left join dmi_company_info ci on ci.id = su.company_id
         left join bif_dispatch_human_resource bdhr on bdhr.id = dhr.dispatch_main_hr_id
 
         where ffdo.dispatch_status !="DRAFT"
@@ -1742,156 +1631,186 @@
 
     <select id="selectRequestCount" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
             resultType="java.lang.Integer">
-        SELECT COUNT(1)
-        FROM fdp_fault_order_dispatch_request request
-        LEFT JOIN sys_company_users sys ON sys.id = request.create_person
-        LEFT JOIN dmi_company_info info ON info.id=request.company_id
-        LEFT JOIN fdp_fault_dispatch_order dod ON request.id = dod.fault_dispatch_request_id AND dod.flag_deleted = 0
-        LEFT JOIN dmi_store ds ON ds.id = request.store_id
-        LEFT JOIN dmi_brand db ON db.id = ds.brand_id
-        LEFT JOIN fdp_fault_dispatch_hr_relation hr ON hr.dispatch_order_id=dod.id and hr.flag_deleted = 0 and hr.flag_used = 1
-        LEFT JOIN cfg_data_dictionary dic ON dic.`value`= dod.dispatch_status AND dic.type='DISPATCH_PROCESS_STATUS'
-        WHERE request.flag_deleted = 0 and sys.flag_deleted=0 AND dod.dispatch_status is NOT null
-        <if test="userCompanyId != null">
-            and sys.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
-            and request.company_id = #{companyId,jdbcType=INTEGER}
-        </if>
-        <if test="customerSource == '客服'">
-            and request.company_id = 'CUSTOMER'
-        </if>
-        <if test="customerSource == '派工'">
-            and request.company_id = 'SYS'
-        </if>
-        <if test="createPerson != null">
-            and request.create_person = #{createPerson,jdbcType=INTEGER}
-        </if>
-        <if test="city != null">
-            and request.service_city = #{city,jdbcType=VARCHAR}
-        </if>
-        <if test="province != null">
-            and request.service_province = #{province,jdbcType=VARCHAR}
-        </if>
 
-        <if test="createTimeStart != null">
-            and request.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}
-        </if>
 
-        <if test="createTimeEnd != null">
-            and #{createTimeEnd,jdbcType=TIMESTAMP} >= request.create_time
+        SELECT
+        count( rr.id )
+        FROM
+        fdp_fault_order_dispatch_request rr
+        LEFT JOIN sys_company_users users ON rr.create_person=users.id
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        WHERE
+        1 = 1
+        AND rr.flag_deleted = 0
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
         </if>
-
-        <if test="userCompleteTimeStart != null">
-            and dod.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
         </if>
-        <if test="userCompleteTimeEnd != null">
-            and #{userCompleteTimeEnd,jdbcType=TIMESTAMP} >= dod.last_deal_time
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
         </if>
-
-        <if test="estimatedPriceStart != null">
-            and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}
+        <if test="userCompanyId!=null">
+            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
         </if>
-
-        <if test="estimatedPriceEnd != null">
-            and #{estimatedPriceEnd,jdbcType=DECIMAL} >= hr.estimated_price
+        <if test="companyId!=null and companyId !=0 ">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
-
-        <if test="actualPriceStart != null">
-            and dod.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}
-        </if>
-
-        <if test="actualPriceEnd != null">
-            and #{actualPriceEnd,jdbcType=DECIMAL} >= dod.actual_price
-        </if>
-        <if test="dispatchStatus !=null and dispatchStatus != 'UNCOMPLETE'  ">
-            and dod.dispatch_status=#{dispatchStatus,jdbcType=VARCHAR}
+        <if test="dispatchStatus == 'COMPLETE'">
+            and dispatch_status= #{dispatchStatus,jdbcType=VARCHAR}
         </if>
         <if test="dispatchStatus== 'UNCOMPLETE'">
-            AND dod.dispatch_status != 'COMPLETE'
-            AND dod.dispatch_status != 'CANCEL'
-            AND dod.dispatch_status != 'ABANDON'
+            AND o.dispatch_status != 'COMPLETE'
+            AND o.dispatch_status != 'CANCEL'
+            AND o.dispatch_status != 'ABANDON'
+
+        </if>
+        <if test="dispatchStatus== 'CANCEL'">
+            and( o.dispatch_status ='CANCEL'
+            OR o.dispatch_status ='ABANDON')
         </if>
 
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >=  #{createTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[  and rr.create_time <= DATE_ADD(  #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD( #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[ and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[  and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[   and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[  and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
     </select>
 
     <select id="selectRequestCompletePrice"
             parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
             resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
-        SELECT sum(dod.actual_price) actualPriceComplete,
-        IFNULL(dica.description,'人民币') actualPriceUnit,
-        sum(hr.estimated_price) estimatedPriceComplete,
-        IFNULL(dice.description,'人民币') estimatedPriceUnit
-        FROM fdp_fault_order_dispatch_request request
-        LEFT JOIN sys_company_users sys ON sys.id = request.create_person
-        LEFT JOIN dmi_company_info info ON info.id=request.company_id
-        LEFT JOIN fdp_fault_dispatch_order dod ON request.id = dod.fault_dispatch_request_id AND dod.flag_deleted = 0
-        LEFT JOIN dmi_store ds ON ds.id = request.store_id
-        LEFT JOIN dmi_brand db ON db.id = ds.brand_id
-        LEFT JOIN fdp_fault_dispatch_hr_relation hr ON hr.dispatch_order_id=dod.id and hr.flag_deleted = 0 and hr.flag_used = 1
-        LEFT JOIN cfg_data_dictionary dic ON dic.`value`= dod.dispatch_status AND dic.type='DISPATCH_PROCESS_STATUS'
-        LEFT JOIN cfg_data_dictionary dica ON dica.`value`= dod.actual_price_unit AND dica.type='MONETARY_UNIT'
-        LEFT JOIN cfg_data_dictionary dice ON dice.`value`= hr.estimated_price_unit AND dice.type='MONETARY_UNIT'
-        WHERE request.flag_deleted = 0 and sys.flag_deleted=0 AND dod.dispatch_status is NOT null
-        <if test="userCompanyId != null">
-            and sys.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
-            and request.company_id = #{companyId,jdbcType=INTEGER}
-        </if>
-        <if test="customerSource == '客服'">
-            and request.company_id = 'CUSTOMER'
-        </if>
-        <if test="customerSource == '派工'">
-            and request.company_id = 'SYS'
-        </if>
-        <if test="createPerson != null">
-            and request.create_person = #{createPerson,jdbcType=INTEGER}
-        </if>
-        <if test="city != null">
-            and request.service_city = #{city,jdbcType=VARCHAR}
-        </if>
-        <if test="province != null">
-            and request.service_province = #{province,jdbcType=VARCHAR}
-        </if>
+        select sum(hr.estimated_price) estimatedPriceComplete,
+        (select description from cfg_data_dictionary where value = hr.estimated_price_unit ) estimatedPriceUnit,
+        sum(o.actual_price) actualPriceComplete ,
+        (select description from cfg_data_dictionary where value = o.actual_price_unit ) actualPriceUnit
 
-        <if test="createTimeStart != null">
-            and request.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}
-        </if>
+        from (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr
+        left join fdp_fault_order_dispatch_request rr on rr.id =hr.fault_dispatch_request_id
+        LEFT JOIN sys_company_users users ON rr.create_person=users.id
+        left join fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
 
-        <if test="createTimeEnd != null">
-            and #{createTimeEnd,jdbcType=TIMESTAMP} >= request.create_time
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
         </if>
-
-        <if test="userCompleteTimeStart != null">
-            and dod.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}
+        <if test="userCompanyId!=null and userCompanyId !=0 ">
+            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
         </if>
-        <if test="userCompleteTimeEnd != null">
-            and #{userCompleteTimeEnd,jdbcType=TIMESTAMP} >= dod.last_deal_time
+        <if test="companyId!=null and companyId !=0 ">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
-
-        <if test="estimatedPriceStart != null">
-            and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}
-        </if>
-
-        <if test="estimatedPriceEnd != null">
-            and #{estimatedPriceEnd,jdbcType=DECIMAL} >= hr.estimated_price
-        </if>
-
-        <if test="actualPriceStart != null">
-            and dod.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}
-        </if>
-
-        <if test="actualPriceEnd != null">
-            and #{actualPriceEnd,jdbcType=DECIMAL} >= dod.actual_price
-        </if>
-        <if test="dispatchStatus !=null and dispatchStatus != 'UNCOMPLETE'  ">
-            and dod.dispatch_status=#{dispatchStatus,jdbcType=VARCHAR}
+        <if test="dispatchStatus == 'COMPLETE'">
+            and dispatch_status= #{dispatchStatus,jdbcType=VARCHAR}
         </if>
         <if test="dispatchStatus== 'UNCOMPLETE'">
-            AND dod.dispatch_status != 'COMPLETE'
-            AND dod.dispatch_status != 'CANCEL'
-            AND dod.dispatch_status != 'ABANDON'
+            AND o.dispatch_status != 'COMPLETE'
+            AND o.dispatch_status != 'CANCEL'
+            AND o.dispatch_status != 'ABANDON'
+
+        </if>
+        <if test="dispatchStatus== 'CANCEL'">
+            and( o.dispatch_status ='CANCEL'
+            OR o.dispatch_status ='ABANDON')
+        </if>
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
+
+        <if test="province != null">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[
+          and rr.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}   ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[  and rr.create_time <= DATE_ADD( #{createTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)]]>
+        </if>
+        <if test="userCompleteTimeStart != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}  ]]>
+        </if>
+        <if test="userCompleteTimeEnd != null">
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD( #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
+        </if>
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+            <![CDATA[  and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceStart != null">
+            <![CDATA[   and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualPriceEnd != null">
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
         </if>
 
 
@@ -1899,78 +1818,85 @@
 
 
     <select id="selectRequestByCompanyAll" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCountByCompany">
+            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
 
-        SELECT IFNULL(info.company_name,'其他') companyName,
-        COUNT(1) allCount,
-        SUM(dod.dispatch_status='COMPLETE') completeCount,
-        SUM(dod.dispatch_status!='COMPLETE' AND dod.dispatch_status!='CANCEL' AND dod.dispatch_status!='ABANDON') unCompleteCount
-        FROM fdp_fault_order_dispatch_request request
-        LEFT JOIN sys_company_users sys ON sys.id = request.create_person
-        LEFT JOIN dmi_company_info info ON info.id=request.company_id
-        LEFT JOIN fdp_fault_dispatch_order dod ON request.id = dod.fault_dispatch_request_id AND dod.flag_deleted = 0
-        LEFT JOIN dmi_store ds ON ds.id = request.store_id
-        LEFT JOIN dmi_brand db ON db.id = ds.brand_id
-        LEFT JOIN fdp_fault_dispatch_hr_relation hr ON hr.dispatch_order_id=dod.id and hr.flag_deleted = 0 and hr.flag_used = 1
-        LEFT JOIN cfg_data_dictionary dic ON dic.`value`= dod.dispatch_status AND dic.type='DISPATCH_PROCESS_STATUS'
-        WHERE request.flag_deleted = 0 and sys.flag_deleted=0 AND dod.dispatch_status is NOT null
-        <if test="userCompanyId != null">
-            and sys.company_id = #{userCompanyId,jdbcType=INTEGER}
+        SELECT DISTINCT count(rr.id) requestCountAll,
+        CASE WHEN rr.company_id=0 THEN
+        rr.other_brand
+        ELSE
+        c.company_name
+        END
+        companyName FROM
+        fdp_fault_order_dispatch_request rr
+        LEFT JOIN sys_company_users users ON rr.create_person=users.id
+        LEFT JOIN dmi_company_info c ON rr.company_id = c.id
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="userCompanyId !=null and userCompanyId != 0">
+            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
         </if>
-        <if test="companyId != null and companyId != 0">
-            and request.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="companyId !=null and companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
-        <if test="customerSource == '客服'">
-            and request.company_id = 'CUSTOMER'
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
         </if>
-        <if test="customerSource == '派工'">
-            and request.company_id = 'SYS'
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
         </if>
-        <if test="createPerson != null">
-            and request.create_person = #{createPerson,jdbcType=INTEGER}
+        <if test="createPerson !=null and createPerson != 0 ">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
         </if>
-        <if test="city != null">
-            and request.service_city = #{city,jdbcType=VARCHAR}
+        <if test="province != null and province !='' ">
+            and rr.service_province =#{province,jdbcType=VARCHAR}
         </if>
-        <if test="province != null">
-            and request.service_province = #{province,jdbcType=VARCHAR}
+        <if test="city != null and city!='' ">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
         </if>
-
         <if test="createTimeStart != null">
-            and request.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}
+            <![CDATA[
+          and rr.create_time >=#{createTimeStart,jdbcType=TIMESTAMP} ]]>
         </if>
-
         <if test="createTimeEnd != null">
-            and #{createTimeEnd,jdbcType=TIMESTAMP} >= request.create_time
+            <![CDATA[   and rr.create_time <= DATE_ADD(#{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
         </if>
-
         <if test="userCompleteTimeStart != null">
-            and dod.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}
+            <![CDATA[    and o.dispatch_status='COMPLETE'  and o.last_deal_time >=#{userCompleteTimeStart,jdbcType=TIMESTAMP}]]>
         </if>
         <if test="userCompleteTimeEnd != null">
-            and #{userCompleteTimeEnd,jdbcType=TIMESTAMP} >= dod.last_deal_time
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(#{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) ]]>
         </if>
-
+        <if test="actualCostStart != null">
+            <![CDATA[    and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL}]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[   and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL}]]>
+        </if>
         <if test="estimatedPriceStart != null">
-            and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}
+            <![CDATA[   and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
         </if>
-
         <if test="estimatedPriceEnd != null">
-            and #{estimatedPriceEnd,jdbcType=DECIMAL} >= hr.estimated_price
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}]]>
         </if>
-
         <if test="actualPriceStart != null">
-            and dod.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}
+            <![CDATA[   and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}]]>
         </if>
-
         <if test="actualPriceEnd != null">
-            and #{actualPriceEnd,jdbcType=DECIMAL} >= dod.actual_price
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}]]>
         </if>
-        <if test="dispatchStatus != null">
-            and dic.description = #{dispatchStatus,jdbcType=VARCHAR}
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}]]>
         </if>
-        group by info.id
-        ORDER BY request.update_time desc
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        GROUP BY rr.id
 
     </select>
     <select id="selectRequestByCompanyComplete"
@@ -2151,78 +2077,80 @@
 
     <select id="selectRequestByCreatePersonyAll"
             parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCountByCompany">
+            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
 
-        SELECT
-        COUNT(1) allCount,sys.real_name companyName,
-        SUM(dod.dispatch_status='COMPLETE') completeCount,
-        SUM(dod.dispatch_status!='COMPLETE' AND dod.dispatch_status!='CANCEL' AND dod.dispatch_status!='ABANDON') unCompleteCount
-        FROM fdp_fault_order_dispatch_request request
-        LEFT JOIN sys_company_users sys ON sys.id = request.create_person
-        LEFT JOIN dmi_company_info info ON info.id=request.company_id
-        LEFT JOIN fdp_fault_dispatch_order dod ON request.id = dod.fault_dispatch_request_id AND dod.flag_deleted = 0
-        LEFT JOIN dmi_store ds ON ds.id = request.store_id
-        LEFT JOIN dmi_brand db ON db.id = ds.brand_id
-        LEFT JOIN fdp_fault_dispatch_hr_relation hr ON hr.dispatch_order_id=dod.id and hr.flag_deleted = 0 and hr.flag_used = 1
-        LEFT JOIN cfg_data_dictionary dic ON dic.`value`= dod.dispatch_status AND dic.type='DISPATCH_PROCESS_STATUS'
-        WHERE request.flag_deleted = 0 and sys.flag_deleted=0 AND dod.dispatch_status is NOT null
-        <if test="userCompanyId != null">
-            and sys.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
-            and request.company_id = #{companyId,jdbcType=INTEGER}
-        </if>
-        <if test="customerSource == '客服'">
-            and request.company_id = 'CUSTOMER'
-        </if>
-        <if test="customerSource == '派工'">
-            and request.company_id = 'SYS'
-        </if>
-        <if test="createPerson != null">
-            and request.create_person = #{createPerson,jdbcType=INTEGER}
-        </if>
-        <if test="city != null">
-            and request.service_city = #{city,jdbcType=VARCHAR}
+
+        select count(rr.id) requestCountAll,c.username
+        from sys_company_users c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.create_person = c.id
+        LEFT JOIN sys_company_users users ON rr.create_person=users.id
+        LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
+        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
+        hr.dispatch_order_id =o.id
+        left join dmi_store st on st.id = o.store_id
+        left join bif_building bb on bb.id = st.building_id
+        where 1=1
+        <if test="createPerson !=null">
+            and rr.create_person =#{createPerson,jdbcType=INTEGER}
         </if>
         <if test="province != null">
-            and request.service_province = #{province,jdbcType=VARCHAR}
+            and rr.service_province =#{province,jdbcType=VARCHAR}
         </if>
-
+        <if test="city != null">
+            and rr.service_city =#{city,jdbcType=VARCHAR}
+        </if>
+        <if test="userCompanyId !=null and userCompanyId != 0">
+            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
+        </if>
+        <if test="companyId !=null and companyId != 0">
+            and rr.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="type ==0 ">
+            and rr.fault_order_id is not null
+        </if>
+        <if test="type ==1 ">
+            and rr.fault_order_id is null
+        </if>
         <if test="createTimeStart != null">
-            and request.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}
+            <![CDATA[
+          and rr.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}]]>
         </if>
-
         <if test="createTimeEnd != null">
-            and #{createTimeEnd,jdbcType=TIMESTAMP} >= request.create_time
+            <![CDATA[   and rr.create_time <= DATE_ADD( #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
         </if>
-
         <if test="userCompleteTimeStart != null">
-            and dod.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}
+            <![CDATA[  and o.dispatch_status='COMPLETE'  and o.last_deal_time >= #{userCompleteTimeStart,jdbcType=TIMESTAMP}]]>
         </if>
         <if test="userCompleteTimeEnd != null">
-            and #{userCompleteTimeEnd,jdbcType=TIMESTAMP} >= dod.last_deal_time
+            <![CDATA[   and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(  #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)]]>
         </if>
-
+        <if test="actualCostStart != null">
+            <![CDATA[   and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL} ]]>
+        </if>
+        <if test="actualCostEnd != null">
+            <![CDATA[  and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL} ]]>
+        </if>
         <if test="estimatedPriceStart != null">
-            and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}
+            <![CDATA[   and hr.actual_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
         </if>
-
         <if test="estimatedPriceEnd != null">
-            and #{estimatedPriceEnd,jdbcType=DECIMAL} >= hr.estimated_price
+            <![CDATA[ and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL} ]]>
         </if>
-
         <if test="actualPriceStart != null">
-            and dod.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}
+            <![CDATA[   and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL} ]]>
         </if>
-
         <if test="actualPriceEnd != null">
-            and #{actualPriceEnd,jdbcType=DECIMAL} >= dod.actual_price
+            <![CDATA[   and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL} ]]>
         </if>
-        <if test="dispatchStatus != null">
-            and dic.description = #{dispatchStatus,jdbcType=VARCHAR}
+        <if test="estimatedPriceStart != null">
+
+            <![CDATA[   and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL} ]]>
         </if>
-        group by request.create_person
-        ORDER BY request.update_time desc
+        <if test="estimatedPriceEnd != null">
+            <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
+            ]]>
+        </if>
+        GROUP BY c.username
 
     </select>
 
@@ -2520,140 +2448,6 @@
 
     </select>
 
-
-
-
-
-
-    <select id="selectOrderCounts" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
-
-
-        select count(1) orderCountAll,
-        SUM(o.dispatch_status = 'COMPLETE') orderCountComplete,
-        SUM(o.dispatch_status != 'COMPLETE' AND o.dispatch_status != 'CANCEL' AND o.dispatch_status != 'ABANDON') orderCountUnComplete,
-        SUM(o.dispatch_status ='CANCEL' or o.dispatch_status ='ABANDON') orderCountCancel,
-        SUM(hr.estimated_price) sumEstimatedPrice,
-        (select description from cfg_data_dictionary where value = hr.estimated_price_unit ) estimatedPriceUnit,
-        sum(o.actual_price) SumActualPrice,
-        (select description from cfg_data_dictionary where value = o.actual_price_unit ) actualPriceUnit,
-        sum(o.actual_cost) SumActualCost,
-        (select description from cfg_data_dictionary where value = o.actual_monetary_unit ) actualMonetaryUnit,
-        sum(hr.estimated_cost) SumEstimatedCost,
-        (select description from cfg_data_dictionary where value = hr.estimated_monetary_unit ) estimatedMonetaryUnit
-        from fdp_fault_dispatch_order o
-        LEFT JOIN sys_company_users users ON o.last_deal_person_id=users.id
-        left join fdp_fault_order_dispatch_request rr on o.fault_dispatch_request_id =rr.id
-        left join fdp_fault_order_process op on o.fault_order_id =op.id
-        left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
-        o.id= hr.dispatch_order_id
-        left join dmi_store st on st.id = o.store_id
-        left join bif_building bb on bb.id = st.building_id
-        left join dmi_brand db on db.id = st.brand_id
-        left join sys_company_users su on su.id = rr.create_person
-        left join sys_company_users suu on suu.id=o.last_deal_person_id
-        left join dmi_company_info ci on ci.id = su.company_id
-        left join bif_dispatch_human_resource bdhr on bdhr.id = hr.dispatch_main_hr_id
-        where o.dispatch_status !="DRAFT"
-        <if test="vendorId != 0">
-            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
-        </if>
-        <if test="type ==0 ">
-            and o.fault_order_id is not null
-        </if>
-        <if test="type ==1 ">
-            and o.fault_order_id is null
-        </if>
-
-        <if test="userCompanyId != null and userCompanyId != 0 ">
-            AND users.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
-            and o.company_id= #{companyId,jdbcType=INTEGER}
-        </if>
-        <if test="dispatchStatus != null and dispatchStatus != 'UNCOMPLETE' ">
-            and dispatch_status= #{dispatchStatus,jdbcType=VARCHAR}
-        </if>
-        <if test="dispatchStatus== 'UNCOMPLETE'">
-            AND o.dispatch_status != 'COMPLETE'
-            AND o.dispatch_status != 'CANCEL'
-            AND o.dispatch_status != 'ABANDON'
-        </if>
-        <if test="province != null">
-            and rr.service_province =#{province,jdbcType=VARCHAR}
-        </if>
-        <if test="city != null">
-            and rr.service_city =#{city,jdbcType=VARCHAR}
-        </if>
-        <if test="lastDealPersonId != 0">
-            and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
-        </if>
-
-        <if test="createTimeStart != null">
-            <![CDATA[
-          and rr.create_time >=    #{createTimeStart,jdbcType=TIMESTAMP}
-             ]]>
-        </if>
-        <if test="createTimeEnd != null">
-            <![CDATA[
-          and rr.create_time <= DATE_ADD( #{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)
-             ]]>
-        </if>
-        <if test="userCompleteTimeStart != null">
-            <![CDATA[
-          and o.dispatch_status='COMPLETE'  and o.last_deal_time >=    #{userCompleteTimeStart,jdbcType=TIMESTAMP}
-             ]]>
-        </if>
-        <if test="userCompleteTimeEnd != null">
-            <![CDATA[
-          and o.dispatch_status='COMPLETE'  and o.last_deal_time <= DATE_ADD(    #{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)
-             ]]>
-        </if>
-        <if test="actualCostStart != null">
-            <![CDATA[
-          and o.actual_cost >= #{actualCostStart,jdbcType=DECIMAL}
-             ]]>
-        </if>
-        <if test="actualCostEnd != null">
-            <![CDATA[
-          and o.actual_cost <=  #{actualCostEnd,jdbcType=DECIMAL}
-             ]]>
-        </if>
-        <if test="estimatedPriceStart != null">
-            <![CDATA[
-          and hr.estimated_price >= #{estimatedPriceStart,jdbcType=DECIMAL}
-             ]]>
-        </if>
-        <if test="estimatedPriceEnd != null">
-            <![CDATA[
-          and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
-             ]]>
-        </if>
-        <if test="actualPriceStart != null">
-            <![CDATA[
-          and o.actual_price >= #{actualPriceStart,jdbcType=DECIMAL}
-             ]]>
-        </if>
-        <if test="actualPriceEnd != null">
-            <![CDATA[
-          and o.actual_price <=  #{actualPriceEnd,jdbcType=DECIMAL}
-             ]]>
-        </if>
-        <if test="estimatedCostStart != null">
-            <![CDATA[
-          and hr.estimated_cost >= #{estimatedCostStart,jdbcType=DECIMAL}
-             ]]>
-        </if>
-        <if test="estimatedCostEnd != null">
-            <![CDATA[
-          and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}
-         ]]>
-        </if>
-
-
-    </select>
-
-
     <select id="selectOrderCompletePrice" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
             resultType="com.company.springboot.entity.fdp.FaultOrderCount">
         select
@@ -2751,25 +2545,19 @@
 
 
     <select id="selectOrderByCompanyAll" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCountByCompany">
-        select COUNT(o.id) allCount,IFNULL(c.company_name,'其他') companyName,
-        SUM(o.dispatch_status = 'COMPLETE') completeCount,
-        SUM(o.dispatch_status != 'COMPLETE' AND o.dispatch_status != 'CANCEL' AND o.dispatch_status != 'ABANDON') unCompleteCount,
-        db.brand_name brandName
-        from fdp_fault_dispatch_order o
-        LEFT JOIN sys_company_users users ON o.last_deal_person_id=users.id
-        left join fdp_fault_order_dispatch_request odr on o.fault_dispatch_request_id =odr.id
-        left join fdp_fault_order_process op on o.fault_order_id =op.id
+            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
+
+        select count(o.id) orderCountAll,c.company_name companyName
+        from dmi_company_info c
+        LEFT JOIN fdp_fault_dispatch_order o ON o.company_id = c.id
+        LEFT JOIN sys_company_users users ON users.id = o.last_deal_person_id
+        left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
-        o.id= hr.dispatch_order_id
+        hr.fault_dispatch_request_id = odr.id
         left join dmi_store st on st.id = o.store_id
         left join bif_building bb on bb.id = st.building_id
-        left join dmi_brand db on db.id = st.brand_id
-        left join sys_company_users su on su.id = odr.create_person
-        left join sys_company_users suu on suu.id=o.last_deal_person_id
-        left join dmi_company_info c on c.id = su.company_id
-        left join bif_dispatch_human_resource bdhr on bdhr.id = hr.dispatch_main_hr_id
-        where o.dispatch_status !="DRAFT"
+        where 1=1
+        AND o.flag_deleted = 0
         <if test="vendorId != 0">
             and o.vendor_id= #{vendorId,jdbcType=INTEGER}
         </if>
@@ -2831,7 +2619,7 @@
         <if test="estimatedCostEnd != null">
             <![CDATA[and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}]]>
         </if>
-        GROUP BY c.id
+        GROUP BY c.company_name
 
     </select>
 
@@ -3003,24 +2791,18 @@
 
     <select id="selectOrderByDealPersonAll"
             parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCountByCompany">
-        select count(o.id) allCount,c.real_name companyName,
-        SUM(o.dispatch_status = 'COMPLETE') completeCount,
-        SUM(o.dispatch_status != 'COMPLETE' AND o.dispatch_status != 'CANCEL' AND o.dispatch_status != 'ABANDON') unCompleteCount
-        from fdp_fault_dispatch_order o
-        LEFT JOIN sys_company_users c ON o.last_deal_person_id=c.id
-        left join fdp_fault_order_dispatch_request odr on o.fault_dispatch_request_id =odr.id
-        left join fdp_fault_order_process op on o.fault_order_id =op.id
+            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
+
+
+        select count(o.id) orderCountAll,c.username companyName
+        from sys_company_users c
+        LEFT JOIN fdp_fault_dispatch_order o on o.last_deal_person_id = c.id
+        left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
-        o.id= hr.dispatch_order_id
+        hr.fault_dispatch_request_id = odr.id
         left join dmi_store st on st.id = o.store_id
         left join bif_building bb on bb.id = st.building_id
-        left join dmi_brand db on db.id = st.brand_id
-        left join sys_company_users su on su.id = odr.create_person
-        left join sys_company_users suu on suu.id=o.last_deal_person_id
-        left join dmi_company_info ci on ci.id = su.company_id
-        left join bif_dispatch_human_resource bdhr on bdhr.id = hr.dispatch_main_hr_id
-        where o.dispatch_status !="DRAFT"
+        where 1=1
         <if test="vendorId != 0">
             and o.vendor_id= #{vendorId,jdbcType=INTEGER}
         </if>
@@ -3083,7 +2865,7 @@
         <if test="estimatedCostEnd != null">
             <![CDATA[and hr.estimated_cost <=  #{estimatedCostEnd,jdbcType=DECIMAL}]]>
         </if>
-        GROUP BY c.id
+        GROUP BY c.username
 
     </select>
 
@@ -3418,9 +3200,5 @@
        estimated_service_time = #{estimatedServiceTime,jdbcType=VARCHAR}
        where fault_dispatch_request_id = #{requestId,jdbcType=INTEGER}
   </update>
-
-    <select id="findOrderByShortOrderCode" parameterType="java.lang.String" resultType="java.lang.Integer">
-    SELECT  count(*) from fdp_fault_dispatch_order where short_order_code = #{shortOrderCode,jdbcType=VARCHAR}
-  </select>
 
 </mapper>
