@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.dmi.DmiIntergrationVendorsMapper" >
+  <resultMap id="BaseResultMap" type="com.company.springboot.entity.dmi.DmiIntergrationVendors" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="vendor_name" property="vendorName" jdbcType="VARCHAR" />
+    <result column="company_full_name" property="companyFullName" jdbcType="VARCHAR" />
+    <result column="website" property="website" jdbcType="VARCHAR" />
+    <result column="contact_address" property="contactAddress" jdbcType="VARCHAR" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="fax" property="fax" jdbcType="VARCHAR" />
+    <result column="flag_deleted" property="flagDeleted" jdbcType="BIT" />
+    <result column="flag_available" property="flagAvailable" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_person" property="updatePerson" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.company.springboot.entity.dmi.DmiIntergrationVendors" extends="BaseResultMap" >
+    <result column="memo" property="memo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, vendor_name, company_full_name, website, contact_address, contact_name, telephone, 
+    fax, flag_deleted, flag_available, create_time, create_person, update_time,
+    update_person
+  </sql>
+  <sql id="Blob_Column_List" >
+    memo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dmi_intergration_vendors
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.company.springboot.entity.dmi.DmiIntergrationVendors" >
+    insert into dmi_intergration_vendors
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="vendorName != null" >
+        vendor_name,
+      </if>
+      <if test="companyFullName != null" >
+        company_full_name,
+      </if>
+      <if test="website != null" >
+        website,
+      </if>
+      <if test="contactAddress != null" >
+        contact_address,
+      </if>
+      <if test="contactName != null" >
+        contact_name,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="fax != null" >
+        fax,
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted,
+      </if>
+      <if test="flagAvailable != null" >
+        flag_available,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="updatePerson != null" >
+        update_person,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="vendorName != null" >
+        #{vendorName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyFullName != null" >
+        #{companyFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="contactAddress != null" >
+        #{contactAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null" >
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="flagAvailable != null" >
+        #{flagAvailable,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.dmi.DmiIntergrationVendors" >
+    update dmi_intergration_vendors
+    <set >
+      <if test="vendorName != null" >
+        vendor_name = #{vendorName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyFullName != null" >
+        company_full_name = #{companyFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        website = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="contactAddress != null" >
+        contact_address = #{contactAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null" >
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="flagAvailable != null" >
+        flag_available = #{flagAvailable,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="list" resultMap="ResultMapWithBLOBs" parameterType="com.company.springboot.entity.dmi.DmiIntergrationVendors" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dmi_intergration_vendors
+    WHERE flag_deleted = 0
+  </select>
+</mapper>

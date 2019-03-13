@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.fdp.FdpDispatchServiceProcessLogMapper">
+    <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpDispatchServiceProcessLog">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER"/>
+        <result column="hr_id" property="hrId" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+        <result column="operate_description" property="operateDescription" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, dispatch_order_id, hr_id, operate_time, operate_description
+  </sql>
+    <select id="findList"
+            parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from fdp_dispatch_service_process_log
+        where dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
+        order by operate_time
+    </select>
+</mapper>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.fdp.FdpFaultDispatchChangeLogMapper" >
+  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER" />
+    <result column="fault_dispatch_request_id" property="faultDispatchRequestId" jdbcType="INTEGER" />
+    <result column="dispatch_main_hr_id" property="dispatchMainHrId" jdbcType="INTEGER" />
+    <result column="hr_account_info_id" property="hrAccountInfoId" jdbcType="INTEGER" />
+    <result column="hr_relation_id" property="hrRelationId" jdbcType="INTEGER" />
+    <result column="change_type" property="changeType" jdbcType="VARCHAR" />
+    <result column="estimated_cost" property="estimatedCost" jdbcType="DECIMAL" />
+    <result column="estimated_monetary_unit" property="estimatedMonetaryUnit" jdbcType="VARCHAR" />
+    <result column="estimated_price" property="estimatedPrice" jdbcType="DECIMAL" />
+    <result column="estimated_price_unit" property="estimatedPriceUnit" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, dispatch_order_id, fault_dispatch_request_id, dispatch_main_hr_id, hr_account_info_id, 
+    hr_relation_id, change_type, estimated_cost, estimated_monetary_unit, estimated_price, 
+    estimated_price_unit, create_time, create_person
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fdp_fault_dispatch_change_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!--
+    -查询更新日志
+    -param:orderId
+    -Author:Niting
+    -Date:2018-5-3
+  -->
+  <select id="getDispatchChangeLog" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetFdpFaultDispatchChangeLogList">
+    SELECT
+        chag.id AS id,
+        chag.dispatch_order_id AS dispatchOrderId,
+        chag.fault_dispatch_request_id AS faultDispatchRequestId,
+        chag.dispatch_main_hr_id AS dispatchMainHrId,
+        chag.hr_account_info_id AS hrAccountInfoId,
+        chag.hr_relation_id AS hrRelationId,
+        chag.change_type AS changeType,
+        chag.estimated_cost AS estimatedCost,
+        chag.estimated_monetary_unit AS estimatedMonetaryUnit,
+        chag.estimated_price AS estimatedPrice,
+        chag.estimated_price_unit AS estimatedPriceUnit,
+        chag.create_time AS createTime,
+        chag.create_person AS createPerson,
+        human.first_name AS firstName,
+        human.last_name AS lastName,
+        hrAccount.hr_id AS hrId,
+        hrAccount.full_name AS fullName,
+        hrAccount.bank_name AS bankName,
+        hrAccount.account AS account,
+        hrAccount.alipay_account AS alipayAccount,
+        hrAccount.payment_method AS paymentMethod,
+        hrAccount.flag_deleted AS flagDeleted,
+        hrAccount.flag_default AS flagDefault,
+        hrAccount.create_time AS createTime,
+        hrAccount.create_person AS createPerson,
+        hrAccount.update_time AS updateTime,
+        hrAccount.update_person AS updatePerson,
+        hrAccount.user_update_time AS userUpdateTime,
+        sUser.username AS username
+    FROM
+        fdp_fault_dispatch_change_log AS chag
+        LEFT JOIN bif_dispatch_human_resource AS human ON chag.dispatch_main_hr_id = human.id
+        LEFT JOIN bif_dispatch_hr_account_info AS hrAccount ON hrAccount.id = chag.hr_account_info_id
+        LEFT JOIN sys_company_users AS sUser ON sUser.id = chag.create_person
+    WHERE
+        chag.dispatch_order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fdp_fault_dispatch_change_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+    insert into fdp_fault_dispatch_change_log (id, dispatch_order_id, fault_dispatch_request_id, 
+      dispatch_main_hr_id, hr_account_info_id, hr_relation_id, 
+      change_type, estimated_cost, estimated_monetary_unit, 
+      estimated_price, estimated_price_unit, create_time, 
+      create_person)
+    values (#{id,jdbcType=INTEGER}, #{dispatchOrderId,jdbcType=INTEGER}, #{faultDispatchRequestId,jdbcType=INTEGER}, 
+      #{dispatchMainHrId,jdbcType=INTEGER}, #{hrAccountInfoId,jdbcType=INTEGER}, #{hrRelationId,jdbcType=INTEGER}, 
+      #{changeType,jdbcType=VARCHAR}, #{estimatedCost,jdbcType=DECIMAL}, #{estimatedMonetaryUnit,jdbcType=VARCHAR}, 
+      #{estimatedPrice,jdbcType=DECIMAL}, #{estimatedPriceUnit,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createPerson,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+    insert into fdp_fault_dispatch_change_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dispatchOrderId != null" >
+        dispatch_order_id,
+      </if>
+      <if test="faultDispatchRequestId != null" >
+        fault_dispatch_request_id,
+      </if>
+      <if test="dispatchMainHrId != null" >
+        dispatch_main_hr_id,
+      </if>
+      <if test="hrAccountInfoId != null" >
+        hr_account_info_id,
+      </if>
+      <if test="hrRelationId != null" >
+        hr_relation_id,
+      </if>
+      <if test="changeType != null" >
+        change_type,
+      </if>
+      <if test="estimatedCost != null" >
+        estimated_cost,
+      </if>
+      <if test="estimatedMonetaryUnit != null" >
+        estimated_monetary_unit,
+      </if>
+      <if test="estimatedPrice != null" >
+        estimated_price,
+      </if>
+      <if test="estimatedPriceUnit != null" >
+        estimated_price_unit,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dispatchOrderId != null" >
+        #{dispatchOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="faultDispatchRequestId != null" >
+        #{faultDispatchRequestId,jdbcType=INTEGER},
+      </if>
+      <if test="dispatchMainHrId != null" >
+        #{dispatchMainHrId,jdbcType=INTEGER},
+      </if>
+      <if test="hrAccountInfoId != null" >
+        #{hrAccountInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="hrRelationId != null" >
+        #{hrRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="changeType != null" >
+        #{changeType,jdbcType=VARCHAR},
+      </if>
+      <if test="estimatedCost != null" >
+        #{estimatedCost,jdbcType=DECIMAL},
+      </if>
+      <if test="estimatedMonetaryUnit != null" >
+        #{estimatedMonetaryUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="estimatedPrice != null" >
+        #{estimatedPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="estimatedPriceUnit != null" >
+        #{estimatedPriceUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+    update fdp_fault_dispatch_change_log
+    <set >
+      <if test="dispatchOrderId != null" >
+        dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="faultDispatchRequestId != null" >
+        fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+      </if>
+      <if test="dispatchMainHrId != null" >
+        dispatch_main_hr_id = #{dispatchMainHrId,jdbcType=INTEGER},
+      </if>
+      <if test="hrAccountInfoId != null" >
+        hr_account_info_id = #{hrAccountInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="hrRelationId != null" >
+        hr_relation_id = #{hrRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="changeType != null" >
+        change_type = #{changeType,jdbcType=VARCHAR},
+      </if>
+      <if test="estimatedCost != null" >
+        estimated_cost = #{estimatedCost,jdbcType=DECIMAL},
+      </if>
+      <if test="estimatedMonetaryUnit != null" >
+        estimated_monetary_unit = #{estimatedMonetaryUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="estimatedPrice != null" >
+        estimated_price = #{estimatedPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="estimatedPriceUnit != null" >
+        estimated_price_unit = #{estimatedPriceUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+    update fdp_fault_dispatch_change_log
+    set dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
+      fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+      dispatch_main_hr_id = #{dispatchMainHrId,jdbcType=INTEGER},
+      hr_account_info_id = #{hrAccountInfoId,jdbcType=INTEGER},
+      hr_relation_id = #{hrRelationId,jdbcType=INTEGER},
+      change_type = #{changeType,jdbcType=VARCHAR},
+      estimated_cost = #{estimatedCost,jdbcType=DECIMAL},
+      estimated_monetary_unit = #{estimatedMonetaryUnit,jdbcType=VARCHAR},
+      estimated_price = #{estimatedPrice,jdbcType=DECIMAL},
+      estimated_price_unit = #{estimatedPriceUnit,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_person = #{createPerson,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

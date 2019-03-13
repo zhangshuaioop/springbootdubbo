@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.cfg.CfgFaultTypeConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="model_id" property="modelId" jdbcType="INTEGER" />
+    <result column="fault_type_name" property="faultTypeName" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, model_id, fault_type_name, description, order_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cfg_fault_type_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cfg_fault_type_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+    insert into cfg_fault_type_config (id, model_id, fault_type_name, 
+      description, order_id)
+    values (#{id,jdbcType=INTEGER}, #{modelId,jdbcType=INTEGER}, #{faultTypeName,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{orderId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+    insert into cfg_fault_type_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="modelId != null" >
+        model_id,
+      </if>
+      <if test="faultTypeName != null" >
+        fault_type_name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="modelId != null" >
+        #{modelId,jdbcType=INTEGER},
+      </if>
+      <if test="faultTypeName != null" >
+        #{faultTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+    update cfg_fault_type_config
+    <set >
+      <if test="modelId != null" >
+        model_id = #{modelId,jdbcType=INTEGER},
+      </if>
+      <if test="faultTypeName != null" >
+        fault_type_name = #{faultTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+    update cfg_fault_type_config
+    set model_id = #{modelId,jdbcType=INTEGER},
+      fault_type_name = #{faultTypeName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByModelId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+    select
+    <include refid="Base_Column_List" />
+    from cfg_fault_type_config
+    where model_id = #{id,jdbcType=INTEGER}
+
+
+  </select>
+
+  <select id="selectMaxVersionConfig" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeModel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cfg_fault_type_config
+    where model_id =(
+    select id from cfg_fault_type_model
+    where version =(
+    select max(version)
+    from cfg_fault_type_model
+    where 1=1
+    AND fault_define_type = #{faultDefineType,jdbcType=VARCHAR}
+    AND company_id = #{companyId,jdbcType=VARCHAR}
+    )
+    AND fault_define_type = #{faultDefineType,jdbcType=VARCHAR}
+    )
+  </select>
+
+
+  <select id="selectCustomerConfig" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+    select
+    <include refid="Base_Column_List" />
+    from cfg_fault_type_config
+    where model_id = #{modelId,jdbcType=INTEGER}
+
+
+  </select>
+</mapper>

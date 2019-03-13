@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.springboot.mapper.bif.BifDispatchHrSkillLabelMapper">
+  <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="label_name" jdbcType="VARCHAR" property="labelName" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, label_name, level, parent_id, order_id, description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bif_dispatch_hr_skill_label
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bif_dispatch_hr_skill_label
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+    insert into bif_dispatch_hr_skill_label (id, label_name, level, 
+      parent_id, order_id, description
+      )
+    values (#{id,jdbcType=INTEGER}, #{labelName,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, 
+      #{parentId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+    insert into bif_dispatch_hr_skill_label
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="labelName != null">
+        label_name,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="labelName != null">
+        #{labelName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+    update bif_dispatch_hr_skill_label
+    <set>
+      <if test="labelName != null">
+        label_name = #{labelName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+    update bif_dispatch_hr_skill_label
+    set label_name = #{labelName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <delete id="deleteByPrimaryKeys">
+    delete from bif_dispatch_hr_skill_label
+  </delete>
+
+
+
+  <insert id="inserts" parameterType="java.util.List">
+    insert into bif_dispatch_hr_skill_label (label_name, level,
+      parent_id,description
+      )
+    values
+    <foreach collection ="list" item="label" index= "index" separator =",">
+    (#{label.labelName,jdbcType=VARCHAR}, #{label.level,jdbcType=INTEGER},
+      #{label.parentId,jdbcType=INTEGER},#{label.description,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bif_dispatch_hr_skill_label
+  </select>
+
+
+
+  <update id="updates" parameterType="java.util.List">
+
+
+
+    update bif_dispatch_hr_skill_label
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="label_name =case" suffix="end,">
+        <foreach collection="list" item="i" index="index">
+          <if test="i.labelName!=null">
+            when id=#{i.id} then #{i.labelName}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix=" level =case" suffix="end,">
+        <foreach collection="list" item="i" index="index">
+          <if test="i.level!=null">
+            when id=#{i.id} then #{i.level}
+          </if>
+        </foreach>
+      </trim>
+
+      <trim prefix="parent_id =case" suffix="end," >
+        <foreach collection="list" item="i" index="index">
+          <if test="i.parentId!=null">
+            when id=#{i.id} then #{i.parentId}
+          </if>
+        </foreach>
+      </trim>
+
+      <trim prefix="description =case" suffix="end," >
+        <foreach collection="list" item="i" index="index">
+          <if test="i.description!=null">
+            when id=#{i.id} then #{i.description}
+          </if>
+        </foreach>
+      </trim>
+
+    </trim>
+    where
+    <foreach collection="list" separator="or" item="i" index="index" >
+      <if test="i.id!=null">
+        id=#{i.id}
+      </if>
+    </foreach>
+
+  </update>
+
+
+<!--批量删除-->
+  <delete id="deletes" parameterType="java.util.List">
+
+    delete from bif_dispatch_hr_skill_label where id in(
+    select id from (select id from  bif_dispatch_hr_skill_label where id not in(
+    <foreach collection ="list" item="label" index= "index" separator =",">
+      #{label.id}
+    </foreach>
+    )) as a
+    )
+
+
+
+
+  </delete>
+
+
+
+</mapper>

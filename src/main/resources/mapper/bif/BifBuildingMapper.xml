@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.bif.BifBuildingMapper" >
+  <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifBuilding" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="longitude" property="longitude" jdbcType="DECIMAL" />
+    <result column="latitude" property="latitude" jdbcType="DECIMAL" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
+    <result column="flag_deleted" property="flagDeleted" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_person" property="updatePerson" jdbcType="INTEGER" />
+    <result column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <result column="flag_along_the_street" property="flagAlongTheStreet" jdbcType="BIT" />
+    <result column="flag_amend" property="flagAmend" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, longitude, latitude, province, city, district, building_name, flag_deleted, create_time, 
+    create_person, update_time, update_person, apply_id,flag_along_the_street,flag_amend
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bif_building
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifBuilding" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into bif_building
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="updatePerson != null" >
+        update_person,
+      </if>
+      <if test="applyId != null" >
+        apply_id,
+      </if>
+      <if test="flagAlongTheStreet != null" >
+        flag_along_the_street,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="applyId != null" >
+        #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="flagAlongTheStreet != null" >
+        #{flagAlongTheStreet,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifBuilding" >
+    update bif_building
+    <set >
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        building_name = #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null" >
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="applyId != null" >
+        apply_id = #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="flagAlongTheStreet != null" >
+        flag_along_the_street = #{flagAlongTheStreet,jdbcType=BIT},
+      </if>
+      <if test="flagAmend != null" >
+        flag_amend = #{flagAmend,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectLimitList" resultMap="BaseResultMap" parameterType="com.company.springboot.entity.bif.BifAddressDetail">
+    select
+    <include refid="Base_Column_List" />
+    from bif_building
+    where flag_deleted = 0
+    AND longitude &lt;= #{longitudeMax,jdbcType=DECIMAL}
+    AND longitude &gt;= #{longitudeMin,jdbcType=DECIMAL}
+    AND latitude &lt;= #{latitudeMax,jdbcType=DECIMAL}
+    AND latitude &gt;= #{latitudeMin,jdbcType=DECIMAL}
+  </select>
+  <select id="list" resultType="com.company.springboot.entity.bif.ret.BifBuilding.ListRet" parameterType="com.company.springboot.entity.bif.BifBuilding">
+    select distinct
+    building.flag_import AS flagImport,
+    building.id AS id,
+    building.longitude AS longitude,
+    building.latitude AS latitude,
+    building.province AS province,
+    building.city AS city,
+    building.district AS district,
+    building.building_name AS buildingName,
+    building.apply_id AS applyId,
+    building.create_time AS createTime,
+    users.username AS createPerson,
+    building.update_time AS updateTime,
+    address.road AS road,
+    address.id AS addressId,
+    building.flag_amend flagAmend
+    from bif_building building
+    inner join bif_building_address address ON address.building_id = building.id and address.flag_major = 1 and address.flag_deleted = 0
+    LEFT JOIN sys_company_users users ON  building.create_person = users.id
+    where building.flag_deleted = 0
+    <if test="province != null and province != ''" >
+      and building.province = #{province,jdbcType=VARCHAR}
+    </if>
+    <if test="city != null and city != ''" >
+      and building.city = #{city,jdbcType=VARCHAR}
+    </if>
+    <if test="district != null and district != ''" >
+      and building.district = #{district,jdbcType=VARCHAR}
+    </if>
+    <if test="flagImport != null" >
+      and building.flag_import = #{flagImport,jdbcType=BIT}
+    </if>
+    <if test="flagAmend != null" >
+      and building.flag_amend = #{flagAmend,jdbcType=BIT}
+    </if>
+  </select>
+  <select id="listAllAddress" resultType="com.company.springboot.entity.bif.ret.BifBuilding.ListRet" parameterType="com.company.springboot.entity.bif.BifBuilding">
+    select distinct
+    building.id AS id,
+    building.longitude AS longitude,
+    building.latitude AS latitude,
+    building.province AS province,
+    building.city AS city,
+    building.district AS district,
+    building.building_name AS buildingName,
+    building.apply_id AS applyId,
+    building.create_time AS createTime,
+    users.username AS createPerson,
+    address.road AS road,
+    address.id AS addressId
+    from bif_building building
+    inner join bif_building_address address ON address.building_id = building.id and address.flag_deleted = 0
+    LEFT JOIN sys_company_users users ON  building.create_person = users.id
+    where building.flag_deleted = 0
+    <if test="province != null and province != ''" >
+      and building.province = #{province,jdbcType=VARCHAR}
+    </if>
+    <if test="city != null and city != ''" >
+      and building.city = #{city,jdbcType=VARCHAR}
+    </if>
+    <if test="district != null and district != ''" >
+      and building.district = #{district,jdbcType=VARCHAR}
+    </if>
+    <if test="buildingName != null and buildingName != ''" >
+      and (building.building_name like '%${buildingName}%'
+      or address.road like '%${buildingName}%')
+    </if>
+  </select>
+</mapper>

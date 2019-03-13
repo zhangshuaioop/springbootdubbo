@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.dmi.DmiContactMapper">
+    <resultMap id="BaseResultMap" type="com.company.springboot.entity.dmi.DmiContact">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="contact_name" property="contactName" jdbcType="VARCHAR"/>
+        <result column="contact_name_cn" property="contactNameCn" jdbcType="VARCHAR"/>
+        <result column="contact_name_en" property="contactNameEn" jdbcType="VARCHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="qq" property="qq" jdbcType="VARCHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_available" property="flagAvailable" jdbcType="BIT"/>
+        <result column="belong_company_id" property="belongCompanyId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_person" property="createPerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="source_type" property="sourceType" jdbcType="VARCHAR"/>
+        <result column="account" property="account" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="INTEGER"/>
+        <result column="flag_major" property="flagMajor" jdbcType="BIT"/>
+        <result column="memo" property="memo" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, contact_name, contact_name_cn, contact_name_en, telephone, mobile, qq, wechat, 
+    flag_available, belong_company_id, create_time, create_person, update_time, update_person,email, source_type,store_id,password,flag_major,memo,account
+  </sql>
+    <select id="selectByPrimaryKey" resultType="com.company.springboot.entity.dmi.DmiContact"
+            parameterType="com.company.springboot.entity.dmi.DmiContact">
+    select
+    contact.id,
+    contact.contact_name contactName,
+    contact.contact_name_cn contactNameCn,
+    contact.contact_name_en contactNameEn,
+    contact.telephone,
+    contact.mobile,
+    contact.account,
+    contact.memo,
+    contact.qq,
+    contact.wechat,
+    contact.flag_available flagAvailable,
+    contact.belong_company_id belongCompanyId,
+    contact.create_time createTime,
+    contact.create_person createPerson,
+    contact.update_time updateTime,
+    contact.update_person updatePerson,
+    contact.email,
+    contact.source_type sourceType,
+    contact.store_id storeId,
+    contact.password,
+    contact.flag_major flagMajor
+    from dmi_contact contact
+    where contact.id = #{id,jdbcType=INTEGER}
+  </select>
+
+    <select id="selectListByCompanyId" resultType="com.company.springboot.entity.dmi.DmiContact"
+            parameterType="com.company.springboot.entity.dmi.DmiContact">
+        select
+        contact.id,
+        contact.contact_name contactName,
+        contact.contact_name_cn contactNameCn,
+        contact.contact_name_en contactNameEn,
+        contact.telephone,
+        contact.mobile,
+        contact.account,
+        contact.memo,
+        contact.qq,
+        contact.wechat,
+        contact.flag_available flagAvailable,
+        contact.belong_company_id belongCompanyId,
+        contact.create_time createTime,
+        contact.create_person createPerson,
+        contact.update_time updateTime,
+        contact.update_person updatePerson,
+        contact.email,
+        contact.source_type sourceType,
+        contact.store_id storeId,
+        contact.password,
+        contact.flag_major flagMajor
+        from dmi_contact contact
+        where contact.belong_company_id = #{belongCompanyId,jdbcType=INTEGER}
+        <if test="contactName != null">
+            AND contact.contact_name LIKE CONCAT('%',#{contactName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="mobile != null">
+            AND contact.mobile LIKE CONCAT('%',#{mobile,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="telephone != null">
+            AND contact.telephone LIKE CONCAT('%',#{telephone,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="email != null">
+            AND contact.email LIKE CONCAT('%',#{email,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="wechat != null">
+            AND contact.wechat LIKE CONCAT('%',#{wechat,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="qq != null">
+            AND contact.qq LIKE CONCAT('%',#{qq,jdbcType=VARCHAR},'%')
+        </if>
+        and contact.flag_deleted = 0
+        order by contact.update_time desc
+    </select>
+
+    <select id="selectListByStoreId" resultType="com.company.springboot.entity.dmi.DmiContact"
+            parameterType="com.company.springboot.entity.dmi.DmiContact">
+        select
+        contact.id,
+        contact.contact_name contactName,
+        contact.contact_name_cn contactNameCn,
+        contact.contact_name_en contactNameEn,
+        contact.telephone,
+        contact.mobile,
+        contact.account,
+        contact.memo,
+        contact.qq,
+        contact.wechat,
+        contact.flag_available flagAvailable,
+        contact.belong_company_id belongCompanyId,
+        contact.create_time createTime,
+        contact.create_person createPerson,
+        contact.update_time updateTime,
+        contact.update_person updatePerson,
+        contact.email,
+        contact.source_type sourceType,
+        contact.store_id storeId,
+        contact.password,
+        contact.flag_major flagMajor
+        from dmi_contact contact
+        where contact.store_id = #{storeId,jdbcType=INTEGER}
+        <if test="contactName != null">
+            AND contact.contact_name = #{contactName,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null">
+            AND contact.mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="telephone != null">
+            AND contact.telephone = #{telephone,jdbcType=VARCHAR}
+        </if>
+        <if test="email != null">
+            AND contact.email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="wechat != null">
+            AND contact.wechat = #{wechat,jdbcType=VARCHAR}
+        </if>
+        <if test="qq != null">
+            AND contact.qq = #{qq,jdbcType=VARCHAR}
+        </if>
+        and contact.flag_deleted = 0 order by contact.update_time desc
+    </select>
+
+    <select id="selectListNoInCompanyByCompanyId" resultType="com.company.springboot.entity.dmi.DmiContact"
+            parameterType="java.lang.Integer">
+    select
+    dc.id,
+    dc.contact_name contactName,
+    dc.mobile,
+    dc.telephone
+    FROM
+    dmi_contact dc
+    LEFT JOIN dmi_contact_store_relation dcsr ON dcsr.flag_deleted = 0
+    AND dc.id = dcsr.contact_id
+    LEFT JOIN dmi_contact_company_relation dccr ON dccr.flag_deleted = 0
+    AND dc.id = dccr.contact_id
+    WHERE
+    dc.belong_company_id = #{companyId,jdbcType=INTEGER}
+    AND dcsr.contact_id IS NULL
+    AND dccr.contact_id IS NULL
+    AND dc.flag_deleted =0
+  </select>
+
+    <select id="selectListNoInStoreByStoreId" resultType="com.company.springboot.entity.dmi.DmiContact"
+            parameterType="java.util.HashMap">
+    select
+    dc.id,
+    dc.contact_name contactName,
+    dc.mobile,
+    dc.telephone
+    FROM
+    dmi_contact dc
+
+    LEFT JOIN dmi_contact_store_relation dcsr ON dcsr.flag_deleted = 0
+    AND dc.id = dcsr.contact_id
+    LEFT JOIN dmi_contact_company_relation dccr ON dccr.flag_deleted = 0
+    AND dc.id = dccr.contact_id
+    WHERE
+    dc.belong_company_id = #{companyId,jdbcType=INTEGER}
+    AND dcsr.contact_id IS NULL
+    AND dccr.contact_id IS NULL
+    AND dc.flag_deleted =0
+  </select>
+
+    <insert id="insertSelective" parameterType="com.company.springboot.entity.dmi.DmiContact">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into dmi_contact
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="contactName != null">
+                contact_name,
+            </if>
+            <if test="contactNameCn != null">
+                contact_name_cn,
+            </if>
+            <if test="contactNameEn != null">
+                contact_name_en,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="mobileAreaCode != null">
+                mobile_area_code,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="qq != null">
+                qq,
+            </if>
+            <if test="wechat != null">
+                wechat,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+            <if test="belongCompanyId != null and belongCompanyId!=0">
+                belong_company_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="sourceType != null">
+                source_type,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="flagMajor != null">
+                flag_major,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="contactName != null">
+                #{contactName,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNameCn != null">
+                #{contactNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNameEn != null">
+                #{contactNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="mobileAreaCode != null">
+                #{mobileAreaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="wechat != null">
+                #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="belongCompanyId != null and belongCompanyId!=0">
+                #{belongCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                #{sourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="flagMajor != null">
+                #{flagMajor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.dmi.DmiContact">
+        update dmi_contact
+        <set>
+            <if test="contactName != null">
+                contact_name = #{contactName,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNameCn != null">
+                contact_name_cn = #{contactNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNameEn != null">
+                contact_name_en = #{contactNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                qq = #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="wechat != null">
+                wechat = #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="belongCompanyId != null">
+                belong_company_id = #{belongCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                source_type = #{sourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="flagMajor != null">
+                flag_major = #{flagMajor,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectExistInStore" resultType="com.company.springboot.entity.fdp.SelectExistInStoreResp"
+            parameterType="com.company.springboot.entity.fdp.SelectContactExistInStore">
+        select
+        contact.store_id AS storeId,
+        contact.belong_company_id AS companyId,
+        contact.id AS contactId
+        from dmi_contact
+        WHERE 1=1
+        <if test="contactName != null">
+            and contact_name = #{contactName,jdbcType=VARCHAR},
+        </if>
+        <if test="telephone != null">
+            and telephone = #{telephone,jdbcType=VARCHAR},
+        </if>
+        <if test="mobile != null">
+            and mobile = #{mobile,jdbcType=VARCHAR},
+        </if>
+        <if test="storeId != null">
+            and store_id = #{storeId,jdbcType=INTEGER},
+        </if>
+        and flag_deleted = 0
+    </select>
+
+    <select id="selectByMobile" parameterType="java.lang.String"
+            resultType="com.company.springboot.entity.dmi.DmiContact">
+        select
+        <include refid="Base_Column_List"/>
+        from dmi_contact
+        where mobile = #{mobile,jdbcType=VARCHAR}
+        and flag_deleted = 0
+
+    </select>
+
+    <update id="updateContatNameByMobile" parameterType="com.company.springboot.entity.dmi.DmiContact">
+
+        update dmi_contact
+        <set>
+            <if test="contactName != null">
+                contact_name = #{contactName,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNameCn != null">
+                contact_name_cn = #{contactNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNameEn != null">
+                contact_name_en = #{contactNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                qq = #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="wechat != null">
+                wechat = #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="belongCompanyId != null">
+                belong_company_id = #{belongCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                source_type = #{sourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where mobile = #{mobile,jdbcType=VARCHAR}
+    </update>
+
+
+    <select id="selectAccount" parameterType="java.lang.String"
+            resultType="com.company.springboot.entity.dmi.DmiContact">
+        select
+        <include refid="Base_Column_List"/>
+        from dmi_contact
+        where account = #{account,jdbcType=VARCHAR}
+        and flag_deleted = 0
+    </select>
+
+
+    <select id="selectByIdAndPassword" parameterType="com.company.springboot.entity.dmi.DmiContactResetPassword"
+            resultType="com.company.springboot.entity.dmi.DmiContact">
+        select
+        <include refid="Base_Column_List"/>
+        from dmi_contact
+
+        where password = #{oldPassword,jdbcType=VARCHAR}
+
+        and id = #{id,jdbcType=INTEGER}
+        and flag_deleted = 0
+
+    </select>
+
+    <update id="updateByIdAndPassword" parameterType="com.company.springboot.entity.dmi.DmiContactResetPassword">
+
+        update dmi_contact
+        <set>
+
+            <if test="newPassword != null">
+                password = #{newPassword,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where 1=1
+        and id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="selectContactByCompanyId" resultType="com.company.springboot.entity.dmi.DmiExportContact"
+            parameterType="java.lang.Integer">
+SELECT
+	(
+CASE
+
+	WHEN ds.store_name IS NULL THEN
+	( CASE WHEN ( SELECT company_id FROM dmi_contact_company_relation WHERE contact_id = dc.id ) IS NOT NULL THEN dci.company_name END ) ELSE ds.store_name
+END
+	) AS StoreOrCompany,
+	dci.company_name companyName,
+	dc.contact_name contactName,
+	dc.contact_name_cn contactNameCn,
+	dc.contact_name_en contactNameEn,
+	dc.telephone,
+	dc.mobile,
+	dc.qq,
+	dc.wechat,
+	dc.email,
+	dc.memo
+FROM
+	dmi_contact dc
+	LEFT JOIN dmi_company_info dci ON dci.id = dc.belong_company_id
+	LEFT JOIN dmi_contact_store_relation dcsr ON dcsr.contact_id = dc.id
+	LEFT JOIN dmi_store ds ON ds.id = dcsr.store_id
+WHERE
+	belong_company_id = #{companyId,jdbcType=INTEGER}
+AND dc.flag_deleted = 0
+  </select>
+
+    <select id="selectMobile" resultType="java.lang.String">
+    select mobile
+    from dmi_contact
+    where mobile is not null
+    and mobile !=''
+
+
+  </select>
+    <select id="selectAccountByNull" resultType="java.lang.String">
+    select account
+    from dmi_contact
+    where account is not null
+
+  </select>
+
+    <update id="updateContact" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+        update dmi_contact
+        <set>
+            <if test="contactName != null">
+                contact_name = #{contactName,jdbcType=VARCHAR},
+            </if>
+
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where id = #{contactId,jdbcType=VARCHAR}
+
+
+    </update>
+
+    <select id="selectByNameMobile" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dmi_contact
+        where 1=1
+        <if test="contactName != null">
+            and contact_name = #{contactName,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null">
+            and mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="storeId != null">
+            and store_id = #{storeId,jdbcType=VARCHAR}
+        </if>
+        and flag_deleted = 0
+    </select>
+
+    <select id="selectListByCompany" parameterType="com.company.springboot.entity.dmi.DmiContact"
+            resultType="com.company.springboot.entity.dmi.DmiExportContact">
+
+
+        SELECT
+        (
+        CASE
+
+        WHEN ds.store_name IS NULL THEN
+        ( CASE WHEN ( SELECT company_id FROM dmi_contact_company_relation WHERE contact_id = dc.id ) IS NOT NULL THEN
+        dci.company_name END ) ELSE ds.store_name
+        END
+        ) AS StoreOrCompany,
+        dci.company_name companyName,
+        dc.contact_name contactName,
+        dc.contact_name_cn contactNameCn,
+        dc.contact_name_en contactNameEn,
+        dc.telephone,
+        dc.mobile,
+        dc.qq,
+        dc.wechat,
+        dc.email,
+        dc.memo
+        FROM
+        dmi_contact dc
+        LEFT JOIN dmi_company_info dci ON dci.id = dc.belong_company_id
+        LEFT JOIN dmi_contact_store_relation dcsr ON dcsr.contact_id = dc.id
+        LEFT JOIN dmi_store ds ON ds.id = dcsr.store_id
+        WHERE
+        belong_company_id = #{belongCompanyId,jdbcType=INTEGER}
+        <if test="contactName != null">
+            AND dc.contact_name = #{contactName,jdbcType=VARCHAR}
+        </if>
+
+        <if test="mobile != null">
+            AND dc.mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+
+        <if test="telephone != null">
+            AND dc.telephone = #{telephone,jdbcType=VARCHAR}
+        </if>
+
+        <if test="email != null">
+            AND dc.email = #{email,jdbcType=VARCHAR}
+        </if>
+
+        <if test="wechat != null">
+            AND dc.wechat = #{wechat,jdbcType=VARCHAR}
+        </if>
+
+        <if test="qq != null">
+            AND dc.qq = #{qq,jdbcType=VARCHAR}
+        </if>
+        AND dc.flag_deleted = 0
+    </select>
+
+    <update id="updateByPrimaryKeySelectiveCheck" parameterType="com.company.springboot.entity.dmi.DmiContact">
+
+        update dmi_contact
+        <set>
+            <if test="contactName != null">
+                contact_name = #{contactName,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNameCn != null">
+                contact_name_cn = #{contactNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNameEn != null">
+                contact_name_en = #{contactNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                qq = #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="wechat != null">
+                wechat = #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="belongCompanyId != null and belongCompanyId!=0">
+                belong_company_id = #{belongCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                source_type = #{sourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="flagMajor != null">
+                flag_major = #{flagMajor,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+
+    </update>
+
+    <update id="updateNotFlagMajorContactById" parameterType="java.lang.Integer">
+        update dmi_contact
+        set flag_major = 0
+        where 1=1
+        <if test="storeId != null and storeId !=0">
+            and store_id = #{storeId,jdbcType=VARCHAR}
+        </if>
+        <if test="belongCompanyId != null and belongCompanyId !=0 ">
+            and belong_company_id = #{belongCompanyId,jdbcType=INTEGER}
+        </if>
+        and id != #{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>

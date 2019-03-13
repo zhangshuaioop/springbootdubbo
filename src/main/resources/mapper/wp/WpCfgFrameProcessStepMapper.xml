@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.springboot.mapper.wp.WpCfgFrameProcessStepMapper">
+  <resultMap id="BaseResultMap" type="com.company.springboot.entity.wp.WpCfgFrameProcessStep">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cfg_frame_process_id" jdbcType="INTEGER" property="cfgFrameProcessId" />
+    <result column="version_id" jdbcType="INTEGER" property="versionId" />
+    <result column="step_name" jdbcType="VARCHAR" property="stepName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="sort_id" jdbcType="INTEGER" property="sortId" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
+    <result column="create_person" jdbcType="INTEGER" property="createPerson" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_person" jdbcType="INTEGER" property="updatePerson" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cfg_frame_process_id, version_id, step_name, description, sort_id, company_id, 
+    flag_deleted, create_person, create_time, update_person, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from wp_cfg_frame_process_step
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from wp_cfg_frame_process_step
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStep">
+    insert into wp_cfg_frame_process_step (id, cfg_frame_process_id, version_id, 
+      step_name, description, sort_id, 
+      company_id, flag_deleted, create_person, 
+      create_time, update_person, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{cfgFrameProcessId,jdbcType=INTEGER}, #{versionId,jdbcType=INTEGER}, 
+      #{stepName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{sortId,jdbcType=INTEGER}, 
+      #{companyId,jdbcType=INTEGER}, #{flagDeleted,jdbcType=BIT}, #{createPerson,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatePerson,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStep">
+    insert into wp_cfg_frame_process_step
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cfgFrameProcessId != null">
+        cfg_frame_process_id,
+      </if>
+      <if test="versionId != null">
+        version_id,
+      </if>
+      <if test="stepName != null">
+        step_name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="sortId != null">
+        sort_id,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted,
+      </if>
+      <if test="createPerson != null">
+        create_person,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updatePerson != null">
+        update_person,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cfgFrameProcessId != null">
+        #{cfgFrameProcessId,jdbcType=INTEGER},
+      </if>
+      <if test="versionId != null">
+        #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="stepName != null">
+        #{stepName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="sortId != null">
+        #{sortId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createPerson != null">
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStep">
+    update wp_cfg_frame_process_step
+    <set>
+      <if test="cfgFrameProcessId != null">
+        cfg_frame_process_id = #{cfgFrameProcessId,jdbcType=INTEGER},
+      </if>
+      <if test="versionId != null">
+        version_id = #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="stepName != null">
+        step_name = #{stepName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="sortId != null">
+        sort_id = #{sortId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.wp.WpCfgFrameProcessStep">
+    update wp_cfg_frame_process_step
+    set cfg_frame_process_id = #{cfgFrameProcessId,jdbcType=INTEGER},
+      version_id = #{versionId,jdbcType=INTEGER},
+      step_name = #{stepName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      sort_id = #{sortId,jdbcType=INTEGER},
+      company_id = #{companyId,jdbcType=INTEGER},
+      flag_deleted = #{flagDeleted,jdbcType=BIT},
+      create_person = #{createPerson,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_person = #{updatePerson,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

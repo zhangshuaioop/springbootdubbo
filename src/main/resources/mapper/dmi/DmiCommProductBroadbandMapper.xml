@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.dmi.DmiCommProductBroadbandMapper" >
+  <resultMap id="BaseResultMap" type="com.company.springboot.entity.dmi.DmiCommProductBroadband" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="band_width_up" property="bandWidthUp" jdbcType="INTEGER" />
+    <result column="band_width_down" property="bandWidthDown" jdbcType="INTEGER" />
+    <result column="unit_band_width_up" property="unitBandWidthUp" jdbcType="VARCHAR" />
+    <result column="unit_band_width_down" property="unitBandWidthDown" jdbcType="VARCHAR" />
+    <result column="flag_fixed_ip" property="flagFixedIp" jdbcType="BIT" />
+    <result column="flag_symmetry" property="flagSymmetry" jdbcType="BIT" />
+    <result column="ip_section_begin" property="ipSectionBegin" jdbcType="VARCHAR" />
+    <result column="ip_section_end" property="ipSectionEnd" jdbcType="VARCHAR" />
+    <result column="subnet_mask" property="subnetMask" jdbcType="VARCHAR" />
+    <result column="gateway" property="gateway" jdbcType="VARCHAR" />
+    <result column="login_account" property="loginAccount" jdbcType="VARCHAR" />
+    <result column="login_password" property="loginPassword" jdbcType="VARCHAR" />
+    <result column="flag_deleted" property="flagDeleted" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="INTEGER" />
+    <result column="update_person" property="updatePerson" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="interconnect_address" property="interconnectAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.company.springboot.entity.dmi.DmiCommProductBroadbandWithBLOBs" extends="BaseResultMap" >
+    <result column="ip_section_begin_value" property="ipSectionBeginValue" jdbcType="LONGVARCHAR" />
+    <result column="ip_section_end_value" property="ipSectionEndValue" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, store_id, company_id, product_id, band_width_up, band_width_down, unit_band_width_up, 
+    unit_band_width_down, flag_fixed_ip, flag_symmetry, ip_section_begin, ip_section_end, 
+    subnet_mask, gateway, login_account, login_password, flag_deleted,
+    create_time, create_person, update_person, update_time, interconnect_address
+  </sql>
+  <sql id="Blob_Column_List" >
+    ip_section_begin_value, ip_section_end_value
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dmi_comm_product_broadband
+    where id = #{id,jdbcType=INTEGER}
+    AND flag_deleted = 0
+  </select>
+  <insert id="insertSelective" parameterType="com.company.springboot.entity.dmi.DmiCommProductBroadbandWithBLOBs" >
+    insert into dmi_comm_product_broadband
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="bandWidthUp != null" >
+        band_width_up,
+      </if>
+      <if test="bandWidthDown != null" >
+        band_width_down,
+      </if>
+      <if test="unitBandWidthUp != null" >
+        unit_band_width_up,
+      </if>
+      <if test="unitBandWidthDown != null" >
+        unit_band_width_down,
+      </if>
+      <if test="flagFixedIp != null" >
+        flag_fixed_ip,
+      </if>
+      <if test="flagSymmetry != null" >
+        flag_symmetry,
+      </if>
+      <if test="ipSectionBegin != null" >
+        ip_section_begin,
+      </if>
+      <if test="ipSectionEnd != null" >
+        ip_section_end,
+      </if>
+      <if test="subnetMask != null" >
+        subnet_mask,
+      </if>
+      <if test="gateway != null" >
+        gateway,
+      </if>
+      <if test="loginAccount != null" >
+        login_account,
+      </if>
+      <if test="loginPassword != null" >
+        login_password,
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+      <if test="updatePerson != null" >
+        update_person,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="ipSectionBeginValue != null" >
+        ip_section_begin_value,
+      </if>
+      <if test="ipSectionEndValue != null" >
+        ip_section_end_value,
+      </if>
+      <if test="interconnectAddress != null" >
+        interconnect_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="bandWidthUp != null" >
+        #{bandWidthUp,jdbcType=INTEGER},
+      </if>
+      <if test="bandWidthDown != null" >
+        #{bandWidthDown,jdbcType=INTEGER},
+      </if>
+      <if test="unitBandWidthUp != null" >
+        #{unitBandWidthUp,jdbcType=VARCHAR},
+      </if>
+      <if test="unitBandWidthDown != null" >
+        #{unitBandWidthDown,jdbcType=VARCHAR},
+      </if>
+      <if test="flagFixedIp != null" >
+        #{flagFixedIp,jdbcType=BIT},
+      </if>
+      <if test="flagSymmetry != null" >
+        #{flagSymmetry,jdbcType=BIT},
+      </if>
+      <if test="ipSectionBegin != null" >
+        #{ipSectionBegin,jdbcType=VARCHAR},
+      </if>
+      <if test="ipSectionEnd != null" >
+        #{ipSectionEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="subnetMask != null" >
+        #{subnetMask,jdbcType=VARCHAR},
+      </if>
+      <if test="gateway != null" >
+        #{gateway,jdbcType=VARCHAR},
+      </if>
+      <if test="loginAccount != null" >
+        #{loginAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPassword != null" >
+        #{loginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updatePerson != null" >
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ipSectionBeginValue != null" >
+        #{ipSectionBeginValue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ipSectionEndValue != null" >
+        #{ipSectionEndValue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="interconnectAddress != null" >
+        #{interconnectAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.dmi.DmiCommProductBroadbandWithBLOBs" >
+    update dmi_comm_product_broadband
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="bandWidthUp != null" >
+        band_width_up = #{bandWidthUp,jdbcType=INTEGER},
+      </if>
+      <if test="bandWidthDown != null" >
+        band_width_down = #{bandWidthDown,jdbcType=INTEGER},
+      </if>
+      <if test="unitBandWidthUp != null" >
+        unit_band_width_up = #{unitBandWidthUp,jdbcType=VARCHAR},
+      </if>
+      <if test="unitBandWidthDown != null" >
+        unit_band_width_down = #{unitBandWidthDown,jdbcType=VARCHAR},
+      </if>
+      <if test="flagFixedIp != null" >
+        flag_fixed_ip = #{flagFixedIp,jdbcType=BIT},
+      </if>
+      <if test="flagSymmetry != null" >
+        flag_symmetry = #{flagSymmetry,jdbcType=BIT},
+      </if>
+      <if test="ipSectionBegin != null" >
+        ip_section_begin = #{ipSectionBegin,jdbcType=VARCHAR},
+      </if>
+      <if test="ipSectionEnd != null" >
+        ip_section_end = #{ipSectionEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="subnetMask != null" >
+        subnet_mask = #{subnetMask,jdbcType=VARCHAR},
+      </if>
+      <if test="gateway != null" >
+        gateway = #{gateway,jdbcType=VARCHAR},
+      </if>
+      <if test="loginAccount != null" >
+        login_account = #{loginAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPassword != null" >
+        login_password = #{loginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updatePerson != null" >
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ipSectionBeginValue != null" >
+        ip_section_begin_value = #{ipSectionBeginValue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ipSectionEndValue != null" >
+        ip_section_end_value = #{ipSectionEndValue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="interconnectAddress != null" >
+        interconnect_address = #{interconnectAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByProductIdSelective" parameterType="com.company.springboot.entity.dmi.DmiCommProductBroadbandWithBLOBs" >
+    update dmi_comm_product_broadband
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="bandWidthUp != null" >
+        band_width_up = #{bandWidthUp,jdbcType=INTEGER},
+      </if>
+      <if test="bandWidthDown != null" >
+        band_width_down = #{bandWidthDown,jdbcType=INTEGER},
+      </if>
+      <if test="unitBandWidthUp != null" >
+        unit_band_width_up = #{unitBandWidthUp,jdbcType=VARCHAR},
+      </if>
+      <if test="unitBandWidthDown != null" >
+        unit_band_width_down = #{unitBandWidthDown,jdbcType=VARCHAR},
+      </if>
+      <if test="flagFixedIp != null" >
+        flag_fixed_ip = #{flagFixedIp,jdbcType=BIT},
+      </if>
+      <if test="flagSymmetry != null" >
+        flag_symmetry = #{flagSymmetry,jdbcType=BIT},
+      </if>
+      <if test="ipSectionBegin != null" >
+        ip_section_begin = #{ipSectionBegin,jdbcType=VARCHAR},
+      </if>
+      <if test="ipSectionEnd != null" >
+        ip_section_end = #{ipSectionEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="subnetMask != null" >
+        subnet_mask = #{subnetMask,jdbcType=VARCHAR},
+      </if>
+      <if test="gateway != null" >
+        gateway = #{gateway,jdbcType=VARCHAR},
+      </if>
+      <if test="loginAccount != null" >
+        login_account = #{loginAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPassword != null" >
+        login_password = #{loginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDeleted != null" >
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updatePerson != null" >
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ipSectionBeginValue != null" >
+        ip_section_begin_value = #{ipSectionBeginValue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ipSectionEndValue != null" >
+        ip_section_end_value = #{ipSectionEndValue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="interconnectAddress != null" >
+        interconnect_address = #{interconnectAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where product_id = #{productId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByProductId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dmi_comm_product_broadband
+    where product_id = #{productId,jdbcType=INTEGER}
+    AND flag_deleted = 0
+  </select>
+
+
+  <select id="selectAllByProductId" resultMap="ResultMapWithBLOBs"  parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dmi_comm_product_broadband
+    where product_id = #{storeCommProductId,jdbcType=INTEGER}
+    AND flag_deleted = 0
+  </select>
+</mapper>

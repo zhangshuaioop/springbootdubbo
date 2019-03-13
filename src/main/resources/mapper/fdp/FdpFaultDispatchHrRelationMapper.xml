@@ -1,0 +1,1135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.fdp.FdpFaultDispatchHrRelationMapper">
+    <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER"/>
+        <result column="fault_dispatch_request_id" property="faultDispatchRequestId" jdbcType="INTEGER"/>
+        <result column="dispatch_main_hr_id" property="dispatchMainHrId" jdbcType="INTEGER"/>
+        <result column="hr_account_info_id" property="hrAccountInfoId" jdbcType="INTEGER"/>
+        <result column="estimated_cost" property="estimatedCost" jdbcType="DECIMAL"/>
+        <result column="estimated_monetary_unit" property="estimatedMonetaryUnit" jdbcType="VARCHAR"/>
+        <result column="estimated_invoice_type" property="estimatedInvoiceType" jdbcType="VARCHAR"/>
+        <result column="estimated_invoice_rate" property="estimatedInvoiceRate" jdbcType="DECIMAL"/>
+        <result column="estimated_price_unit" property="estimatedPriceUnit" jdbcType="VARCHAR"/>
+        <result column="estimated_price" property="estimatedPrice" jdbcType="DECIMAL"/>
+        <result column="flag_provide_invoice" property="flagProvideInvoice" jdbcType="BIT"/>
+        <result column="user_assm_memo" property="userAssmMemo" jdbcType="VARCHAR"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_available" property="flagAvailable" jdbcType="BIT"/>
+        <result column="user_assm_achieve_point" property="userAssmAchievePoint" jdbcType="INTEGER"/>
+        <result column="user_assm_communication_point" property="userAssmCommunicationPoint" jdbcType="INTEGER"/>
+        <result column="user_assm_timely_point" property="userAssmTimelyPoint" jdbcType="INTEGER"/>
+        <result column="client_assm_achieve_point" property="clientAssmAchievePoint" jdbcType="INTEGER"/>
+        <result column="client_assm_communication_point" property="clientAssmCommunicationPoint" jdbcType="INTEGER"/>
+        <result column="client_assm_timely_point" property="clientAssmTimelyPoint" jdbcType="INTEGER"/>
+        <result column="user_complete_profile_file" property="userCompleteProfileFile" jdbcType="VARCHAR"/>
+        <result column="user_complete_profile_file_name" property="userCompleteProfileFileName" jdbcType="VARCHAR"/>
+        <result column="user_complete_profile_photo" property="userCompleteProfilePhoto" jdbcType="VARCHAR"/>
+        <result column="user_complete_profile_photo_name" property="userCompleteProfilePhotoName" jdbcType="VARCHAR"/>
+        <result column="user_complete_time" property="userCompleteTime" jdbcType="TIMESTAMP"/>
+        <result column="user_job_end_reason" property="userJobEndReason" jdbcType="VARCHAR"/>
+        <result column="flag_used" property="flagUsed" jdbcType="BIT"/>
+        <result column="hr_dispatch_status" property="hrDispatchStatus" jdbcType="VARCHAR"/>
+        <result column="estimated_cost_memo" property="estimatedCostMemo" jdbcType="VARCHAR"/>
+        <result column="estimated_price_memo" property="estimatedPriceMemo" jdbcType="VARCHAR"/>
+        <result column="extend_profile_name" property="extendProfileName" jdbcType="VARCHAR"/>
+        <result column="extend_profile_url" property="extendProfileUrl" jdbcType="VARCHAR"/>
+        <result column="extend_profile_memo" property="extendProfileMemo" jdbcType="VARCHAR"/>
+        <result column="flag_enable_modify_profile" property="flagEnableModifyProfile" jdbcType="BIT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, dispatch_order_id, fault_dispatch_request_id, dispatch_main_hr_id, hr_account_info_id, 
+    estimated_cost, estimated_monetary_unit, estimated_invoice_type, estimated_invoice_rate, 
+    flag_provide_invoice, user_assm_memo, flag_deleted, flag_available, user_assm_achieve_point,
+    user_assm_communication_point, user_assm_timely_point, client_assm_achieve_point, 
+    client_assm_communication_point, client_assm_timely_point, user_complete_profile_file, 
+    user_complete_profile_file_name, user_complete_profile_photo, user_complete_profile_photo_name, 
+    user_complete_time, user_job_end_reason,flag_used,estimated_price,estimated_price_unit,hr_dispatch_status,estimated_cost_memo,estimated_price_memo,
+    extend_profile_name,extend_profile_url,extend_profile_memo,flag_enable_modify_profile
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from fdp_fault_dispatch_hr_relation
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from fdp_fault_dispatch_hr_relation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+    insert into fdp_fault_dispatch_hr_relation (id, dispatch_order_id, fault_dispatch_request_id, 
+      dispatch_main_hr_id, hr_account_info_id, estimated_cost, 
+      estimated_monetary_unit, estimated_invoice_type, 
+      estimated_invoice_rate, flag_provide_invoice, user_assm_memo,
+      flag_deleted, flag_available, user_assm_achieve_point, 
+      user_assm_communication_point, user_assm_timely_point, 
+      client_assm_achieve_point, client_assm_communication_point, 
+      client_assm_timely_point, user_complete_profile_file, 
+      user_complete_profile_file_name, user_complete_profile_photo, 
+      user_complete_profile_photo_name, user_complete_time, 
+      user_job_end_reason,flag_used)
+    values (#{id,jdbcType=INTEGER}, #{dispatchOrderId,jdbcType=INTEGER}, #{faultDispatchRequestId,jdbcType=INTEGER}, 
+      #{dispatchMainHrId,jdbcType=INTEGER}, #{hrAccountInfoId,jdbcType=INTEGER}, #{estimatedCost,jdbcType=DECIMAL}, 
+      #{estimatedMonetaryUnit,jdbcType=VARCHAR}, #{estimatedInvoiceType,jdbcType=VARCHAR}, 
+      #{estimatedInvoiceRate,jdbcType=DECIMAL}, #{flagProvideInvoice,jdbcType=BIT}, #{memo,jdbcType=VARCHAR}, 
+      #{flagDeleted,jdbcType=BIT}, #{flagAvailable,jdbcType=BIT}, #{userAssmAchievePoint,jdbcType=INTEGER}, 
+      #{userAssmCommunicationPoint,jdbcType=INTEGER}, #{userAssmTimelyPoint,jdbcType=INTEGER}, 
+      #{clientAssmAchievePoint,jdbcType=INTEGER}, #{clientAssmCommunicationPoint,jdbcType=INTEGER}, 
+      #{clientAssmTimelyPoint,jdbcType=INTEGER}, #{userCompleteProfileFile,jdbcType=VARCHAR}, 
+      #{userCompleteProfileFileName,jdbcType=VARCHAR}, #{userCompleteProfilePhoto,jdbcType=VARCHAR}, 
+      #{userCompleteProfilePhotoName,jdbcType=VARCHAR}, #{userCompleteTime,jdbcType=TIMESTAMP}, 
+      #{userJobPerformance,jdbcType=VARCHAR}, #{userJobEndReason,jdbcType=VARCHAR}, #{clientCompleteProfileFile,jdbcType=VARCHAR}, 
+      #{clientCompleteProfileFileName,jdbcType=VARCHAR}, #{clientCompleteTime,jdbcType=TIMESTAMP}, 
+      #{flagUsed,jdbcType=BIT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderInsertParam">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+
+        insert into fdp_fault_dispatch_hr_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="dispatchOrderId != null">
+                dispatch_order_id,
+            </if>
+            <if test="faultDispatchRequestId != null">
+                fault_dispatch_request_id,
+            </if>
+            <if test="dispatchMainHrId != null">
+                dispatch_main_hr_id,
+            </if>
+            <if test="hrAccountInfoId != null">
+                hr_account_info_id,
+            </if>
+            <if test="estimatedCost != null">
+                estimated_cost,
+            </if>
+            <if test="estimatedMonetaryUnit != null">
+                estimated_monetary_unit,
+            </if>
+            <if test="estimatedPrice != null">
+                estimated_price,
+            </if>
+            <if test="estimatedPriceUnit != null">
+                estimated_price_unit,
+            </if>
+            <if test="estimatedInvoiceType != null">
+                estimated_invoice_type,
+            </if>
+            <if test="estimatedInvoiceRate != null">
+                estimated_invoice_rate,
+            </if>
+            <if test="flagProvideInvoice != null">
+                flag_provide_invoice,
+            </if>
+            <if test="userAssmMemo != null">
+                user_assm_memo,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+            <if test="userAssmAchievePoint != null">
+                user_assm_achieve_point,
+            </if>
+            <if test="userAssmCommunicationPoint != null">
+                user_assm_communication_point,
+            </if>
+            <if test="userAssmTimelyPoint != null">
+                user_assm_timely_point,
+            </if>
+            <if test="clientAssmAchievePoint != null">
+                client_assm_achieve_point,
+            </if>
+            <if test="clientAssmCommunicationPoint != null">
+                client_assm_communication_point,
+            </if>
+            <if test="clientAssmTimelyPoint != null">
+                client_assm_timely_point,
+            </if>
+            <if test="userCompleteProfileFile != null">
+                user_complete_profile_file,
+            </if>
+            <if test="userCompleteProfileFileName != null">
+                user_complete_profile_file_name,
+            </if>
+            <if test="userCompleteProfilePhoto != null">
+                user_complete_profile_photo,
+            </if>
+            <if test="userCompleteProfilePhotoName != null">
+                user_complete_profile_photo_name,
+            </if>
+            <if test="userCompleteTime != null">
+                user_complete_time,
+            </if>
+
+            <if test="userJobEndReason != null">
+                user_job_end_reason,
+            </if>
+
+            <if test="flagUsed != null">
+                flag_used,
+            </if>
+            <if test="hrDispatchStatus != null">
+                hr_dispatch_status,
+            </if>
+            <if test="estimatedCostMemo != null">
+                estimated_cost_memo,
+            </if>
+            <if test="estimatedPriceMemo != null">
+                estimated_price_memo,
+            </if>
+            <if test="flagEnableModifyProfile != null">
+                flag_enable_modify_profile,
+            </if>
+
+            <if test="estimatedDeviceCost != null">
+                estimated_device_cost,
+            </if>
+            <if test="estimatedDeviceMemo != null">
+                estimated_device_memo,
+            </if>
+            <if test="estimatedCommResourceCost != null">
+                estimated_comm_resource_cost,
+            </if>
+            <if test="estimatedCommResourceMemo != null">
+                estimated_comm_resource_memo,
+            </if>
+            <if test="estimatedHrCost != null">
+                estimated_hr_cost,
+            </if>
+            <if test="estimatedHrMemo != null">
+                estimated_hr_memo,
+            </if>
+            <if test="estimatedOtherCost != null">
+                estimated_other_cost,
+            </if>
+            <if test="estimatedOtherMemo != null">
+                estimated_other_memo,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchOrderId != null">
+                #{dispatchOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null">
+                #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchMainHrId != null">
+                #{dispatchMainHrId,jdbcType=INTEGER},
+            </if>
+            <if test="hrAccountInfoId != null">
+                #{hrAccountInfoId,jdbcType=INTEGER},
+            </if>
+            <if test="estimatedCost != null">
+                #{estimatedCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedMonetaryUnit != null">
+                #{estimatedMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedPrice != null">
+                #{estimatedPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedPriceUnit != null">
+                #{estimatedPriceUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedInvoiceType != null">
+                #{estimatedInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedInvoiceRate != null">
+                #{estimatedInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="flagProvideInvoice != null">
+                #{flagProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="userAssmMemo != null">
+                #{userAssmMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="userAssmAchievePoint != null">
+                #{userAssmAchievePoint,jdbcType=INTEGER},
+            </if>
+            <if test="userAssmCommunicationPoint != null">
+                #{userAssmCommunicationPoint,jdbcType=INTEGER},
+            </if>
+            <if test="userAssmTimelyPoint != null">
+                #{userAssmTimelyPoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmAchievePoint != null">
+                #{clientAssmAchievePoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmCommunicationPoint != null">
+                #{clientAssmCommunicationPoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmTimelyPoint != null">
+                #{clientAssmTimelyPoint,jdbcType=INTEGER},
+            </if>
+            <if test="userCompleteProfileFile != null">
+                #{userCompleteProfileFile,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfileFileName != null">
+                #{userCompleteProfileFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfilePhoto != null">
+                #{userCompleteProfilePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfilePhotoName != null">
+                #{userCompleteProfilePhotoName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteTime != null">
+                #{userCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userJobPerformance != null">
+                #{userJobPerformance,jdbcType=VARCHAR},
+            </if>
+            <if test="userJobEndReason != null">
+                #{userJobEndReason,jdbcType=VARCHAR},
+            </if>
+            <if test="clientCompleteProfileFile != null">
+                #{clientCompleteProfileFile,jdbcType=VARCHAR},
+            </if>
+            <if test="clientCompleteProfileFileName != null">
+                #{clientCompleteProfileFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="clientCompleteTime != null">
+                #{clientCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flagUsed != null">
+                #{flagUsed,jdbcType=BIT},
+            </if>
+            <if test="hrDispatchStatus != null">
+                #{hrDispatchStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedCostMemo != null">
+                #{estimatedCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedPriceMemo != null">
+                #{estimatedPriceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagEnableModifyProfile != null">
+                #{flagEnableModifyProfile,jdbcType=BIT},
+            </if>
+
+            <if test="estimatedDeviceCost != null">
+                #{estimatedDeviceCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedDeviceMemo != null">
+                #{estimatedDeviceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedCommResourceCost != null">
+                #{estimatedCommResourceCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedCommResourceMemo != null">
+                #{estimatedCommResourceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedHrCost != null">
+                #{estimatedHrCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedHrMemo != null">
+                #{estimatedHrMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedOtherCost != null">
+                #{estimatedOtherCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedOtherMemo != null">
+                #{estimatedOtherMemo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+        update fdp_fault_dispatch_hr_relation
+        <set>
+            <if test="dispatchOrderId != null">
+                dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null">
+                fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchMainHrId != null">
+                dispatch_main_hr_id = #{dispatchMainHrId,jdbcType=INTEGER},
+            </if>
+            <if test="hrAccountInfoId != null">
+                hr_account_info_id = #{hrAccountInfoId,jdbcType=INTEGER},
+            </if>
+            <if test="estimatedCost != null">
+                estimated_cost = #{estimatedCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedMonetaryUnit != null">
+                estimated_monetary_unit = #{estimatedMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedPrice != null">
+                estimated_price = #{estimatedPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedPriceUnit != null">
+                estimated_price_unit = #{estimatedPriceUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedInvoiceType != null">
+                estimated_invoice_type = #{estimatedInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedInvoiceRate != null">
+                estimated_invoice_rate = #{estimatedInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="flagProvideInvoice != null">
+                flag_provide_invoice = #{flagProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="userAssmMemo != null">
+                user_assm_memo = #{userAssmMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="userAssmAchievePoint != null">
+                user_assm_achieve_point = #{userAssmAchievePoint,jdbcType=INTEGER},
+            </if>
+            <if test="userAssmCommunicationPoint != null">
+                user_assm_communication_point = #{userAssmCommunicationPoint,jdbcType=INTEGER},
+            </if>
+            <if test="userAssmTimelyPoint != null">
+                user_assm_timely_point = #{userAssmTimelyPoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmAchievePoint != null">
+                client_assm_achieve_point = #{clientAssmAchievePoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmCommunicationPoint != null">
+                client_assm_communication_point = #{clientAssmCommunicationPoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmTimelyPoint != null">
+                client_assm_timely_point = #{clientAssmTimelyPoint,jdbcType=INTEGER},
+            </if>
+            <if test="userCompleteProfileFile != null">
+                user_complete_profile_file = #{userCompleteProfileFile,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfileFileName != null">
+                user_complete_profile_file_name = #{userCompleteProfileFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfilePhoto != null">
+                user_complete_profile_photo = #{userCompleteProfilePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfilePhotoName != null">
+                user_complete_profile_photo_name = #{userCompleteProfilePhotoName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteTime != null">
+                user_complete_time = #{userCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userJobEndReason != null">
+                user_job_end_reason = #{userJobEndReason,jdbcType=VARCHAR},
+            </if>
+
+            <if test="flagUsed != null">
+                flag_used = #{flagUsed,jdbcType=BIT},
+            </if>
+            <if test="hrDispatchStatus != null">
+                hr_dispatch_status = #{hrDispatchStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedCostMemo != null">
+                estimated_cost_memo = #{estimatedCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedPriceMemo != null">
+                estimated_price_memo = #{estimatedCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagEnableModifyProfile != null">
+                flag_enable_modify_profile = #{flagEnableModifyProfile,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+    update fdp_fault_dispatch_hr_relation
+    set dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
+      fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+      dispatch_main_hr_id = #{dispatchMainHrId,jdbcType=INTEGER},
+      hr_account_info_id = #{hrAccountInfoId,jdbcType=INTEGER},
+      estimated_cost = #{estimatedCost,jdbcType=DECIMAL},
+      estimated_monetary_unit = #{estimatedMonetaryUnit,jdbcType=VARCHAR},
+      estimated_invoice_type = #{estimatedInvoiceType,jdbcType=VARCHAR},
+      estimated_invoice_rate = #{estimatedInvoiceRate,jdbcType=DECIMAL},
+      flag_provide_invoice = #{flagProvideInvoice,jdbcType=BIT},
+      user_assm_memo = #{userAssmMemo,jdbcType=VARCHAR},
+      flag_deleted = #{flagDeleted,jdbcType=BIT},
+      flag_available = #{flagAvailable,jdbcType=BIT},
+      user_assm_achieve_point = #{userAssmAchievePoint,jdbcType=INTEGER},
+      user_assm_communication_point = #{userAssmCommunicationPoint,jdbcType=INTEGER},
+      user_assm_timely_point = #{userAssmTimelyPoint,jdbcType=INTEGER},
+      client_assm_achieve_point = #{clientAssmAchievePoint,jdbcType=INTEGER},
+      client_assm_communication_point = #{clientAssmCommunicationPoint,jdbcType=INTEGER},
+      client_assm_timely_point = #{clientAssmTimelyPoint,jdbcType=INTEGER},
+      user_complete_profile_file = #{userCompleteProfileFile,jdbcType=VARCHAR},
+      user_complete_profile_file_name = #{userCompleteProfileFileName,jdbcType=VARCHAR},
+      user_complete_profile_photo = #{userCompleteProfilePhoto,jdbcType=VARCHAR},
+      user_complete_profile_photo_name = #{userCompleteProfilePhotoName,jdbcType=VARCHAR},
+      user_complete_time = #{userCompleteTime,jdbcType=TIMESTAMP},
+      user_job_end_reason = #{userJobEndReason,jdbcType=VARCHAR},
+      flag_used = #{flagUsed,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+    <update id="updateByRequestId" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+        update fdp_fault_dispatch_hr_relation
+        <set>
+            <if test="dispatchOrderId != null">
+                dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null">
+                fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchMainHrId != null">
+                dispatch_main_hr_id = #{dispatchMainHrId,jdbcType=INTEGER},
+            </if>
+            <if test="hrAccountInfoId != null">
+                hr_account_info_id = #{hrAccountInfoId,jdbcType=INTEGER},
+            </if>
+            <if test="estimatedCost != null">
+                estimated_cost = #{estimatedCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedMonetaryUnit != null">
+                estimated_monetary_unit = #{estimatedMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedInvoiceType != null">
+                estimated_invoice_type = #{estimatedInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedInvoiceRate != null">
+                estimated_invoice_rate = #{estimatedInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="flagProvideInvoice != null">
+                flag_provide_invoice = #{flagProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="userAssmMemo != null">
+                user_assm_memo = #{userAssmMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="userAssmAchievePoint != null">
+                user_assm_achieve_point = #{userAssmAchievePoint,jdbcType=INTEGER},
+            </if>
+            <if test="userAssmCommunicationPoint != null">
+                user_assm_communication_point = #{userAssmCommunicationPoint,jdbcType=INTEGER},
+            </if>
+            <if test="userAssmTimelyPoint != null">
+                user_assm_timely_point = #{userAssmTimelyPoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmAchievePoint != null">
+                client_assm_achieve_point = #{clientAssmAchievePoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmCommunicationPoint != null">
+                client_assm_communication_point = #{clientAssmCommunicationPoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmTimelyPoint != null">
+                client_assm_timely_point = #{clientAssmTimelyPoint,jdbcType=INTEGER},
+            </if>
+            <if test="userCompleteProfileFile != null">
+                user_complete_profile_file = #{userCompleteProfileFile,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfileFileName != null">
+                user_complete_profile_file_name = #{userCompleteProfileFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfilePhoto != null">
+                user_complete_profile_photo = #{userCompleteProfilePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfilePhotoName != null">
+                user_complete_profile_photo_name = #{userCompleteProfilePhotoName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteTime != null">
+                user_complete_time = #{userCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userJobEndReason != null">
+                user_job_end_reason = #{userJobEndReason,jdbcType=VARCHAR},
+            </if>
+
+            <if test="flagUsed != null">
+                flag_used = #{flagUsed,jdbcType=BIT},
+            </if>
+            <if test="clientEvaluation != null">
+                client_evaluation = #{clientEvaluation,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileUserType != null">
+                complete_profile_user_type = #{completeProfileUserType,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileUserId != null">
+                complete_profile_user_id = #{completeProfileUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="hrDispatchStatus != null">
+                hr_dispatch_status = #{hrDispatchStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedCostMemo != null">
+                estimated_cost_memo = #{estimatedCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedPriceMemo != null">
+                estimated_price_memo = #{estimatedCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagEnableModifyProfile != null">
+                flag_enable_modify_profile = #{flagEnableModifyProfile,jdbcType=BIT},
+            </if>
+            <if test="personRejectCauseContext != null">
+                person_reject_cause_context = #{personRejectCauseContext,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
+    </update>
+    <update id="updateFlagUsed" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+    UPDATE
+    fdp_fault_dispatch_hr_relation
+    SET
+    flag_used = #{flagUsed,jdbcType=BIT}
+    WHERE
+    dispatch_main_hr_id =#{dispatchMainHrId,jdbcType=INTEGER}
+
+  </update>
+
+    <update id="updateFlagUsedByOrderId" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+    UPDATE
+    fdp_fault_dispatch_hr_relation
+    SET
+    flag_used = #{flagUsed,jdbcType=BIT}
+    WHERE
+    dispatch_order_id =#{dispatchOrderId,jdbcType=INTEGER}
+
+  </update>
+    <!--
+      -通过派工工单查询服务器图片路径
+      -date:2018年4月26号
+      -Author:Niting
+    -->
+    <select id="selectPhotoByOrderNumber" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT
+    disHr.user_complete_profile_photo
+    FROM
+    fdp_fault_dispatch_hr_relation AS disHr
+    INNER JOIN fdp_fault_dispatch_order AS disOrd ON disHr.dispatch_order_id = disOrd.id
+    WHERE
+    disOrd.id IN ((select disOrd.id from fdp_fault_dispatch_order disOrd where disOrd.dispatch_order_number = #{dispatchOrderNumber,jdbcType=VARCHAR}))
+
+  </select>
+
+
+    <update id="updateHrById" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+
+      UPDATE
+    fdp_fault_dispatch_hr_relation
+    SET
+    dispatch_main_hr_id = #{dispatchMainRrId,jdbcType=INTEGER},
+    hr_account_info_id = #{hrAccountInfoId,jdbcType=INTEGER}
+    WHERE
+    dispatch_order_id =#{dispatchOrderId,jdbcType=INTEGER}
+
+  </update>
+
+
+    <select id="selectIdByOrderId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from fdp_fault_dispatch_hr_relation
+        where dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
+        and flag_used = 1
+    </select>
+
+
+    <!--
+        /**
+       * 修改派工费用,修改派工人员
+       *
+       * @param hr
+       * @create 2018年05月03日 10:23
+       * @author liukan
+       * @return
+       */
+
+     -->
+    <insert id="insertHrRelation" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+
+        insert into fdp_fault_dispatch_hr_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="dispatchOrderId != null">
+                dispatch_order_id,
+            </if>
+            <if test="faultDispatchRequestId != null">
+                fault_dispatch_request_id,
+            </if>
+            <if test="dispatchMainHrId != null">
+                dispatch_main_hr_id,
+            </if>
+            <if test="hrAccountInfoId != null">
+                hr_account_info_id,
+            </if>
+            <if test="estimatedCost != null">
+                estimated_cost,
+            </if>
+            <if test="estimatedMonetaryUnit != null">
+                estimated_monetary_unit,
+            </if>
+            <if test="estimatedPrice != null">
+                estimated_price,
+            </if>
+            <if test="estimatedPriceUnit != null">
+                estimated_price_unit,
+            </if>
+            <if test="estimatedInvoiceType != null">
+                estimated_invoice_type,
+            </if>
+            <if test="estimatedInvoiceRate != null">
+                estimated_invoice_rate,
+            </if>
+            <if test="flagProvideInvoice != null">
+                flag_provide_invoice,
+            </if>
+            <if test="userAssmMemo != null">
+                user_assm_memo,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+            <if test="userAssmAchievePoint != null">
+                user_assm_achieve_point,
+            </if>
+            <if test="userAssmCommunicationPoint != null">
+                user_assm_communication_point,
+            </if>
+            <if test="userAssmTimelyPoint != null">
+                user_assm_timely_point,
+            </if>
+            <if test="clientAssmAchievePoint != null">
+                client_assm_achieve_point,
+            </if>
+            <if test="clientAssmCommunicationPoint != null">
+                client_assm_communication_point,
+            </if>
+            <if test="clientAssmTimelyPoint != null">
+                client_assm_timely_point,
+            </if>
+            <if test="userCompleteProfileFile != null">
+                user_complete_profile_file,
+            </if>
+            <if test="userCompleteProfileFileName != null">
+                user_complete_profile_file_name,
+            </if>
+            <if test="userCompleteProfilePhoto != null">
+                user_complete_profile_photo,
+            </if>
+            <if test="userCompleteProfilePhotoName != null">
+                user_complete_profile_photo_name,
+            </if>
+            <if test="userCompleteTime != null">
+                user_complete_time,
+            </if>
+            <if test="userJobEndReason != null">
+                user_job_end_reason,
+            </if>
+
+            <if test="flagUsed != null">
+                flag_used,
+            </if>
+            <if test="estimatedCostMemo != null">
+                estimated_cost_memo,
+            </if>
+            <if test="estimatedPriceMemo != null">
+                estimated_price_memo,
+            </if>
+            <if test="privateNote != null">
+                private_note,
+            </if>
+            <if test="estimatedDeviceCost != null">
+                estimated_device_cost,
+            </if>
+            <if test="estimatedDeviceMemo != null">
+                estimated_device_memo,
+            </if>
+            <if test="estimatedCommResourceCost != null">
+                estimated_comm_resource_cost,
+            </if>
+            <if test="estimatedCommResourceMemo != null">
+                estimated_comm_resource_memo,
+            </if>
+            <if test="estimatedHrCost != null">
+                estimated_hr_cost,
+            </if>
+            <if test="estimatedHrMemo != null">
+                estimated_hr_memo,
+            </if>
+            <if test="estimatedOtherCost != null">
+                estimated_other_cost,
+            </if>
+            <if test="estimatedOtherMemo != null">
+                estimated_other_memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchOrderId != null">
+                #{dispatchOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="faultDispatchRequestId != null">
+                #{faultDispatchRequestId,jdbcType=INTEGER},
+            </if>
+            <if test="dispatchMainHrId != null">
+                #{dispatchMainHrId,jdbcType=INTEGER},
+            </if>
+            <if test="hrAccountInfoId != null">
+                #{hrAccountInfoId,jdbcType=INTEGER},
+            </if>
+            <if test="estimatedCost != null">
+                #{estimatedCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedMonetaryUnit != null">
+                #{estimatedMonetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedPrice != null">
+                #{estimatedPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedPriceUnit != null">
+                #{estimatedPriceUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedInvoiceType != null">
+                #{estimatedInvoiceType,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedInvoiceRate != null">
+                #{estimatedInvoiceRate,jdbcType=DECIMAL},
+            </if>
+            <if test="flagProvideInvoice != null">
+                #{flagProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="userAssmMemo != null">
+                #{userAssmMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="userAssmAchievePoint != null">
+                #{userAssmAchievePoint,jdbcType=INTEGER},
+            </if>
+            <if test="userAssmCommunicationPoint != null">
+                #{userAssmCommunicationPoint,jdbcType=INTEGER},
+            </if>
+            <if test="userAssmTimelyPoint != null">
+                #{userAssmTimelyPoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmAchievePoint != null">
+                #{clientAssmAchievePoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmCommunicationPoint != null">
+                #{clientAssmCommunicationPoint,jdbcType=INTEGER},
+            </if>
+            <if test="clientAssmTimelyPoint != null">
+                #{clientAssmTimelyPoint,jdbcType=INTEGER},
+            </if>
+            <if test="userCompleteProfileFile != null">
+                #{userCompleteProfileFile,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfileFileName != null">
+                #{userCompleteProfileFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfilePhoto != null">
+                #{userCompleteProfilePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteProfilePhotoName != null">
+                #{userCompleteProfilePhotoName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompleteTime != null">
+                #{userCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userJobPerformance != null">
+                #{userJobPerformance,jdbcType=VARCHAR},
+            </if>
+            <if test="userJobEndReason != null">
+                #{userJobEndReason,jdbcType=VARCHAR},
+            </if>
+            <if test="clientCompleteProfileFile != null">
+                #{clientCompleteProfileFile,jdbcType=VARCHAR},
+            </if>
+            <if test="clientCompleteProfileFileName != null">
+                #{clientCompleteProfileFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="clientCompleteTime != null">
+                #{clientCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flagUsed != null">
+                #{flagUsed,jdbcType=BIT},
+            </if>
+            <if test="estimatedCostMemo != null">
+                #{estimatedCostMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedPriceMemo != null">
+                #{estimatedPriceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="privateNote != null">
+                #{privateNote,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedDeviceCost != null">
+                #{estimatedDeviceCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedDeviceMemo != null">
+                #{estimatedDeviceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedCommResourceCost != null">
+                #{estimatedCommResourceCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedCommResourceMemo != null">
+                #{estimatedCommResourceMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedHrCost != null">
+                #{estimatedHrCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedHrMemo != null">
+                #{estimatedHrMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedOtherCost != null">
+                #{estimatedOtherCost,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedOtherMemo != null">
+                #{estimatedOtherMemo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <!--查询之前是否上传完工资料-->
+    <select id="selectConfirmFile" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.fdp.GetFdpFaultDispatchHrRelationShowRequest">
+    SELECT
+        hr.id,
+        hr.dispatch_order_id AS dispatchOrderId,
+        hr.fault_dispatch_request_id AS faultDispatchRequestId,
+        hr.dispatch_main_hr_id AS dispatchMainHrId,
+        hr.hr_account_info_id AS hrAccountInfoId,
+        hr.estimated_cost AS estimatedCost,
+				hr.estimated_cost_memo AS estimatedCostMemo,
+        hr.estimated_monetary_unit AS estimatedMonetaryUnit,
+        hr.estimated_price AS estimatedPrice,
+				hr.estimated_price_memo AS estimatedPriceMemo,
+        hr.estimated_price_unit AS estimatedPriceUnit,
+        hr.estimated_invoice_type AS estimatedInvoiceType,
+        hr.estimated_invoice_rate AS estimatedInvoiceRate,
+        hr.flag_provide_invoice AS flagProvideInvoice,
+        hr.user_assm_memo AS memo,
+        hr.flag_deleted AS flagDeleted,
+        hr.flag_available AS flagAvailable,
+        hr.user_assm_achieve_point AS userAssmAchievePoint,
+        hr.user_assm_communication_point AS userAssmCommunicationPoint,
+        hr.user_assm_timely_point AS userAssmTimelyPoint,
+        hr.client_assm_achieve_point AS clientAssmAchievePoint,
+        hr.client_assm_communication_point AS clientAssmCommunicationPoint,
+        hr.client_assm_timely_point AS clientAssmTimelyPoint,
+        hr.user_complete_profile_file AS userCompleteProfileFile,
+        hr.user_complete_profile_file_name AS userCompleteProfileFileName,
+        hr.user_complete_profile_photo AS userCompleteProfilePhoto,
+        hr.user_complete_profile_photo_name AS userCompleteProfilePhotoName,
+        hr.user_complete_time AS userCompleteTime,
+        hr.user_job_end_reason AS userJobEndReason,
+        hr.flag_used AS flagUsed,
+        dr.actual_cost AS actualCost,
+				dr.actual_cost_memo AS actualCostMemo,
+		dr.actual_monetary_unit AS actualMonetaryUnit,
+		dr.actual_price AS actualPrice,
+		dr.actual_price_memo AS actualPriceMemo,
+		dr.actual_price_unit AS actualPriceUnit,
+		dr.private_note privateNote,
+		dr.material_reject_cause_context materialRejectCauseContext,
+		hr.person_reject_cause_context personRejectCauseContext
+    FROM
+        fdp_fault_dispatch_hr_relation AS hr
+        LEFT JOIN fdp_fault_dispatch_order AS dr ON dr.id = hr.dispatch_order_id
+        LEFT JOIN fdp_fault_order_dispatch_request AS req ON dr.fault_dispatch_request_id = req.id
+    WHERE
+    hr.dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
+    AND hr.flag_used =1
+  </select>
+    <select id="selectByRequestId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        fdp_fault_dispatch_hr_relation
+        WHERE
+        fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
+        AND flag_used =1
+    </select>
+    <!--查看完工资料-->
+    <select id="selectCompleteProFile" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.fdp.GetServiceCompleteProfile">
+    SELECT
+    user_assm_memo AS userAssmMemo,
+    user_complete_profile_file AS userCompleteProfileFile,
+    user_complete_profile_file_name AS userCompleteProfileFileName,
+    user_complete_profile_photo AS userCompleteProfilePhoto,
+    user_complete_profile_photo_name AS userCompleteProfilePhotoName
+    FROM
+    fdp_fault_dispatch_hr_relation
+    WHERE
+    dispatch_order_id = #{orderId,jdbcType=INTEGER}
+    AND flag_used =1
+  </select>
+    <!--服务商工单筛选品牌-->
+    <select id="selectBrandNameById" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.dmi.DmiBrand">
+
+    select
+    case   when db.brand_name is null then request.other_brand else db.brand_name end  brandName
+
+    from fdp_fault_dispatch_order ffdo
+    left join fdp_fault_order_dispatch_request request on request.id = ffdo.fault_dispatch_request_id
+    left join dmi_store ds on ds.id = ffdo.store_id
+    left join dmi_brand db on db.id =ds.brand_id
+    left join fdp_fault_dispatch_hr_relation hr on hr.dispatch_order_id = ffdo.id
+    where hr.dispatch_main_hr_id = #{hrId,jdbcType=INTEGER}
+    GROUP BY brandName
+  </select>
+    <!--服务商工单筛选城市-->
+    <select id="selectServiceCityByHrId" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.fdp.GetFdpRequestServiceCity">
+    SELECT DISTINCT
+        ffodr.service_city AS serviceCity
+    FROM
+        ( SELECT * FROM fdp_fault_dispatch_hr_relation WHERE dispatch_main_hr_id = #{hrId,jdbcType=INTEGER} ) ffdhr
+        LEFT JOIN fdp_fault_order_dispatch_request ffodr ON ffodr.id = ffdhr.fault_dispatch_request_id
+    GROUP BY
+        service_city
+  </select>
+    <!--采购补充完工资料-->
+    <update id="updateExtendProfile" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+    UPDATE
+	fdp_fault_dispatch_hr_relation
+    SET
+	extend_profile_name = #{extendProfileName,jdbcType=VARCHAR},
+	extend_profile_url = #{extendProfileUrl,jdbcType=VARCHAR},
+	extend_profile_memo =#{extendProfileMemo,jdbcType=VARCHAR}
+    WHERE
+	dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectShowExtendProfile" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+	SELECT
+        extend_profile_name extendProfileName,
+        extend_profile_url extendProfileUrl,
+        extend_profile_memo extendProfileMemo
+    FROM
+        fdp_fault_dispatch_hr_relation
+    WHERE
+        dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
+        AND flag_used = 1
+  </select>
+    <update id="updateFlagEnableModifyProfile"
+            parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+     UPDATE
+	fdp_fault_dispatch_hr_relation
+    SET
+	flag_enable_modify_profile = #{flagEnableModifyProfile,jdbcType=BIT}
+    WHERE
+	dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
+  </update>
+    <select id="getDispatchHrShow" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.fdp.GetFdpFaultDispatchHrRelationShow">
+      SELECT
+
+         hr.first_name firstName,
+         hr.last_name lastName,
+         hr.mobile,
+         hr.mobile phone,
+         ffdhr.hr_start_off_time hrStartOffTime,
+		 ffdhr.hr_start_service_time hrStartServiceTime,
+		 ffdhr.hr_finish_service_time hrFinishServiceTime,
+         ffdhr.estimated_invoice_type estimatedInvoiceType,
+         ffdhr.estimated_invoice_rate estimatedInvoiceRate,
+         ffdhr.estimated_cost estimatedCost,
+         ffdhr.estimated_monetary_unit estimatedMonetaryUnit,
+         ffdhr.estimated_cost_memo estimatedCostMemo,
+         ffdhr.estimated_price estimatedPrice,
+         ffdhr.estimated_price_unit estimatedPriceUnit,
+         ffdhr.estimated_price_memo estimatedPriceMemo,
+         ffdhr.fault_dispatch_request_id requestId,
+         ffdhr.user_complete_time userCompleteTime,
+         ffdhr.flag_display flagDisplay,
+         ffdhr.person_reject_cause_context personRejectCauseContext,
+
+         ffdhr.estimated_device_cost estimatedDeviceCost,
+         ffdhr.estimated_device_memo estimatedDeviceMemo,
+         ffdhr.estimated_comm_resource_cost estimatedCommResourceCost,
+         ffdhr.estimated_comm_resource_memo estimatedCommResourceMemo,
+         ffdhr.estimated_hr_cost estimatedHrCost,
+         ffdhr.estimated_hr_memo estimatedHrMemo,
+         ffdhr.estimated_other_cost estimatedOtherCost,
+         ffdhr.estimated_other_memo estimatedOtherMemo,
+
+         accountInfo.full_name fullName,
+         accountInfo.bank_name bankName,
+         accountInfo.account account,
+         accountInfo.alipay_account alipayAccount,
+         accountInfo.payment_method paymentMethod,
+         ffdo.actual_cost actualCost,
+         ffdo.actual_monetary_unit actualMonetaryUnit,
+         ffdo.actual_cost_memo actualCostMemo,
+         ffdo.actual_price actualPrice,
+         ffdo.actual_price_unit actualPriceUnit,
+         ffdo.actual_price_memo actualPriceMemo,
+         ffdo.dispatch_order_number dispatchOrderNumber,
+         ffdo.estimated_service_time estimatedServiceTime,
+         ffdo.memo,
+
+         ffdo.actual_device_cost actualDeviceCost,
+         ffdo.actual_device_memo actualDeviceMemo,
+         ffdo.actual_comm_resource_cost actualCommResourceCost,
+         ffdo.actual_comm_resource_memo actualCommResourceMemo,
+         ffdo.actual_hr_cost actualHrCost,
+         ffdo.actual_hr_memo actualHrMemo,
+         ffdo.actual_other_cost actualOtherCost,
+         ffdo.actual_other_memo actualOtherMemo,
+
+         ffdo.material_reject_cause_context materialRejectCauseContext
+
+    FROM
+        fdp_fault_dispatch_hr_relation ffdhr
+    LEFT JOIN bif_dispatch_human_resource hr ON hr.id = ffdhr.dispatch_main_hr_id
+    LEFT JOIN (SELECT * FROM bif_dispatch_hr_account_info WHERE flag_default = 1 AND flag_deleted = 0) accountInfo ON ffdhr.hr_account_info_id = accountInfo.id
+    LEFT JOIN fdp_fault_dispatch_order ffdo ON ffdhr.dispatch_order_id = ffdo.id
+    WHERE
+        ffdhr.fault_dispatch_request_id = #{requestId,jdbcType=INTEGER}
+    AND ffdhr.flag_used = 1
+  </select>
+
+    <!--控制是否显示服务商信息-->
+    <update id="updateFlagDisplayByOrderId"
+            parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+    UPDATE
+	fdp_fault_dispatch_hr_relation
+    SET
+	flag_display =#{flagDisplay,jdbcType=BIT}
+    WHERE
+	dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
+  </update>
+</mapper>

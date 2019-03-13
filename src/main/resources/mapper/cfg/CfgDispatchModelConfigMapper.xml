@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.cfg.CfgDispatchModelConfigMapper">
+    <resultMap id="BaseResultMap" type="com.company.springboot.entity.cfg.CfgDispatchModelConfig">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="model_name" property="modelName" jdbcType="VARCHAR"/>
+        <result column="dispatch_model_id" property="dispatchModelId" jdbcType="INTEGER"/>
+        <result column="belong_object_type" property="belongObjectType" jdbcType="VARCHAR"/>
+        <result column="belong_object_id" property="belongObjectId" jdbcType="INTEGER"/>
+        <result column="equipment_request" property="equipmentRequest" jdbcType="VARCHAR"/>
+        <result column="other_request" property="otherRequest" jdbcType="VARCHAR"/>
+        <result column="dispatch_description" property="dispatchDescription" jdbcType="VARCHAR"/>
+        <result column="backup_device_request" property="backupDeviceRequest" jdbcType="VARCHAR"/>
+        <result column="suggest_price" property="suggestPrice" jdbcType="DECIMAL"/>
+        <result column="suggest_unit" property="suggestUnit" jdbcType="VARCHAR"/>
+        <result column="flag_fixed_price" property="flagFixedPrice" jdbcType="BIT"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_avaliable" property="flagAvaliable" jdbcType="BIT"/>
+        <result column="create_person" property="createPerson" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="upload_file_name" property="uploadFileName" jdbcType="VARCHAR"/>
+        <result column="upload_file_url" property="uploadFileUrl" jdbcType="VARCHAR"/>
+        <result column="flag_auto_commit" property="flagAutoCommit" jdbcType="BIT"/>
+        <result column="complete_profile_template_name" property="completeProfileTemplateName" jdbcType="VARCHAR"/>
+        <result column="complete_profile_template_url" property="completeProfileTemplateUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.company.springboot.entity.cfg.CfgDispatchModelConfig"
+               extends="BaseResultMap">
+        <result column="dispatch_model_request" property="dispatchModelRequest" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, company_id, project_id, model_name, dispatch_model_id, belong_object_type, belong_object_id, 
+    equipment_request, other_request, dispatch_description, backup_device_request, suggest_price, 
+    suggest_unit, flag_fixed_price, flag_deleted, flag_avaliable, create_person, create_time, 
+    update_person, update_time,upload_file_name,upload_file_url,flag_auto_commit,complete_profile_template_name,complete_profile_template_url
+  </sql>
+    <sql id="Blob_Column_List">
+    dispatch_model_request
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from cfg_dispatch_model_config
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cfg_dispatch_model_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insertSelective" parameterType="com.company.springboot.entity.cfg.CfgDispatchModelConfig">
+        insert into cfg_dispatch_model_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="modelName != null">
+                model_name,
+            </if>
+            <if test="dispatchModelId != null">
+                dispatch_model_id,
+            </if>
+            <if test="belongObjectType != null">
+                belong_object_type,
+            </if>
+            <if test="belongObjectId != null">
+                belong_object_id,
+            </if>
+            <if test="equipmentRequest != null">
+                equipment_request,
+            </if>
+            <if test="otherRequest != null">
+                other_request,
+            </if>
+            <if test="dispatchDescription != null">
+                dispatch_description,
+            </if>
+            <if test="backupDeviceRequest != null">
+                backup_device_request,
+            </if>
+            <if test="suggestPrice != null">
+                suggest_price,
+            </if>
+            <if test="suggestUnit != null">
+                suggest_unit,
+            </if>
+            <if test="flagFixedPrice != null">
+                flag_fixed_price,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvaliable != null">
+                flag_avaliable,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="dispatchModelRequest != null">
+                dispatch_model_request,
+            </if>
+            <if test="uploadFileName != null">
+                upload_file_name,
+            </if>
+            <if test="uploadFileUrl != null">
+                upload_file_url,
+            </if>
+            <if test="flagAutoCommit != null">
+                flag_auto_commit,
+            </if>
+            <if test="completeProfileTemplateName != null">
+                complete_profile_template_name,
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                complete_profile_template_url,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="projectId != null">
+                #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="modelName != null">
+                #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatchModelId != null">
+                #{dispatchModelId,jdbcType=INTEGER},
+            </if>
+            <if test="belongObjectType != null">
+                #{belongObjectType,jdbcType=VARCHAR},
+            </if>
+            <if test="belongObjectId != null">
+                #{belongObjectId,jdbcType=INTEGER},
+            </if>
+            <if test="equipmentRequest != null">
+                #{equipmentRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="otherRequest != null">
+                #{otherRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatchDescription != null">
+                #{dispatchDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="backupDeviceRequest != null">
+                #{backupDeviceRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="suggestPrice != null">
+                #{suggestPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="suggestUnit != null">
+                #{suggestUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="flagFixedPrice != null">
+                #{flagFixedPrice,jdbcType=BIT},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvaliable != null">
+                #{flagAvaliable,jdbcType=BIT},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchModelRequest != null">
+                #{dispatchModelRequest,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="uploadFileName != null">
+                #{uploadFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadFileUrl != null">
+                #{uploadFileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="flagAutoCommit != null">
+                #{flagAutoCommit,jdbcType=BIT},
+            </if>
+            <if test="completeProfileTemplateName != null">
+                #{completeProfileTemplateName,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                #{completeProfileTemplateUrl,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.cfg.CfgDispatchModelConfig">
+        update cfg_dispatch_model_config
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="modelName != null">
+                model_name = #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatchModelId != null">
+                dispatch_model_id = #{dispatchModelId,jdbcType=INTEGER},
+            </if>
+            <if test="belongObjectType != null">
+                belong_object_type = #{belongObjectType,jdbcType=VARCHAR},
+            </if>
+            <if test="belongObjectId != null">
+                belong_object_id = #{belongObjectId,jdbcType=INTEGER},
+            </if>
+            <if test="equipmentRequest != null">
+                equipment_request = #{equipmentRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="otherRequest != null">
+                other_request = #{otherRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatchDescription != null">
+                dispatch_description = #{dispatchDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="backupDeviceRequest != null">
+                backup_device_request = #{backupDeviceRequest,jdbcType=VARCHAR},
+            </if>
+            <if test="suggestPrice != null">
+                suggest_price = #{suggestPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="suggestUnit != null">
+                suggest_unit = #{suggestUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="flagFixedPrice != null">
+                flag_fixed_price = #{flagFixedPrice,jdbcType=BIT},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvaliable != null">
+                flag_avaliable = #{flagAvaliable,jdbcType=BIT},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchModelRequest != null">
+                dispatch_model_request = #{dispatchModelRequest,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="uploadFileName != null">
+                upload_file_name = #{uploadFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadFileUrl != null">
+                upload_file_url = #{uploadFileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="flagAutoCommit != null">
+                flag_auto_commit = #{flagAutoCommit,jdbcType=BIT},
+            </if>
+            <if test="completeProfileTemplateName != null">
+                complete_profile_template_name = #{completeProfileTemplateName,jdbcType=VARCHAR},
+            </if>
+            <if test="completeProfileTemplateUrl != null">
+                complete_profile_template_url = #{completeProfileTemplateUrl,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <!--根据模板名称查询-->
+    <select id="selectByModelName" parameterType="com.company.springboot.entity.cfg.CfgDispatchModelConfig"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        cfg_dispatch_model_config
+        WHERE
+        flag_deleted = 0
+        AND id != #{id,jdbcType=INTEGER}
+        <if test="companyId != 0 and companyId != null">
+            AND company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="modelName != null">
+            AND model_name = #{modelName,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <select id="list" parameterType="com.company.springboot.entity.cfg.CfgDispatchModelConfig"
+            resultType="com.company.springboot.entity.cfg.GetCfgDispatchModelConfigList">
+        SELECT
+        model.id,
+        model.flag_avaliable flagAvaliable,
+        comp.company_name companyName,
+        pro.project_name projectName,
+        model.model_name modelName,
+        model.create_time createTime,
+        suer.username createPerson
+        FROM
+        cfg_dispatch_model_config model
+        LEFT JOIN sys_company_users suer on model.create_person = suer.id
+        LEFT JOIN dmi_company_info comp on comp.id = model.company_id
+        LEFT JOIN pjt_project pro ON pro.id = model.project_id
+        WHERE 1=1 AND model.flag_deleted = 0
+        <if test="companyId != null and companyId != 0">
+            AND model.company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        <if test="projectId != null and projectId != 0">
+            AND model.project_id = #{projectId,jdbcType=INTEGER}
+        </if>
+        <if test="createPerson != null and createPerson != 0">
+            AND model.create_person = #{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="createTimeStart != null">
+            AND model.create_time >= #{createTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createTimeEnd != null">
+            AND model.create_time &lt;= DATE_ADD(#{createTimeEnd,jdbcType=TIMESTAMP} , INTERVAL 1 DAY)
+        </if>
+        ORDER BY model.create_time DESC
+    </select>
+    <select id="show" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.cfg.CfgDispatchModelConfigShow">
+    SELECT
+            model.id,
+            model.company_id companyId,
+            model.project_id projectId,
+            model.model_name modelName,
+            model.dispatch_model_id dispatchModelId,
+            model.dispatch_model_request dispatchModelRequest,
+            model.belong_object_type belongObjectType,
+            model.belong_object_id belongObjectId,
+            model.equipment_request equipmentRequest,
+            model.other_request otherRequest,
+            model.dispatch_description dispatchDescription,
+            model.backup_device_request backupDeviceRequest,
+            model.suggest_price suggestPrice,
+            model.suggest_unit suggestUnit,
+            model.flag_fixed_price flagFixedPrice,
+            model.flag_deleted flagDeleted,
+            model.flag_avaliable flagAvaliable,
+            model.create_person createPerson,
+            model.create_time createTime,
+            model.update_person updatePerson,
+            model.update_time updateTime,
+            model.upload_file_name uploadFileName,
+			model.upload_file_url uploadFileUrl,
+			model.complete_profile_template_url completeProfileTemplateUrl,
+	        model.complete_profile_template_name completeProfileTemplateName,
+			model.flag_auto_commit flagAutoCommit,
+			com.company_name companyName,
+			pro.project_name projectName
+    FROM
+        cfg_dispatch_model_config model
+		LEFT JOIN dmi_company_info com on com.id = model.company_id
+		LEFT JOIN pjt_project pro on pro.id = model.project_id
+    WHERE
+        model.flag_deleted = 0
+        AND model.id  = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectByCreatePerson" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.cfg.GetCfgDispatchModelConfigPersonList">
+    SELECT
+        model.create_person id,
+        suer.username createPerson
+    FROM
+        cfg_dispatch_model_config model
+        LEFT JOIN sys_company_users suer ON model.create_person = suer.id
+    WHERE
+        model.create_person IN (
+                SELECT
+                    sys.id
+                FROM
+                    sys_company_users sys
+                    INNER JOIN ( SELECT * FROM sys_company_users WHERE id = #{createPerson,jdbcType=INTEGER} AND flag_deleted = 0 ) sys1 ON sys.act_type = sys1.act_type
+                    AND sys.act_Object_id = sys1.act_Object_id
+                    )
+        AND model.flag_deleted = 0
+  </select>
+    <!--查询已启用模板列表-->
+    <select id="selectByUseModelList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        cfg_dispatch_model_config
+        WHERE
+        flag_deleted = 0
+        AND flag_avaliable = 1
+        AND project_id = #{projectId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByProjectId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        cfg_dispatch_model_config
+        WHERE
+        flag_deleted = 0
+        AND project_id = #{projectId,jdbcType=INTEGER}
+    </select>
+    <!--派工时查看项目-模板列表-->
+    <select id="pList" parameterType="java.lang.Integer"
+            resultType="com.company.springboot.entity.cfg.CfgDispatchModelConfig">
+        SELECT
+        CONCAT( pro.project_name, '--', cdmc.model_name ) projectModelName,
+        cdmc.id,
+        cdmc.company_id companyId,
+        cdmc.project_id projectId,
+        cdmc.dispatch_model_id dispatchModelId,
+        cdmc.belong_object_type belongObjectType,
+        cdmc.belong_object_id belongObjectId,
+        cdmc.equipment_request equipmentRequest,
+        cdmc.other_request otherRequest,
+        cdmc.dispatch_description dispatch_description,
+        cdmc.backup_device_request backupDeviceRequest,
+        cdmc.suggest_price suggestPrice,
+        cdmc.suggest_unit suggestUnit,
+        cdmc.flag_fixed_price flagFixedPrice,
+        cdmc.flag_deleted flagDeleted,
+        cdmc.flag_avaliable flagAvaliable,
+        cdmc.create_time createTime,
+        cdmc.update_person updatePerson,
+        cdmc.update_time updateTime,
+        cdmc.upload_file_name uploadFileName,
+        cdmc.upload_file_url uploadFileUrl,
+        cdmc.flag_auto_commit flagAutoCommit,
+        cdmc.complete_profile_template_name completeProfileTemplateName,
+        cdmc.complete_profile_template_url completeProfileTemplateUrl
+        FROM
+        pjt_project pro
+        LEFT JOIN cfg_dispatch_model_config cdmc ON pro.id = cdmc.project_id
+        LEFT JOIN sys_company_users suer ON pro.create_person = suer.id
+        LEFT JOIN dmi_company_info comp ON comp.id = pro.company_id
+        WHERE
+        1=1
+        <if test="companyId != null and companyId != 0">
+            AND cdmc.company_id = #{companyId,jdbcType=INTEGER}
+        </if>
+        AND pro.flag_deleted = 0
+        AND pro.flag_available = 1
+        AND cdmc.flag_avaliable = 1
+        ORDER BY
+        cdmc.create_time DESC
+    </select>
+</mapper>

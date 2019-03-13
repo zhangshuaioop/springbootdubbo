@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.dmi.DmiOrganizationMapper">
+    <resultMap id="BaseResultMap" type="com.company.springboot.entity.dmi.DmiOrganization">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="organization_name" property="organizationName" jdbcType="VARCHAR"/>
+        <result column="organization_code" property="organizationCode" jdbcType="VARCHAR"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+        <result column="order_id" property="orderId" jdbcType="INTEGER"/>
+        <result column="belongs_company_id" property="belongsCompanyId" jdbcType="INTEGER"/>
+        <result column="flag_filiale" property="flagFiliale" jdbcType="BIT"/>
+        <result column="business_license_id" property="businessLicenseId" jdbcType="INTEGER"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_available" property="flagAvailable" jdbcType="BIT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_person" property="createPerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.company.springboot.entity.dmi.DmiOrganization" extends="BaseResultMap">
+        <result column="memo" property="memo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, organization_name, organization_code, level, parent_id, order_id, belongs_company_id, 
+    flag_filiale, business_license_id, flag_deleted, flag_available, create_time, create_person,
+    update_time, update_person
+  </sql>
+    <sql id="Blob_Column_List">
+    memo
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_organization
+        where id = #{id,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+
+    <select id="selectByBusinessLicenseId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select
+    count(1) ocount
+    from dmi_organization
+    where business_license_id = #{id,jdbcType=INTEGER}
+    and flag_deleted = 0
+  </select>
+
+    <select id="selectMaxOrderByParentId" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select ifnull(max(order_id),0) maxorder
+    from dmi_organization
+    where parent_id = #{parentId,jdbcType=INTEGER}
+    and belongs_company_id = #{companyId,jdbcType=INTEGER}
+    and flag_deleted = 0
+  </select>
+
+    <select id="selectByParentIdList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select id
+        from dmi_organization
+        where parent_id in
+        <foreach item="item" index="index" collection="areaIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and belongs_company_id = #{companyId,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+
+    <select id="selectByParentId" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+    select *
+    from dmi_organization
+    where parent_id = #{parentId,jdbcType=INTEGER}
+    and belongs_company_id = #{companyId,jdbcType=INTEGER}
+    and flag_deleted = 0
+  </select>
+
+    <select id="selectOrganizationListByCompanyId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_organization
+        where belongs_company_id = #{companyId,jdbcType=INTEGER}
+        and flag_deleted = 0
+        order by level asc,parent_id asc,id asc
+    </select>
+
+    <insert id="insertSelective" parameterType="com.company.springboot.entity.dmi.DmiOrganization">
+        insert into dmi_organization
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="organizationName != null">
+                organization_name,
+            </if>
+            <if test="organizationCode != null">
+                organization_code,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="belongsCompanyId != null">
+                belongs_company_id,
+            </if>
+            <if test="flagFiliale != null">
+                flag_filiale,
+            </if>
+            <if test="businessLicenseId != null">
+                business_license_id,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAvailable != null">
+                flag_available,
+            </if>
+                create_time,
+            <if test="createPerson != null">
+                create_person,
+            </if>
+                update_time,
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="organizationName != null">
+                #{organizationName,jdbcType=VARCHAR},
+            </if>
+            <if test="organizationCode != null">
+                #{organizationCode,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="belongsCompanyId != null">
+                #{belongsCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="flagFiliale != null">
+                #{flagFiliale,jdbcType=BIT},
+            </if>
+            <if test="businessLicenseId != null">
+                #{businessLicenseId,jdbcType=INTEGER},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                #{flagAvailable,jdbcType=BIT},
+            </if>
+                NOW(),
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+                NOW(),
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.dmi.DmiOrganization">
+        update dmi_organization
+        <set>
+            <if test="organizationName != null">
+                organization_name = #{organizationName,jdbcType=VARCHAR},
+            </if>
+            <if test="organizationCode != null">
+                organization_code = #{organizationCode,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="belongsCompanyId != null">
+                belongs_company_id = #{belongsCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="flagFiliale != null">
+                flag_filiale = #{flagFiliale,jdbcType=BIT},
+            </if>
+            <if test="businessLicenseId != null">
+                business_license_id = #{businessLicenseId,jdbcType=INTEGER},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAvailable != null">
+                flag_available = #{flagAvailable,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getOragnizationByCompanyIdAndCode" resultMap="ResultMapWithBLOBs" parameterType="com.company.springboot.entity.dmi.DmiOrganization">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_organization
+        where organization_code = #{organizationCode,jdbcType=VARCHAR}
+        AND belongs_company_id = #{belongsCompanyId,jdbcType=INTEGER}
+        and flag_deleted = 0
+    </select>
+
+    <select id="getIdListByCompanyIdAndCode" resultMap="ResultMapWithBLOBs" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from dmi_organization
+        where flag_deleted = 0 AND belongs_company_id = #{belongsCompanyId,jdbcType=VARCHAR} AND organization_code IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="selectFirstOrgByCompanyId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_organization
+        where belongs_company_id = #{companyId,jdbcType=INTEGER}
+        and level  = 1
+        and flag_deleted = 0
+    </select>
+
+    <select id="selectByCompanyId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_organization
+        where belongs_company_id = #{companyId,jdbcType=INTEGER}
+        and level  = 1
+        and flag_deleted = 0
+        and order_id = 1
+    </select>
+
+
+    <select id="selectOrganizationListByCompanyIdRes" resultType="com.company.springboot.entity.dmi.res.DmiOrganizationRes" parameterType="java.lang.Integer">
+        select
+        id, organization_name title, organization_code organizationCode, level,
+        parent_id parentId, order_id orderId, belongs_company_id belongsCompanyId,
+    flag_filiale flagFiliale, business_license_id businessLicenseId,
+    flag_deleted flagDeleted, flag_available flagAvailable, create_time createTime, create_person createPerson,
+    update_time updateTime, update_person updatePerson,0 flagIsStore
+        from dmi_organization
+        where belongs_company_id = #{companyId,jdbcType=INTEGER}
+        and flag_deleted = 0
+        order by level asc,parent_id asc,id asc,order_id asc
+    </select>
+
+
+    <select id="selectOrganizationListByCompanyIdResChildren" resultType="com.company.springboot.entity.dmi.res.DmiOrganizationRes" parameterType="java.lang.Integer">
+
+
+        select
+        store.id storeId, store.store_name title,
+organization.organization_code organizationCode, organization.level,
+        organization.id parentId, organization.order_id orderId,
+organization.belongs_company_id belongsCompanyId,
+    organization.flag_filiale flagFiliale, organization.business_license_id businessLicenseId,
+    organization.flag_deleted flagDeleted, organization.flag_available flagAvailable,
+organization.create_time createTime, organization.create_person createPerson,
+    organization.update_time updateTime, organization.update_person updatePerson,
+    1 flagIsStore
+        from dmi_organization organization
+LEFT JOIN dmi_store store ON organization.id=store.area_id
+        where organization.belongs_company_id = #{companyId,jdbcType=INTEGER}
+        and organization.flag_deleted = 0 and store.id is not null
+        order by organization.level asc,organization.parent_id asc,
+organization.id asc,organization.order_id asc
+
+    </select>
+
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.springboot.mapper.sys.SysPublishVersionPermissionMapper">
+  <resultMap id="BaseResultMap" type="com.company.springboot.entity.sys.SysPublishVersionPermission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="version_id" jdbcType="INTEGER" property="versionId" />
+    <result column="permission_id" jdbcType="INTEGER" property="permissionId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_person" jdbcType="INTEGER" property="createPerson" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_person" jdbcType="INTEGER" property="updatePerson" />
+    <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, version_id, permission_id, create_time, create_person, update_time, update_person, 
+    flag_deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_publish_version_permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_publish_version_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.company.springboot.entity.sys.SysPublishVersionPermission">
+    insert into sys_publish_version_permission (id, version_id, permission_id, 
+      create_time, create_person, update_time, 
+      update_person, flag_deleted)
+    values (#{id,jdbcType=INTEGER}, #{versionId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createPerson,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updatePerson,jdbcType=INTEGER}, #{flagDeleted,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.company.springboot.entity.sys.SysPublishVersionPermission">
+    insert into sys_publish_version_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="versionId != null">
+        version_id,
+      </if>
+      <if test="permissionId != null">
+        permission_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createPerson != null">
+        create_person,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updatePerson != null">
+        update_person,
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="versionId != null">
+        #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionId != null">
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        #{flagDeleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.sys.SysPublishVersionPermission">
+    update sys_publish_version_permission
+    <set>
+      <if test="versionId != null">
+        version_id = #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionId != null">
+        permission_id = #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        update_person = #{updatePerson,jdbcType=INTEGER},
+      </if>
+      <if test="flagDeleted != null">
+        flag_deleted = #{flagDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.sys.SysPublishVersionPermission">
+    update sys_publish_version_permission
+    set version_id = #{versionId,jdbcType=INTEGER},
+      permission_id = #{permissionId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_person = #{createPerson,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_person = #{updatePerson,jdbcType=INTEGER},
+      flag_deleted = #{flagDeleted,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <!--删除版本功能-->
+  <delete id="deleteByVersionId" parameterType="com.company.springboot.entity.sys.SysPublishVersionPermission">
+    delete from sys_publish_version_permission
+    where version_id = #{versionId,jdbcType=INTEGER}
+  </delete>
+
+  <!-- 保存版本功能 -->
+  <insert id="saveVersionPermission">
+    insert into sys_publish_version_permission (version_id, permission_id,
+    create_time, create_person, update_time,update_person, flag_deleted
+    ) values
+    <foreach collection ="permissionIds" item="permissionId" index= "index" separator =",">
+      ( #{versionId,jdbcType=INTEGER},
+      #{permissionId,jdbcType=INTEGER}, NOW(), #{createPerson,jdbcType=INTEGER},NOW(), #{createPerson,jdbcType=INTEGER}, 0
+      )
+    </foreach >
+
+  </insert>
+
+
+<!--获取版本权限-->
+  <select id="selectPermissionIds" parameterType="com.company.springboot.entity.sys.SysCompanyPurchaseVersion" resultType="java.lang.String">
+
+    SELECT GROUP_CONCAT(permission.permission_id) permissionIds FROM
+    sys_publish_version_permission permission
+    WHERE permission.flag_deleted = 0
+    AND permission.version_id=#{versionId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

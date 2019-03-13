@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.atm.AtmCommChargeBillMapper">
+    <resultMap id="BaseResultMap" type="com.company.springboot.entity.atm.AtmCommChargeBill">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"/>
+        <result column="bill_number" property="billNumber" jdbcType="VARCHAR"/>
+        <result column="estimated_fee" property="estimatedFee" jdbcType="DECIMAL"/>
+        <result column="actual_fee" property="actualFee" jdbcType="DECIMAL"/>
+        <result column="product_count" property="productCount" jdbcType="INTEGER"/>
+        <result column="memo" property="memo" jdbcType="VARCHAR"/>
+        <result column="flag_start_provide_invoice" property="flagStartProvideInvoice" jdbcType="BIT"/>
+        <result column="flag_provide_invoice" property="flagProvideInvoice" jdbcType="BIT"/>
+        <result column="flag_completed_charge" property="flagCompletedCharge" jdbcType="BIT"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="create_bill_time" property="createBillTime" jdbcType="TIMESTAMP"/>
+        <result column="create_bill_person" property="createBillPerson" jdbcType="INTEGER"/>
+        <result column="update_bill_time" property="updateBillTime" jdbcType="TIMESTAMP"/>
+        <result column="update_bill_person" property="updateBillPerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, company_id, bill_number, estimated_fee, actual_fee, product_count, memo, flag_start_provide_invoice, 
+    flag_provide_invoice, flag_completed_charge, flag_deleted, create_bill_time, create_bill_person, 
+    update_bill_time, update_bill_person, update_time, update_person
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from atm_comm_charge_bill
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insertSelective" parameterType="com.company.springboot.entity.atm.AtmCommChargeBill">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into atm_comm_charge_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="billNumber != null">
+                bill_number,
+            </if>
+            <if test="estimatedFee != null">
+                estimated_fee,
+            </if>
+            <if test="actualFee != null">
+                actual_fee,
+            </if>
+            <if test="productCount != null">
+                product_count,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="flagStartProvideInvoice != null">
+                flag_start_provide_invoice,
+            </if>
+            <if test="flagProvideInvoice != null">
+                flag_provide_invoice,
+            </if>
+            <if test="flagCompletedCharge != null">
+                flag_completed_charge,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="createBillTime != null">
+                create_bill_time,
+            </if>
+            <if test="createBillPerson != null">
+                create_bill_person,
+            </if>
+            <if test="updateBillTime != null">
+                update_bill_time,
+            </if>
+            <if test="updateBillPerson != null">
+                update_bill_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="billNumber != null">
+                #{billNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedFee != null">
+                #{estimatedFee,jdbcType=DECIMAL},
+            </if>
+            <if test="actualFee != null">
+                #{actualFee,jdbcType=DECIMAL},
+            </if>
+            <if test="productCount != null">
+                #{productCount,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagStartProvideInvoice != null">
+                #{flagStartProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="flagProvideInvoice != null">
+                #{flagProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="flagCompletedCharge != null">
+                #{flagCompletedCharge,jdbcType=BIT},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="createBillTime != null">
+                #{createBillTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBillPerson != null">
+                #{createBillPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateBillTime != null">
+                #{updateBillTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBillPerson != null">
+                #{updateBillPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.atm.AtmCommChargeBill">
+        update atm_comm_charge_bill
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="billNumber != null">
+                bill_number = #{billNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedFee != null">
+                estimated_fee = #{estimatedFee,jdbcType=DECIMAL},
+            </if>
+            <if test="actualFee != null">
+                actual_fee = #{actualFee,jdbcType=DECIMAL},
+            </if>
+            <if test="productCount != null">
+                product_count = #{productCount,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="flagStartProvideInvoice != null">
+                flag_start_provide_invoice = #{flagStartProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="flagProvideInvoice != null">
+                flag_provide_invoice = #{flagProvideInvoice,jdbcType=BIT},
+            </if>
+            <if test="flagCompletedCharge != null">
+                flag_completed_charge = #{flagCompletedCharge,jdbcType=BIT},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="createBillTime != null">
+                create_bill_time = #{createBillTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBillPerson != null">
+                create_bill_person = #{createBillPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateBillTime != null">
+                update_bill_time = #{updateBillTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBillPerson != null">
+                update_bill_person = #{updateBillPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="noInvoiceListForProduct"
+            resultType="com.company.springboot.entity.ret.atm.atmCommChargeBill.NoInvoiceListRet"
+            parameterType="com.company.springboot.entity.dto.atm.atmCommChargeBill.NoInvoiceListDTO">
+        select DISTINCT
+        bill.update_time AS updateTime,
+        companyInfo.company_name AS companyName,
+        bill.id AS id,
+        bill.flag_completed_charge AS flagCompletedCharge,
+        bill.bill_number AS billNumber,
+        bill.product_count AS productCount,
+        bill.estimated_fee AS estimatedFee,
+        bill.actual_fee AS actualFee,
+        bill.create_bill_time AS createBillTime
+        FROM (SELECT * FROM atm_comm_charge_list where object_type = 'PRODUCT'
+        <if test="accountPeriodNumber != null">
+            AND account_period_number = #{accountPeriodNumber,jdbcType=VARCHAR}
+        </if>) chargeList
+        INNER JOIN atm_comm_charge_bill bill ON bill.id = chargeList.charge_bill_id AND bill.flag_deleted = 0 AND
+        bill.flag_completed_charge = 0
+        <if test="billNumber != null">
+            AND bill.bill_number like '%${billNumber}%'
+        </if>
+        <if test="createBillTimeStart != null">
+            AND bill.create_bill_time &gt;= #{createBillTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createBillTimeEnd != null">
+            AND bill.create_bill_time &lt;= #{createBillTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_comm_charge charge
+        INNER JOIN dmi_company_info companyInfo ON charge.company_id = companyInfo.id
+        INNER JOIN (dmi_store store
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        <if test="storeId != 0">
+            AND store.id = #{storeId,jdbcType=INTEGER}
+        </if>) ON store.id = charge.store_id
+        )
+        ON charge.id = chargeList.contract_id
+        INNER JOIN dmi_store_comm_product product ON product.id = chargeList.object_id
+        <if test="communicationBrandId != 0">
+            AND product.brand_id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND product.catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id =
+            #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+    </select>
+
+    <select id="noInvoiceListForCampaign"
+            resultType="com.company.springboot.entity.ret.atm.atmCommChargeBill.NoInvoiceListRet"
+            parameterType="com.company.springboot.entity.dto.atm.atmCommChargeBill.NoInvoiceListDTO">
+        select DISTINCT
+        bill.update_time AS updateTime,
+        companyInfo.company_name AS companyName,
+        bill.id AS id,
+        bill.flag_completed_charge AS flagCompletedCharge,
+        bill.bill_number AS billNumber,
+        bill.product_count AS productCount,
+        bill.estimated_fee AS estimatedFee,
+        bill.actual_fee AS actualFee,
+        bill.create_bill_time AS createBillTime
+        FROM (SELECT * FROM atm_comm_charge_list where object_type = 'CAMPAIGN'
+        <if test="accountPeriodNumber != null">
+            AND account_period_number = #{accountPeriodNumber,jdbcType=VARCHAR}
+        </if>) chargeList
+        INNER JOIN atm_comm_charge_bill bill ON bill.id = chargeList.charge_bill_id AND bill.flag_deleted = 0 AND
+        bill.flag_completed_charge = 0
+        <if test="billNumber != null">
+            AND bill.bill_number = #{billNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="createBillTimeStart != null">
+            AND bill.create_bill_time &gt;= #{createBillTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createBillTimeEnd != null">
+            AND bill.create_bill_time &lt;= #{createBillTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_comm_charge charge
+        INNER JOIN dmi_company_info companyInfo ON charge.company_id = companyInfo.id
+        INNER JOIN (dmi_store store
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        <if test="storeId != 0">
+            AND store.id = #{storeId,jdbcType=INTEGER}
+        </if>) ON store.id = charge.store_id
+        )
+        ON charge.id = chargeList.contract_id
+        INNER JOIN dmi_comm_product_marketing_campaign campaign ON campaign.id = chargeList.object_id
+        <if test="communicationBrandId != 0">
+            AND campaign.brand_id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND campaign.id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND
+            catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT
+            parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM
+            cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+    </select>
+
+    <select id="noInvoiceListForComm"
+            resultType="com.company.springboot.entity.ret.atm.atmCommChargeBill.NoInvoiceListRet"
+            parameterType="com.company.springboot.entity.dto.atm.atmCommChargeBill.NoInvoiceListDTO">
+        select DISTINCT
+        bill.update_time AS updateTime,
+        companyInfo.company_name AS companyName,
+        bill.id AS id,
+        bill.flag_completed_charge AS flagCompletedCharge,
+        bill.bill_number AS billNumber,
+        bill.product_count AS productCount,
+        bill.estimated_fee AS estimatedFee,
+        bill.actual_fee AS actualFee,
+        bill.create_bill_time AS createBillTime
+        FROM (SELECT * FROM atm_comm_charge_list where object_type = 'PRODUCT'
+        <if test="accountPeriodNumber != null">
+            AND account_period_number = #{accountPeriodNumber,jdbcType=VARCHAR}
+        </if>) chargeList
+        INNER JOIN atm_comm_charge_bill bill ON bill.id = chargeList.charge_bill_id AND bill.flag_deleted = 0 AND
+        bill.flag_completed_charge = 0
+        <if test="billNumber != null">
+            AND bill.bill_number like '%${billNumber}%'
+        </if>
+        <if test="createBillTimeStart != null">
+            AND bill.create_bill_time &gt;= #{createBillTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createBillTimeEnd != null">
+            AND bill.create_bill_time &lt;= #{createBillTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_comm_charge charge
+        INNER JOIN dmi_company_info companyInfo ON charge.company_id = companyInfo.id
+        INNER JOIN (dmi_store store
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        <if test="storeId != 0">
+            AND store.id = #{storeId,jdbcType=INTEGER}
+        </if>) ON store.id = charge.store_id
+        )
+        ON charge.id = chargeList.contract_id
+        INNER JOIN dmi_store_comm_product product ON product.id = chargeList.object_id
+        <if test="communicationBrandId != 0">
+            AND product.brand_id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND product.catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id =
+            #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+        UNION
+        select DISTINCT
+        bill.update_time AS updateTime,
+        companyInfo.company_name AS companyName,
+        bill.id AS id,
+        bill.flag_completed_charge AS flagCompletedCharge,
+        bill.bill_number AS billNumber,
+        bill.product_count AS productCount,
+        bill.estimated_fee AS estimatedFee,
+        bill.actual_fee AS actualFee,
+        bill.create_bill_time AS createBillTime
+        FROM (SELECT * FROM atm_comm_charge_list where object_type = 'CAMPAIGN'
+        <if test="accountPeriodNumber != null">
+            AND account_period_number = #{accountPeriodNumber,jdbcType=VARCHAR}
+        </if>) chargeList
+        INNER JOIN atm_comm_charge_bill bill ON bill.id = chargeList.charge_bill_id AND bill.flag_deleted = 0 AND
+        bill.flag_completed_charge = 0
+        <if test="billNumber != null">
+            AND bill.bill_number = #{billNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="createBillTimeStart != null">
+            AND bill.create_bill_time &gt;= #{createBillTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createBillTimeEnd != null">
+            AND bill.create_bill_time &lt;= #{createBillTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_comm_charge charge
+        INNER JOIN dmi_company_info companyInfo ON charge.company_id = companyInfo.id
+        INNER JOIN (dmi_store store
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        <if test="storeId != 0">
+            AND store.id = #{storeId,jdbcType=INTEGER}
+        </if>) ON store.id = charge.store_id
+        )
+        ON charge.id = chargeList.contract_id
+        INNER JOIN dmi_comm_product_marketing_campaign campaign ON campaign.id = chargeList.object_id
+        <if test="communicationBrandId != 0">
+            AND campaign.brand_id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND campaign.id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND
+            catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT
+            parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM
+            cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+    </select>
+    <select id="showBillRet" resultType="com.company.springboot.entity.ret.atm.atmCommChargeBill.ShowBillRet"
+            parameterType="java.lang.Integer">
+        select
+        companyInfo.company_name AS companyName,
+        companyInfo.id AS companyId,
+        bill.bill_number AS billNumber,
+        bill.id AS id,
+        bill.product_count AS productCount,
+        bill.estimated_fee AS estimatedFee,
+        bill.actual_fee AS actualFee,
+        bill.create_bill_time AS createBillTime,
+        bill.memo AS memo,
+        userInfo.username AS createBillPersonName
+        from atm_comm_charge_bill bill
+        LEFT JOIN dmi_company_info companyInfo ON companyInfo.id = bill.company_id
+        LEFT JOIN sys_company_users userInfo ON userInfo.id = bill.create_bill_person
+        where bill.id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="showChargeListRet"
+            resultType="com.company.springboot.entity.ret.atm.atmCommChargeBill.ShowChargeListRet"
+            parameterType="java.lang.Integer">
+        select
+        companyInfo.company_name AS company,
+        companyInfo.id AS companyId,
+        dmiBrand.brand_name AS companyBrand,
+        store.store_name AS store,
+        chargeList.object_type AS type,
+        CASE charge.object_type WHEN 'PRODUCT' THEN (SELECT DISTINCT commBrand.brand_name FROM cfg_communication_brand commBrand,dmi_store_comm_product product
+        WHERE product.id = charge.object_id AND commBrand.id = product.brand_id)
+        WHEN 'CAMPAIGN' THEN (SELECT DISTINCT commBrand.brand_name FROM cfg_communication_brand commBrand,dmi_comm_product_marketing_campaign campaign
+        WHERE campaign.id = charge.object_id AND commBrand.id = campaign.brand_id)
+		END as commBrand,
+        CASE charge.object_type WHEN 'PRODUCT' THEN (SELECT DISTINCT product.isp_service FROM dmi_store_comm_product product WHERE product.id = charge.object_id)
+        WHEN 'CAMPAIGN' THEN NULL END AS ispService,
+        CASE charge.object_type WHEN 'PRODUCT' THEN (SELECT DISTINCT product.product_description FROM dmi_store_comm_product product WHERE product.id = charge.object_id)
+        WHEN 'CAMPAIGN' THEN (SELECT DISTINCT campaign.campaign_name FROM dmi_comm_product_marketing_campaign campaign WHERE campaign.id = charge.object_id) END AS name,
+        chargeList.account_period_start AS accountPeriodStart,
+        chargeList.id AS id,
+        chargeList.account_period_end AS accountPeriodEnd,
+        chargeList.account_period_number AS accountPeriodNumber,
+        chargeList.comm_period_fee AS commPeriodFee,
+        chargeList.comm_one_time_fee AS commOneTimeFee,
+        chargeList.tenement_one_time_fee AS tenementOneTimeFee,
+        chargeList.tenement_period_fee AS tenementPeriodFee,
+        chargeList.expected_total_fee AS expectedTotalFee,
+        chargeList.account_index AS accountIndex,
+        chargeList.account_total AS accountTotal,
+        chargeList.fiber_fee AS fiberFee,
+        chargeList.actual_charge_fee AS actualChargeFee
+        from atm_comm_charge_list chargeList
+        INNER JOIN dmi_comm_charge charge ON charge.id = chargeList.contract_id
+        LEFT JOIN dmi_company_info companyInfo ON companyInfo.id = charge.company_id
+        LEFT JOIN (dmi_store store LEFT JOIN dmi_brand dmiBrand ON dmiBrand.id = store.brand_id) ON store.id = charge.store_id
+        where chargeList.charge_bill_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="chargedBillListForProduct"
+            resultType="com.company.springboot.entity.ret.atm.atmCommChargeBill.ChargedBillListRet"
+            parameterType="com.company.springboot.entity.dto.atm.atmCommChargeBill.ChargedBillListDTO">
+        select DISTINCT
+        companyInfo.company_name AS companyName,
+        bill.update_time AS updateTime,
+        bill.id AS id,
+        bill.flag_completed_charge AS flagCompletedCharge,
+        bill.bill_number AS billNumber,
+        bill.product_count AS productCount,
+        bill.estimated_fee AS estimatedFee,
+        bill.actual_fee AS actualFee,
+        (SELECT sum(charge_fee) from atm_comm_charge_invoice_charge WHERE bill_id = bill.id) AS chargeFee,
+        users.username AS closedPerson,
+        bill.update_bill_time AS closedTime,
+        bill.create_bill_time AS createBillTime
+        FROM (SELECT * FROM atm_comm_charge_list where object_type = 'PRODUCT'
+        <if test="accountPeriodNumber != null">
+            AND account_period_number like '%${accountPeriodNumber}%'
+        </if>) chargeList
+        INNER JOIN (atm_comm_charge_bill bill INNER JOIN sys_company_users users ON users.id = bill.update_bill_person
+        INNER JOIN atm_comm_charge_invoice chargeInvoice ON chargeInvoice.bill_id = bill.id AND
+        chargeInvoice.flag_finish_charge = 1
+        ) ON bill.id = chargeList.charge_bill_id AND bill.flag_deleted = 0 AND bill.flag_completed_charge = 1
+        <if test="billNumber != null">
+            AND bill.bill_number like '%${billNumber}%'
+        </if>
+        <if test="createBillTimeStart != null">
+            AND bill.update_bill_time &gt;= #{createBillTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createBillTimeEnd != null">
+            AND bill.update_bill_time &lt;= #{createBillTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_comm_charge charge
+        INNER JOIN dmi_company_info companyInfo ON charge.company_id = companyInfo.id
+        INNER JOIN (dmi_store store
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        <if test="storeId != 0">
+            AND store.id = #{storeId,jdbcType=INTEGER}
+        </if>) ON store.id = charge.store_id
+        )
+        ON charge.id = chargeList.contract_id
+        INNER JOIN dmi_store_comm_product product ON product.id = chargeList.object_id
+        <if test="communicationBrandId != 0">
+            AND product.brand_id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND product.catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id =
+            #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+    </select>
+
+    <select id="chargedBillListForCampaign"
+            resultType="com.company.springboot.entity.ret.atm.atmCommChargeBill.ChargedBillListRet"
+            parameterType="com.company.springboot.entity.dto.atm.atmCommChargeBill.ChargedBillListDTO">
+        select DISTINCT
+        companyInfo.company_name AS companyName,
+        bill.update_time AS updateTime,
+        bill.id AS id,
+        bill.flag_completed_charge AS flagCompletedCharge,
+        bill.bill_number AS billNumber,
+        bill.product_count AS productCount,
+        bill.estimated_fee AS estimatedFee,
+        bill.actual_fee AS actualFee,
+        (SELECT sum(charge_fee) from atm_comm_charge_invoice_charge WHERE bill_id = bill.id) AS chargeFee,
+        users.username AS closedPerson,
+        bill.update_bill_time AS closedTime,
+        bill.create_bill_time AS createBillTime
+        FROM (SELECT * FROM atm_comm_charge_list where object_type = 'CAMPAIGN'
+        <if test="accountPeriodNumber != null">
+            AND account_period_number like '%${accountPeriodNumber}%'
+        </if>) chargeList
+        INNER JOIN (atm_comm_charge_bill bill INNER JOIN sys_company_users users ON users.id = bill.update_bill_person
+        INNER JOIN atm_comm_charge_invoice chargeInvoice ON chargeInvoice.bill_id = bill.id AND
+        chargeInvoice.flag_finish_charge = 1
+        ) ON bill.id = chargeList.charge_bill_id AND bill.flag_deleted = 0 AND bill.flag_completed_charge = 1
+        <if test="billNumber != null">
+            AND bill.bill_number like '%${billNumber}%'
+        </if>
+        <if test="createBillTimeStart != null">
+            AND bill.update_bill_time &gt;= #{createBillTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createBillTimeEnd != null">
+            AND bill.update_bill_time &lt;= #{createBillTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_comm_charge charge
+        INNER JOIN dmi_company_info companyInfo ON charge.company_id = companyInfo.id
+        INNER JOIN (dmi_store store
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        <if test="storeId != 0">
+            AND store.id = #{storeId,jdbcType=INTEGER}
+        </if>) ON store.id = charge.store_id
+        )
+        ON charge.id = chargeList.contract_id
+        INNER JOIN dmi_comm_product_marketing_campaign campaign ON campaign.id = chargeList.object_id
+        <if test="communicationBrandId != 0">
+            AND campaign.brand_id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND campaign.id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND
+            catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT
+            parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM
+            cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+    </select>
+
+    <select id="chargedBillListForComm"
+            resultType="com.company.springboot.entity.ret.atm.atmCommChargeBill.ChargedBillListRet"
+            parameterType="com.company.springboot.entity.dto.atm.atmCommChargeBill.ChargedBillListDTO">
+        select DISTINCT
+        companyInfo.company_name AS companyName,
+        bill.update_time AS updateTime,
+        bill.id AS id,
+        bill.flag_completed_charge AS flagCompletedCharge,
+        bill.bill_number AS billNumber,
+        bill.product_count AS productCount,
+        bill.estimated_fee AS estimatedFee,
+        bill.actual_fee AS actualFee,
+        (SELECT sum(charge_fee) from atm_comm_charge_invoice_charge WHERE bill_id = bill.id) AS chargeFee,
+        users.username AS closedPerson,
+        bill.update_bill_time AS closedTime,
+        bill.create_bill_time AS createBillTime
+        FROM (SELECT * FROM atm_comm_charge_list where object_type = 'PRODUCT'
+        <if test="accountPeriodNumber != null">
+            AND account_period_number like '%${accountPeriodNumber}%'
+        </if>) chargeList
+        INNER JOIN (atm_comm_charge_bill bill INNER JOIN sys_company_users users ON users.id = bill.update_bill_person
+        INNER JOIN atm_comm_charge_invoice chargeInvoice ON chargeInvoice.bill_id = bill.id AND
+        chargeInvoice.flag_finish_charge = 1
+        ) ON bill.id = chargeList.charge_bill_id AND bill.flag_deleted = 0 AND bill.flag_completed_charge = 1
+        <if test="billNumber != null">
+            AND bill.bill_number like '%${billNumber}%'
+        </if>
+        <if test="createBillTimeStart != null">
+            AND bill.update_bill_time &gt;= #{createBillTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createBillTimeEnd != null">
+            AND bill.update_bill_time &lt;= #{createBillTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_comm_charge charge
+        INNER JOIN dmi_company_info companyInfo ON charge.company_id = companyInfo.id
+        INNER JOIN (dmi_store store
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        <if test="storeId != 0">
+            AND store.id = #{storeId,jdbcType=INTEGER}
+        </if>) ON store.id = charge.store_id
+        )
+        ON charge.id = chargeList.contract_id
+        INNER JOIN dmi_store_comm_product product ON product.id = chargeList.object_id
+        <if test="communicationBrandId != 0">
+            AND product.brand_id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND product.catalog_id IN (SELECT id FROM cfg_communication_type_catalog WHERE parent_id =
+            #{catalogId,jdbcType=INTEGER} UNION SELECT id FROM
+            cfg_communication_type_catalog WHERE id = #{catalogId,jdbcType=INTEGER})
+        </if>
+        UNION
+        select DISTINCT
+        companyInfo.company_name AS companyName,
+        bill.update_time AS updateTime,
+        bill.id AS id,
+        bill.flag_completed_charge AS flagCompletedCharge,
+        bill.bill_number AS billNumber,
+        bill.product_count AS productCount,
+        bill.estimated_fee AS estimatedFee,
+        bill.actual_fee AS actualFee,
+        (SELECT sum(charge_fee) from atm_comm_charge_invoice_charge WHERE bill_id = bill.id) AS chargeFee,
+        users.username AS closedPerson,
+        bill.update_bill_time AS closedTime,
+        bill.create_bill_time AS createBillTime
+        FROM (SELECT * FROM atm_comm_charge_list where object_type = 'CAMPAIGN'
+        <if test="accountPeriodNumber != null">
+            AND account_period_number like '%${accountPeriodNumber}%'
+        </if>) chargeList
+        INNER JOIN (atm_comm_charge_bill bill INNER JOIN sys_company_users users ON users.id = bill.update_bill_person
+        INNER JOIN atm_comm_charge_invoice chargeInvoice ON chargeInvoice.bill_id = bill.id AND
+        chargeInvoice.flag_finish_charge = 1
+        ) ON bill.id = chargeList.charge_bill_id AND bill.flag_deleted = 0 AND bill.flag_completed_charge = 1
+        <if test="billNumber != null">
+            AND bill.bill_number like '%${billNumber}%'
+        </if>
+        <if test="createBillTimeStart != null">
+            AND bill.update_bill_time &gt;= #{createBillTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createBillTimeEnd != null">
+            AND bill.update_bill_time &lt;= #{createBillTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_comm_charge charge
+        INNER JOIN dmi_company_info companyInfo ON charge.company_id = companyInfo.id
+        INNER JOIN (dmi_store store
+        <if test="province != null">
+            RIGHT
+        </if>
+        <if test="province == null">
+            LEFT
+        </if>
+        JOIN bif_building building ON store.building_id = building.id
+        <if test="province != null">
+            AND building.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            AND building.city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null">
+            AND building.district = #{district,jdbcType=VARCHAR}
+        </if>
+        <if test="storeId != 0">
+            AND store.id = #{storeId,jdbcType=INTEGER}
+        </if>) ON store.id = charge.store_id
+        )
+        ON charge.id = chargeList.contract_id
+        INNER JOIN dmi_comm_product_marketing_campaign campaign ON campaign.id = chargeList.object_id
+        <if test="communicationBrandId != 0">
+            AND campaign.brand_id = #{communicationBrandId,jdbcType=INTEGER}
+        </if>
+        <if test="catalogId != 0">
+            AND campaign.id IN (SELECT marketing_campaign_id FROM dmi_store_comm_product WHERE flag_independent = 0 AND
+            catalog_id IN (SELECT id FROM
+            cfg_communication_type_catalog WHERE parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT
+            parent_id FROM cfg_communication_type_catalog
+            WHERE id = #{catalogId,jdbcType=INTEGER} AND parent_id != 0) UNION
+            SELECT parent_id
+            FROM
+            cfg_communication_type_catalog
+            WHERE
+            parent_id = #{catalogId,jdbcType=INTEGER} OR parent_id = (SELECT parent_id FROM
+            cfg_communication_type_catalog WHERE id =
+            #{catalogId,jdbcType=INTEGER} and parent_id != 0) ))
+        </if>
+    </select>
+</mapper>

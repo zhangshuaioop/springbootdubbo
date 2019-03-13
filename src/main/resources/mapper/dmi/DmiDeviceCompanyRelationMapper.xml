@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.dmi.DmiDeviceCompanyRelationMapper">
+    <resultMap id="BaseResultMap" type="com.company.springboot.entity.dmi.DmiDeviceCompanyRelation">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="device_id" property="deviceId" jdbcType="INTEGER"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"/>
+        <result column="asset_sn" property="assetSn" jdbcType="VARCHAR"/>
+        <result column="purchase_date" property="purchaseDate" jdbcType="TIMESTAMP"/>
+        <result column="supply_company_id" property="supplyCompanyId" jdbcType="INTEGER"/>
+        <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL"/>
+        <result column="monetary_unit" property="monetaryUnit" jdbcType="VARCHAR"/>
+        <result column="flag_deleted" property="flagDeleted" jdbcType="BIT"/>
+        <result column="flag_assign" property="flagAssign" jdbcType="BIT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_person" property="createPerson" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.company.springboot.entity.dmi.DmiDeviceCompanyRelation" extends="BaseResultMap">
+        <result column="memo" property="memo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, device_id, company_id, asset_sn, purchase_date, supply_company_id, purchase_price, 
+    monetary_unit, flag_deleted, flag_assign, create_time, create_person, update_time, 
+    update_person
+  </sql>
+    <sql id="Blob_Column_List">
+    memo
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_device_company_relation
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insertSelective" parameterType="com.company.springboot.entity.dmi.DmiDeviceCompanyRelation">
+        insert into dmi_device_company_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="assetSn != null">
+                asset_sn,
+            </if>
+            <if test="purchaseDate != null">
+                purchase_date,
+            </if>
+            <if test="supplyCompanyId != null">
+                supply_company_id,
+            </if>
+            <if test="purchasePrice != null">
+                purchase_price,
+            </if>
+            <if test="monetaryUnit != null">
+                monetary_unit,
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="flagAssign != null">
+                flag_assign,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="assetSn != null">
+                #{assetSn,jdbcType=VARCHAR},
+            </if>
+            <if test="purchaseDate != null">
+                #{purchaseDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="supplyCompanyId != null">
+                #{supplyCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="purchasePrice != null">
+                #{purchasePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="monetaryUnit != null">
+                #{monetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAssign != null">
+                #{flagAssign,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.dmi.DmiDeviceCompanyRelation">
+        update dmi_device_company_relation
+        <set>
+            <if test="deviceId != null">
+                device_id = #{deviceId,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="assetSn != null">
+                asset_sn = #{assetSn,jdbcType=VARCHAR},
+            </if>
+            <if test="purchaseDate != null">
+                purchase_date = #{purchaseDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="supplyCompanyId != null">
+                supply_company_id = #{supplyCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="purchasePrice != null">
+                purchase_price = #{purchasePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="monetaryUnit != null">
+                monetary_unit = #{monetaryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="flagAssign != null">
+                flag_assign = #{flagAssign,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="queryDeviceNotInCompany" resultType="com.company.springboot.entity.bif.BifDeviceDetail">
+    select
+    device.device_name AS deviceName,
+    brand.brand_name AS brand,
+    model.model_name AS model,
+    device.device_sn AS deviceSn,
+    device.create_time AS createTime,
+    typeCatalog.catalog_name AS catalogName,
+    device.id as id
+    from bif_device device
+    LEFT JOIN bif_device_model model ON model.id = device.model_id
+    LEFT JOIN bif_device_series series ON series.id = model.series_id
+    LEFT JOIN bif_device_brand brand ON brand.id = series.brand_id
+    LEFT JOIN cfg_device_type_catalog typeCatalog ON device.catalog_id = typeCatalog.id
+    where device.flag_deleted = 0
+    AND device.id not in (select device_id from dmi_device_company_relation where flag_deleted = 0)
+  </select>
+
+    <select id="queryDeviceNotInCompanyByObject" resultType="com.company.springboot.entity.bif.BifDeviceDetail"
+            parameterType="com.company.springboot.entity.bif.BifDeviceInputParam">
+        select
+        device.device_name AS deviceName,
+        brand.brand_name AS brand,
+        model.model_name AS model,
+        device.device_sn AS deviceSn,
+        device.create_time AS createTime,
+        typeCatalog.catalog_name AS catalogName,
+        device.id as id
+        from bif_device device
+        LEFT JOIN cfg_device_type_catalog typeCatalog ON device.catalog_id = typeCatalog.id
+        INNER JOIN bif_device_model model ON model.id = device.model_id
+        <if test="modelId != null and modelId != 0">
+            AND model.id = #{modelId,jdbcType=INTEGER} AND model.flag_deleted = 0
+        </if>
+        INNER JOIN bif_device_series series ON series.id = model.series_id
+        <if test="seriesId != null and seriesId != 0">
+            AND series.id = #{seriesId,jdbcType=INTEGER} AND series.flag_deleted = 0
+        </if>
+        INNER JOIN bif_device_brand brand ON brand.id = series.brand_id
+        <if test="brandId != null and brandId != 0">
+            AND brand.id = #{brandId,jdbcType=INTEGER} AND brand.flag_deleted = 0
+        </if>
+        where device.flag_deleted = 0
+        AND device.id not in (select device_id from dmi_device_company_relation where flag_deleted = 0)
+        <if test="catalogId != null and catalogId != 0">
+            and device.catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device.device_sn = #{deviceSn,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="queryListByCompanyIdAndObject" resultType="com.company.springboot.entity.bif.BifDeviceRet"
+            parameterType="com.company.springboot.entity.bif.BifDeviceInputParam">
+        select
+        device.id AS id,
+        device.device_name AS deviceName,
+        device.brand AS brand,
+        device.model AS model,
+        deviceTypeCatalog.catalog_name AS catalogName,
+        device.device_sn AS deviceSn,
+        device.update_time AS updateTime,
+        deviceCompanyRelation.asset_sn AS assetSn,
+        deviceCompanyRelation.purchase_date AS purchaseDate,
+        <if test="flagAssign != false">
+            deviceAssign.assign_type AS assignType,
+            deviceAssign.assigned_section_id AS assignId,
+            deviceAssign.assigned_employee_id AS assignEmployeeId,
+        </if>
+        <if test="flagAssign == false">
+            '' AS assignType,
+            0 AS assignId,
+            0 AS assignEmployeeId,
+        </if>
+        CASE device.flag_usable WHEN 1 THEN '使用中' WHEN 0 THEN '已停用' ELSE '' END AS status,
+        CASE deviceCompanyRelation.flag_assign WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagAssign,
+        CASE device.flag_warranty WHEN 1 THEN '保修中' ELSE '已脱保' END AS warrantySituation
+        from (SELECT * FROM bif_device WHERE flag_deleted = 0
+        <if test="brandId != 0 and seriesId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id IN (
+            SELECT id FROM bif_device_series WHERE brand_id = #{brandId,jdbcType=INTEGER}))
+        </if>
+        <if test="seriesId != 0 and modelId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id = #{seriesId,jdbcType=INTEGER})
+        </if>
+        <if test="modelId != 0">
+            and model_id = #{modelId,jdbcType=INTEGER}
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device_sn like '%${deviceSn}%'
+        </if>
+        <if test="catalogId != 0">
+            and catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        <if test="flagWarranty != null">
+            AND flag_warranty =#{flagWarranty,jdbcType=BIT}
+        </if>
+        <if test="flagUsable != null">
+            AND flag_usable =#{flagUsable,jdbcType=BIT}
+        </if>) device
+        INNER JOIN cfg_device_type_catalog deviceTypeCatalog ON deviceTypeCatalog.id = device.catalog_id
+        INNER JOIN dmi_device_company_relation deviceCompanyRelation ON deviceCompanyRelation.device_id = device.id AND deviceCompanyRelation.flag_deleted = 0
+        AND deviceCompanyRelation.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="flagAssign == false">
+            AND deviceCompanyRelation.flag_assign = #{flagAssign,jdbcType=BIT}
+        </if>
+        <if test="assetSn != null">
+            AND deviceCompanyRelation.asset_sn like '%${assetSn}%'
+        </if>
+        <if test="flagAssign != null">
+            AND deviceCompanyRelation.flag_assign =#{flagAssign,jdbcType=BIT}
+        </if>
+        <if test="purchaseDateMin != null">
+            and deviceCompanyRelation.purchase_date &gt;= #{purchaseDateMin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="purchaseDateMax != null">
+            and deviceCompanyRelation.purchase_date &lt;= #{purchaseDateMax,jdbcType=TIMESTAMP}
+        </if>
+        <if test="flagAssign == true">
+            INNER JOIN dmi_device_assign deviceAssign ON device.id = deviceAssign.device_id
+        </if>
+        <if test="flagAssign == null">
+            LEFT JOIN dmi_device_assign deviceAssign ON device.id = deviceAssign.device_id AND deviceAssign.flag_deleted = 0
+        </if>
+    </select>
+
+    <select id="queryListByCompanyIdAndObjectForStore" resultType="com.company.springboot.entity.bif.BifDeviceRet"
+            parameterType="com.company.springboot.entity.bif.BifDeviceInputParam">
+        select
+        device.id AS id,
+        device.device_name AS deviceName,
+        device.brand AS brand,
+        device.model AS model,
+        deviceTypeCatalog.catalog_name AS catalogName,
+        device.device_sn AS deviceSn,
+        device.update_time AS updateTime,
+        deviceCompanyRelation.asset_sn AS assetSn,
+        deviceCompanyRelation.purchase_date AS purchaseDate,
+        'STORE' AS assignType,
+        store.store_name AS assignName,
+        CASE device.flag_usable WHEN 1 THEN '使用中' ELSE '已停用' END AS status,
+        CASE deviceCompanyRelation.flag_assign WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagAssign,
+        CASE device.flag_warranty WHEN 1 THEN '保修中' ELSE '已脱保' END AS warrantySituation
+        from (SELECT * FROM bif_device WHERE flag_deleted = 0
+        <if test="brandId != 0 and seriesId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id IN (
+            SELECT id FROM bif_device_series WHERE brand_id = #{brandId,jdbcType=INTEGER}))
+        </if>
+        <if test="seriesId != 0 and modelId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id = #{seriesId,jdbcType=INTEGER})
+        </if>
+        <if test="modelId != 0">
+            and model_id = #{modelId,jdbcType=INTEGER}
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device_sn like '%${deviceSn}%'
+        </if>
+        <if test="catalogId != 0">
+            and catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        <if test="flagWarranty != null">
+            AND flag_warranty =#{flagWarranty,jdbcType=BIT}
+        </if>
+        <if test="flagUsable != null">
+            AND flag_usable =#{flagUsable,jdbcType=BIT}
+        </if>) device
+        INNER JOIN cfg_device_type_catalog deviceTypeCatalog ON deviceTypeCatalog.id = device.catalog_id
+        INNER JOIN dmi_device_company_relation deviceCompanyRelation ON deviceCompanyRelation.device_id = device.id AND deviceCompanyRelation.flag_deleted = 0
+        AND deviceCompanyRelation.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="assetSn != null">
+            AND deviceCompanyRelation.asset_sn like '%${assetSn}%'
+        </if>
+        <if test="flagAssign != null">
+            AND deviceCompanyRelation.flag_assign =#{flagAssign,jdbcType=BIT}
+        </if>
+        <if test="purchaseDateMin != null">
+            and deviceCompanyRelation.purchase_date &gt;= #{purchaseDateMin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="purchaseDateMax != null">
+            and deviceCompanyRelation.purchase_date &lt;= #{purchaseDateMax,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_device_assign deviceAssign INNER JOIN dmi_store store ON store.id = deviceAssign.assigned_section_id)
+        ON device.id = deviceAssign.device_id
+        AND deviceAssign.assign_type = 'STORE'
+        AND deviceAssign.device_company_id = #{companyId,jdbcType=INTEGER}
+        AND deviceAssign.assigned_section_id = #{typeId,jdbcType=INTEGER}
+        AND deviceAssign.flag_deleted = 0
+    </select>
+
+    <select id="queryListByCompanyIdAndObjectForOrg" resultType="com.company.springboot.entity.bif.BifDeviceRet"
+            parameterType="com.company.springboot.entity.bif.BifDeviceInputParam">
+        select
+        device.id AS id,
+        device.device_name AS deviceName,
+        device.brand AS brand,
+        device.model AS model,
+        deviceTypeCatalog.catalog_name AS catalogName,
+        device.device_sn AS deviceSn,
+        device.update_time AS updateTime,
+        deviceCompanyRelation.asset_sn AS assetSn,
+        deviceCompanyRelation.purchase_date AS purchaseDate,
+        'ORG' AS assignType,
+        organization.organization_name AS assignName,
+        CASE device.flag_usable WHEN 1 THEN '使用中' ELSE '已停用' END AS status,
+        CASE deviceCompanyRelation.flag_assign WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagAssign,
+        CASE device.flag_warranty WHEN 1 THEN '保修中' ELSE '已脱保' END AS warrantySituation
+        from (SELECT * FROM bif_device WHERE flag_deleted = 0
+        <if test="brandId != 0 and seriesId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id IN (
+            SELECT id FROM bif_device_series WHERE brand_id = #{brandId,jdbcType=INTEGER}))
+        </if>
+        <if test="seriesId != 0 and modelId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id = #{seriesId,jdbcType=INTEGER})
+        </if>
+        <if test="modelId != 0">
+            and model_id = #{modelId,jdbcType=INTEGER}
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device_sn like '%${deviceSn}%'
+        </if>
+        <if test="catalogId != 0">
+            and catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        <if test="flagWarranty != null">
+            AND flag_warranty =#{flagWarranty,jdbcType=BIT}
+        </if>
+        <if test="flagUsable != null">
+            AND flag_usable =#{flagUsable,jdbcType=BIT}
+        </if>) device
+        INNER JOIN cfg_device_type_catalog deviceTypeCatalog ON deviceTypeCatalog.id = device.catalog_id
+        INNER JOIN dmi_device_company_relation deviceCompanyRelation ON deviceCompanyRelation.device_id = device.id AND deviceCompanyRelation.flag_deleted = 0
+        AND deviceCompanyRelation.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="assetSn != null">
+            AND deviceCompanyRelation.asset_sn like '%${assetSn}%'
+        </if>
+        <if test="flagAssign != null">
+            AND deviceCompanyRelation.flag_assign =#{flagAssign,jdbcType=BIT}
+        </if>
+        <if test="purchaseDateMin != null">
+            and deviceCompanyRelation.purchase_date &gt;= #{purchaseDateMin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="purchaseDateMax != null">
+            and deviceCompanyRelation.purchase_date &lt;= #{purchaseDateMax,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_device_assign deviceAssign
+        INNER JOIN dmi_organization organization ON organization.id = deviceAssign.assigned_section_id) ON device.id = deviceAssign.device_id
+        AND deviceAssign.assign_type = 'ORG'
+        AND deviceAssign.device_company_id = #{companyId,jdbcType=INTEGER}
+        AND deviceAssign.assigned_section_id = #{typeId,jdbcType=INTEGER}
+        AND deviceAssign.flag_deleted = 0
+    </select>
+
+    <select id="queryListByCompanyIdAndObjectForPerson" resultType="com.company.springboot.entity.bif.BifDeviceRet"
+            parameterType="com.company.springboot.entity.bif.BifDeviceInputParam">
+        select
+        device.id AS id,
+        device.device_name AS deviceName,
+        device.brand AS brand,
+        device.model AS model,
+        deviceTypeCatalog.catalog_name AS catalogName,
+        device.device_sn AS deviceSn,
+        device.update_time AS updateTime,
+        deviceCompanyRelation.asset_sn AS assetSn,
+        deviceCompanyRelation.purchase_date AS purchaseDate,
+        'PERSON' AS assignType,
+        employee.employee_name AS assignName,
+        CASE device.flag_usable WHEN 1 THEN '使用中' ELSE '已停用' END AS status,
+        CASE deviceCompanyRelation.flag_assign WHEN 1 THEN '是' WHEN 0 THEN '否' ELSE '' END AS flagAssign,
+        CASE device.flag_warranty WHEN 1 THEN '保修中' ELSE '已脱保' END AS warrantySituation
+        from (SELECT * FROM bif_device WHERE flag_deleted = 0
+        <if test="brandId != 0 and seriesId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id IN (
+            SELECT id FROM bif_device_series WHERE brand_id = #{brandId,jdbcType=INTEGER}))
+        </if>
+        <if test="seriesId != 0 and modelId == 0">
+            AND model_id IN (
+            SELECT id FROM bif_device_model WHERE series_id = #{seriesId,jdbcType=INTEGER})
+        </if>
+        <if test="modelId != 0">
+            and model_id = #{modelId,jdbcType=INTEGER}
+        </if>
+        <if test="deviceSn != null and deviceSn != ''">
+            and device_sn like '%${deviceSn}%'
+        </if>
+        <if test="catalogId != 0">
+            and catalog_id in
+            <foreach item="parentId" index="index" collection="catalogIdList" open="(" separator="," close=")">
+                #{parentId}
+            </foreach>
+        </if>
+        <if test="flagWarranty != null">
+            AND flag_warranty =#{flagWarranty,jdbcType=BIT}
+        </if>
+        <if test="flagUsable != null">
+            AND flag_usable =#{flagUsable,jdbcType=BIT}
+        </if>) device
+        INNER JOIN cfg_device_type_catalog deviceTypeCatalog ON deviceTypeCatalog.id = device.catalog_id
+        INNER JOIN dmi_device_company_relation deviceCompanyRelation ON deviceCompanyRelation.device_id = device.id AND deviceCompanyRelation.flag_deleted = 0
+        AND deviceCompanyRelation.company_id = #{companyId,jdbcType=INTEGER}
+        <if test="assetSn != null">
+            AND deviceCompanyRelation.asset_sn like '%${assetSn}%'
+        </if>
+        <if test="flagAssign != null">
+            AND deviceCompanyRelation.flag_assign =#{flagAssign,jdbcType=BIT}
+        </if>
+        <if test="purchaseDateMin != null">
+            and deviceCompanyRelation.purchase_date &gt;= #{purchaseDateMin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="purchaseDateMax != null">
+            and deviceCompanyRelation.purchase_date &lt;= #{purchaseDateMax,jdbcType=TIMESTAMP}
+        </if>
+        INNER JOIN (dmi_device_assign deviceAssign INNER JOIN dmi_employee employee ON employee.id = deviceAssign.assigned_employee_id)
+        ON device.id = deviceAssign.device_id
+        AND deviceAssign.assign_type = 'PERSON'
+        AND deviceAssign.device_company_id = #{companyId,jdbcType=INTEGER}
+        AND deviceAssign.flag_deleted = 0
+        <if test="personIdList != null">
+            AND deviceAssign.assigned_employee_id IN
+            <foreach item="personId" index="index" collection="personIdList" open="(" separator="," close=")">
+                #{personId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="queryListByCompanyId" resultType="com.company.springboot.entity.bif.BifDeviceDetail" parameterType="java.lang.Integer">
+    SELECT
+    device.device_name AS deviceName,
+    brand.brand_name AS brand,
+    model.model_name AS model,
+    device.device_sn AS deviceSn,
+    deviceCompanyRelation.asset_sn AS assetSn,
+    deviceCompanyRelation.purchase_date AS purchaseDate,
+    typeCatalog.catalog_name AS catalogName,
+    deviceCompanyRelation.id AS deviceCompanyRelationId,
+    device.id AS id
+    FROM
+    bif_device device
+    LEFT JOIN bif_device_model model ON model.id = device.model_id
+    LEFT JOIN bif_device_series series ON series.id = model.series_id
+    LEFT JOIN bif_device_brand brand ON brand.id = series.brand_id
+    INNER JOIN dmi_device_company_relation deviceCompanyRelation ON device.id = deviceCompanyRelation.device_id AND deviceCompanyRelation.flag_deleted = 0
+    AND deviceCompanyRelation.flag_deleted = 0 AND deviceCompanyRelation.company_id = #{companyId,jdbcType=INTEGER}
+    LEFT JOIN cfg_device_type_catalog typeCatalog ON device.catalog_id = typeCatalog.id
+    WHERE
+    device.flag_deleted = 0
+  </select>
+
+    <select id="queryBycompanyId" resultMap="ResultMapWithBLOBs" parameterType="com.company.springboot.entity.dmi.DmiDeviceCompanyRelation">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_device_company_relation
+        where company_id = #{companyId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByDeviceId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from dmi_device_company_relation
+        where device_id = #{deviceId,jdbcType=INTEGER} AND flag_deleted = 0
+    </select>
+</mapper>

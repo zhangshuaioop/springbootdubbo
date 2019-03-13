@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.springboot.mapper.bif.BifCpeMapper">
+    <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifCpe">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cpe_name" property="cpeName" jdbcType="VARCHAR"/>
+        <result column="cpe_mac" property="cpeMac" jdbcType="VARCHAR"/>
+        <result column="cpe_sn" property="cpeSn" jdbcType="VARCHAR"/>
+        <result column="business_type" property="businessType" jdbcType="VARCHAR"/>
+        <result column="business_id" property="businessId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_person" property="updatePerson" jdbcType="VARCHAR"/>
+    </resultMap>
+
+  <sql id="Base_Column_List">
+    id, cpe_name, cpe_mac, cpe_sn, business_type, business_id, create_time, update_time, update_person
+  </sql>
+    <select id="getBifCpeList"  resultMap="BaseResultMap" >
+        select
+        cpe.id, cpe.cpe_name, cpe.cpe_mac, cpe.cpe_sn, cpe.business_type, cpe.business_id, cpe.create_time, cpe.update_time, cpe.update_person
+        ,store.store_name as storeName
+        from bif_cpe cpe
+        LEFT JOIN dmi_store AS store ON store.id = cpe.business_id
+        where 1=1
+        <if test="id != null and id != 0 " >
+           and cpe.id=#{id,jdbcType=INTEGER}
+        </if>
+        <if test=" cpeName != null and cpeName != '' " >
+            AND cpe.cpe_name LIKE CONCAT('%', #{cpeName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test=" cpeMac != null and cpeMac != '' " >
+            AND cpe.cpe_mac LIKE CONCAT('%', #{cpeMac,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test=" cpeSn != null and cpeSn != '' " >
+            AND cpe.cpe_sn LIKE CONCAT('%', #{cpeSn,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test=" businessType != null and businessType != '' " >
+            AND cpe.business_type=#{businessType,jdbcType=VARCHAR}
+        </if>
+        ORDER BY cpe.update_time desc
+    </select>
+
+    <select id="getBifCpeById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        cpe.id, cpe.cpe_name, cpe.cpe_mac, cpe.cpe_sn, cpe.business_type, cpe.business_id, cpe.create_time, cpe.update_time, cpe.update_person
+        ,store.store_name as storeName
+        from bif_cpe cpe
+        LEFT JOIN dmi_store AS store ON store.id = cpe.business_id
+        where 1=1
+        <if test="id != null and id != 0 " >
+            and cpe.id=#{id,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifCpe">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        insert into bif_cpe
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != 0 ">
+                id,
+            </if>
+            <if test="cpeName != null and cpeName != '' ">
+                cpe_name,
+            </if>
+            <if test="cpeMac != null and cpeMac != '' ">
+                cpe_mac,
+            </if>
+            <if test=" cpeSn != null and cpeSn != '' ">
+                cpe_sn,
+            </if>
+            <if test=" businessType != null and businessType != '' ">
+                business_type,
+            </if>
+            <if test=" businessId != null">
+                business_id,
+            </if>
+            <if test=" updatePerson != null and updatePerson != '' ">
+                update_person,
+            </if>
+            <if test=" createTime != null ">
+                create_time,
+            </if>
+            <if test=" updateTime != null ">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and  id != 0 ">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="cpeName != null and cpeName != '' ">
+                #{cpeName,jdbcType=VARCHAR},
+            </if>
+            <if test="cpeMac != null and cpeMac != '' ">
+                #{cpeMac,jdbcType=VARCHAR},
+            </if>
+            <if test=" cpeSn != null and cpeSn != '' ">
+                #{cpeSn,jdbcType=VARCHAR},
+            </if>
+            <if test=" businessType != null and businessType != '' ">
+                #{businessType,jdbcType=VARCHAR},
+            </if>
+            <if test=" businessId != null">
+                #{businessId,jdbcType=INTEGER},
+            </if>
+            <if test=" updatePerson != null and updatePerson != '' ">
+                #{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test=" createTime != null ">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test=" updateTime != null ">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifCpe">
+        update bif_cpe
+        <set>
+            <if test="cpeName != null and cpeName != '' ">
+                cpe_name= #{cpeName,jdbcType=VARCHAR},
+            </if>
+            <if test="cpeMac != null and cpeMac != '' ">
+                cpe_mac=#{cpeMac,jdbcType=VARCHAR},
+            </if>
+            <if test=" cpeSn != null and cpeSn != '' ">
+                cpe_sn=#{cpeSn,jdbcType=VARCHAR},
+            </if>
+            <if test=" businessType != null and businessType != '' ">
+                business_type=#{businessType,jdbcType=VARCHAR},
+            </if>
+            <if test=" businessId != null">
+                business_id=#{businessId,jdbcType=INTEGER},
+            </if>
+            <if test=" updatePerson != null and updatePerson != '' ">
+                update_person=#{updatePerson,jdbcType=INTEGER},
+            </if>
+            <if test=" updateTime != null ">
+                update_time=#{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteByid" parameterType="java.lang.Integer">
+        delete from bif_cpe where id=#{id,jdbcType=INTEGER}
+    </delete>
+
+</mapper>
