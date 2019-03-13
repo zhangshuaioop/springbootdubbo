@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.bif.BifBuildingApplyMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifBuildingApply" >
+<mapper namespace="com.platform.springboot.mapper.bif.BifBuildingApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.bif.BifBuildingApply" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="longitude" property="longitude" jdbcType="DECIMAL" />
     <result column="latitude" property="latitude" jdbcType="DECIMAL" />
@@ -29,7 +29,7 @@
     from bif_building_apply
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifBuildingApply" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.bif.BifBuildingApply" >
     insert into bif_building_apply
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -132,7 +132,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifBuildingApply" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.bif.BifBuildingApply" >
     update bif_building_apply
     <set >
       <if test="longitude != null" >
@@ -181,7 +181,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="applyBuildingList" resultMap="BaseResultMap" parameterType="com.company.springboot.entity.bif.BifBuildingApply" >
+  <select id="applyBuildingList" resultMap="BaseResultMap" parameterType="com.platform.springboot.entity.bif.BifBuildingApply" >
     select
     <include refid="Base_Column_List" />
     from bif_building_apply

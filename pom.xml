@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.company.springboot</groupId>
-    <artifactId>WaterDrop</artifactId>
+    <groupId>com.platform.springboot</groupId>
+    <artifactId>BlueOcean</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>WaterDrop Api</name>
+    <name>BlueOcean Api</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -77,12 +77,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-            <version>1.7.1.RELEASE</version>
         </dependency>
         <!-- Redis缓存整合结束 -->
 

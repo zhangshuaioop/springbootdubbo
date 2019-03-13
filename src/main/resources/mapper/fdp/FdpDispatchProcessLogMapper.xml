@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpDispatchProcessLogMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpDispatchProcessLog" >
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpDispatchProcessLogMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpDispatchProcessLog" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER" />
     <result column="deal_person_id" property="dealPersonId" jdbcType="INTEGER" />
@@ -25,7 +25,7 @@
     delete from fdp_dispatch_process_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.fdp.FdpDispatchProcessLog" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.fdp.FdpDispatchProcessLog" >
     insert into fdp_dispatch_process_log (id, dispatch_order_id, deal_person_id, 
       deal_person_type, before_status, after_status, 
       deal_content, deal_time)
@@ -33,7 +33,7 @@
       #{dealPersonType,jdbcType=VARCHAR}, #{beforeStatus,jdbcType=VARCHAR}, #{afterStatus,jdbcType=VARCHAR}, 
       #{dealContent,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchProcessLog" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchProcessLog" >
     insert into fdp_dispatch_process_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -88,7 +88,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchProcessLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchProcessLog" >
     update fdp_dispatch_process_log
     <set >
       <if test="dispatchOrderId != null" >
@@ -115,7 +115,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.fdp.FdpDispatchProcessLog" >
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.fdp.FdpDispatchProcessLog" >
     update fdp_dispatch_process_log
     set dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
       deal_person_id = #{dealPersonId,jdbcType=INTEGER},
@@ -127,11 +127,14 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 <!--查看派工流程-->
-  <select id="selectByOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByOrderId" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.FdpDispatchProcessLog">
     SELECT
-    <include refid="Base_Column_List" />
+      deal_person_id AS dealPersonId,
+	  deal_content AS dealContent,
+	  deal_time AS dealTime,
+	  after_status AS afterStatus
     FROM
-        fdp_dispatch_process_log log
+        fdp_dispatch_process_log
     WHERE
         dispatch_order_id = #{orderId,jdbcType=INTEGER}
     ORDER BY deal_time ASC

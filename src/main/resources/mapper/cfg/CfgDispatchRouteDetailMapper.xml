@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.company.springboot.mapper.cfg.CfgDispatchRouteDetailMapper">
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.cfg.CfgDispatchRouteDetail">
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgDispatchRouteDetailMapper">
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.cfg.CfgDispatchRouteDetail">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="route_id" jdbcType="INTEGER" property="routeId" />
     <result column="province" jdbcType="VARCHAR" property="province" />
@@ -14,7 +14,7 @@
     <result column="create_person" jdbcType="INTEGER" property="createPerson" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, route_id, province, region, emergency_person, no_emergency_person, flag_default,
+    id, route_id, province, region, emergency_person, no_emergency_person, flag_default, 
     colour, create_time, create_person
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -27,17 +27,17 @@
     delete from cfg_dispatch_route_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.cfg.CfgDispatchRouteDetail">
+  <insert id="insert" parameterType="com.platform.springboot.entity.cfg.CfgDispatchRouteDetail">
     insert into cfg_dispatch_route_detail (id, route_id, province, 
       region, emergency_person, no_emergency_person, 
-      flag_default, colour, create_time,
+      flag_default, colour, create_time, 
       create_person)
     values (#{id,jdbcType=INTEGER}, #{routeId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{region,jdbcType=VARCHAR}, #{emergencyPerson,jdbcType=VARCHAR}, #{noEmergencyPerson,jdbcType=VARCHAR}, 
-      #{flagDefault,jdbcType=BIT}, #{colour,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{flagDefault,jdbcType=BIT}, #{colour,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{createPerson,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.cfg.CfgDispatchRouteDetail">
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.cfg.CfgDispatchRouteDetail">
     insert into cfg_dispatch_route_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -97,14 +97,14 @@
         #{colour,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createPerson != null">
         #{createPerson,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.cfg.CfgDispatchRouteDetail">
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.cfg.CfgDispatchRouteDetail">
     update cfg_dispatch_route_detail
     <set>
       <if test="routeId != null">
@@ -137,7 +137,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.cfg.CfgDispatchRouteDetail">
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.cfg.CfgDispatchRouteDetail">
     update cfg_dispatch_route_detail
     set route_id = #{routeId,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
@@ -151,46 +151,13 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <!--根据routeId删除-->
+  <delete id="deleteByRoute" parameterType="java.lang.Integer">
+    delete from cfg_dispatch_route_detail
+    where route_id = #{routeId,jdbcType=INTEGER}
+  </delete>
 
 
-
-<!--批量更新-->
-  <update id="updateBatch" parameterType="java.util.List">
-
-    update cfg_dispatch_route_detail
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="province =case" suffix="end,">
-        <foreach collection="list" item="item" index="index">
-          when id=#{item.id} then #{item.province}
-        </foreach>
-      </trim>
-
-      <trim prefix="region =case" suffix="end,">
-        <foreach collection="list" item="item" index="index">
-          when id=#{item.id} then #{item.region}
-        </foreach>
-      </trim>
-
-
-      <trim prefix="emergency_person =case" suffix="end,">
-        <foreach collection="list" item="item" index="index">
-          when id=#{item.id} then #{item.emergencyPerson}
-        </foreach>
-      </trim>
-
-      <trim prefix="no_emergency_person =case" suffix="end,">
-        <foreach collection="list" item="item" index="index">
-          when id=#{item.id} then #{item.noEmergencyPerson}
-        </foreach>
-      </trim>
-
-    </trim>
-    where id in
-    <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
-      #{item.id,jdbcType=BIGINT}
-    </foreach>
-
-  </update>
 
 
   <!-- 批量插入数据 -->
@@ -209,8 +176,50 @@
   </insert>
 
 
-<!--细则列表-->
-  <select id="selectCfgDispatchRouteDetailList" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.cfg.CfgDispatchRouteDetail">
+
+
+  <!--批量更新-->
+  <update id="updateBatch" parameterType="java.util.List">
+    update cfg_dispatch_route_detail
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="province =case" suffix="end,">
+        <foreach collection="list" item="item" index="index">
+          when id=#{item.id} then #{item.province}
+        </foreach>
+      </trim>
+
+      <trim prefix="region =case" suffix="end,">
+        <foreach collection="list" item="item" index="index">
+          when id=#{item.id} then #{item.region}
+        </foreach>
+      </trim>
+
+      <trim prefix="emergency_person =case" suffix="end,">
+        <foreach collection="list" item="item" index="index">
+          when id=#{item.id} then #{item.emergencyPerson}
+        </foreach>
+      </trim>
+
+      <trim prefix="no_emergency_person =case" suffix="end,">
+        <foreach collection="list" item="item" index="index">
+          when id=#{item.id} then #{item.noEmergencyPerson}
+        </foreach>
+      </trim>
+
+    </trim>
+    where id in
+    <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+      #{item.id,jdbcType=BIGINT}
+    </foreach>
+  </update>
+
+
+
+
+
+
+  <!--细则列表-->
+  <select id="selectTree" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.cfg.CfgDispatchRouteDetail">
 
     SELECT region.id id,
         region.region_name region,
@@ -252,13 +261,5 @@
     WHERE region.`level` NOT in (0,4) AND region.region_name is NOT NULL AND region.region_name!=''
     ORDER BY region.id
   </select>
-
-
-
-  <!--根据routeId删除-->
-  <delete id="deleteByRoute" parameterType="java.lang.Integer">
-    delete from cfg_dispatch_route_detail
-    where route_id = #{routeId,jdbcType=INTEGER}
-  </delete>
 
 </mapper>

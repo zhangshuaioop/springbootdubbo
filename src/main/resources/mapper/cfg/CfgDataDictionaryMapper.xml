@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.cfg.CfgDataDictionaryMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.cfg.CfgDataDictionary" >
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgDataDictionaryMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.cfg.CfgDataDictionary" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="value" property="value" jdbcType="VARCHAR" />
@@ -17,7 +17,7 @@
     from cfg_data_dictionary
     where type = #{dtype,jdbcType=VARCHAR} order by order_id ASC
   </select>
-  <select id="getDictionaryByTypeAndValue" resultMap="BaseResultMap" parameterType="com.company.springboot.entity.cfg.CfgDataDictionary" >
+  <select id="getDictionaryByTypeAndValue" resultMap="BaseResultMap" parameterType="com.platform.springboot.entity.cfg.CfgDataDictionary" >
     select
     <include refid="Base_Column_List" />
     from cfg_data_dictionary

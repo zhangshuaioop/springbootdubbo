@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.cfg.CfgRegionMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.cfg.CfgRegion" >
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgRegionMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.cfg.CfgRegion" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="region_code" property="regionCode" jdbcType="VARCHAR" />
     <result column="region_name" property="regionName" jdbcType="VARCHAR" />
@@ -36,7 +36,7 @@
           AND name_en != "Xian"
   </select>
 
-  <select id="getCfgRegionList" resultMap="BaseResultMap" parameterType="com.company.springboot.entity.cfg.CfgRegion" >
+  <select id="getCfgRegionList" resultMap="BaseResultMap" parameterType="com.platform.springboot.entity.cfg.CfgRegion" >
     select
     <include refid="Base_Column_List" />
     from cfg_region

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpDispatchJobPerformanceMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpDispatchJobPerformance" >
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpDispatchJobPerformanceMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpDispatchJobPerformance" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER" />
     <result column="dispatch_request_id" property="dispatchRequestId" jdbcType="INTEGER" />
@@ -34,7 +34,7 @@
     delete from fdp_dispatch_job_performance
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.fdp.FdpDispatchJobPerformance" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.fdp.FdpDispatchJobPerformance" >
     insert into fdp_dispatch_job_performance (id, dispatch_order_id, dispatch_request_id, 
       job_step_index, job_step_description, work_condition_photo, 
       work_condition_photo_name, job_performance_version, 
@@ -48,7 +48,7 @@
       #{voiceLogUrl,jdbcType=VARCHAR}, #{voiceLogLength,jdbcType=VARCHAR}, #{voiceLogTime,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchJobPerformance" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchJobPerformance" >
     insert into fdp_dispatch_job_performance
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -151,7 +151,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchJobPerformance" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchJobPerformance" >
     update fdp_dispatch_job_performance
     <set >
       <if test="dispatchOrderId != null" >
@@ -199,7 +199,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.fdp.FdpDispatchJobPerformance" >
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.fdp.FdpDispatchJobPerformance" >
     update fdp_dispatch_job_performance
     set dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
       dispatch_request_id = #{dispatchRequestId,jdbcType=INTEGER},

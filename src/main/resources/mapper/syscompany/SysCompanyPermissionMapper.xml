@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.springboot.mapper.syscompany.SysCompanyPermissionMapper">
+    <resultMap id="BaseResultMap" type="com.platform.springboot.entity.syscompany.SysCompanyPermission">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="level" jdbcType="INTEGER" property="level" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="order_id" jdbcType="INTEGER" property="orderId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="flag_deleted" jdbcType="BIT" property="flagDeleted" />
+        <result column="icon" jdbcType="VARCHAR" property="icon" />
+        <result column="component" jdbcType="VARCHAR" property="component" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, name, url, level, parent_id, order_id, create_time, update_time, flag_deleted,icon,component
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_company_permission
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_company_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.platform.springboot.entity.syscompany.SysCompanyPermission">
+    insert into sys_company_permission (id, name, url, 
+      level, parent_id, order_id, 
+      create_time, update_time, flag_deleted,icon,component
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{level,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{flagDeleted,jdbcType=BIT},
+      #{icon,jdbcType=VARCHAR},#{component,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.platform.springboot.entity.syscompany.SysCompanyPermission">
+        insert into sys_company_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+                create_time,
+                update_time,
+            <if test="flagDeleted != null">
+                flag_deleted,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="component != null">
+                component,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=INTEGER},
+            </if>
+            NOW(),
+            NOW(),
+            <if test="flagDeleted != null">
+                #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="component != null">
+                #{component,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.syscompany.SysCompanyPermission">
+        update sys_company_permission
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+                update_time = NOW(),
+            <if test="flagDeleted != null">
+                flag_deleted = #{flagDeleted,jdbcType=BIT},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="component != null">
+                component = #{component,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.syscompany.SysCompanyPermission">
+    update sys_company_permission
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      flag_deleted = #{flagDeleted,jdbcType=BIT},
+      icon = #{icon,jdbcType=VARCHAR},
+      component = #{component,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+
+    <!--查询当前权限-->
+    <select id="selectPermission" parameterType="com.platform.springboot.entity.syscompany.SysCompanyPermission" resultType="com.platform.springboot.entity.syscompany.response.SysCompanyPermissionRes">
+    SELECT permission.id,permission.name,
+    permission.url,permission.level,permission.parent_id parentId,
+    permission.order_id orderId,permission.create_time createTime,
+    permission.update_time updateTime,permission.flag_deleted flagDeleted,api.url apiUrl
+    FROM sys_company_permission permission
+    LEFT JOIN sys_publish_version_permission vpermission ON vpermission.permission_id=permission.id
+    LEFT JOIN sys_publish_version_define vdefine ON vdefine.id=vpermission.version_id
+    LEFT JOIN sys_company_purchase_version pversion ON pversion.version_id=vdefine.id
+    LEFT JOIN sys_company_role_permission rolepermission ON rolepermission.permission_id=vpermission.permission_id
+    LEFT JOIN sys_company_role role ON role.id=rolepermission.role_id
+    LEFT JOIN sys_company_user_role_relation relation ON relation.role_id=role.id
+    LEFT JOIN sys_company_permission_api_relation apiRelation ON apiRelation.permission_id=permission.id
+    LEFT JOIN sys_company_api api ON apiRelation.api_id=api.id
+    WHERE pversion.company_id=#{companyId,jdbcType=INTEGER}
+    AND permission.flag_deleted=0 and rolepermission.flag_deleted=0
+    AND vpermission.flag_deleted =0 AND vdefine.flag_deleted = 0 AND pversion.flag_deleted=0
+    <if test="userId != null">
+        AND relation.user_id=#{userId,jdbcType=INTEGER}
+    </if>
+    <if test="name != null">
+        and LOCATE(#{name}, permission.name)>0
+    </if>
+    <if test="url != null">
+        and LOCATE(#{url}, permission.url)>0
+    </if>
+    <if test="level != null">
+        and permission.level = #{level,jdbcType=INTEGER}
+    </if>
+    <if test="parentId != null">
+        and  permission.parent_id = #{parentId,jdbcType=INTEGER}
+    </if>
+    <if test="orderId != null">
+        and  permission.order_id = #{orderId,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null">
+        and (TO_DAYS(permission.create_time)=TO_DAYS(#{createTime,jdbcType=TIMESTAMP}))=1
+    </if>
+    <if test="updateTime != null">
+        and (TO_DAYS(permission.update_time)=TO_DAYS(#{updateTime,jdbcType=TIMESTAMP}))=1
+    </if>
+    <if test="flagDeleted != null">
+        and permission.flag_deleted = #{flagDeleted,jdbcType=BIT}
+    </if>
+    group by permission.id
+    order by permission.order_id asc
+
+  </select>
+
+
+<!--获取公司权限-->
+    <select id="selectCompanyPermission" parameterType="com.platform.springboot.entity.syscompany.SysCompanyPermission" resultType="com.platform.springboot.entity.syscompany.response.SysCompanyPermissionRes">
+        SELECT permission.id,permission.name,
+        permission.url,permission.level,permission.parent_id parentId,
+        permission.order_id orderId,permission.create_time createTime,
+        permission.update_time updateTime,permission.flag_deleted flagDeleted
+        <if test="roleId != null">
+            ,CASE WHEN locate(permission.id,(SELECT GROUP_CONCAT(a.permission_id)
+            FROM (SELECT permission_id FROM sys_company_role_permission WHERE role_id=#{roleId} GROUP BY permission_id) a)) > 0
+            THEN
+            1
+            ELSE
+            0
+            END flagSelect
+        </if>
+        FROM sys_company_permission permission
+        LEFT JOIN sys_publish_version_permission vpermission ON vpermission.permission_id=permission.id
+        LEFT JOIN sys_publish_version_define vdefine ON vdefine.id=vpermission.version_id
+        LEFT JOIN sys_company_purchase_version pversion ON pversion.version_id=vdefine.id
+        WHERE permission.flag_deleted=0
+        AND  pversion.company_id=#{companyId,jdbcType=INTEGER}
+        and vpermission.flag_deleted =0 AND vdefine.flag_deleted = 0 AND pversion.flag_deleted=0
+        <if test="name != null">
+            and LOCATE(#{name}, permission.name)>0
+        </if>
+        <if test="url != null">
+            and LOCATE(#{url}, permission.url)>0
+        </if>
+        <if test="level != null">
+            and permission.level = #{level,jdbcType=INTEGER}
+        </if>
+        <if test="parentId != null">
+            and  permission.parent_id = #{parentId,jdbcType=INTEGER}
+        </if>
+        <if test="orderId != null">
+            and  permission.order_id = #{orderId,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+            and (TO_DAYS(permission.create_time)=TO_DAYS(#{createTime,jdbcType=TIMESTAMP}))=1
+        </if>
+        <if test="updateTime != null">
+            and (TO_DAYS(permission.update_time)=TO_DAYS(#{updateTime,jdbcType=TIMESTAMP}))=1
+        </if>
+        <if test="flagDeleted != null">
+            and permission.flag_deleted = #{flagDeleted,jdbcType=BIT}
+        </if>
+        group by permission.id
+        order by permission.order_id asc
+
+    </select>
+
+
+
+
+
+    <!--查询所有-->
+    <select id="selectAll" parameterType="com.platform.springboot.entity.syscompany.SysCompanyPermission" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_company_permission
+        where 1=1
+        <if test="name != null">
+           and LOCATE(#{name}, name)>0
+        </if>
+        <if test="url != null">
+            and LOCATE(#{url}, url)>0
+        </if>
+        <if test="level != null">
+            and level = #{level,jdbcType=INTEGER}
+        </if>
+        <if test="parentId != null">
+            and  parent_id = #{parentId,jdbcType=INTEGER}
+        </if>
+        <if test="orderId != null">
+            and  order_id = #{orderId,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+            and (TO_DAYS(create_time)=TO_DAYS(#{createTime,jdbcType=TIMESTAMP}))=1
+        </if>
+        <if test="updateTime != null">
+            and (TO_DAYS(update_time)=TO_DAYS(#{updateTime,jdbcType=TIMESTAMP}))=1
+        </if>
+        <if test="flagDeleted != null">
+            and flag_deleted = #{flagDeleted,jdbcType=BIT}
+        </if>
+        <if test="icon != null">
+            and LOCATE(#{icon}, icon)>0
+        </if>
+        <if test="component != null">
+            and component = #{component,jdbcType=VARCHAR}
+        </if>
+        order by permission.order_id asc
+    </select>
+
+
+<!--公司权限列表树(供平台使用)-->
+    <select id="selectConsolePermission" parameterType="com.platform.springboot.entity.syscompany.SysCompanyPermission" resultType="com.platform.springboot.entity.syscompany.response.SysCompanyPermissionRes">
+        SELECT permission.id,permission.name,
+        permission.url,permission.level,permission.parent_id parentId,
+        permission.order_id orderId,permission.create_time createTime,
+        permission.update_time updateTime,permission.flag_deleted flagDeleted,
+        permission.icon,permission.component
+        FROM sys_company_permission permission
+        where permission.flag_deleted = 0
+        order by permission.order_id asc
+    </select>
+
+
+    <!--查询公司平台所有权限-->
+    <select id="selectRedisApiAll" resultType="com.platform.springboot.entity.syscompany.response.RedisCompanyPermissionApiRes">
+        SELECT rp.company_id companyId ,api.url apiUrl,users.id userId
+        FROM sys_company_role_permission rp
+        LEFT JOIN sys_company_permission permission on permission.id=rp.permission_id
+        LEFT JOIN sys_company_permission_api_relation relation ON relation.permission_id = rp.permission_id
+        LEFT JOIN sys_company_api api ON api.id=relation.api_id
+        LEFT JOIN sys_company_role role ON role.id=rp.role_id
+        LEFT JOIN sys_company_user_role_relation rrelation ON role.id=rrelation.role_id
+        LEFT JOIN sys_company_users users ON users.id=rrelation.user_id
+        WHERE rp.flag_deleted=0 AND permission.flag_deleted=0 and role.flag_deleted=0
+ AND rrelation.flag_deleted=0 AND users.flag_deleted=0 AND api.flag_deleted=0
+ GROUP BY rp.company_id,api.url,users.id
+    </select>
+
+</mapper>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.company.springboot.mapper.bif.BifDispatchHrSkillLabelMapper">
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+<mapper namespace="com.platform.springboot.mapper.bif.BifDispatchHrSkillLabelMapper">
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.bif.BifDispatchHrSkillLabel">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="label_name" jdbcType="VARCHAR" property="labelName" />
     <result column="level" jdbcType="INTEGER" property="level" />
@@ -22,7 +22,7 @@
     delete from bif_dispatch_hr_skill_label
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+  <insert id="insert" parameterType="com.platform.springboot.entity.bif.BifDispatchHrSkillLabel">
     insert into bif_dispatch_hr_skill_label (id, label_name, level, 
       parent_id, order_id, description
       )
@@ -30,7 +30,7 @@
       #{parentId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.bif.BifDispatchHrSkillLabel">
     insert into bif_dispatch_hr_skill_label
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -73,7 +73,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.bif.BifDispatchHrSkillLabel">
     update bif_dispatch_hr_skill_label
     <set>
       <if test="labelName != null">
@@ -94,7 +94,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.bif.BifDispatchHrSkillLabel">
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.bif.BifDispatchHrSkillLabel">
     update bif_dispatch_hr_skill_label
     set label_name = #{labelName,jdbcType=VARCHAR},
       level = #{level,jdbcType=INTEGER},

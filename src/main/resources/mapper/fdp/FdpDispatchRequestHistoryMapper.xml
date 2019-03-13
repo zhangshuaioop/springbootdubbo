@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpDispatchRequestHistoryMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpDispatchRequestHistory" >
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpDispatchRequestHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpDispatchRequestHistory" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="company_id" property="companyId" jdbcType="INTEGER" />
     <result column="store_id" property="storeId" jdbcType="INTEGER" />
@@ -48,7 +48,7 @@
     <result column="create_history_person" property="createHistoryPerson" jdbcType="INTEGER" />
     <result column="create_history_time" property="createHistoryTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.company.springboot.entity.fdp.FdpDispatchRequestHistory" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.platform.springboot.entity.fdp.FdpDispatchRequestHistory" extends="BaseResultMap" >
     <result column="dispatch_model_request" property="dispatchModelRequest" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -73,7 +73,7 @@
     from fdp_dispatch_request_history
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchRequestHistory" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchRequestHistory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
       SELECT
       LAST_INSERT_ID()
@@ -360,7 +360,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchRequestHistory" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchRequestHistory" >
     update fdp_dispatch_request_history
     <set >
       <if test="companyId != null" >
@@ -520,7 +520,7 @@
     AND flag_deleted = 0
     ORDER BY create_history_time DESC
   </select>
-  <select id="show" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.FdpDispatchRequestHistoryShow">
+  <select id="show" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.FdpDispatchRequestHistoryShow">
     SELECT
     cop.company_name companyName,
 	store.store_name storeName,
@@ -577,7 +577,7 @@
     INNER JOIN fdp_fault_order_dispatch_request AS req ON req.id = his.root_request_id
     INNER JOIN fdp_fault_dispatch_order AS dor ON dor.fault_dispatch_request_id = his.root_request_id
     LEFT JOIN sys_company_users AS sys ON sys.id = his.create_person
-    LEFT JOIN sys_company_users AS su ON su.id = his.update_person
+    LEFT JOIN sys_console_users AS su ON su.id = his.update_person
     LEFT JOIN dmi_company_info cop ON cop.id = his.company_id
 	LEFT JOIN dmi_store store ON store.id = his.store_id
     WHERE

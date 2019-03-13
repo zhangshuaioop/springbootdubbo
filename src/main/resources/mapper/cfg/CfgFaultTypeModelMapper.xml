@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.cfg.CfgFaultTypeModelMapper">
-    <resultMap id="BaseResultMap" type="com.company.springboot.entity.cfg.CfgFaultTypeModel">
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgFaultTypeModelMapper">
+    <resultMap id="BaseResultMap" type="com.platform.springboot.entity.cfg.CfgFaultTypeModel">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="fault_define_type" property="faultDefineType" jdbcType="VARCHAR"/>
         <result column="version" property="version" jdbcType="INTEGER"/>
@@ -23,7 +23,7 @@
     delete from cfg_fault_type_model
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeModel">
+    <insert id="insert" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel">
     insert into cfg_fault_type_model (id, fault_define_type, version, 
       model_user_type, model_user_obj_id, create_time
       )
@@ -31,7 +31,7 @@
       #{modelUserType,jdbcType=VARCHAR}, #{modelUserObjId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeModel">
+    <insert id="insertSelective" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel">
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
             SELECT
             LAST_INSERT_ID()
@@ -59,9 +59,6 @@
             <if test="createPerson != null">
                 create_person,
             </if>
-            <if test="companyId != null">
-                company_id,
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -85,12 +82,9 @@
             <if test="createPerson != null">
                 #{createPerson,jdbcType=INTEGER},
             </if>
-            <if test="companyId != null">
-                #{companyId,jdbcType=INTEGER},
-            </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeModel">
+    <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel">
         update cfg_fault_type_model
         <set>
             <if test="faultDefineType != null">
@@ -111,7 +105,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeModel">
+    <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel">
     update cfg_fault_type_model
     set fault_define_type = #{faultDefineType,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},
@@ -121,71 +115,60 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <select id="selectByType" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeModel"
-            resultType="com.company.springboot.entity.cfg.CfgFaultTypeModel">
+    <select id="selectByType" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel"
+            resultType="com.platform.springboot.entity.cfg.CfgFaultTypeModel">
         SELECT
         model.id,
         model.fault_define_type faultDefineType,
-        model.version,
+        MAX(model.version) version,
         model.model_user_type modelUserType,
         model.model_user_obj_id modelUserObjId,
         model.create_time createTime,
         sys.username createPersonName
-        FROM(
-        select
-        *
-        from cfg_fault_type_model
-        where id=(
-        select
-        max(id)
-        from cfg_fault_type_model
-        where
-        1=1
-        <if test="faultDefineType != null">
-            AND fault_define_type = #{faultDefineType,jdbcType=VARCHAR}
-        </if>
-        <if test="companyId != null">
-            AND company_id = #{companyId,jdbcType=INTEGER}
-        </if>
-        )
-        ) model
+        FROM cfg_fault_type_model model
         left join sys_company_users sys on sys.id =model.create_person
-    </select>
-
-    <select id="selectVersion" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeModel"
-            resultType="java.lang.Integer">
-        SELECT max(VERSION)
-        FROM cfg_fault_type_model
-        WHERE 1=1
-        <if test="faultDefineType != null">
-            AND fault_define_type = #{faultDefineType,jdbcType=VARCHAR}
+        where 1=1
+        <if test="modelUserType != null">
+            AND model.model_user_type = #{modelUserType,jdbcType=VARCHAR}
         </if>
-        <if test="companyId != null">
-            AND company_id = #{companyId,jdbcType=INTEGER}
-        </if>
-    </select>
-
-    <select id="selectListHistory" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeModel"
-            resultMap="BaseResultMap">
-        SELECT
-        model.id,
-        model.fault_define_type faultDefineType,
-        model.version,
-        model.model_user_type modelUserType,
-        model.model_user_obj_id modelUserObjId,
-        model.create_time createTime,
-        users.username createPersonName
-        from
-        cfg_fault_type_model model
-        left join sys_company_users users on model.create_person = users.id
-        WHERE 1=1
         <if test="faultDefineType != null">
             AND model.fault_define_type = #{faultDefineType,jdbcType=VARCHAR}
         </if>
-        <if test="companyId != null">
+        <if test="companyId != null and companyId !=0 ">
             AND model.company_id = #{companyId,jdbcType=INTEGER}
         </if>
-        order BY model.version desc
-
+        order by model.create_time desc
     </select>
+
+    <select id="selectVersion" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel"
+            resultType="java.lang.Integer">
+
+    SELECT max(VERSION)
+    FROM cfg_fault_type_model
+    WHERE   model_user_type = #{modelUserType,jdbcType=VARCHAR}
+
+  </select>
+
+    <select id="selectListHistory" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel"
+            resultMap="BaseResultMap">
+    SELECT
+    model.id,
+    model.fault_define_type faultDefineType,
+    model.version,
+    model.model_user_type modelUserType,
+    model.model_user_obj_id modelUserObjId,
+    model.create_time createTime,
+    users.username createPersonName
+   from
+    (
+    select *
+    from cfg_fault_type_model
+    where 1=1
+    AND fault_define_type = #{faultDefineType,jdbcType=VARCHAR}
+    AND company_id = #{companyId,jdbcType=INTEGER}
+    ) model
+  	left join sys_company_users users on model.create_person = users.id
+	order BY version desc
+
+</select>
 </mapper>

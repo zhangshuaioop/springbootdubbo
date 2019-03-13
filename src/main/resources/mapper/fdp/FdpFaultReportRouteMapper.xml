@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpFaultReportRouteMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpFaultReportRoute" >
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpFaultReportRouteMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpFaultReportRoute" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="source" property="source" jdbcType="VARCHAR" />
     <result column="company_id" property="companyId" jdbcType="INTEGER" />
@@ -28,7 +28,7 @@
         delete from fdp_fault_report_route
         where company_id  = #{companyId,jdbcType=INTEGER}
     </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.fdp.FdpFaultReportRoute" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.fdp.FdpFaultReportRoute" >
     insert into fdp_fault_report_route (id, source, company_id, 
       route_object, create_person, create_time
       )
@@ -36,7 +36,7 @@
       #{routeObject,jdbcType=VARCHAR}, #{createPerson,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultReportRoute" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultReportRoute" >
     insert into fdp_fault_report_route
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -79,7 +79,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpFaultReportRoute" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultReportRoute" >
     update fdp_fault_report_route
     <set >
       <if test="source != null" >
@@ -100,7 +100,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.fdp.FdpFaultReportRoute" >
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.fdp.FdpFaultReportRoute" >
     update fdp_fault_report_route
     set source = #{source,jdbcType=VARCHAR},
       company_id = #{companyId,jdbcType=INTEGER},
@@ -110,7 +110,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--查询故障分配路径列表-->
-  <select id="show" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetFaultReportRouteList">
+  <select id="show" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetFaultReportRouteList">
       SELECT
           comp.id AS companyId,
           comp.company_name AS companyName,
@@ -144,16 +144,16 @@
           company_id = #{companyId,jdbcType=INTEGER}
   </select>
   <!--查询分配对象-->
-  <select id="selectRouteObject" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetFaultReportRouteList">
+  <select id="selectRouteObject" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetFaultReportRouteList">
       SELECT
       comp.id companyId,comp.company_name AS routeObject
       FROM dmi_company_info comp
-      WHERE comp.id in (select empower_company_id from sys_company_relation where authorized_company_id=#{companyId,jdbcType=INTEGER})
+      WHERE comp.id in (select authorized_company_id from sys_company_relation where empower_company_id=#{companyId,jdbcType=INTEGER})
   </select>
 
 
     <!--新增一套报障路径配置-->
-    <insert id="inserts" parameterType="com.company.springboot.entity.fdp.FdpFaultReportRoute" >
+    <insert id="inserts" parameterType="com.platform.springboot.entity.fdp.FdpFaultReportRoute" >
     insert into fdp_fault_report_route (source, company_id,
       route_object, create_person, create_time
       )

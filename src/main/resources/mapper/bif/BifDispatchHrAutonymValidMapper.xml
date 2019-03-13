@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.bif.BifDispatchHrAutonymValidMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifDispatchHrAutonymValid" >
+<mapper namespace="com.platform.springboot.mapper.bif.BifDispatchHrAutonymValidMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.bif.BifDispatchHrAutonymValid" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
@@ -32,7 +32,7 @@
     delete from bif_dispatch_hr_autonym_valid
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.bif.BifDispatchHrAutonymValid" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.bif.BifDispatchHrAutonymValid" >
     insert into bif_dispatch_hr_autonym_valid (id, user_id, user_name, 
       id_type, id_code, positive_image_url, 
       contrary_image_url, handheld_image_url, flag_last, 
@@ -44,7 +44,7 @@
       #{flagValidStatus,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{dealTime,jdbcType=TIMESTAMP}, 
       #{validDenyReasonId,jdbcType=INTEGER}, #{validDenyMemo,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifDispatchHrAutonymValid" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.bif.BifDispatchHrAutonymValid" >
     insert into bif_dispatch_hr_autonym_valid
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -135,7 +135,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifDispatchHrAutonymValid" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.bif.BifDispatchHrAutonymValid" >
     update bif_dispatch_hr_autonym_valid
     <set >
       <if test="userName != null" >
@@ -176,23 +176,6 @@
       </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.bif.BifDispatchHrAutonymValid" >
-    update bif_dispatch_hr_autonym_valid
-    set user_id = #{userId,jdbcType=INTEGER},
-      user_name = #{userName,jdbcType=VARCHAR},
-      id_type = #{idType,jdbcType=VARCHAR},
-      id_code = #{idCode,jdbcType=VARCHAR},
-      positive_image_url = #{positiveImageUrl,jdbcType=VARCHAR},
-      contrary_image_url = #{contraryImageUrl,jdbcType=VARCHAR},
-      handheld_image_url = #{handheldImageUrl,jdbcType=VARCHAR},
-      flag_last = #{flagLast,jdbcType=BIT},
-      flag_valid_status = #{flagValidStatus,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      deal_time = #{dealTime,jdbcType=TIMESTAMP},
-      valid_deny_reason_id = #{validDenyReasonId,jdbcType=INTEGER},
-      valid_deny_memo = #{validDenyMemo,jdbcType=VARCHAR}
-    where user_id = #{id,jdbcType=INTEGER}
   </update>
 
   <select id="selectByHrId" parameterType="java.lang.Integer" resultMap="BaseResultMap">

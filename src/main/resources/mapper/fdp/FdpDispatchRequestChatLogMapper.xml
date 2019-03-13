@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpDispatchRequestChatLogMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpDispatchRequestChatLog" >
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpDispatchRequestChatLogMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpDispatchRequestChatLog" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="fault_dispatch_request_id" property="faultDispatchRequestId" jdbcType="INTEGER" />
     <result column="content" property="content" jdbcType="VARCHAR" />
@@ -31,7 +31,7 @@
     delete from fdp_dispatch_request_chat_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.fdp.FdpDispatchRequestChatLog" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.fdp.FdpDispatchRequestChatLog" >
     insert into fdp_dispatch_request_chat_log (id, fault_dispatch_request_id, content,
     process_person_id, process_time
     )
@@ -39,7 +39,7 @@
     #{processPersonId,jdbcType=INTEGER}, #{processTime,jdbcType=TIMESTAMP}
     )
   </insert>
-    <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchRequestChatLog" >
+    <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchRequestChatLog" >
         insert into fdp_dispatch_request_chat_log
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -130,7 +130,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchRequestChatLog" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchRequestChatLog" >
         update fdp_dispatch_request_chat_log
         <set >
             <if test="faultDispatchRequestId != null" >
@@ -169,7 +169,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.fdp.FdpDispatchRequestChatLog" >
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.fdp.FdpDispatchRequestChatLog" >
     update fdp_dispatch_request_chat_log
     set fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
     content = #{content,jdbcType=VARCHAR},
@@ -181,7 +181,7 @@
 
 
   <!--查询采购未读消息列表-->
-  <select id="getPurchaseLastList" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetfdpDispatchRequestChatLogList">
+  <select id="getPurchaseLastList" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetfdpDispatchRequestChatLogList">
        SELECT
           u.username,
           cl.id,
@@ -210,7 +210,7 @@
              )
       GROUP BY fault_dispatch_request_id
       ) t1 ON cl.id = t1.maxid
-          LEFT JOIN sys_company_users u on u.id = cl.process_person_id
+          LEFT JOIN sys_console_users u on u.id = cl.process_person_id
       ORDER BY
       cl.id DESC
 
@@ -218,7 +218,7 @@
   </select>
 
   <!--查询派工未读消息列表-->
-  <select id="getDispatchLastList" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetfdpDispatchRequestChatLogList">
+  <select id="getDispatchLastList" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetfdpDispatchRequestChatLogList">
   SELECT
       u.username,
       cl.id,
@@ -265,7 +265,7 @@
 
   </update>
     <!--设置非本人发送的为已读-->
-    <update id="setReadNotSend" parameterType="com.company.springboot.entity.fdp.FdpDispatchRequestChatLog" >
+    <update id="setReadNotSend" parameterType="com.platform.springboot.entity.fdp.FdpDispatchRequestChatLog" >
         UPDATE
         fdp_dispatch_request_chat_log
         SET
@@ -285,7 +285,7 @@
         process_person_id = #{userId,jdbcType=INTEGER}
   </select>
     <!--客户方查询处理人id-->
-  <select id="selectLastPerson" parameterType="com.company.springboot.entity.fdp.FdpDispatchRequestChatLog" resultType="java.lang.Integer">
+  <select id="selectLastPerson" parameterType="com.platform.springboot.entity.fdp.FdpDispatchRequestChatLog" resultType="java.lang.Integer">
     SELECT
         last_deal_person_id
     FROM
@@ -293,21 +293,23 @@
     WHERE
         fault_dispatch_request_id IN (
             SELECT id FROM fdp_fault_order_dispatch_request
-            WHERE id = #{faultDispatchRequestId,jdbcType=INTEGER} )
+            WHERE create_person = #{processPersonId,jdbcType=INTEGER}
+            AND id = #{faultDispatchRequestId,jdbcType=INTEGER} )
 
   </select>
     <!--采购方查询创建人-->
-    <select id="selectCreatePerson" parameterType="com.company.springboot.entity.fdp.FdpDispatchRequestChatLog" resultType="java.lang.Integer">
+    <select id="selectCreatePerson" parameterType="com.platform.springboot.entity.fdp.FdpDispatchRequestChatLog" resultType="java.lang.Integer">
        SELECT
             create_person
         FROM
             fdp_fault_order_dispatch_request
         WHERE
             id IN ( SELECT fault_dispatch_request_id FROM fdp_fault_dispatch_order
-            WHERE fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER} )
+            WHERE last_deal_person_id = #{processPersonId,jdbcType=INTEGER}
+            AND fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER} )
 
     </select>
-    <select id="selectUnread" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetfdpDispatchRequestChatLogList">
+    <select id="selectUnread" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetfdpDispatchRequestChatLogList">
         SELECT
           sys.username,
           cl.id,
@@ -327,7 +329,7 @@
           cl.image_file_url AS imageFileUrl
                       FROM
             fdp_dispatch_request_chat_log AS cl
-            LEFT JOIN sys_company_users AS sys ON sys.id = cl.process_person_id
+            LEFT JOIN sys_console_users AS sys ON sys.id = cl.process_person_id
             LEFT JOIN fdp_fault_dispatch_order ord on ord.fault_dispatch_request_id = cl.fault_dispatch_request_id
             WHERE
             <!--cl. process_person_id != #{userId,jdbcType=INTEGER}-->
@@ -336,7 +338,7 @@
             GROUP BY id desc
 			LIMIT 1
     </select>
-    <select id="selectChatLogAndHead" resultType="com.company.springboot.entity.fdp.GetfdpDispatchRequestChatLogList" parameterType="java.lang.Integer">
+    <select id="selectChatLogAndHead" resultType="com.platform.springboot.entity.fdp.GetfdpDispatchRequestChatLogList" parameterType="java.lang.Integer">
         SELECT
             chat.id,
             chat.fault_dispatch_request_id AS faultDispatchRequestId,
@@ -355,7 +357,7 @@
             sys.head_portrait_url AS headPortraitUrl
             FROM
             fdp_dispatch_request_chat_log AS chat
-            LEFT JOIN sys_company_users AS sys ON sys.id = chat.process_person_id
+            LEFT JOIN sys_console_users AS sys ON sys.id = chat.process_person_id
             WHERE
             chat.fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
 

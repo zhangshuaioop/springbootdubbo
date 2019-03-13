@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpFaultDispatchChangeLogMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpFaultDispatchChangeLogMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER" />
     <result column="fault_dispatch_request_id" property="faultDispatchRequestId" jdbcType="INTEGER" />
@@ -33,7 +33,7 @@
     -Author:Niting
     -Date:2018-5-3
   -->
-  <select id="getDispatchChangeLog" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetFdpFaultDispatchChangeLogList">
+  <select id="getDispatchChangeLog" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetFdpFaultDispatchChangeLogList">
     SELECT
         chag.id AS id,
         chag.dispatch_order_id AS dispatchOrderId,
@@ -68,7 +68,7 @@
         fdp_fault_dispatch_change_log AS chag
         LEFT JOIN bif_dispatch_human_resource AS human ON chag.dispatch_main_hr_id = human.id
         LEFT JOIN bif_dispatch_hr_account_info AS hrAccount ON hrAccount.id = chag.hr_account_info_id
-        LEFT JOIN sys_company_users AS sUser ON sUser.id = chag.create_person
+        LEFT JOIN sys_console_users AS sUser ON sUser.id = chag.create_person
     WHERE
         chag.dispatch_order_id = #{orderId,jdbcType=INTEGER}
   </select>
@@ -76,7 +76,7 @@
     delete from fdp_fault_dispatch_change_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
     insert into fdp_fault_dispatch_change_log (id, dispatch_order_id, fault_dispatch_request_id, 
       dispatch_main_hr_id, hr_account_info_id, hr_relation_id, 
       change_type, estimated_cost, estimated_monetary_unit, 
@@ -88,7 +88,7 @@
       #{estimatedPrice,jdbcType=DECIMAL}, #{estimatedPriceUnit,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{createPerson,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
     insert into fdp_fault_dispatch_change_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -173,7 +173,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
     update fdp_fault_dispatch_change_log
     <set >
       <if test="dispatchOrderId != null" >
@@ -215,7 +215,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchChangeLog" >
     update fdp_fault_dispatch_change_log
     set dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
       fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},

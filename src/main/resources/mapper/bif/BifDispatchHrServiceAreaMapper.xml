@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.bif.BifDispatchHrServiceAreaMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifDispatchHrServiceArea" >
+<mapper namespace="com.platform.springboot.mapper.bif.BifDispatchHrServiceAreaMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.bif.BifDispatchHrServiceArea" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="hr_id" property="hrId" jdbcType="INTEGER" />
     <result column="nation" property="nation" jdbcType="VARCHAR" />
@@ -24,7 +24,7 @@
     delete from bif_dispatch_hr_service_area
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.bif.BifDispatchHrServiceArea" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.bif.BifDispatchHrServiceArea" >
     insert into bif_dispatch_hr_service_area (id, hr_id, nation, 
       province, city, flag_default, 
       flag_deleted, create_time)
@@ -32,7 +32,7 @@
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{flagDefault,jdbcType=BIT}, 
       #{flagDeleted,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifDispatchHrServiceArea" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.bif.BifDispatchHrServiceArea" >
     insert into bif_dispatch_hr_service_area
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -87,7 +87,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifDispatchHrServiceArea" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.bif.BifDispatchHrServiceArea" >
     update bif_dispatch_hr_service_area
     <set >
       <if test="hrId != null" >
@@ -115,7 +115,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateByPrimaryKeySelectiveById" parameterType="com.company.springboot.entity.bif.BifDispatchHrServiceArea" >
+  <update id="updateByPrimaryKeySelectiveById" parameterType="com.platform.springboot.entity.bif.BifDispatchHrServiceArea" >
     update bif_dispatch_hr_service_area
     <set >
       <if test="hrId != null" >
@@ -142,7 +142,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.bif.BifDispatchHrServiceArea" >
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.bif.BifDispatchHrServiceArea" >
     update bif_dispatch_hr_service_area
     set hr_id = #{hrId,jdbcType=INTEGER},
       nation = #{nation,jdbcType=VARCHAR},
@@ -154,7 +154,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectServiceShowById" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.bif.BifDispatchHrServiceAreaShow">
+  <select id="selectServiceShowById" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.bif.BifDispatchHrServiceArea">
 
     select
     province,
@@ -191,13 +191,13 @@
     select
     <include refid="Base_Column_List" />
     from bif_dispatch_hr_service_area
-    where hr_id = #{id,jdbcType=INTEGER}
+    where hr_id = #{hrId,jdbcType=INTEGER}
     and flag_deleted =0
     order by flag_default DESC
 
   </select>
 
-  <select id="selectFault" parameterType="com.company.springboot.entity.bif.BifDispatchHrServiceArea" resultMap="BaseResultMap">
+  <select id="selectFault" parameterType="com.platform.springboot.entity.bif.BifDispatchHrServiceArea" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from bif_dispatch_hr_service_area
@@ -215,4 +215,20 @@
     and flag_deleted =0
     order by create_time desc
   </select>
+
+  <update id="updateByHrId" parameterType="com.platform.springboot.entity.bif.BifDispatchHrServiceArea">
+    update bif_dispatch_hr_service_area
+    <set >
+      <if test="nation != null" >
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where hr_id = #{hrId,jdbcType=INTEGER} and flag_default=1
+  </update>
 </mapper>

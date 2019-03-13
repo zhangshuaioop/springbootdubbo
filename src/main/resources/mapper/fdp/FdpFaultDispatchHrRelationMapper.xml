@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpFaultDispatchHrRelationMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpFaultDispatchHrRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER" />
     <result column="fault_dispatch_request_id" property="faultDispatchRequestId" jdbcType="INTEGER" />
@@ -37,6 +37,7 @@
     <result column="extend_profile_url" property="extendProfileUrl" jdbcType="VARCHAR"/>
     <result column="extend_profile_memo" property="extendProfileMemo" jdbcType="VARCHAR"/>
     <result column="flag_enable_modify_profile" property="flagEnableModifyProfile" jdbcType="BIT" />
+    <result column="person_reject_cause_context" property="personRejectCauseContext" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, dispatch_order_id, fault_dispatch_request_id, dispatch_main_hr_id, hr_account_info_id, 
@@ -46,7 +47,7 @@
     client_assm_communication_point, client_assm_timely_point, user_complete_profile_file, 
     user_complete_profile_file_name, user_complete_profile_photo, user_complete_profile_photo_name, 
     user_complete_time, user_job_end_reason,flag_used,estimated_price,estimated_price_unit,hr_dispatch_status,estimated_cost_memo,estimated_price_memo,
-    extend_profile_name,extend_profile_url,extend_profile_memo,flag_enable_modify_profile
+    extend_profile_name,extend_profile_url,extend_profile_memo,flag_enable_modify_profile,person_reject_cause_context
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -58,7 +59,7 @@
     delete from fdp_fault_dispatch_hr_relation
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
     insert into fdp_fault_dispatch_hr_relation (id, dispatch_order_id, fault_dispatch_request_id, 
       dispatch_main_hr_id, hr_account_info_id, estimated_cost, 
       estimated_monetary_unit, estimated_invoice_type, 
@@ -84,7 +85,7 @@
       #{clientCompleteProfileFileName,jdbcType=VARCHAR}, #{clientCompleteTime,jdbcType=TIMESTAMP}, 
       #{flagUsed,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderInsertParam" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderInsertParam" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
       SELECT
       LAST_INSERT_ID()
@@ -189,6 +190,9 @@
       </if>
       <if test="flagEnableModifyProfile != null">
         flag_enable_modify_profile,
+      </if>
+      <if test="personRejectCauseContext != null">
+        person_reject_cause_context,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -300,9 +304,12 @@
       <if test="flagEnableModifyProfile != null">
         #{flagEnableModifyProfile,jdbcType=BIT},
       </if>
+      <if test="personRejectCauseContext != null">
+        #{personRejectCauseContext,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
     update fdp_fault_dispatch_hr_relation
     <set >
       <if test="dispatchOrderId != null" >
@@ -399,10 +406,13 @@
       <if test="flagEnableModifyProfile != null">
         flag_enable_modify_profile = #{flagEnableModifyProfile,jdbcType=BIT},
       </if>
+      <if test="personRejectCauseContext != null">
+        person_reject_cause_context = #{personRejectCauseContext,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
     update fdp_fault_dispatch_hr_relation
     set dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER},
       fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER},
@@ -433,7 +443,7 @@
   </update>
 
 
-  <update id="updateByRequestId" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
+  <update id="updateByRequestId" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
     update fdp_fault_dispatch_hr_relation
     <set >
       <if test="dispatchOrderId != null" >
@@ -508,7 +518,6 @@
       <if test="userJobEndReason != null" >
         user_job_end_reason = #{userJobEndReason,jdbcType=VARCHAR},
       </if>
-
       <if test="flagUsed != null" >
         flag_used = #{flagUsed,jdbcType=BIT},
       </if>
@@ -539,7 +548,7 @@
     </set>
     where fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
   </update>
-  <update id="updateFlagUsed" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+  <update id="updateFlagUsed" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation">
     UPDATE
     fdp_fault_dispatch_hr_relation
     SET
@@ -549,7 +558,7 @@
 
   </update>
 
-  <update id="updateFlagUsedByOrderId" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+  <update id="updateFlagUsedByOrderId" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation">
     UPDATE
     fdp_fault_dispatch_hr_relation
     SET
@@ -570,12 +579,12 @@
     fdp_fault_dispatch_hr_relation AS disHr
     INNER JOIN fdp_fault_dispatch_order AS disOrd ON disHr.dispatch_order_id = disOrd.id
     WHERE
-    disOrd.id IN ((select disOrd.id from fdp_fault_dispatch_order disOrd where disOrd.dispatch_order_number = #{dispatchOrderNumber,jdbcType=VARCHAR}))
-
+    disOrd.id IN (select disOrd.id from fdp_fault_dispatch_order disOrd where disOrd.dispatch_order_number = #{dispatchOrderNumber,jdbcType=VARCHAR})
+    AND disHr.flag_used = 1
   </select>
 
 
-  <update id="updateHrById"  parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+  <update id="updateHrById"  parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation">
 
       UPDATE
     fdp_fault_dispatch_hr_relation
@@ -608,7 +617,7 @@
      */
 
    -->
-  <insert id="insertHrRelation" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
+  <insert id="insertHrRelation" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
       SELECT
       LAST_INSERT_ID()
@@ -820,7 +829,7 @@
     </trim>
   </insert>
   <!--查询之前是否上传完工资料-->
-  <select id="selectConfirmFile" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetFdpFaultDispatchHrRelationShowRequest">
+  <select id="selectConfirmFile" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetFdpFaultDispatchHrRelationShowRequest">
     SELECT
         hr.id,
         hr.dispatch_order_id AS dispatchOrderId,
@@ -851,6 +860,7 @@
         hr.user_complete_profile_photo_name AS userCompleteProfilePhotoName,
         hr.user_complete_time AS userCompleteTime,
         hr.user_job_end_reason AS userJobEndReason,
+        hr.person_reject_cause_context As personRejectCauseContext,
         hr.flag_used AS flagUsed,
         dr.actual_cost AS actualCost,
 				dr.actual_cost_memo AS actualCostMemo,
@@ -858,9 +868,8 @@
 		dr.actual_price AS actualPrice,
 		dr.actual_price_memo AS actualPriceMemo,
 		dr.actual_price_unit AS actualPriceUnit,
-		dr.private_note privateNote,
-		dr.material_reject_cause_context materialRejectCauseContext,
-		hr.person_reject_cause_context personRejectCauseContext
+		dr.material_reject_cause_context AS materialRejectCauseContext,
+		dr.private_note privateNote
     FROM
         fdp_fault_dispatch_hr_relation AS hr
         LEFT JOIN fdp_fault_dispatch_order AS dr ON dr.id = hr.dispatch_order_id
@@ -879,7 +888,7 @@
       AND flag_used =1
   </select>
   <!--查看完工资料-->
-  <select id="selectCompleteProFile" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetServiceCompleteProfile">
+  <select id="selectCompleteProFile" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetServiceCompleteProfile">
     SELECT
     user_assm_memo AS userAssmMemo,
     user_complete_profile_file AS userCompleteProfileFile,
@@ -893,7 +902,7 @@
     AND flag_used =1
   </select>
   <!--服务商工单筛选品牌-->
-  <select id="selectBrandNameById" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.dmi.DmiBrand">
+  <select id="selectBrandNameById" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.dmi.DmiBrand">
 
     select
     case   when db.brand_name is null then request.other_brand else db.brand_name end  brandName
@@ -907,7 +916,7 @@
     GROUP BY brandName
   </select>
   <!--服务商工单筛选城市-->
-  <select id="selectServiceCityByHrId" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetFdpRequestServiceCity">
+  <select id="selectServiceCityByHrId" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetFdpRequestServiceCity">
     SELECT DISTINCT
         ffodr.service_city AS serviceCity
     FROM
@@ -917,7 +926,7 @@
         service_city
   </select>
   <!--采购补充完工资料-->
-  <update id="updateExtendProfile" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+  <update id="updateExtendProfile" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation">
     UPDATE
 	fdp_fault_dispatch_hr_relation
     SET
@@ -928,7 +937,7 @@
 	dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
   </update>
 
-  <select id="selectShowExtendProfile" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+  <select id="selectShowExtendProfile" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation">
 	SELECT
         extend_profile_name extendProfileName,
         extend_profile_url extendProfileUrl,
@@ -939,7 +948,7 @@
         dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
         AND flag_used = 1
   </select>
-  <update id="updateFlagEnableModifyProfile" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
+  <update id="updateFlagEnableModifyProfile" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation" >
      UPDATE
 	fdp_fault_dispatch_hr_relation
     SET
@@ -947,8 +956,9 @@
     WHERE
 	dispatch_order_id = #{dispatchOrderId,jdbcType=INTEGER}
   </update>
-  <select id="getDispatchHrShow" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.fdp.GetFdpFaultDispatchHrRelationShow">
+  <select id="getDispatchHrShow" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.fdp.GetFdpFaultDispatchHrRelationShow">
       SELECT
+         ffdhr.person_reject_cause_context personRejectCauseCntext,
          ffdhr.hr_start_off_time hrStartOffTime,
 		 ffdhr.hr_start_service_time hrStartServiceTime,
 		 ffdhr.hr_finish_service_time hrFinishServiceTime,
@@ -964,9 +974,9 @@
          ffdhr.estimated_price estimatedPrice,
          ffdhr.estimated_price_unit estimatedPriceUnit,
          ffdhr.estimated_price_memo estimatedPriceMemo,
-         ffdhr.fault_dispatch_request_id requestId,
-         ffdhr.user_complete_time userCompleteTime,
+         ffdhr.user_complete_time userCompletetime,
          ffdhr.flag_display flagDisplay,
+         ffdhr.person_reject_cause_context personRejectCauseContext,
          accountInfo.full_name fullName,
          accountInfo.bank_name bankName,
          accountInfo.account account,
@@ -980,9 +990,8 @@
          ffdo.actual_price_memo actualPriceMemo,
          ffdo.dispatch_order_number dispatchOrderNumber,
          ffdo.estimated_service_time estimatedServiceTime,
-         ffdo.memo,
          ffdo.material_reject_cause_context materialRejectCauseContext,
-		ffdhr.person_reject_cause_context personRejectCauseContext
+         ffdo.memo
     FROM
         fdp_fault_dispatch_hr_relation ffdhr
     LEFT JOIN bif_dispatch_human_resource hr ON hr.id = ffdhr.dispatch_main_hr_id
@@ -994,7 +1003,7 @@
   </select>
 
   <!--控制是否显示服务商信息-->
-  <update id="updateFlagDisplayByOrderId" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+  <update id="updateFlagDisplayByOrderId" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation">
     UPDATE
 	fdp_fault_dispatch_hr_relation
     SET

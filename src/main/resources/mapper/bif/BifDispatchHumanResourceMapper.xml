@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.bif.BifDispatchHumanResourceMapper">
-    <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifDispatchHumanResource">
+<mapper namespace="com.platform.springboot.mapper.bif.BifDispatchHumanResourceMapper">
+    <resultMap id="BaseResultMap" type="com.platform.springboot.entity.bif.BifDispatchHumanResource">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="account" property="account" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
@@ -70,7 +70,7 @@
         from bif_dispatch_human_resource
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifDispatchHumanResource">
+    <insert id="insertSelective" parameterType="com.platform.springboot.entity.bif.BifDispatchHumanResource">
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID() AS id
         </selectKey>
@@ -401,7 +401,7 @@
 
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifDispatchHumanResource">
+    <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.bif.BifDispatchHumanResource">
         update bif_dispatch_human_resource
         <set>
             <if test="account != null">
@@ -567,7 +567,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="list" resultType="com.company.springboot.entity.bif.BifDispatchHumanResource" parameterType="com.company.springboot.entity.bif.DispatchHumanResourceList">
+    <select id="list" resultType="com.platform.springboot.entity.bif.BifDispatchHumanResource" parameterType="com.platform.springboot.entity.bif.DispatchHumanResourceList">
         select DISTINCT
         bdhr.id id,
         bdhr.account account,
@@ -667,7 +667,7 @@
 </select>
 
 
-<select id="selectServiceListByParam" parameterType="com.company.springboot.entity.bif.BifServiceListParam" resultType="com.company.springboot.entity.bif.BifServiceList">
+<select id="selectServiceListByParam" parameterType="com.platform.springboot.entity.bif.BifServiceListParam" resultType="com.platform.springboot.entity.bif.BifServiceList">
     select
     bdhr.id,
     concat (bdhr.first_name,bdhr.last_name) AS name,
@@ -683,7 +683,7 @@
     bdhr.dispatch_count dispatchCount,
     bdhr.user_evaluate_point userEvaluatePoint,
     CASE WHEN bdhr.account  is not null and  bdhr.account  != '' THEN true else false END AS register,
-    bdhr.custom_label customLabel
+    DATE_FORMAT(bdhr.create_time,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(bdhr.update_time,'%Y-%m-%d %H:%i:%s') updateTime
 
     from bif_dispatch_human_resource bdhr
     LEFT JOIN
@@ -696,12 +696,11 @@
     <if test="customLabel != null and customLabel != ''">
         and LOCATE(#{customLabel}, custom_label)>0
     </if>
-
     <if test="defaultProvice != null">
-        and bdhsa.province = #{defaultProvice,jdbcType=VARCHAR}
+        and LOCATE(#{defaultProvice,jdbcType=VARCHAR}, bdhsa.province)>0
     </if>
     <if test="defaultCity != null">
-        and bdhsa.city = #{defaultCity,jdbcType=VARCHAR}
+        and LOCATE(#{defaultCity,jdbcType=VARCHAR}, bdhsa.city)>0
     </if>
     <if test="flagAvailable == '0'.toString() ">
         and flag_available = 0
@@ -710,8 +709,7 @@
         and flag_available = 1
     </if>
     <if test="register == '0'.toString() ">
-        and (bdhr.account = ''
-        or	bdhr.account is  null)
+        and (bdhr.account = '' or bdhr.account is  null)
     </if>
     <if test="register == '1'.toString()">
         and (bdhr.account != ''
@@ -728,21 +726,22 @@
         and concat(bdhr.first_name,bdhr.last_name) like CONCAT('%', #{serviceName,jdbcType=VARCHAR}, '%')
     </if>
     <if test="mobile != null">
-        and mobile = #{mobile,jdbcType=VARCHAR}
+        and LOCATE(#{mobile,jdbcType=VARCHAR}, mobile)>0
     </if>
     <if test="createTimeStart != null">
-        <![CDATA[  and register_time >= #{createTimeStart,jdbcType=TIMESTAMP}    ]]>
+        and (TO_DAYS(register_time)=TO_DAYS(#{createTimeStart,jdbcType=TIMESTAMP}))=1
     </if>
     <if test="createTimeEnd != null">
-        <![CDATA[ and register_time <=  DATE_ADD(#{createTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)   ]]>
+        and (TO_DAYS(register_time)=TO_DAYS(#{createTimeEnd,jdbcType=TIMESTAMP}))=1
     </if>
-    order by update_time DESC
-    group by bdhr.id
+    order by bdhr.update_time DESC
+
 </select>
 
-<select id="selectServiceInfoById" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.bif.BifServiceShow">
+<select id="selectServiceInfoById" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.bif.BifServiceShow">
 
   select
+  memo,
     head_portrait_url headPortraitUrl,
     first_name firstName,
     last_name lastName,
@@ -779,7 +778,7 @@
     where id =  #{id,jdbcType=INTEGER}
 </update>
 
-<select id="selectCheckShow" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.bif.BifServiceCheckShow">
+<select id="selectCheckShow" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.bif.BifServiceCheckShow">
 
 
         select
@@ -804,7 +803,7 @@
         and hr.id = #{id,jdbcType=INTEGER}
 </select>
 
-<select id="selectServicePermissionShowById" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.bif.BifServicePermissionShow">
+<select id="selectServicePermissionShowById" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.bif.BifServicePermissionShow">
 
 
 select
@@ -855,7 +854,7 @@ select
     and flag_deleted =0
 </select>
 <!--服务商账号密码登录-->
-    <select id="selectByAccountAndPwd" parameterType="com.company.springboot.entity.bif.BifDispatchHumanResource" resultMap="BaseResultMap">
+    <select id="selectByAccountAndPwd" parameterType="com.platform.springboot.entity.bif.BifDispatchHumanResource" resultMap="BaseResultMap">
         SELECT
            <include refid="Base_Column_List"/>
         FROM
@@ -873,7 +872,7 @@ select
 
 
     <!--获取派工人员-->
-    <select id="findBifDispatchHumanResource" parameterType="java.lang.Integer" resultType="com.company.springboot.entity.bif.BifDispatchHumanResource">
+    <select id="findBifDispatchHumanResource" parameterType="java.lang.Integer" resultType="com.platform.springboot.entity.bif.BifDispatchHumanResource">
     select
     skill_label_ids skillLabelIds,
     custom_label customLabel
@@ -881,7 +880,7 @@ select
   </select>
 
 <!--更新派工人员标签-->
-    <update id="updateLabel" parameterType="com.company.springboot.entity.bif.BifDispatchHumanResource">
+    <update id="updateLabel" parameterType="com.platform.springboot.entity.bif.BifDispatchHumanResource">
 
         update bif_dispatch_human_resource
         set skill_label_ids = #{skillLabelIds,jdbcType=VARCHAR},
@@ -889,30 +888,36 @@ select
         where id =  #{id,jdbcType=INTEGER}
     </update>
 
+
+
     <!--自定义标签列表-->
-    <select id="customLabelList" resultType="java.lang.String">
+    <select id="customLabelList" parameterType="java.lang.Integer" resultType="java.lang.String">
     SELECT group_concat(custom_label Separator ',')
     from bif_dispatch_human_resource
-    WHERE custom_label is NOT null AND custom_label != '';
+
+    WHERE custom_label is NOT null AND custom_label != ''
+            and id = #{id,jdbcType=INTEGER}
+
   </select>
 
 
 
 
     <!--更新自定义标签-->
-    <update id="updateCustomLable" parameterType="com.company.springboot.entity.bif.BifDispatchHumanResource">
+    <update id="updateCustomLable" parameterType="com.platform.springboot.entity.bif.BifDispatchHumanResource">
         update bif_dispatch_human_resource
         <set>
             <if test="customLabel != null">
                 custom_label = #{customLabel,jdbcType=VARCHAR},
             </if>
         </set>
+        where id =  #{id,jdbcType=INTEGER}
     </update>
 
     <!--功能：查询人力资源信息 -->
     <!--作者： 刘侃-->
     <!--时间： 2018-04-26-->
-    <select id="dispatchMainHrIdList" parameterType="com.company.springboot.entity.bif.DispatchHumanResourceList" resultType="com.company.springboot.entity.bif.BifDispatchHumanResource">
+    <select id="dispatchMainHrIdList" parameterType="com.platform.springboot.entity.bif.DispatchHumanResourceList" resultType="com.platform.springboot.entity.bif.BifDispatchHumanResource">
         select distinct bdhr.*,bdhr.skill_label_ids skillLabel,
         bdhr.custom_label customLabel
         from fdp_fault_dispatch_order fdo

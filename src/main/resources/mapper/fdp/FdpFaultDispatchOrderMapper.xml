@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpFaultDispatchOrderMapper">
-    <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpFaultDispatchOrderMapper">
+    <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="company_id" property="companyId" jdbcType="INTEGER"/>
         <result column="store_id" property="storeId" jdbcType="INTEGER"/>
@@ -40,8 +40,8 @@
         <result column="actual_cost_memo" property="actualCostMemo" jdbcType="VARCHAR"/>
         <result column="flag_no_price" property="flagNoPrice" jdbcType="BIT"/>
         <result column="private_note" property="privateNote" jdbcType="VARCHAR"/>
-        <result column="flag_is_process2" property="flagIsProcess2" jdbcType="BIT" />
-        <result column="wp_frame_process_id" property="wpFrameProcessId" jdbcType="INTEGER" />
+        <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP"/>
+        <result column="material_reject_cause_context" property="materialRejectCauseContext" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, company_id, store_id, fault_order_id, root_fault_order_id, fault_dispatch_request_id,
@@ -50,7 +50,7 @@
     actual_invoice_title, actual_invoice_tax_id_number, actual_invoice_number, actual_invoice_fee,
     actual_invoice_rate, last_deal_person_id, last_deal_time, dispatch_status,vendor_id,flag_customer_confirm,
     flag_dispatcher_confirm,process_stage,actual_price,actual_price_unit,cancel_reason,abandon_reason,actual_price_memo,
-    actual_cost_memo,flag_no_price,private_note,flag_is_process2,wp_frame_process_id
+    actual_cost_memo,flag_no_price,private_note,finish_time,material_reject_cause_context
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -62,7 +62,7 @@
     delete from fdp_fault_dispatch_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+    <insert id="insert" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
     insert into fdp_fault_dispatch_order (id, company_id, store_id,
       fault_order_id, root_fault_order_id, fault_dispatch_request_id,
       hr_count, dispatch_order_number, estimated_service_time,
@@ -84,7 +84,7 @@
       #{actualInvoiceRate,jdbcType=DECIMAL}, #{lastDealPersonId,jdbcType=INTEGER}, #{lastDealTime,jdbcType=TIMESTAMP},
       #{dispatchStatus,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+    <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
             SELECT
             LAST_INSERT_ID()
@@ -220,12 +220,6 @@
             <if test="batchNumber != null and batchNumber!= '' ">
                 batch_number,
             </if>
-            <if test="flagIsProcess2 != null">
-                flag_is_process2,
-            </if>
-            <if test="wpFrameProcessId != null">
-                wp_frame_process_id,
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -357,18 +351,12 @@
             <if test="batchNumber != null and batchNumber!= '' ">
                 #{batchNumber,jdbcType=VARCHAR},
             </if>
-            <if test="flagIsProcess2 != null">
-                #{flagIsProcess2,jdbcType=BIT},
-            </if>
-            <if test="wpFrameProcessId != null">
-                #{wpFrameProcessId,jdbcType=INTEGER},
-            </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+    <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
         update fdp_fault_dispatch_order
         <set>
-            <if test="companyId != null">
+            <if test="companyId != null and companyId !=0 ">
                 company_id = #{companyId,jdbcType=INTEGER},
             </if>
             <if test="storeId != null">
@@ -485,7 +473,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+    <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
     update fdp_fault_dispatch_order
     set company_id = #{companyId,jdbcType=INTEGER},
       store_id = #{storeId,jdbcType=INTEGER},
@@ -516,31 +504,8 @@
   </update>
 
 
-    <!--======================================================-->
-
-
-    <select id="selectNextDealPersonId" parameterType="java.util.List" resultType="java.util.HashMap">
-        SELECT
-        userTimes.user_id
-        FROM
-        (
-        SELECT
-        sus.id user_id,
-        count(1) order_count
-        FROM sys_company_users sus
-        LEFT JOIN fdp_fault_dispatch_order fdo ON fdo.last_deal_person_id = sus.id AND fdo.flag_finish = 0
-        WHERE 1 = 1
-        and sus.id in
-        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
-            #{item.id,jdbcType=INTEGER}
-        </foreach>
-        GROUP BY sus.id
-        ) userTimes
-        ORDER BY userTimes.order_count ASC
-        LIMIT 1
-    </select>
-
-    <update id="updateDispatchOrderByRequestId" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+    <update id="updateDispatchOrderByRequestId"
+            parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
         update fdp_fault_dispatch_order
         <set>
             <if test="companyId != null and companyId!=0">
@@ -660,8 +625,8 @@
     <!--功能：复杂查询派工单信息 -->
     <!--作者： 刘侃-->
     <!--时间： 2018-04-26-->
-    <select id="getOrderListByObject" parameterType="com.company.springboot.entity.fdp.GetDispatchOrderListRequest"
-            resultType="com.company.springboot.entity.fdp.GetDispatchOrderListResp">
+    <select id="getOrderListByObject" parameterType="com.platform.springboot.entity.fdp.GetDispatchOrderListRequest"
+            resultType="com.platform.springboot.entity.fdp.GetDispatchOrderListResp">
         select
         dispatchOrder.actual_price actualPrice,
         dispatchOrder.actual_price_unit actualPriceUnit,
@@ -709,18 +674,16 @@
         dispatchRequest.batch_number batchNumber,
         project.project_name as projectName,
         userInfo.username as dealPersonName,
-        dispatchOrder.flag_is_process2 as flagIsProcess2,
-        dispatchOrder.wp_frame_process_id as wpFrameProcessId,
-        step.operate_type operateType,
-        sys.username as createPerson
+        sys.username as createPerson,
+        dispatchOrder.finish_time as finishTime
         from (select * from fdp_fault_order_dispatch_request where flag_deleted = 0 AND flag_draft = 0
         <if test="dispatchType!= null">
             AND dispatch_model_request LIKE CONCAT('%', #{dispatchType,jdbcType=VARCHAR}, '%')
         </if>
-        <if test=" companyId!=null and  companyId != 0">
+        <if test="companyId != 0">
             and company_id = #{companyId,jdbcType=INTEGER}
         </if>
-        <if test=" storeId!=null and storeId != 0">
+        <if test="storeId != 0">
             and store_id = #{storeId,jdbcType=INTEGER}
         </if>
         <if test="requestDateStart != null">
@@ -730,38 +693,33 @@
             and update_time &lt;= #{requestDateEnd,jdbcType=TIMESTAMP}
         </if>
         ) dispatchRequest
-        inner join (select orders.* from fdp_fault_dispatch_order orders
-        LEFT JOIN sys_company_users users ON orders.last_deal_person_id=users.id
-        where orders.flag_deleted = 0
-        <if test=" companyId!=null and  companyId != 0">
-            and orders.company_id = #{companyId,jdbcType=INTEGER}
+        inner join (select * from fdp_fault_dispatch_order where flag_deleted = 0
+        <if test="companyId != 0">
+            and company_id = #{companyId,jdbcType=INTEGER}
         </if>
-        <if test=" userCompanyId!=null and  userCompanyId != 0">
-            and users.company_id = #{userCompanyId,jdbcType=INTEGER}
+        <if test="storeId != 0">
+            and store_id = #{storeId,jdbcType=INTEGER}
         </if>
-        <if test=" storeId!=null and storeId != 0">
-            and orders.store_id = #{storeId,jdbcType=INTEGER}
+        <if test="dealPersonId != 0">
+            and last_deal_person_id = #{dealPersonId,jdbcType=INTEGER}
         </if>
-        <!--<if test=" dealPersonId!=null and dealPersonId != 0">-->
-            <!--and orders.last_deal_person_id = #{dealPersonId,jdbcType=INTEGER}-->
-        <!--</if>-->
         <if test="dispatchDateStart != null">
-            and orders.estimated_service_time &gt;= #{dispatchDateStart,jdbcType=TIMESTAMP}
+            and estimated_service_time &gt;= #{dispatchDateStart,jdbcType=TIMESTAMP}
         </if>
         <if test="dispatchDateEnd != null">
-            and orders.estimated_service_time &lt;= #{dispatchDateEnd,jdbcType=TIMESTAMP}
+            and estimated_service_time &lt;= #{dispatchDateEnd,jdbcType=TIMESTAMP}
         </if>
         <if test="dispatchOrderNumber != null">
-            and orders.dispatch_order_number LIKE '%${dispatchOrderNumber}%'
+            and dispatch_order_number LIKE '%${dispatchOrderNumber}%'
         </if>
         <if test="dispatchStatus != null">
-            AND orders.dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
+            AND dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
         </if>
         <if test="vendorId != null">
-            AND orders.vendor_id = #{vendorId,jdbcType=INTEGER}
+            AND vendor_id = #{vendorId,jdbcType=INTEGER}
         </if>
         <if test=" batchNumber != null and batchNumber !=''">
-            AND orders.batch_number LIKE CONCAT('%', #{batchNumber,jdbcType=VARCHAR}, '%')
+            AND batch_number LIKE CONCAT('%', #{batchNumber,jdbcType=VARCHAR}, '%')
         </if>
 
         ) dispatchOrder
@@ -772,24 +730,22 @@
         left join sys_company_users sys on dispatchRequest.create_person = sys.id
         left join dmi_intergration_vendors vendors on dispatchOrder.vendor_id = vendors.id
         left join pjt_project project on project.id = dispatchRequest.project_id
-        left join wp_frame_process process on process.id = dispatchOrder.wp_frame_process_id
-        left join wp_cfg_process_step step on step.id=process.current_process_step_id AND step.flag_deleted=0
         LEFT JOIN (SELECT * FROM fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0) ffdhr on
         ffdhr.dispatch_order_id = dispatchOrder.id
         where 1=1
-        <!--<if test="status == 'pending'">-->
-            <!--AND (dispatchOrder.dispatch_status = "NEW" OR dispatchOrder.dispatch_status = "DEALING" OR-->
-            <!--dispatchOrder.dispatch_status = "USED" OR dispatchOrder.dispatch_status = "DISPATCHAGAIN" OR-->
-            <!--dispatchOrder.dispatch_status = "REJECTFILE" OR ffdhr.flag_enable_modify_profile = 1)-->
-        <!--</if>-->
-        <!--<if test="status == 'dealing'">-->
-            <!--AND (dispatchOrder.dispatch_status = "NEEDCONFIRM" OR dispatchOrder.dispatch_status = "FILENEEDCONFIRM") AND-->
-            <!--ffdhr.flag_enable_modify_profile = 0-->
-        <!--</if>-->
-        <!--<if test="status == 'history'">-->
-            <!--AND (dispatchOrder.dispatch_status = "CANCEL" OR dispatchOrder.dispatch_status = "ABANDON" OR-->
-            <!--dispatchOrder.dispatch_status = "COMPLETE")-->
-        <!--</if>-->
+        <if test="status == 'pending'">
+            AND (dispatchOrder.dispatch_status = "NEW" OR dispatchOrder.dispatch_status = "DEALING" OR
+            dispatchOrder.dispatch_status = "USED" OR dispatchOrder.dispatch_status = "DISPATCHAGAIN" OR
+            dispatchOrder.dispatch_status = "REJECTFILE" OR ffdhr.flag_enable_modify_profile = 1)
+        </if>
+        <if test="status == 'dealing'">
+            AND (dispatchOrder.dispatch_status = "NEEDCONFIRM" OR dispatchOrder.dispatch_status = "FILENEEDCONFIRM") AND
+            ffdhr.flag_enable_modify_profile = 0
+        </if>
+        <if test="status == 'history'">
+            AND (dispatchOrder.dispatch_status = "CANCEL" OR dispatchOrder.dispatch_status = "ABANDON" OR
+            dispatchOrder.dispatch_status = "COMPLETE")
+        </if>
         order by dispatchOrder.last_deal_time desc
 
 
@@ -797,7 +753,7 @@
     <!--功能：修改派工单 -->
     <!--作者： 刘侃-->
     <!--时间： 2018-04-26-->
-    <update id="updateStatusByRequestId" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+    <update id="updateStatusByRequestId" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
         update fdp_fault_dispatch_order
         <set>
             <if test="companyId != null">
@@ -875,7 +831,6 @@
             <if test="dispatchStatus != null">
                 dispatch_status = #{dispatchStatus,jdbcType=VARCHAR},
             </if>
-
             <if test="actualPriceUnit != null">
                 actual_price_unit = #{actualPriceUnit,jdbcType=VARCHAR},
             </if>
@@ -913,7 +868,10 @@
                 actual_price_memo = #{actualPriceMemo,jdbcType=VARCHAR},
             </if>
             <if test="privateNote != null">
-                private_note = #{privateNote,jdbcType=VARCHAR}
+                private_note = #{privateNote,jdbcType=VARCHAR},
+            </if>
+            <if test="finishTime != null">
+                finish_time = #{finishTime,jdbcType=TIMESTAMP}
             </if>
         </set>
         where fault_dispatch_request_id = #{id,jdbcType=INTEGER}
@@ -945,7 +903,7 @@
     <!--功能：修改派工工单 -->
     <!--作者： 刘侃-->
     <!--时间： 2018-04-26-->
-    <update id="updateByProcessIdSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+    <update id="updateByProcessIdSelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
         update fdp_fault_dispatch_order
         <set>
             <if test="companyId != null">
@@ -1048,8 +1006,8 @@
     <!--功能：查询人力资源信息 -->
     <!--作者： 刘侃-->
     <!--时间： 2018-04-26-->
-    <select id="dispatchMainHrIdList" parameterType="com.company.springboot.entity.bif.DispatchHumanResourceList"
-            resultType="com.company.springboot.entity.bif.BifDispatchHumanResource">
+    <select id="dispatchMainHrIdList" parameterType="com.platform.springboot.entity.bif.DispatchHumanResourceList"
+            resultType="com.platform.springboot.entity.bif.BifDispatchHumanResource">
         select distinct bdhr.*,bdhr.skill_label_ids skillLabel,
         bdhr.custom_label customLabel
         from fdp_fault_dispatch_order fdo
@@ -1066,7 +1024,7 @@
     </select>
 
 
-    <update id="updateServerTimeById" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchHrRelation">
+    <update id="updateServerTimeById" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchHrRelation">
         update fdp_fault_dispatch_order
         <set>
 
@@ -1085,7 +1043,7 @@
     </update>
     <!--查询客户是否确认完工-->
     <select id="selectCustomerConfirm" parameterType="java.lang.Integer"
-            resultType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+            resultType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
     SELECT flag_customer_confirm flagCustomerConfirm
     FROM fdp_fault_dispatch_order
     WHERE fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
@@ -1093,7 +1051,7 @@
 
     <!--查询采购是否确认完工-->
     <select id="selectDispatchConfirm" parameterType="java.lang.Integer"
-            resultType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+            resultType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
     SELECT flag_dispatcher_confirm flagDispatcherConfirm
     FROM fdp_fault_dispatch_order
     WHERE fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
@@ -1104,7 +1062,7 @@
         select
         <include refid="Base_Column_List"/>
         from fdp_fault_dispatch_order
-        where fault_dispatch_request_id = #{id,jdbcType=INTEGER}
+        where fault_dispatch_request_id = #{requestId,jdbcType=INTEGER}
     </select>
 
     <select id="selectNumber" parameterType="java.lang.Integer" resultType="java.lang.String">
@@ -1125,10 +1083,10 @@
   </select>
 
     <update id="updateStatusByDispatchRequestId"
-            parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+            parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
         update fdp_fault_dispatch_order
         <set>
-            <if test="companyId != null">
+            <if test="companyId != null and companyId!=0">
                 company_id = #{companyId,jdbcType=INTEGER},
             </if>
             <if test="storeId != null">
@@ -1237,20 +1195,26 @@
                 actual_price_memo = #{actualPriceMemo,jdbcType=VARCHAR},
             </if>
             <if test="privateNote != null">
-                private_note = #{privateNote,jdbcType=VARCHAR}
+                private_note = #{privateNote,jdbcType=VARCHAR},
+            </if>
+            <if test="finishTime != null">
+                finish_time = #{finishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="materialRejectCauseContext != null">
+                material_reject_cause_context = #{materialRejectCauseContext,jdbcType=VARCHAR},
             </if>
         </set>
-
         where fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
     </update>
 
     <!--派工工单清单查询 -->
-    <select id="selectOrderList" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FdpFaultdispatchRequestList">
+    <select id="selectOrderList" parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FdpFaultdispatchRequestList">
 
         select
         ffdo.dispatch_order_number dispatchOrderNumber,
-        CASE WHEN ci.company_name is not null THEN ci.company_name else odr.other_brand END AS companyName,
+        CASE WHEN st.store_name is not null THEN ci.company_name else odr.other_brand END AS companyName,
+
         CASE WHEN st.store_name is not null THEN st.store_name else odr.other_store END AS storeName,
         odr.dispatch_model_request dispatchModelRequest,
         odr.service_province province,
@@ -1258,18 +1222,20 @@
         odr.service_city city,
         ffdo.flag_finish flagFinish,
         ffdo.finish_type finishType,
+
         ffdo.last_deal_time lastDealTime,
         db.brand_name_cn brandName,
         ffdo.dispatch_status dispatchStatus,
         odr.create_time createTime,
         ffdo.hr_count hrCount,
-        su.real_name createPersonName,
+        su.username createPersonName,
         ffdo.actual_price actualPrice,
         (select description from cfg_data_dictionary where value = ffdo.actual_price_unit ) actualPriceUnit,
         CASE WHEN dhr.estimated_price is null THEN '0' else dhr.estimated_price END AS estimatedPrice,
         CASE WHEN (select description from cfg_data_dictionary where value = dhr.estimated_price_unit ) is null THEN
         '人民币' else (select description from cfg_data_dictionary where value = dhr.estimated_price_unit ) END AS
         estimatedPriceUnit,
+
         odr.dispatch_description dispatchDescription,
         odr.service_address serviceAddress,
         odr.backup_device_request deviceRequest,
@@ -1277,9 +1243,9 @@
         odr.equipment_request equipmentRequest,
         odr.other_request otherRequest,
         odr.create_time createTime
+
         from fdp_fault_dispatch_order ffdo
         left join fdp_fault_order_dispatch_request odr on ffdo.fault_dispatch_request_id =odr.id
-        LEFT JOIN sys_company_users users ON odr.create_person=users.id
         left join fdp_fault_order_process op on ffdo.fault_order_id =op.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0) dhr on
         ffdo.id= dhr.dispatch_order_id
@@ -1291,7 +1257,6 @@
         left join sys_company_users su on su.id = odr.create_person
         left join bif_dispatch_human_resource bdhr on bdhr.id = dhr.dispatch_main_hr_id
         where 1=1
-        <!--and (select company_id from sys_company_users where id = odr.create_person) = #{userCompanyId,jdbcType=INTEGER}-->
 
         <if test="province != null">
             and odr.service_province =#{province,jdbcType=VARCHAR}
@@ -1307,15 +1272,10 @@
             and odr.fault_order_id is null
         </if>
 
-        <if test="userCompanyId != null">
-            and users.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId !=0 and companyId != '-1'">
+        <if test="companyId!=null">
             and odr.company_id = #{companyId,jdbcType=INTEGER}
         </if>
-        <if test="companyId == '-1' ">
-            and odr.company_id = 0
-        </if>
+
         <if test="dispatchStatus =='COMPLETE' ">
             and ffdo.dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
         </if>
@@ -1384,8 +1344,8 @@
 
     </select>
 
-    <select id="selectOrderListDemand" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FdpFaultdispatchRequestList">>
+    <select id="selectOrderListDemand" parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FdpFaultdispatchRequestList">>
 
         select
         ffdo.dispatch_order_number dispatchOrderNumber,
@@ -1424,10 +1384,6 @@
         left join sys_company_users su on su.id = odr.create_person
         left join bif_dispatch_human_resource bdhr on bdhr.id = dhr.dispatch_main_hr_id
         where 1=1
-
-        and odr.create_person in (select id from sys_company_users where act_type='DEMAND' and act_Object_id=
-        #{vendorId,jdbcType=INTEGER})
-
 
         <if test="type ==0 ">
             and odr.fault_order_id is not null
@@ -1478,8 +1434,9 @@
 
     </select>
 
-    <select id="selectDispatchOrderList" parameterType="com.company.springboot.entity.fdp.GetFdpFaultdispatchOrderList"
-            resultType="com.company.springboot.entity.fdp.FdpFaultDispatchOrderList">
+    <select id="selectDispatchOrderList" parameterType="com.platform.springboot.entity.fdp.GetFdpFaultdispatchOrderList"
+            resultType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrderList">
+
         select
         ffdo.dispatch_order_number dispatchOrderNumber,
         ci.company_name companyName,
@@ -1518,12 +1475,11 @@
         odr.service_time_end serviceTimeEnd,
         odr.expect_reply_time expectReplyTime,
         odr.expect_complete_time expectCompleteTime,
-        suu.real_name lastDealPerson,
+        suu.username lastDealPerson,
         concat(bdhr.first_name,bdhr.last_name) hrPerson,
-        dhr.flag_provide_invoice flagProvideInvoice
-
+        dhr.flag_provide_invoice flagProvideInvoice,
+        iv.vendor_name vendorName
         from fdp_fault_dispatch_order ffdo
-        LEFT JOIN sys_company_users users ON ffdo.last_deal_person_id=users.id
         left join fdp_fault_order_dispatch_request odr on ffdo.fault_dispatch_request_id =odr.id
         left join fdp_fault_order_process op on ffdo.fault_order_id =op.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) dhr on
@@ -1535,46 +1491,24 @@
         left join sys_company_users su on su.id = odr.create_person
         left join sys_company_users suu on suu.id=ffdo.last_deal_person_id
         left join bif_dispatch_human_resource bdhr on bdhr.id = dhr.dispatch_main_hr_id
+        left join dmi_intergration_vendors iv on iv.id =ffdo.vendor_id
 
-        where ffdo.dispatch_status !="DRAFT"
+        where 1=1
+        <if test="vendorId !=null ">
+            and ffdo.company_id in (select id from dmi_company_info where vendor_id =#{vendorId,jdbcType=INTEGER})
+        </if>
+
         <if test="type ==0 ">
             and ffdo.fault_order_id is not null
-        </if>
-        <if test="customerSource == '派工' ">
-            and ffdo.fault_order_id is null
-        </if>
-        <if test="customerSource == '客服' ">
-            and ffdo.fault_order_id is not null
-        </if>
-        <if test="lastDealPerson != null ">
-            and LOCATE(#{lastDealPerson,jdbcType=VARCHAR}, suu.username)>0
-        </if>
-        <if test="city != null ">
-            and LOCATE(#{city,jdbcType=VARCHAR}, odr.service_city)>0
-        </if>
-        <if test="province != null ">
-            and LOCATE(#{province,jdbcType=VARCHAR}, odr.service_province)>0
-        </if>
-        <if test="companyName != null ">
-            and LOCATE(#{companyName,jdbcType=VARCHAR}, ci.company_name)>0
-        </if>
-        <if test="expectCompleteTime != null ">
-            and (TO_DAYS(odr.expect_complete_time)=TO_DAYS(#{expectCompleteTime,jdbcType=TIMESTAMP}))=1
-        </if>
-        <if test="expectReplyTime != null ">
-            and (TO_DAYS(odr.expect_reply_time)=TO_DAYS(#{expectReplyTime,jdbcType=TIMESTAMP}))=1
         </if>
         <if test="type ==1 ">
             and ffdo.fault_order_id is null
         </if>
-        <if test="userCompanyId!=null and userCompanyId !=0 ">
-            and users.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId!=null and companyId !=0 ">
+        <if test="companyId !=0 ">
             and ffdo.company_id = #{companyId,jdbcType=INTEGER}
         </if>
         <if test="dispatchStatus !=null and dispatchStatus != 'UNCOMPLETE'  ">
-            and LOCATE(#{dispatchStatus,jdbcType=VARCHAR}, ffdo.dispatch_status)>0
+            and ffdo.dispatch_status = #{dispatchStatus,jdbcType=VARCHAR}
         </if>
         <if test="dispatchStatus== 'UNCOMPLETE'">
             AND ffdo.dispatch_status != 'COMPLETE'
@@ -1586,6 +1520,12 @@
         </if>
         <if test="createPerson != null">
             and odr.create_person =#{createPerson,jdbcType=INTEGER}
+        </if>
+        <if test="province != null">
+            and odr.service_province =#{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null">
+            and odr.service_city =#{city,jdbcType=VARCHAR}
         </if>
         <if test="createTimeStart != null">
             <![CDATA[
@@ -1629,7 +1569,7 @@
 
     </select>
 
-    <select id="selectRequestCount" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
+    <select id="selectRequestCount" parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
             resultType="java.lang.Integer">
 
 
@@ -1637,7 +1577,6 @@
         count( rr.id )
         FROM
         fdp_fault_order_dispatch_request rr
-        LEFT JOIN sys_company_users users ON rr.create_person=users.id
         LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.dispatch_order_id =o.id
@@ -1655,10 +1594,7 @@
         <if test="createPerson !=null">
             and rr.create_person =#{createPerson,jdbcType=INTEGER}
         </if>
-        <if test="userCompanyId!=null">
-            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId!=null and companyId !=0 ">
+        <if test="companyId != null ">
             and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="dispatchStatus == 'COMPLETE'">
@@ -1723,8 +1659,8 @@
     </select>
 
     <select id="selectRequestCompletePrice"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderRequestCount">
         select sum(hr.estimated_price) estimatedPriceComplete,
         (select description from cfg_data_dictionary where value = hr.estimated_price_unit ) estimatedPriceUnit,
         sum(o.actual_price) actualPriceComplete ,
@@ -1732,7 +1668,6 @@
 
         from (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr
         left join fdp_fault_order_dispatch_request rr on rr.id =hr.fault_dispatch_request_id
-        LEFT JOIN sys_company_users users ON rr.create_person=users.id
         left join fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
         left join dmi_store st on st.id = o.store_id
         left join bif_building bb on bb.id = st.building_id
@@ -1741,10 +1676,7 @@
         <if test="createPerson !=null">
             and rr.create_person =#{createPerson,jdbcType=INTEGER}
         </if>
-        <if test="userCompanyId!=null and userCompanyId !=0 ">
-            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId!=null and companyId !=0 ">
+        <if test="companyId != 0">
             and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="dispatchStatus == 'COMPLETE'">
@@ -1817,29 +1749,28 @@
     </select>
 
 
-    <select id="selectRequestByCompanyAll" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
+    <select id="selectRequestByCompanyAll"
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderRequestCount">
 
-        SELECT DISTINCT count(rr.id) requestCountAll,
-        CASE WHEN rr.company_id=0 THEN
-        rr.other_brand
-        ELSE
-        c.company_name
-        END
-        companyName FROM
-        fdp_fault_order_dispatch_request rr
-        LEFT JOIN sys_company_users users ON rr.create_person=users.id
-        LEFT JOIN dmi_company_info c ON rr.company_id = c.id
+        select count(rr.id) requestCountAll,c.company_name companyName
+        from (
+        <if test="actType == 'VENDOR'">
+            select * from dmi_company_info where vendor_id = #{vendorId,jdbcType=INTEGER}
+
+        </if>
+        <if test="actType == 'DEMAND'">
+            select * from dmi_company_info where id = #{vendorId,jdbcType=INTEGER}
+        </if>
+        ) c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.company_id = c.id
         LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.dispatch_order_id =o.id
         left join dmi_store st on st.id = o.store_id
         left join bif_building bb on bb.id = st.building_id
         where 1=1
-        <if test="userCompanyId !=null and userCompanyId != 0">
-            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId !=null and companyId != 0">
+        <if test="companyId != 0">
             and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -1848,13 +1779,14 @@
         <if test="type ==1 ">
             and rr.fault_order_id is null
         </if>
-        <if test="createPerson !=null and createPerson != 0 ">
+
+        <if test="createPerson !=null">
             and rr.create_person =#{createPerson,jdbcType=INTEGER}
         </if>
-        <if test="province != null and province !='' ">
+        <if test="province != null">
             and rr.service_province =#{province,jdbcType=VARCHAR}
         </if>
-        <if test="city != null and city!='' ">
+        <if test="city != null">
             and rr.service_city =#{city,jdbcType=VARCHAR}
         </if>
         <if test="createTimeStart != null">
@@ -1896,24 +1828,25 @@
             <![CDATA[   and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
             ]]>
         </if>
-        GROUP BY rr.id
+        GROUP BY c.company_name
 
     </select>
     <select id="selectRequestByCompanyComplete"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderRequestCount">
 
 
-        SELECT DISTINCT count(rr.id) requestCountComplete,
-        CASE WHEN rr.company_id=0 THEN
-        rr.other_brand
-        ELSE
-        c.company_name
-        END
-        companyName FROM
-        fdp_fault_order_dispatch_request rr
-        LEFT JOIN sys_company_users users ON rr.create_person=users.id
-        LEFT JOIN dmi_company_info c ON rr.company_id = c.id
+        SELECT
+        count( rr.id ) requestCountComplete,c.company_name companyName
+        from (
+        <if test="actType == 'VENDOR'">
+            select * from dmi_company_info where vendor_id = #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="actType == 'DEMAND'">
+            select * from dmi_company_info where id = #{vendorId,jdbcType=INTEGER}
+        </if>
+        ) c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.company_id = c.id
         LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.dispatch_order_id =o.id
@@ -1926,17 +1859,16 @@
         <if test="type ==1 ">
             and rr.fault_order_id is null
         </if>
+
         AND rr.flag_deleted = 0
-        <if test="userCompanyId !=null and userCompanyId != 0">
-            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId !=null and companyId != 0">
+        <if test="companyId != 0">
             and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="createPerson !=null">
             and rr.create_person =#{createPerson,jdbcType=INTEGER}
         </if>
         and dispatch_status='COMPLETE'
+
         <if test="province != null">
             and rr.service_province =#{province,jdbcType=VARCHAR}
         </if>
@@ -1982,24 +1914,26 @@
             <![CDATA[ and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
             ]]>
         </if>
-        GROUP BY rr.id
+        GROUP BY c.company_name
 
     </select>
     <select id="selectRequestByCompanyUnComplete"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderRequestCount">
+
 
         SELECT
-        DISTINCT count(rr.id) reqeustCountUncomplete,
-        CASE WHEN rr.company_id=0 THEN
-        rr.other_brand
-        ELSE
-        c.company_name
-        END
-        companyName FROM
-        fdp_fault_order_dispatch_request rr
-        LEFT JOIN sys_company_users users ON rr.create_person=users.id
-        LEFT JOIN dmi_company_info c ON rr.company_id = c.id
+        count( rr.id ) reqeustCountUncomplete,c.company_name companyName
+
+        from (
+        <if test="actType == 'VENDOR'">
+            select * from dmi_company_info where vendor_id = #{vendorId,jdbcType=INTEGER}
+        </if>
+        <if test="actType == 'DEMAND'">
+            select * from dmi_company_info where id = #{vendorId,jdbcType=INTEGER}
+        </if>
+        ) c
+        LEFT JOIN fdp_fault_order_dispatch_request rr on rr.company_id = c.id
         LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.dispatch_order_id =o.id
@@ -2007,10 +1941,7 @@
         left join bif_building bb on bb.id = st.building_id
         where 1=1
         AND rr.flag_deleted = 0
-        <if test="userCompanyId !=null and userCompanyId != 0">
-            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId !=null and companyId != 0">
+        <if test="companyId != 0">
             and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -2071,19 +2002,18 @@
             <![CDATA[  and hr.estimated_price <=  #{estimatedPriceEnd,jdbcType=DECIMAL}
             ]]>
         </if>
-        GROUP BY rr.id
+        GROUP BY c.company_name
 
     </select>
 
     <select id="selectRequestByCreatePersonyAll"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderRequestCount">
 
 
         select count(rr.id) requestCountAll,c.username
         from sys_company_users c
         LEFT JOIN fdp_fault_order_dispatch_request rr on rr.create_person = c.id
-        LEFT JOIN sys_company_users users ON rr.create_person=users.id
         LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.dispatch_order_id =o.id
@@ -2099,10 +2029,7 @@
         <if test="city != null">
             and rr.service_city =#{city,jdbcType=VARCHAR}
         </if>
-        <if test="userCompanyId !=null and userCompanyId != 0">
-            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId !=null and companyId != 0">
+        <if test="companyId != 0">
             and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -2155,14 +2082,13 @@
     </select>
 
     <select id="selectRequestByCreatePersonyComplete"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderRequestCount">
 
 
         select count(rr.id) requestCountComplete,c.username
         from sys_company_users c
         LEFT JOIN fdp_fault_order_dispatch_request rr on rr.create_person = c.id
-        LEFT JOIN sys_company_users users ON rr.create_person=users.id
         LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.dispatch_order_id =o.id
@@ -2173,10 +2099,7 @@
             and rr.create_person =#{createPerson,jdbcType=INTEGER}
         </if>
         and dispatch_status='COMPLETE'
-        <if test="userCompanyId !=null and userCompanyId != 0">
-            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId !=null and companyId != 0">
+        <if test="companyId != 0">
             and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -2244,14 +2167,13 @@
 
 
     <select id="selectRequestByCreatePersonyUnComplete"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderRequestCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderRequestCount">
 
 
         select count(rr.id) reqeustCountUncomplete,c.username
         from sys_company_users c
         LEFT JOIN fdp_fault_order_dispatch_request rr on rr.create_person = c.id
-        LEFT JOIN sys_company_users users ON rr.create_person=users.id
         LEFT JOIN fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.dispatch_order_id =o.id
@@ -2263,10 +2185,7 @@
         </if>
         and dispatch_status !='COMPLETE'
         and dispatch_status !='CANCEL'
-        <if test="userCompanyId !=null and userCompanyId != 0">
-            and users.company_id= #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId !=null and companyId != 0">
+        <if test="companyId != 0">
             and rr.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -2333,7 +2252,7 @@
     </select>
 
 
-    <select id="selectOrderCount" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
+    <select id="selectOrderCount" parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
             resultType="java.lang.Integer">
 
 
@@ -2344,7 +2263,6 @@
         LEFT JOIN fdp_fault_order_dispatch_request rr on rr.id = o.fault_dispatch_request_id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.fault_dispatch_request_id = rr.id
-        LEFT JOIN sys_company_users users ON users.id = o.last_deal_person_id
         left join dmi_store st on st.id = o.store_id
         left join bif_building bb on bb.id = st.building_id
         WHERE
@@ -2359,11 +2277,7 @@
         <if test="type ==1 ">
             and o.fault_order_id is null
         </if>
-
-        <if test="userCompanyId != null and userCompanyId != 0 ">
-            AND users.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
+        <if test="companyId != 0">
             and o.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="dispatchStatus != null and dispatchStatus != 'UNCOMPLETE' ">
@@ -2448,8 +2362,8 @@
 
     </select>
 
-    <select id="selectOrderCompletePrice" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
+    <select id="selectOrderCompletePrice" parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderCount">
         select
         sum(hr.estimated_price) SumEstimatedPrice,
         (select description from cfg_data_dictionary where value = hr.estimated_price_unit ) estimatedPriceUnit,
@@ -2462,17 +2376,13 @@
         from (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr
         left join fdp_fault_order_dispatch_request rr on rr.id =hr.fault_dispatch_request_id
         left join fdp_fault_dispatch_order o on o.fault_dispatch_request_id = rr.id
-        LEFT JOIN sys_company_users users ON users.id = o.last_deal_person_id
         left join dmi_store st on st.id = o.store_id
         left join bif_building bb on bb.id = st.building_id
         where 1=1
         <if test="vendorId != 0">
             and o.vendor_id= #{vendorId,jdbcType=INTEGER}
         </if>
-        <if test="userCompanyId != null and userCompanyId != 0 ">
-            AND users.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
+        <if test="companyId != 0">
             and o.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -2544,13 +2454,12 @@
     </select>
 
 
-    <select id="selectOrderByCompanyAll" parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
+    <select id="selectOrderByCompanyAll" parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderCount">
 
         select count(o.id) orderCountAll,c.company_name companyName
         from dmi_company_info c
         LEFT JOIN fdp_fault_dispatch_order o ON o.company_id = c.id
-        LEFT JOIN sys_company_users users ON users.id = o.last_deal_person_id
         left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.fault_dispatch_request_id = odr.id
@@ -2561,10 +2470,7 @@
         <if test="vendorId != 0">
             and o.vendor_id= #{vendorId,jdbcType=INTEGER}
         </if>
-        <if test="userCompanyId != null and userCompanyId != 0 ">
-            AND users.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
+        <if test="companyId != 0">
             and o.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -2624,15 +2530,15 @@
     </select>
 
     <select id="selectOrderByCompanyComplete"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderCount">
 
 
         SELECT
         count( o.id ) orderCountComplete,c.company_name companyName
         from dmi_company_info c
+
         LEFT JOIN fdp_fault_dispatch_order o ON o.company_id = c.id
-        LEFT JOIN sys_company_users users ON users.id = o.last_deal_person_id
         left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.fault_dispatch_request_id = odr.id
@@ -2643,10 +2549,7 @@
         <if test="vendorId != 0">
             and o.vendor_id= #{vendorId,jdbcType=INTEGER}
         </if>
-        <if test="userCompanyId != null and userCompanyId != 0 ">
-            AND users.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
+        <if test="companyId != 0">
             and o.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -2656,6 +2559,9 @@
             and o.fault_order_id is null
         </if>
         and dispatch_status='COMPLETE'
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
         <if test="lastDealPersonId != 0">
             and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
         </if>
@@ -2709,15 +2615,15 @@
 
 
     <select id="selectOrderByCompanyUnComplete"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderCount">
 
 
         SELECT
         count( o.id ) orderCountUnComplete,c.company_name companyName
+
         from dmi_company_info c
         LEFT JOIN fdp_fault_dispatch_order o ON o.company_id = c.id
-        LEFT JOIN sys_company_users users ON users.id = o.last_deal_person_id
         left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
         hr.fault_dispatch_request_id = odr.id
@@ -2728,10 +2634,7 @@
         <if test="vendorId != 0">
             and o.vendor_id= #{vendorId,jdbcType=INTEGER}
         </if>
-        <if test="userCompanyId != null and userCompanyId != 0 ">
-            AND users.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
+        <if test="companyId != 0">
             and o.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -2742,6 +2645,9 @@
         </if>
         and dispatch_status !='COMPLETE'
         and dispatch_status !='CANCEL'
+        <if test="companyId != 0">
+            and o.company_id= #{companyId,jdbcType=INTEGER}
+        </if>
         <if test="lastDealPersonId != 0">
             and o.last_deal_person_id= #{lastDealPersonId,jdbcType=INTEGER}
         </if>
@@ -2790,12 +2696,12 @@
     </select>
 
     <select id="selectOrderByDealPersonAll"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderCount">
 
 
         select count(o.id) orderCountAll,c.username companyName
-        from sys_company_users c
+        from sys_console_users c
         LEFT JOIN fdp_fault_dispatch_order o on o.last_deal_person_id = c.id
         left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
@@ -2806,10 +2712,7 @@
         <if test="vendorId != 0">
             and o.vendor_id= #{vendorId,jdbcType=INTEGER}
         </if>
-        <if test="userCompanyId != null and userCompanyId != 0 ">
-            AND c.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
+        <if test="companyId != 0">
             and o.company_id= #{companyId,jdbcType=INTEGER}
         </if>
 
@@ -2871,12 +2774,12 @@
 
 
     <select id="selectOrderByCreatePersonComplete"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderCount">
 
 
         select count(o.id) orderCountComplete,c.username companyName
-        from sys_company_users c
+        from sys_console_users c
         LEFT JOIN fdp_fault_dispatch_order o on o.last_deal_person_id = c.id
         left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
@@ -2885,13 +2788,7 @@
         left join bif_building bb on bb.id = st.building_id
         where 1=1
         and dispatch_status='COMPLETE'
-        <if test="vendorId != 0">
-            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
-        </if>
-        <if test="userCompanyId != null and userCompanyId != 0 ">
-            AND c.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
+        <if test="companyId != null ">
             and o.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -2946,12 +2843,12 @@
 
     </select>
     <select id="selectOrderByCreatePersonUnComplete"
-            parameterType="com.company.springboot.entity.fdp.GetFaultDispatchRequestList"
-            resultType="com.company.springboot.entity.fdp.FaultOrderCount">
+            parameterType="com.platform.springboot.entity.fdp.GetFaultDispatchRequestList"
+            resultType="com.platform.springboot.entity.fdp.FaultOrderCount">
 
 
         select count(o.id) orderCountUnComplete,c.username companyName
-        from sys_company_users c
+        from sys_console_users c
         LEFT JOIN fdp_fault_dispatch_order o on o.last_deal_person_id = c.id
         left join fdp_fault_order_dispatch_request odr on odr.id = o.fault_dispatch_request_id
         left join (SELECT * from fdp_fault_dispatch_hr_relation WHERE flag_used = 1 AND flag_deleted = 0 ) hr on
@@ -2959,13 +2856,7 @@
         left join dmi_store st on st.id = o.store_id
         left join bif_building bb on bb.id = st.building_id
         where 1=1
-        <if test="vendorId != 0">
-            and o.vendor_id= #{vendorId,jdbcType=INTEGER}
-        </if>
-        <if test="userCompanyId != null and userCompanyId != 0 ">
-            AND c.company_id = #{userCompanyId,jdbcType=INTEGER}
-        </if>
-        <if test="companyId != null and companyId != 0">
+        <if test="companyId!=null">
             and o.company_id= #{companyId,jdbcType=INTEGER}
         </if>
         <if test="type ==0 ">
@@ -3039,8 +2930,8 @@
 
   </select>
     <!--接单状态数量统计-->
-    <select id="selectStatusCollect" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder"
-            resultType="com.company.springboot.entity.fdp.GetDispatchOrderServiceStatusList">
+    <select id="selectStatusCollect" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder"
+            resultType="com.platform.springboot.entity.fdp.GetDispatchOrderServiceStatusList">
    SELECT
       COUNT(rel.id) `count`,
       rel.hr_dispatch_status `status`
@@ -3054,8 +2945,8 @@
       and bdhr.valid_status = 'APPROVED'
   </select>
     <!--服务商工单列表-->
-    <select id="selectServiceListByOrderId" parameterType="com.company.springboot.entity.fdp.ParamServiceDispatchOrder"
-            resultType="com.company.springboot.entity.fdp.GetServiceDispatchOrderList">
+    <select id="selectServiceListByOrderId" parameterType="com.platform.springboot.entity.fdp.ParamServiceDispatchOrder"
+            resultType="com.platform.springboot.entity.fdp.GetServiceDispatchOrderList">
         SELECT
         ffdo.fault_dispatch_request_id AS faultDispatchRequestId,
         ffdo.id orderId,
@@ -3122,7 +3013,7 @@
     </select>
     <!--服务商查看工单信息-->
     <select id="serOrderInfo" parameterType="java.lang.Integer"
-            resultType="com.company.springboot.entity.fdp.GetServiceOderInfoShow">
+            resultType="com.platform.springboot.entity.fdp.GetServiceOderInfoShow">
       SELECT
         dispatchOrder.dispatch_order_number AS dispatchOrderNumber,
         CASE WHEN brand.brand_name is not null THEN brand.brand_name else request.other_brand END AS brandName,
@@ -3152,7 +3043,7 @@
   </select>
     <!--服务商查看工单基本信息-->
     <select id="selectServiceOrderBasic" parameterType="java.lang.Integer"
-            resultType="com.company.springboot.entity.fdp.GetServiceOrderBasicInfo">
+            resultType="com.platform.springboot.entity.fdp.GetServiceOrderBasicInfo">
     SELECT
       ffdo.dispatch_order_number AS dispatchOrderNumber,
       ffdo.estimated_service_time AS  estimatedServiceTime,
@@ -3165,7 +3056,7 @@
     AND ffdo.flag_deleted = 0
   </select>
     <!--自动完工定时任务 获取工单列表-->
-    <select id="selectFdpFaultDispatchOrderList" resultType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+    <select id="selectFdpFaultDispatchOrderList" resultType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
         select
         <include refid="Base_Column_List"/>
         from fdp_fault_dispatch_order
@@ -3175,7 +3066,7 @@
 
     <!--服务商查看工单基本信息-->
     <select id="selectDispatchOrderByfdoId" parameterType="java.lang.Integer"
-            resultType="com.company.springboot.entity.fdp.FdpFaultDispatchOrder">
+            resultType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrder">
     SELECT
        upload_file_name uploadFileName,
        upload_file_url uploadFileUrl,
@@ -3194,11 +3085,49 @@
   </select>
 
 
-    <!--编辑预计服务时间-->
-    <update id="updateServiceTime">
-    update fdp_fault_dispatch_order set
-       estimated_service_time = #{estimatedServiceTime,jdbcType=VARCHAR}
-       where fault_dispatch_request_id = #{requestId,jdbcType=INTEGER}
-  </update>
+    <!--查询邮箱发送参数-->
+    <select id="selectRequestIdParam" parameterType="java.lang.Integer"
+            resultType="com.platform.springboot.entity.fdp.FdpFaultDispatchOrderRes">
+    SELECT rode.fault_dispatch_request_id faultDispatchRequestId,
+  rode.dispatch_order_number dispatchOrderNumber,
+  vendor.vendor_name vendorName,
+case WHEN company.company_name is null THEN
+  request.other_brand
+  ELSE
+  company.company_name
+  END companyName,
+  request.other_system_number otherSystemNumber,
+
+  case WHEN store.store_name is null THEN
+  request.other_store
+  ELSE
+  store.store_name
+  END storeName,
+
+  CONCAT(request.service_province,request.service_city,request.service_district,request.service_address) serviceAddress,
+  DATE_FORMAT(request.submit_time,'%Y-%m-%d %H:%i') submitTime,
+	DATE_FORMAT(request.expect_complete_time,'%Y-%m-%d %H:%i') expectCompleteTime,
+  DATE_FORMAT(rode.finish_time,'%Y-%m-%d %H:%i') finishTime,
+  CONCAT(resource.first_name,resource.last_name) fullName,
+  insert(resource.mobile, 4, 4, '****') mobile,
+  CONCAT(relation.estimated_cost,(SELECT description FROM cfg_data_dictionary WHERE `value`=relation.estimated_monetary_unit)) estimatedCost,
+  relation.estimated_cost_memo estimatedcostMemo,
+  CONCAT(relation.estimated_price,(SELECT description FROM cfg_data_dictionary WHERE `value`=relation.estimated_price_unit)) estimatedPrice,
+  relation.estimated_price_memo estimatedPriceMemo,
+  CONCAT(rode.actual_cost,(SELECT description FROM cfg_data_dictionary WHERE `value`=rode.actual_monetary_unit)) actualCost,
+  rode.actual_cost_memo actualCostMemo,
+  CONCAT(rode.actual_price,(SELECT description FROM cfg_data_dictionary WHERE `value`=rode.actual_price_unit)) actualPrice,
+  rode.actual_price_memo actualPriceMemo
+
+  FROM fdp_fault_dispatch_order rode
+  LEFT JOIN fdp_fault_order_dispatch_request request ON rode.fault_dispatch_request_id=request.id
+  LEFT JOIN fdp_fault_dispatch_hr_relation relation ON rode.id=relation.dispatch_order_id
+  LEFT JOIN dmi_company_info company ON request.company_id=company.id
+  LEFT JOIN bif_dispatch_human_resource resource ON resource.id=relation.dispatch_main_hr_id
+  LEFT JOIN dmi_intergration_vendors vendor ON vendor.id=company.vendor_id
+  LEFT JOIN dmi_store store ON request.store_id=store.id
+  WHERE relation.flag_used=1 AND rode.fault_dispatch_request_id = #{faultDispatchRequestId,jdbcType=INTEGER}
+
+  </select>
 
 </mapper>

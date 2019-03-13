@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.bif.BifBuildingAddressMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifBuildingAddress" >
+<mapper namespace="com.platform.springboot.mapper.bif.BifBuildingAddressMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.bif.BifBuildingAddress" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="road" property="road" jdbcType="VARCHAR" />
@@ -22,7 +22,7 @@
     from bif_building_address
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifBuildingAddress" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.bif.BifBuildingAddress" >
     insert into bif_building_address
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -83,7 +83,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifBuildingAddress" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.bif.BifBuildingAddress" >
     update bif_building_address
     <set >
       <if test="buildingId != null" >
@@ -113,7 +113,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="byMajor" resultMap="BaseResultMap" parameterType="com.company.springboot.entity.bif.BifBuildingAddress" >
+  <select id="byMajor" resultMap="BaseResultMap" parameterType="com.platform.springboot.entity.bif.BifBuildingAddress" >
     select
     <include refid="Base_Column_List" />
     from bif_building_address
@@ -125,7 +125,7 @@
         and flag_major = #{flagMajor,jdbcType=BIT}
     </if>
   </select>
-  <update id="deleteByBuildingId" parameterType="com.company.springboot.entity.bif.BifBuildingAddress" >
+  <update id="deleteByBuildingId" parameterType="com.platform.springboot.entity.bif.BifBuildingAddress" >
     update bif_building_address
     <set >
       flag_deleted = 1,
@@ -142,7 +142,7 @@
     and flag_deleted = 0
     and flag_major = 0
   </select>
-  <update id="updateByBuildingId" parameterType="com.company.springboot.entity.bif.BifBuildingAddress" >
+  <update id="updateByBuildingId" parameterType="com.platform.springboot.entity.bif.BifBuildingAddress" >
     update bif_building_address
     <set >
       <if test="road != null" >
@@ -162,7 +162,7 @@
     AND flag_major = 1
   </update>
 
-  <update id="updateByBuildingIdNotMajor" parameterType="com.company.springboot.entity.bif.BifBuildingAddress" >
+  <update id="updateByBuildingIdNotMajor" parameterType="com.platform.springboot.entity.bif.BifBuildingAddress" >
     update bif_building_address
     <set >
       <if test="road != null" >

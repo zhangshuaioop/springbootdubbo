@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.cfg.CfgDispatchDetailModelMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.cfg.CfgDispatchDetailModel" >
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgDispatchDetailModelMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.cfg.CfgDispatchDetailModel" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="dispatch_type" property="dispatchType" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
@@ -23,7 +23,7 @@
     delete from cfg_dispatch_detail_model
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailModel" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel" >
     insert into cfg_dispatch_detail_model (id, dispatch_type, version, 
       model_user_type, model_user_obj_id, create_time
       )
@@ -31,7 +31,7 @@
       #{modelUserType,jdbcType=VARCHAR}, #{modelUserObjId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailModel" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
       SELECT
       LAST_INSERT_ID()
@@ -90,7 +90,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailModel" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel" >
     update cfg_dispatch_detail_model
     <set >
       <if test="dispatchType != null" >
@@ -114,7 +114,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailModel" >
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel" >
     update cfg_dispatch_detail_model
     set dispatch_type = #{dispatchType,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},
@@ -124,7 +124,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--查询最高版本列表-->
-  <select id="selectModelList" resultType="com.company.springboot.entity.cfg.CfgDispatchDetailModel" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailModel">
+  <select id="selectModelList" resultType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel">
     SELECT
       model.id,
       model.dispatch_type dispatchType,
@@ -143,32 +143,27 @@
 												AND company_id = #{companyId,jdbcType=INTEGER}
 												)
 					)AS model
-					LEFT JOIN sys_company_users sys on sys.id = model.create_person
-
+					LEFT JOIN sys_console_users sys on sys.id = model.create_person
       ORDER BY
-          model.version DESC
+      model.version DESC
   </select>
 
 
 
-    <!--查询最高版本列表 zhangshuai-->
-    <select id="selectByModelUserType" resultType="com.company.springboot.entity.cfg.CfgDispatchDetailModel" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailModel">
+  <!--查询最高版本列表 zhangshuai-->
+  <select id="selectByModelUserType" resultType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel">
 
 SELECT model.id,MAX(model.version) version,
     model.dispatch_type dispatchType,
 model.create_time createTime, users.real_name createPersonName
 FROM cfg_dispatch_detail_model model
-LEFT JOIN sys_company_users users ON users.id=model.create_person
+LEFT JOIN sys_console_users users ON users.id=model.create_person
 WHERE model.model_user_type=#{modelUserType,jdbcType=VARCHAR}
-        <if test="companyId != null" >
-           and model.company_id = #{companyId,jdbcType=INTEGER}
-        </if>
 
   </select>
 
-
   <!--查询所有版本历史列表-->
-  <select id="selectAllVersionList" resultType="com.company.springboot.entity.cfg.CfgDispatchDetailModel" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailModel">
+  <select id="selectAllVersionList" resultType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel">
     SELECT
       model.id,
       model.dispatch_type dispatchType,
@@ -183,7 +178,7 @@ WHERE model.model_user_type=#{modelUserType,jdbcType=VARCHAR}
               dispatch_type = #{dispatchType,jdbcType=VARCHAR}
               AND company_id = #{companyId,jdbcType=INTEGER}
 			  )AS model
-			LEFT JOIN sys_company_users sys on sys.id = model.create_person
+			LEFT JOIN sys_console_users sys on sys.id = model.create_person
       ORDER BY
           model.version DESC
   </select>

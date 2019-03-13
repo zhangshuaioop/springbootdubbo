@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpFaultOrderProcessMapper">
-    <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpFaultOrderProcessMapper">
+    <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpFaultOrderProcess">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="company_id" property="companyId" jdbcType="INTEGER"/>
         <result column="store_id" property="storeId" jdbcType="INTEGER"/>
@@ -58,7 +58,7 @@
         from fdp_fault_order_process
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+    <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcess">
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID() AS id
         </selectKey>
@@ -320,7 +320,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+    <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcess">
         update fdp_fault_order_process
         <set>
             <if test="companyId != null">
@@ -438,8 +438,8 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="queryFaultOrderListByObject" resultType="com.company.springboot.entity.fdp.GetFaultOrderList"
-            parameterType="com.company.springboot.entity.fdp.GetFaultOrderListRequest">
+    <select id="queryFaultOrderListByObject" resultType="com.platform.springboot.entity.fdp.GetFaultOrderList"
+            parameterType="com.platform.springboot.entity.fdp.GetFaultOrderListRequest">
         SELECT
         process.create_time AS createTime,
         company.company_name AS companyName,
@@ -548,7 +548,7 @@
         fdp_fault_order_process
         WHERE
         flag_deleted = 0
-        <if test="companyId != null and companyId != 0">
+        <if test="companyId != null">
             and company_id = #{companyId,jdbcType=INTEGER}
         </if>
         <if test="storeId != null and storeId != 0">
@@ -602,11 +602,11 @@
         ) ON store.id = process.store_id
         LEFT JOIN dmi_company_info company on company.id = process.company_id
         <if test="dealpersonId == null or dealpersonId ==0">
-            left join sys_company_users users on users.id = process.deal_person_id
+            left join sys_console_users users on users.id = process.deal_person_id
 
         </if>
         <if test="dealpersonId != null and dealpersonId !=0">
-            inner join sys_company_users users on users.id = process.deal_person_id
+            inner join sys_console_users users on users.id = process.deal_person_id
         </if>
         LEFT JOIN fdp_fault_order_dispatch_request request ON request.fault_order_id = process.id
         WHERE
@@ -768,11 +768,11 @@
         LEFT JOIN dmi_brand brand ON store.brand_id = brand.id
         ) ON store.id = process.store_id
         <if test="dealpersonId == null or dealpersonId ==0">
-            left join sys_company_users users on users.id = process.deal_person_id
+            left join sys_console_users users on users.id = process.deal_person_id
 
         </if>
         <if test="dealpersonId != null and dealpersonId !=0">
-            inner join sys_company_users users on users.id = process.deal_person_id
+            inner join sys_console_users users on users.id = process.deal_person_id
 
         </if>
         LEFT JOIN fdp_fault_order_dispatch_request request ON request.fault_order_id = process.id
@@ -796,7 +796,7 @@
 
     </select>
 
-    <select id="getFaultOrderListByRootId" resultType="com.company.springboot.entity.fdp.GetFaultOrderList"
+    <select id="getFaultOrderListByRootId" resultType="com.platform.springboot.entity.fdp.GetFaultOrderList"
             parameterType="java.lang.Integer">
         SELECT
             process.create_person AS createPerson,
@@ -837,7 +837,7 @@
             LEFT JOIN fdp_fault_dispatch_hr_relation dispatchHrRlt ON dispatchHrRlt.dispatch_order_id = dispatchOrder.id
             AND dispatchHrRlt.flag_deleted = 0
             LEFT JOIN ( dmi_store store LEFT JOIN dmi_brand brand ON store.brand_id = brand.id ) ON store.id = process.store_id
-            LEFT JOIN sys_company_users users ON users.id = process.update_person
+            LEFT JOIN sys_console_users users ON users.id = process.update_person
             LEFT JOIN fdp_fault_order_dispatch_request request ON request.fault_order_id = process.id
         WHERE
             process.root_id = #{rootId,jdbcType=INTEGER}
@@ -847,7 +847,7 @@
     </select>
 
     <select id="show" parameterType="java.lang.Integer"
-            resultType="com.company.springboot.entity.fdp.EntityFaultReportInfoDetail">
+            resultType="com.platform.springboot.entity.fdp.EntityFaultReportInfoDetail">
         select
 
         process.fault_info_confirm_time as faultInfoConfirmTime,
@@ -898,7 +898,7 @@
     </select>
 
 
-    <select id="historyRecordList" resultType="com.company.springboot.entity.fdp.HistoryRecordList"
+    <select id="historyRecordList" resultType="com.platform.springboot.entity.fdp.HistoryRecordList"
             parameterType="java.lang.Integer">
         select
         process.update_time as finishDate,
@@ -918,7 +918,7 @@
 
     </select>
 
-    <update id="updateById" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+    <update id="updateById" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcess">
 
         update fdp_fault_order_process
         <set>
@@ -978,7 +978,7 @@
     </update>
 
 
-    <update id="updateRootId" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+    <update id="updateRootId" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcess">
         update fdp_fault_order_process
         set root_id = #{rootId,jdbcType=INTEGER}
 
@@ -997,7 +997,7 @@
     </select>
 
 
-    <update id="updateFlagHasMultiple" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+    <update id="updateFlagHasMultiple" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcess">
 
         update fdp_fault_order_process
         set flag_has_multiple = #{flagHasMultiple,jdbcType=BIT}
@@ -1007,7 +1007,7 @@
 
     </update>
 
-    <update id="updateFlagLastOrderByRootId" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+    <update id="updateFlagLastOrderByRootId" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcess">
 
       update fdp_fault_order_process
 
@@ -1017,7 +1017,7 @@
 
     </update>
 
-    <update id="updateDispatchRequest" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+    <update id="updateDispatchRequest" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcess">
  update fdp_fault_order_process
 
        set flag_dispatch_request = #{flagDispatchRequest,jdbcType=BIT}
@@ -1025,7 +1025,7 @@
       where id = #{id,jdbcType=INTEGER}
 
     </update>
-    <update id="updateProcessStatusByProcessId" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcess">
+    <update id="updateProcessStatusByProcessId" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcess">
         update fdp_fault_order_process
         <set>
             <if test="opearteStatus != null">
@@ -1054,8 +1054,8 @@
         create_person =#{createPerson,jdbcType=INTEGER}
     </select>
     <!--查询客服工单清单-->
-    <select id="getProcessListByObject" parameterType="com.company.springboot.entity.fdp.ParamFdpProcessDetailed"
-            resultType="com.company.springboot.entity.fdp.GetFdpProcessDetailedList">
+    <select id="getProcessListByObject" parameterType="com.platform.springboot.entity.fdp.ParamFdpProcessDetailed"
+            resultType="com.platform.springboot.entity.fdp.GetFdpProcessDetailedList">
         SELECT
         dor.flag_finish AS flagFinish,
         dor.last_deal_time AS lastDealTime,
@@ -1091,8 +1091,8 @@
         LEFT JOIN fdp_fault_dispatch_order dor ON dor.fault_order_id = pro.id
         LEFT JOIN (SELECT * FROM fdp_fault_dispatch_hr_relation WHERE flag_used = 1) hrrel ON hrrel.dispatch_order_id =
         dor.id
-        LEFT JOIN sys_company_users sys ON sys.id = pro.create_person
-        LEFT JOIN sys_company_users sus ON sus.id = pro.deal_person_id
+        LEFT JOIN sys_console_users sys ON sys.id = pro.create_person
+        LEFT JOIN sys_console_users sus ON sus.id = pro.deal_person_id
         LEFT JOIN cfg_data_dictionary dic on dor.actual_price_unit = dic.`value`
         LEFT JOIN cfg_data_dictionary cdd on hrrel.estimated_price_unit = cdd.`value`
         WHERE
@@ -1147,8 +1147,8 @@
     </select>
 
     <!--查询客服工单汇总-->
-    <select id="selectProcessCollect" parameterType="com.company.springboot.entity.fdp.ParamFdpProcessDetailed"
-            resultType="com.company.springboot.entity.fdp.GetFdpProcessCollectList">
+    <select id="selectProcessCollect" parameterType="com.platform.springboot.entity.fdp.ParamFdpProcessDetailed"
+            resultType="com.platform.springboot.entity.fdp.GetFdpProcessCollectList">
         SELECT COUNT(pro.id) processTotal,
         SUM(rel.estimated_price) estimatedPriceCompleteNum,
         cdd.description estimatedPriceUnit,
@@ -1173,7 +1173,6 @@
         <if test="status == 'UNCOMPLETE' ">
             AND pro.opearte_status != "COMPLETE" AND pro.opearte_status != "CANCEL"
         </if>
-
         <if test="companyId != null">
             AND pro.company_id = #{companyId,jdbcType=INTEGER}
         </if>
@@ -1191,7 +1190,6 @@
             AND pro.update_time &lt; DATE_ADD(#{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) AND
             pro.opearte_status = "COMPLETE"
         </if>
-
         <if test="dealPersonId != null">
             AND pro.deal_person_id = #{dealPersonId,jdbcType=INTEGER}
         </if>
@@ -1200,11 +1198,10 @@
             LEFT JOIN bif_building bud on bud.id = sto.building_id
             WHERE bud.province = #{province,jdbcType=VARCHAR})
         </if>
-        and pro.flag_deleted=0
     </select>
     <!--查询客服工单雇主汇总-->
-    <select id="selectDemandList" parameterType="com.company.springboot.entity.fdp.ParamFdpProcessDetailed"
-            resultType="com.company.springboot.entity.fdp.GetDemandCollectList">
+    <select id="selectDemandList" parameterType="com.platform.springboot.entity.fdp.ParamFdpProcessDetailed"
+            resultType="com.platform.springboot.entity.fdp.GetDemandCollectList">
         SELECT
         pro.company_id companyId,
         cop.company_name companyName,
@@ -1246,18 +1243,17 @@
             LEFT JOIN bif_building bud on bud.id = sto.building_id
             WHERE bud.province = #{province,jdbcType=VARCHAR})
         </if>
-        and pro.flag_deleted=0
         GROUP BY pro.company_id
     </select>
     <!--查询客服工单处理人汇总-->
-    <select id="selectDealPersonList" parameterType="com.company.springboot.entity.fdp.ParamFdpProcessDetailed"
-            resultType="com.company.springboot.entity.fdp.GetBelongPersonCollerctList">
+    <select id="selectDealPersonList" parameterType="com.platform.springboot.entity.fdp.ParamFdpProcessDetailed"
+            resultType="com.platform.springboot.entity.fdp.GetBelongPersonCollerctList">
         SELECT
         pro.deal_person_id belongPersonId,
         sys.username belongPersonName,
         COUNT(pro.id) belongPersonTotal
-        FROM (SELECT * FROM fdp_fault_order_process ffop where ffop.flag_deleted = 0) pro
-        LEFT JOIN sys_company_users sys on sys.id = pro.deal_person_id
+        FROM fdp_fault_order_process pro
+        LEFT JOIN sys_console_users sys on sys.id = pro.deal_person_id
         LEFT JOIN fdp_fault_dispatch_order dr on pro.id = dr.fault_order_id
         LEFT JOIN (SELECT * FROM fdp_fault_dispatch_hr_relation WHERE flag_used = 1) rel on rel.dispatch_order_id =
         dr.id
@@ -1285,7 +1281,6 @@
             AND pro.update_time &lt; DATE_ADD(#{userCompleteTimeEnd,jdbcType=TIMESTAMP}, INTERVAL 1 DAY) AND
             pro.opearte_status = "COMPLETE"
         </if>
-
         <if test="dealPersonId != null">
             AND pro.deal_person_id = #{dealPersonId,jdbcType=INTEGER}
         </if>

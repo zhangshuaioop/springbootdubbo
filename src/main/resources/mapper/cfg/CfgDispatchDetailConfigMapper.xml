@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.cfg.CfgDispatchDetailConfigMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.cfg.CfgDispatchDetailConfig" >
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgDispatchDetailConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.cfg.CfgDispatchDetailConfig" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="model_id" property="modelId" jdbcType="INTEGER" />
@@ -20,7 +20,7 @@
     from cfg_dispatch_detail_config
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailConfig" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailConfig" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
       SELECT
       LAST_INSERT_ID()
@@ -79,7 +79,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailConfig" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailConfig" >
     update cfg_dispatch_detail_config
     <set >
       <if test="dispatchType != null" >
@@ -111,29 +111,20 @@
   </update>
 
   <!-- 根据ModelId查询详细的派工配置 -->
-  <select id="selectDispatchConfigByModelId" resultType="com.company.springboot.entity.cfg.CfgDispatchDetailConfig" parameterType="java.lang.Integer">
+  <select id="selectDispatchConfigByModelId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     SELECT
-    config.id,
-    config.title,
-    config.catalog_name catalogName,
-    config.level,
-    config.parent_id parentId,
-    config.order_id orderId,
-    config.description,
-    config.model_id modelId,
-    model.dispatch_type dispatchType
-    FROM cfg_dispatch_detail_config config
-    LEFT JOIN cfg_dispatch_detail_model AS model ON model.id = config.model_id
+    <include refid="Base_Column_List" />
+    FROM
+        cfg_dispatch_detail_config
     WHERE
-    config.model_id = #{modelId,jdbcType=INTEGER}
+        model_id = #{modelId,jdbcType=INTEGER}
     ORDER BY
-    config.level,
-    config.parent_id,
-    config.order_id
-    ASC
+        LEVEL,
+        parent_id,
+        order_id ASC
   </select>
   <!--通过useriId，派工类型查询父级-->
-  <select id="basicList" resultType="com.company.springboot.entity.cfg.CfgDispatchDetailConfig" parameterType="com.company.springboot.entity.cfg.CfgDispatchDetailModel">
+  <select id="basicList" resultType="com.platform.springboot.entity.cfg.CfgDispatchDetailConfig" parameterType="com.platform.springboot.entity.cfg.CfgDispatchDetailModel">
      SELECT
     cfg.id,
     cfg.title,
@@ -148,18 +139,11 @@
     LEFT JOIN cfg_dispatch_detail_model AS model ON model.id = cfg.model_id
     WHERE
     model.id = ( SELECT MAX( id ) FROM cfg_dispatch_detail_model
-    where 1=1
-    <if test="dispatchType != null" >
-     and dispatch_type = #{dispatchType,jdbcType=VARCHAR}
-    </if>
-    <if test="modelUserType != null" >
-      and model_user_type = #{modelUserType,jdbcType=VARCHAR}
-    </if>
-    <if test="companyId != null and companyId !=0" >
-     and company_id = #{companyId,jdbcType=INTEGER}
-    </if>
-	)
+						where company_id =#{companyId,jdbcType=INTEGER}
+                      AND dispatch_type = #{dispatchType,jdbcType=VARCHAR}
+											)
     AND cfg.level = 1
+
   </select>
   <!--通过parentId查询相对应子集-->
   <select id="childList" resultMap="BaseResultMap">

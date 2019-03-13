@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.company.springboot.mapper.fdp.FdpFaultDispatchTransferLogMapper">
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpFaultDispatchTransferLog">
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpFaultDispatchTransferLogMapper">
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpFaultDispatchTransferLog">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="dispatch_order_id" jdbcType="INTEGER" property="dispatchOrderId" />
     <result column="org_deal_person_id" jdbcType="INTEGER" property="orgDealPersonId" />
@@ -20,7 +20,7 @@
     from fdp_fault_dispatch_transfer_log
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchTransferLog">
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchTransferLog">
     insert into fdp_fault_dispatch_transfer_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -70,7 +70,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpFaultDispatchTransferLog">
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultDispatchTransferLog">
     update fdp_fault_dispatch_transfer_log
     <set>
       <if test="dispatchOrderId != null">

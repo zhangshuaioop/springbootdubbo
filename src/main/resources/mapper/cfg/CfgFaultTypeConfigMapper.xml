@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.cfg.CfgFaultTypeConfigMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+<mapper namespace="com.platform.springboot.mapper.cfg.CfgFaultTypeConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.cfg.CfgFaultTypeConfig" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="model_id" property="modelId" jdbcType="INTEGER" />
     <result column="fault_type_name" property="faultTypeName" jdbcType="VARCHAR" />
@@ -21,13 +21,13 @@
     delete from cfg_fault_type_config
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+  <insert id="insert" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeConfig" >
     insert into cfg_fault_type_config (id, model_id, fault_type_name, 
       description, order_id)
     values (#{id,jdbcType=INTEGER}, #{modelId,jdbcType=INTEGER}, #{faultTypeName,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{orderId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeConfig" >
     insert into cfg_fault_type_config
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeConfig" >
     update cfg_fault_type_config
     <set >
       <if test="modelId != null" >
@@ -82,7 +82,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeConfig" >
+  <update id="updateByPrimaryKey" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeConfig" >
     update cfg_fault_type_config
     set model_id = #{modelId,jdbcType=INTEGER},
       fault_type_name = #{faultTypeName,jdbcType=VARCHAR},
@@ -101,7 +101,7 @@
 
   </select>
 
-  <select id="selectMaxVersionConfig" parameterType="com.company.springboot.entity.cfg.CfgFaultTypeModel" resultMap="BaseResultMap">
+  <select id="selectMaxVersionConfig" parameterType="com.platform.springboot.entity.cfg.CfgFaultTypeModel" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from cfg_fault_type_config

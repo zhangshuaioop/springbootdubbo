@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.dmi.DmiOrganizationMapper">
-    <resultMap id="BaseResultMap" type="com.company.springboot.entity.dmi.DmiOrganization">
+<mapper namespace="com.platform.springboot.mapper.dmi.DmiOrganizationMapper">
+    <resultMap id="BaseResultMap" type="com.platform.springboot.entity.dmi.DmiOrganization">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="organization_name" property="organizationName" jdbcType="VARCHAR"/>
         <result column="organization_code" property="organizationCode" jdbcType="VARCHAR"/>
@@ -18,7 +18,7 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="update_person" property="updatePerson" jdbcType="INTEGER"/>
     </resultMap>
-    <resultMap id="ResultMapWithBLOBs" type="com.company.springboot.entity.dmi.DmiOrganization" extends="BaseResultMap">
+    <resultMap id="ResultMapWithBLOBs" type="com.platform.springboot.entity.dmi.DmiOrganization" extends="BaseResultMap">
         <result column="memo" property="memo" jdbcType="LONGVARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -85,7 +85,7 @@
         order by level asc,parent_id asc,id asc
     </select>
 
-    <insert id="insertSelective" parameterType="com.company.springboot.entity.dmi.DmiOrganization">
+    <insert id="insertSelective" parameterType="com.platform.springboot.entity.dmi.DmiOrganization">
         insert into dmi_organization
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -180,7 +180,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.dmi.DmiOrganization">
+    <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.dmi.DmiOrganization">
         update dmi_organization
         <set>
             <if test="organizationName != null">
@@ -232,7 +232,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="getOragnizationByCompanyIdAndCode" resultMap="ResultMapWithBLOBs" parameterType="com.company.springboot.entity.dmi.DmiOrganization">
+    <select id="getOragnizationByCompanyIdAndCode" resultMap="ResultMapWithBLOBs" parameterType="com.platform.springboot.entity.dmi.DmiOrganization">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -277,40 +277,6 @@
     </select>
 
 
-    <select id="selectOrganizationListByCompanyIdRes" resultType="com.company.springboot.entity.dmi.res.DmiOrganizationRes" parameterType="java.lang.Integer">
-        select
-        id, organization_name title, organization_code organizationCode, level,
-        parent_id parentId, order_id orderId, belongs_company_id belongsCompanyId,
-    flag_filiale flagFiliale, business_license_id businessLicenseId,
-    flag_deleted flagDeleted, flag_available flagAvailable, create_time createTime, create_person createPerson,
-    update_time updateTime, update_person updatePerson,0 flagIsStore
-        from dmi_organization
-        where belongs_company_id = #{companyId,jdbcType=INTEGER}
-        and flag_deleted = 0
-        order by level asc,parent_id asc,id asc,order_id asc
-    </select>
 
-
-    <select id="selectOrganizationListByCompanyIdResChildren" resultType="com.company.springboot.entity.dmi.res.DmiOrganizationRes" parameterType="java.lang.Integer">
-
-
-        select
-        store.id storeId, store.store_name title,
-organization.organization_code organizationCode, organization.level,
-        organization.id parentId, organization.order_id orderId,
-organization.belongs_company_id belongsCompanyId,
-    organization.flag_filiale flagFiliale, organization.business_license_id businessLicenseId,
-    organization.flag_deleted flagDeleted, organization.flag_available flagAvailable,
-organization.create_time createTime, organization.create_person createPerson,
-    organization.update_time updateTime, organization.update_person updatePerson,
-    1 flagIsStore
-        from dmi_organization organization
-LEFT JOIN dmi_store store ON organization.id=store.area_id
-        where organization.belongs_company_id = #{companyId,jdbcType=INTEGER}
-        and organization.flag_deleted = 0 and store.id is not null
-        order by organization.level asc,organization.parent_id asc,
-organization.id asc,organization.order_id asc
-
-    </select>
 
 </mapper>

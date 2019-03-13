@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.bif.BifBuildingMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.bif.BifBuilding" >
+<mapper namespace="com.platform.springboot.mapper.bif.BifBuildingMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.bif.BifBuilding" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="longitude" property="longitude" jdbcType="DECIMAL" />
     <result column="latitude" property="latitude" jdbcType="DECIMAL" />
@@ -28,7 +28,7 @@
     from bif_building
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.bif.BifBuilding" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.bif.BifBuilding" >
     <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
       SELECT LAST_INSERT_ID() AS id
     </selectKey>
@@ -122,7 +122,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.bif.BifBuilding" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.bif.BifBuilding" >
     update bif_building
     <set >
       <if test="longitude != null" >
@@ -170,7 +170,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectLimitList" resultMap="BaseResultMap" parameterType="com.company.springboot.entity.bif.BifAddressDetail">
+  <select id="selectLimitList" resultMap="BaseResultMap" parameterType="com.platform.springboot.entity.bif.BifAddressDetail">
     select
     <include refid="Base_Column_List" />
     from bif_building
@@ -180,7 +180,7 @@
     AND latitude &lt;= #{latitudeMax,jdbcType=DECIMAL}
     AND latitude &gt;= #{latitudeMin,jdbcType=DECIMAL}
   </select>
-  <select id="list" resultType="com.company.springboot.entity.bif.ret.BifBuilding.ListRet" parameterType="com.company.springboot.entity.bif.BifBuilding">
+  <select id="list" resultType="com.platform.springboot.entity.bif.ret.BifBuilding.ListRet" parameterType="com.platform.springboot.entity.bif.BifBuilding">
     select distinct
     building.flag_import AS flagImport,
     building.id AS id,
@@ -195,10 +195,11 @@
     users.username AS createPerson,
     building.update_time AS updateTime,
     address.road AS road,
-    address.id AS addressId
+    address.id AS addressId,
+    building.flag_amend flagAmend
     from bif_building building
     inner join bif_building_address address ON address.building_id = building.id and address.flag_major = 1 and address.flag_deleted = 0
-    LEFT JOIN sys_company_users users ON  building.create_person = users.id
+    LEFT JOIN sys_console_users users ON  building.create_person = users.id
     where building.flag_deleted = 0
     <if test="province != null and province != ''" >
       and building.province = #{province,jdbcType=VARCHAR}
@@ -216,7 +217,7 @@
       and building.flag_amend = #{flagAmend,jdbcType=BIT}
     </if>
   </select>
-  <select id="listAllAddress" resultType="com.company.springboot.entity.bif.ret.BifBuilding.ListRet" parameterType="com.company.springboot.entity.bif.BifBuilding">
+  <select id="listAllAddress" resultType="com.platform.springboot.entity.bif.ret.BifBuilding.ListRet" parameterType="com.platform.springboot.entity.bif.BifBuilding">
     select distinct
     building.id AS id,
     building.longitude AS longitude,
@@ -232,7 +233,7 @@
     address.id AS addressId
     from bif_building building
     inner join bif_building_address address ON address.building_id = building.id and address.flag_deleted = 0
-    LEFT JOIN sys_company_users users ON  building.create_person = users.id
+    LEFT JOIN sys_console_users users ON  building.create_person = users.id
     where building.flag_deleted = 0
     <if test="province != null and province != ''" >
       and building.province = #{province,jdbcType=VARCHAR}

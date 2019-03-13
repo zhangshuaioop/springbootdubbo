@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpFaultOrderProcessLogMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpFaultOrderProcessLog" >
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpFaultOrderProcessLogMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpFaultOrderProcessLog" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="fault_order_process_id" property="faultOrderProcessId" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
@@ -19,7 +19,7 @@
     from fdp_fault_order_process_log
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcessLog" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcessLog" >
     insert into fdp_fault_order_process_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -74,7 +74,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcessLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcessLog" >
     update fdp_fault_order_process_log
     <set >
       <if test="faultOrderProcessId != null" >
@@ -107,7 +107,7 @@
   </select>
 
   <!--提交故障可能需要对方确认-->
-  <insert id="insertFaultConfirmbyTheOtherParty" parameterType="com.company.springboot.entity.fdp.FdpFaultOrderProcessLog">
+  <insert id="insertFaultConfirmbyTheOtherParty" parameterType="com.platform.springboot.entity.fdp.FdpFaultOrderProcessLog">
   INSERT INTO fdp_fault_order_process_log (id,fault_order_process_id,title, memo, process_person_id,process_time,flag_console)
   VALUES (#{id},#{fault_order_process_id},#{title} ,#{memo}, #{process_person_id},#{process_time},#{flag_console})
   </insert>

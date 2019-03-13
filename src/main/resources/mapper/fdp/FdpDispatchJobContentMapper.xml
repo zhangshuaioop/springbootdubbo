@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.company.springboot.mapper.fdp.FdpDispatchJobContentMapper" >
-  <resultMap id="BaseResultMap" type="com.company.springboot.entity.fdp.FdpDispatchJobContent" >
+<mapper namespace="com.platform.springboot.mapper.fdp.FdpDispatchJobContentMapper" >
+  <resultMap id="BaseResultMap" type="com.platform.springboot.entity.fdp.FdpDispatchJobContent" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="dispatch_order_id" property="dispatchOrderId" jdbcType="INTEGER" />
     <result column="dispatch_request_id" property="dispatchRequestId" jdbcType="INTEGER" />
@@ -22,7 +22,7 @@
     from fdp_dispatch_job_content
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insertSelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchJobContent" >
+  <insert id="insertSelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchJobContent" >
     insert into fdp_dispatch_job_content
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -83,7 +83,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.springboot.entity.fdp.FdpDispatchJobContent" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.springboot.entity.fdp.FdpDispatchJobContent" >
     update fdp_dispatch_job_content
     <set >
       <if test="dispatchOrderId != null" >
