@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.help.helpme.mapper.sys.SysAuthorityMapper">
+  <resultMap id="BaseResultMap" type="com.help.helpme.entity.sys.SysAuthority">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="flag_enabled" jdbcType="BIT" property="flagEnabled" />
+    <result column="flag_delete" jdbcType="BIT" property="flagDelete" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, description, flag_enabled, flag_delete, create_date, update_date,url,icon
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_authority
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_authority
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.help.helpme.entity.sys.SysAuthority">
+    insert into sys_authority
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="flagEnabled != null">
+        flag_enabled,
+      </if>
+      <if test="flagDelete != null">
+        flag_delete,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="flagEnabled != null">
+        #{flagEnabled,jdbcType=BIT},
+      </if>
+      <if test="flagDelete != null">
+        #{flagDelete,jdbcType=BIT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.help.helpme.entity.sys.SysAuthority">
+    update sys_authority
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="flagEnabled != null">
+        flag_enabled = #{flagEnabled,jdbcType=BIT},
+      </if>
+      <if test="flagDelete != null">
+        flag_delete = #{flagDelete,jdbcType=BIT},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+<!--根据用户id获取权限-->
+  <select id="selectByAdminId" parameterType="java.lang.Long" resultType="com.help.helpme.entity.sys.response.SysAuthorityRes">
+    SELECT authority.id, authority.`name`,
+    authority.description,authority.parent_id parentId,
+    authority.url,authority.icon
+    FROM sys_authority authority
+    LEFT JOIN sys_role_authority roleAuthority ON roleAuthority.authority_id=authority.id
+    LEFT JOIN sys_admin_role adminRole ON adminRole.role_id=roleAuthority.role_id
+    LEFT JOIN sys_role role ON role.id=adminRole.role_id
+    WHERE authority.flag_delete=0 AND authority.flag_enabled=1
+    AND role.flag_delete=0 AND role.flag_enabled=1 AND adminRole.admin_id=#{id,jdbcType=BIGINT}
+    ORDER BY authority.order_id ASC
+  </select>
+
+
+  <select id="selectAllTree" parameterType="com.help.helpme.entity.sys.SysAuthority" resultType="com.help.helpme.entity.sys.response.SysAuthorityRes">
+    select
+    id, `name`,
+    description,parent_id parentId,
+    url,icon
+    from sys_authority
+    where flag_delete=0
+    <if test="name != null">
+      and name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="description != null">
+      and description = #{description,jdbcType=VARCHAR}
+    </if>
+    <if test="flagEnabled != null">
+      and flag_enabled = #{flagEnabled,jdbcType=BIT}
+    </if>
+    <if test="createDate != null">
+      and create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null">
+      and update_date = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="url != null">
+      and url = #{url,jdbcType=VARCHAR}
+    </if>
+    <if test="icon != null">
+      and icon = #{icon,jdbcType=VARCHAR}
+    </if>
+    ORDER BY order_id ASC
+  </select>
+
+
+
+
+
+  <select id="selectByRoleIdTree" parameterType="com.help.helpme.entity.sys.SysAuthority" resultType="com.help.helpme.entity.sys.response.SysAuthorityRes">
+    select
+    authority.id, authority.`name`,
+    authority.description,authority.parent_id parentId,
+    authority.url,authority.icon,
+    CASE WHEN ra.id >0 THEN 1 ELSE 0 end flagEnabled
+    from sys_authority authority
+    LEFT JOIN sys_role_authority ra ON ra.authority_id=authority.id AND role_id=#{roleId,jdbcType=BIGINT}
+    where authority.flag_delete=0
+    <if test="name != null">
+      and authority.name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="description != null">
+      and authority.description = #{description,jdbcType=VARCHAR}
+    </if>
+    <if test="flagEnabled != null">
+      and authority.flag_enabled = #{flagEnabled,jdbcType=BIT}
+    </if>
+    <if test="createDate != null">
+      and authority.create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null">
+      and authority.update_date = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="url != null">
+      and authority.url = #{url,jdbcType=VARCHAR}
+    </if>
+    <if test="icon != null">
+      and authority.icon = #{icon,jdbcType=VARCHAR}
+    </if>
+    ORDER BY authority.order_id ASC
+  </select>
+
+
+</mapper>

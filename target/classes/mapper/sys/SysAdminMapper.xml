@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.help.helpme.mapper.sys.SysAdminMapper">
+  <resultMap id="BaseResultMap" type="com.help.helpme.entity.sys.SysAdmin">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="dept" jdbcType="VARCHAR" property="dept" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="flag_enabled" jdbcType="BIT" property="flagEnabled" />
+    <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="login_date" jdbcType="TIMESTAMP" property="loginDate" />
+    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+    <result column="flag_delete" jdbcType="BIT" property="flagDelete" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, nick_name, dept, description, flag_enabled, head_url, email, 
+    mobile, login_date, login_ip, flag_delete, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_admin
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_admin
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.help.helpme.entity.sys.SysAdmin">
+    insert into sys_admin (id, username, password, 
+      nick_name, dept, description, 
+      flag_enabled, head_url, email, 
+      mobile, login_date, login_ip, 
+      flag_delete, create_date, update_date
+      )
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{nickName,jdbcType=VARCHAR}, #{dept,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{flagEnabled,jdbcType=BIT}, #{headUrl,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{loginDate,jdbcType=TIMESTAMP}, #{loginIp,jdbcType=VARCHAR}, 
+      #{flagDelete,jdbcType=BIT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.help.helpme.entity.sys.SysAdmin" keyProperty="id"
+          useGeneratedKeys="true">
+    insert into sys_admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="dept != null">
+        dept,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="flagEnabled != null">
+        flag_enabled,
+      </if>
+      <if test="headUrl != null">
+        head_url,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="loginDate != null">
+        login_date,
+      </if>
+      <if test="loginIp != null">
+        login_ip,
+      </if>
+      <if test="flagDelete != null">
+        flag_delete,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null">
+        #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="flagEnabled != null">
+        #{flagEnabled,jdbcType=BIT},
+      </if>
+      <if test="headUrl != null">
+        #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDate != null">
+        #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDelete != null">
+        #{flagDelete,jdbcType=BIT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.help.helpme.entity.sys.SysAdmin">
+    update sys_admin
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null">
+        dept = #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="flagEnabled != null">
+        flag_enabled = #{flagEnabled,jdbcType=BIT},
+      </if>
+      <if test="headUrl != null">
+        head_url = #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDate != null">
+        login_date = #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        login_ip = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="flagDelete != null">
+        flag_delete = #{flagDelete,jdbcType=BIT},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+
+  <!--根据用户名查询用户信息-->
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_admin
+    where flag_enabled = 1
+    and flag_delete = 0
+    and username = #{username,jdbcType=VARCHAR}
+  </select>
+
+
+
+
+  <select id="selectAll" parameterType="com.help.helpme.entity.sys.SysAdmin" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_admin
+    where flag_delete=0
+    <if test="username != null">
+      and username = #{username,jdbcType=VARCHAR}
+    </if>
+    <if test="password != null">
+      and password = #{password,jdbcType=VARCHAR}
+    </if>
+    <if test="nickName != null">
+      and nick_name = #{nickName,jdbcType=VARCHAR}
+    </if>
+    <if test="dept != null">
+      and dept = #{dept,jdbcType=VARCHAR}
+    </if>
+    <if test="description != null">
+      and description = #{description,jdbcType=VARCHAR}
+    </if>
+    <if test="flagEnabled != null">
+      and flag_enabled = #{flagEnabled,jdbcType=BIT}
+    </if>
+    <if test="headUrl != null">
+      and head_url = #{headUrl,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null">
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="mobile != null">
+      and mobile = #{mobile,jdbcType=VARCHAR}
+    </if>
+    <if test="loginDate != null">
+      and login_date = #{loginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="loginIp != null">
+      and login_ip = #{loginIp,jdbcType=VARCHAR}
+    </if>
+    <if test="createDate != null">
+      and create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null">
+      and update_date = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="search != null and search != ''">
+      and (LOCATE(#{search,jdbcType=VARCHAR}, username)>0
+      or LOCATE(#{search,jdbcType=VARCHAR}, nick_name)>0
+      or LOCATE(#{search,jdbcType=VARCHAR}, dept)>0
+      or LOCATE(#{search,jdbcType=VARCHAR}, mobile)>0
+      or LOCATE(#{search}, create_date)>0
+      <if test="search == '启'.toString() or search == '用'.toString() or search == '启用'.toString()">
+        or flag_enabled = 1
+      </if>
+      <if test="search == '禁'.toString() or search == '用'.toString() or search == '禁用'.toString()">
+        or flag_enabled = 0
+      </if>
+       )
+    </if>
+    order by update_date desc
+  </select>
+
+
+  <!--批量删除-->
+  <update id="deletes" parameterType="java.lang.String">
+    update sys_admin set flag_delete=1 where FIND_IN_SET(id,#{ids,jdbcType=VARCHAR});
+  </update>
+
+
+</mapper>

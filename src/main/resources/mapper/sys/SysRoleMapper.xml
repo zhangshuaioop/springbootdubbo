@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.help.helpme.mapper.sys.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.help.helpme.entity.sys.SysRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="flag_enabled" jdbcType="BIT" property="flagEnabled" />
+    <result column="flag_delete" jdbcType="BIT" property="flagDelete" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, flag_enabled, flag_delete, description, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.help.helpme.entity.sys.SysRole">
+    insert into sys_role (id, name, flag_enabled, 
+      flag_delete, description, create_date, 
+      update_date)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{flagEnabled,jdbcType=BIT}, 
+      #{flagDelete,jdbcType=BIT}, #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.help.helpme.entity.sys.SysRole" keyProperty="id"
+          useGeneratedKeys="true">
+    insert into sys_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="flagEnabled != null">
+        flag_enabled,
+      </if>
+      <if test="flagDelete != null">
+        flag_delete,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="flagEnabled != null">
+        #{flagEnabled,jdbcType=BIT},
+      </if>
+      <if test="flagDelete != null">
+        #{flagDelete,jdbcType=BIT},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.help.helpme.entity.sys.SysRole">
+    update sys_role
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="flagEnabled != null">
+        flag_enabled = #{flagEnabled,jdbcType=BIT},
+      </if>
+      <if test="flagDelete != null">
+        flag_delete = #{flagDelete,jdbcType=BIT},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.help.helpme.entity.sys.SysRole">
+    update sys_role
+    set name = #{name,jdbcType=VARCHAR},
+      flag_enabled = #{flagEnabled,jdbcType=BIT},
+      flag_delete = #{flagDelete,jdbcType=BIT},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+
+  <select id="selectAll" parameterType="com.help.helpme.entity.sys.SysRole" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+    where flag_delete=0
+    <if test="name != null">
+      and name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="flagEnabled != null">
+      and flag_enabled = #{flagEnabled,jdbcType=BIT}
+    </if>
+    <if test="flagDelete != null">
+      and flag_delete = #{flagDelete,jdbcType=BIT}
+    </if>
+    <if test="description != null">
+      and description = #{description,jdbcType=VARCHAR}
+    </if>
+    <if test="createDate != null">
+      and create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null">
+      and update_date = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="search != null and search != ''">
+      and (LOCATE(#{search,jdbcType=VARCHAR}, name)>0
+      or LOCATE(#{search,jdbcType=VARCHAR}, description)>0
+      or LOCATE(#{search}, create_date)>0
+      <if test="search == '启'.toString() or search == '用'.toString() or search == '启用'.toString()">
+        or flag_enabled = 1
+      </if>
+      <if test="search == '禁'.toString() or search == '用'.toString() or search == '禁用'.toString()">
+        or flag_enabled = 0
+      </if>
+      )
+    </if>
+    order by update_date desc
+  </select>
+
+
+  <!--批量删除-->
+  <update id="deletes" parameterType="java.lang.String">
+    update sys_role set flag_delete=1 where FIND_IN_SET(id,#{ids,jdbcType=VARCHAR});
+  </update>
+
+
+  <!--根据用户查询角色-->
+  <select id="selectByAdminId" parameterType="com.help.helpme.entity.sys.SysRole" resultType="com.help.helpme.entity.sys.SysRole">
+    select
+    role.id, role.name, role.flag_enabled, role.flag_delete,
+    role.description, role.create_date, role.update_date,
+    CASE WHEN ar.id >0 THEN 1 ELSE 0 end flagSelect
+    from sys_role role
+    LEFT JOIN sys_admin_role ar ON ar.role_id=role.id AND ar.admin_id=#{adminId,jdbcType=BIGINT}
+    where role.flag_delete=0
+    <if test="name != null">
+      and role.name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="flagEnabled != null">
+      and role.flag_enabled = #{flagEnabled,jdbcType=BIT}
+    </if>
+    order by role.update_date desc
+  </select>
+
+</mapper>
